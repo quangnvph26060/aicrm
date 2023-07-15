@@ -25,7 +25,8 @@ class ProductRequest extends FormRequest
         return [
           'name'=>'required|string|min:6',
             'mota'=>'required|string',
-            'gia'=>'required|integer|min:0'
+            'gia'=>'required|integer|min:0',
+            'anh'=>'required|image|max:2048',
         ];
     }
     // thay đổi thông báo mặc định
@@ -38,6 +39,9 @@ class ProductRequest extends FormRequest
            'gia.required'=>':attribute không để trống',
            'gia.integer'=>':attribute phải là sô',
            'gia.min'=>':attribute phải lớn hơn 0',
+           'anh.required'=>'Vui lòng nhập file',
+           'anh.image'=>'Vui Lòng chọn :attribute',
+           'anh.max'=>':attribute không được lớn hơn 2048',
        ];
     }
     // thay dổi tên trường
@@ -47,6 +51,7 @@ class ProductRequest extends FormRequest
            'name' => 'Tên Sản Phẩm',
            'mota' => 'Mô tả Sản Phẩm',
            'gia'=> ' Giá Sản Phẩm',
+           'anh'=>'Ảnh',
        ];
     }
 }

@@ -27,4 +27,6 @@ Route::get('deleteproduct/{id}',[ProductController::class,'deleteProduct']);
 // cập nhật
 Route::get('edit/{id}',[ProductController::class,'editProduct']);
 Route::put('edit/{id}',[ProductController::class,'updateProduct']);
+// tìm kiếm
+Route::post('/search',[ProductController::class,'searchProduct'])->name('search');
 

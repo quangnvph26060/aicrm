@@ -7,37 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.css')}}">
 
-    <title>Trang Chủ</title>
+    <title>@yield('title')</title>
 </head>
 <body>
 
-                @if(session('msg'))
-                    <div class="alert alert-primary">
-                    {{session('msg')}}
-                    </div>
-                @endif
+@if(session('msg'))
+    <div class="alert alert-primary">
+        {{session('msg')}}
+    </div>
+@endif
 
 
-        <div class="container">
-            <header>
-                <nav>
-                    <ul>
-                        <li>
-                            <a>Trang Chủ</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-            <div class="content">
-                @yield('content')
-            </div>
+<div class="container">
 
-            <footer>
-                <div class="text-center">
-                    Nguyễn Văn Quang
-                </div>
-            </footer>
+
+    <div class="content">
+        @yield('content')
+    </div>
+
+    <footer>
+        <div class="text-center">
+            Nguyễn Văn Quang
         </div>
+    </footer>
+</div>
 
 </body>
 <script src="{{asset('bootstrap/js/bootstrap.js')}}"></script>

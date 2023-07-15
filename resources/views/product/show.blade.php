@@ -1,6 +1,17 @@
 @extends('product.index')
 @section('content')
-{{--  //  <img src="/images/1.png" >--}}
+
+<form class="d-flex" role="search" action="{{route('search')}}" method="post">
+    @csrf
+
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="inputSearch">
+    <button class="btn btn-outline-success" type="submit" name="btn">Search</button>
+</form>
+@if(!empty($size))
+    <div class="alert alert-success">
+        <p class="text-center"> Có {{$size}} Sản Phẩm Được Tìm Thấy </p>
+    </div>
+@endif
     <table class="table">
         <thead>
         <tr>

@@ -1,4 +1,7 @@
 @extends('product.index')
+@section('title')
+    {{$title}}
+@endsection
 @section('content')
 
     <form action="{{route('post.add')}}" method="POST" enctype="multipart/form-data">
@@ -17,8 +20,8 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Ảnh Sản Phẩm</label>
-            <input type="file" class="form-control" name="anh" >
+            <label class="form-label">Ảnh Sản Phẩm</label> </br>
+            <input type="file"  name="anh" value="{{old('anh')}}">
 
         </div>
         @error('anh')

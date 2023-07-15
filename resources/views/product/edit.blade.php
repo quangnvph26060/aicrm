@@ -1,4 +1,7 @@
 @extends('product.index')
+@section('title')
+    {{$title}}
+@endsection
 @section('content')
 
     <form action="{{url('edit/'.$product->id)}}" method="POST" enctype="multipart/form-data">
@@ -18,10 +21,11 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Ảnh Sản Phẩm</label>
-            <input type="file" class="form-control" name="anh" >
+            </br>
+            <input type="file"  name="anh" >
 {{--            lưu lại ảnh cũ--}}
             <img src="/images/{{$product->anhsanpham}}" width="20%">
-            <input type="hidden" value="{{$product->anhsanpham}}" name="anhcu">
+{{--            <input type="hidden" value="{{$product->anhsanpham}}" name="anhcu">--}}
 
         </div>
         @error('anh')
@@ -54,7 +58,7 @@
             @enderror
         </div>
         <a href="{{url('show')}}" class="btn btn-primary"> Danh Sách </a>
-        <button class="btn btn-success" type="submit">Thêm</button>
+        <button class="btn btn-success" type="submit">Cập Nhật</button>
 
     </form>
 @endsection
