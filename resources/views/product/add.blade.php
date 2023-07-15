@@ -1,7 +1,7 @@
 @extends('product.index')
 @section('content')
 
-    <form action="{{route('post.add')}}" method="POST">
+    <form action="{{route('post.add')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
 
@@ -16,6 +16,16 @@
             @enderror
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Ảnh Sản Phẩm</label>
+            <input type="file" class="form-control" name="anh" >
+
+        </div>
+        @error('anh')
+        <div class="btn btn-danger">
+            {{$message}}
+        </div>
+        @enderror
         <div class="mb-3">
 
             <label class="form-label">Mô TẢ Sản Phẩm</label>

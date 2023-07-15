@@ -1,10 +1,12 @@
 @extends('product.index')
 @section('content')
+{{--  //  <img src="/images/1.png" >--}}
     <table class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Tên Sản Phẩm </th>
+            <th scope="col">Ảnh Sản Phẩm </th>
             <th scope="col">Mô tả Sản Phẩm</th>
             <th scope="col">Giá Sản Phẩm </th>
             <th scope="col">Thao Tác </th>
@@ -14,7 +16,11 @@
         @foreach($product as $index=>$item)
             <tr>
                 <th scope="row">{{$index+1}}</th>
+
                 <td>{{$item->tensanpham}}</td>
+                <td>
+                    <img src="/images/{{$item->anhsanpham}}" width="20%">
+                </td>
                 <td>{{$item->mota}}</td>
                 <td>{{$item->giasanpham}}</td>
                 <td>

@@ -1,7 +1,7 @@
 @extends('product.index')
 @section('content')
 
-    <form action="{{url('edit/'.$product->id)}}" method="POST">
+    <form action="{{url('edit/'.$product->id)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -16,7 +16,19 @@
             </div>
             @enderror
         </div>
+        <div class="mb-3">
+            <label class="form-label">Ảnh Sản Phẩm</label>
+            <input type="file" class="form-control" name="anh" >
+{{--            lưu lại ảnh cũ--}}
+            <img src="/images/{{$product->anhsanpham}}" width="20%">
+            <input type="hidden" value="{{$product->anhsanpham}}" name="anhcu">
 
+        </div>
+        @error('anh')
+        <div class="btn btn-danger">
+            {{$message}}
+        </div>
+        @enderror
         <div class="mb-3">
 
             <label class="form-label">Mô TẢ Sản Phẩm</label>

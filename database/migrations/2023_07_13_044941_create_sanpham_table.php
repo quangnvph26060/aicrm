@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sanpham', function (Blueprint $table) {
             $table->id();
             $table->string('tensanpham')->nullable();
+            $table->string('anhsanpham')->nullable();
             $table->string('mota')->nullable();
             $table->integer('giasanpham')->nullable();
             $table->timestamps();
