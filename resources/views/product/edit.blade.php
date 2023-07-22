@@ -24,7 +24,7 @@
             </br>
             <input type="file"  name="anh" >
 {{--            lưu lại ảnh cũ--}}
-            <img src="/images/{{$product->anhsanpham}}" width="20%">
+            <img src="{{$product->anhsanpham ? Storage::url($product->anhsanpham):""}}" width="20%">
 {{--            <input type="hidden" value="{{$product->anhsanpham}}" name="anhcu">--}}
 
         </div>

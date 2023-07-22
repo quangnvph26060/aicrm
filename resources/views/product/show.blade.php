@@ -30,7 +30,7 @@
 
                 <td>{{$item->tensanpham}}</td>
                 <td>
-                    <img src="/images/{{$item->anhsanpham}}" width="20%">
+                    <img src="{{$item->anhsanpham ? Storage::url($item->anhsanpham):""}}" width="20%">
                 </td>
                 <td>{{$item->mota}}</td>
                 <td>{{$item->giasanpham}}</td>

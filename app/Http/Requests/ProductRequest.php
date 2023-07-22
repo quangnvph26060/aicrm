@@ -22,15 +22,41 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-          'name'=>'required|string|min:6',
-            'mota'=>'required|string',
-            'gia'=>'required|integer|min:0',
-            'anh'=>'required|image|max:2048',
-        ];
+        // khai báo 1 mảng
+        $rules = [];
+        // lấy phương thức đang hoạt động trên route
+        $method = $this->route()->getActionMethod();
+        switch ($this->method()) { // lấy phương thức mà route đó đang dùng
+            case 'POST':
+                switch ($method) {
+                    case 'postAdd':
+                        $rules = [
+                            'name' => 'required|string|min:6',
+                            'mota' => 'required|string',
+                            'gia' => 'required|integer|min:0',
+                            'anh' => 'required|image|max:2048',
+                        ];
+                        break;
+                    case 'updateProduct':
+                        $rules = [
+                            'name' => 'required|string|min:6',
+                            'mota' => 'required|string',
+                            'gia' => 'required|integer|min:0',
+                            'anh' => 'nullable|image|max:2048',
+                        ];
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        return $rules;
     }
+
     // thay đổi thông báo mặc định
-    public  function messages()
+    public function messages()
     {
        return [
            'name.required' => ':attribute không để trống ',
@@ -44,14 +70,15 @@ class ProductRequest extends FormRequest
            'anh.max'=>':attribute không được lớn hơn 2048',
        ];
     }
+
     // thay dổi tên trường
-    public function  attributes()
+    public function attributes()
     {
-       return [
-           'name' => 'Tên Sản Phẩm',
-           'mota' => 'Mô tả Sản Phẩm',
-           'gia'=> ' Giá Sản Phẩm',
-           'anh'=>'Ảnh',
-       ];
+        return [
+            'name' => 'Tên Sản Phẩm',
+            'mota' => 'Mô tả Sản Phẩm',
+            'gia' => ' Giá Sản Phẩm',
+            'anh' => 'Ảnh',
+        ];
     }
 }
