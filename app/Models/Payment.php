@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductModel extends Model
+class Payment extends Model
 {
     use HasFactory;
-    protected $table = 'sanpham';
+    protected $fillable = [
+        'address', 'order_id', 'amount','user_id',
+    ];
 }

@@ -1,32 +1,24 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-Route::get('/',function (){
-    return view('product.index');
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/verify-otp', [AuthController::class, 'showVerifyOtp'])->name('verify-otp');
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify_otp_confirm');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/payment', [PaymentController::class, 'showPaymentForm'])->name('payment.form');
+    Route::post('/payment', [PaymentController::class, 'processPayment'])->name('payment.process');
+    Route::get('/payment-success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+    Route::post('/payment-notify', [PaymentController::class, 'paymentNotify'])->name('payment.notify');
+
 });
-Route::get('show',[ProductController::class,'showData'])->name('show');
-Route::get('getAdd',[ProductController::class,'getAdd']);
-Route::post('getAdd',[ProductController::class,'postAdd'])->name('post.add');
-//xóa
-Route::get('deleteproduct/{id}',[ProductController::class,'deleteProduct']);
-// cập nhật
-Route::get('edit/{id}',[ProductController::class,'editProduct']);
-Route::put('edit/{id}',[ProductController::class,'updateProduct']);
-// tìm kiếm
-Route::post('/search',[ProductController::class,'searchProduct'])->name('search');
 
