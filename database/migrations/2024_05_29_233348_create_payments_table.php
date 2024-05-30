@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sanpham', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('tensanpham')->nullable();
-            $table->string('anhsanpham')->nullable();
-            $table->string('mota')->nullable();
-            $table->integer('giasanpham')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('address')->nullable();
+            $table->integer('amount')->nullable();
+            $table->string('order_id')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sanpham');
+        Schema::dropIfExists('payments');
     }
 };
