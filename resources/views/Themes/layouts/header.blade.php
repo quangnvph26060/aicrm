@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/new_style.css">
+    <link rel="stylesheet" href="{{asset('css/new_style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="{{ asset('validator/validator.js') }}"></script>
@@ -75,7 +75,7 @@
                         <li class="menu-main-hover">
                             <a href="">Hàng hóa</a>
                             <ul class="submenu">
-                                <li><a href="{{route('category')}}">Danh mục</a></li>
+                                <li><a href="{{route('category.index')}}">Danh mục</a></li>
                                 <li><a href="{{route('product')}}">Sản phẩm</a></li>
                             </ul>
                         </li>
@@ -85,7 +85,7 @@
                         <li class="menu-main-hover">
                             <a href="">Đối tác</a>
                             <ul class="submenu">
-                                <li><a href="{{route('category')}}">Khách hàng</a></li>
+                                <li><a href="">Khách hàng</a></li>
                                 <li><a href="{{route('product')}}">Nhà cung cấp</a></li>
                             </ul>
                         </li>

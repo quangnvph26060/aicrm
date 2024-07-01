@@ -18,14 +18,27 @@ class CategoryService
 
     public function getCategoryAll(){
         try {
-            Log::info('Fetching all products');
+            Log::info('Fetching all categories');
             return $this->categories->all();
         } catch (Exception $e) {
-            Log::error('Failed to fetch products: ' . $e->getMessage());
-            throw new Exception('Failed to fetch products');
+            Log::error('Failed to fetch categories: ' . $e->getMessage());
+            throw new Exception('Failed to fetch categories');
         }
     }
-
+    public function createCategory(array $data): Categories
+    {
+        try{
+            Log::info('Creating new category');
+            $category = $this->categories->create($data);
+            DB::commit();
+            return $category;
+        }
+        catch(Exception $e){
+            DB::rollBack();
+            Log::error('Failed to create category: ' .$e->getMessage());
+            throw new Exception('Failed to create category');
+        }
+    }
     public function updateCategory(int $id, array $data): Categories
     {
         DB::beginTransaction();
