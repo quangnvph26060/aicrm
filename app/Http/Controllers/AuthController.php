@@ -24,7 +24,7 @@ class AuthController extends Controller
             $result = $this->userService->authenticateUser($credentials);
             if ($result['user']->role_id == 1) {
                  session()->put('authUser', $result['user']);
-                  return redirect()->route('product');
+                  return redirect()->route('admin.product.store');
             } elseif ($result['user']->role_id == 2) {
                  session()->put('authUser', $result['user']);
                 return redirect()->route('user');

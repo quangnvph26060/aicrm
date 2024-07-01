@@ -60,22 +60,27 @@ class ProductService
             $product = $this->product->create([
                 'name' => $data['name'],
                 'price' => $data['price'],
-                'priceBuy' => $data['price'],
+                'priceBuy' => $data['priceBuy'],
                 'quantity' => $data['quantity'],
                 'product_unit' => @$data['product_unit'],
                 'category_id' => $data['category_id'],
-                'description' => @$data['description'],
+                'description' => $data['description'],
                 'is_featured' => @$data['is_featured'],
                 'is_new_arrival' => @$data['is_new_arrival'],
                 'status' =>  $data['status'],
                 'discount_id' => @$data['discount_id'],
                 'brands_id' => @$data['brand_id'],
             ]);
+
+
             if ($product) {
                 foreach ($data['images'] as $item) {
                     $image = $item;
                     $filename = 'image_'. $image->getClientOriginalName();
                     $filePath = 'storage/product/' . $filename;
+                    if (!Storage::exists($filePath)) {
+                        $image->storeAs('public/product', $filename);
+                    }
                     Storage::putFileAs('public/product', $image, $filename);
                     $image = new ProductImages();
                     $image->product_id = $product->id;
@@ -98,7 +103,7 @@ class ProductService
         $imageNames = [];
         foreach ($existingImagePaths as $path) {
             $fullFileName = basename($path);
-            $pattern = '/image_/';
+            $pattern = '/image_(.*)/';
             if (preg_match($pattern, $fullFileName, $matches)) {
                 $imageNames[] = $matches[1];
             }
@@ -139,9 +144,11 @@ class ProductService
         DB::beginTransaction();
         try {
             $product = $this->getProductById($id);
+            // dd($product);
             $productimages = ProductImages::where('product_id', $id)->get();
-            Log::info("Deleting product with ID: $id");
-            $productimages->delete();
+            foreach ($productimages as $image) {
+                $image->delete();
+            }
             $product->delete();
             DB::commit();
         } catch (Exception $e) {
