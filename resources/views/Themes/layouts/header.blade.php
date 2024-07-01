@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="{{asset('css/new_style.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/new_style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="{{ asset('validator/validator.js') }}"></script>
@@ -53,7 +53,7 @@
 
                 </div>
             </div>
-            <div class="header_menu mt-2" id='header_fixed'>
+            <div class="header_menu " id='header_fixed'>
                <div class="container header_menu_item">
                     <div class="icon_menu">
                         <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 20 20" fill="none">
@@ -90,7 +90,7 @@
                             </ul>
                         </li>
                         <li class="menu-main-hover">
-                            <a href="{{route('employee')}}">Nhân viên</a>
+                            <a href="">Nhân viên</a>
 
                         </li>
                     </ul>
@@ -141,5 +141,9 @@
             position: fixed;
             top: -8px;
             z-index: 100;
+            }
+
+            .submenu{
+                z-index: 99;
             }
     </style>
