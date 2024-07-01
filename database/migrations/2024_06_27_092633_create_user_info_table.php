@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('otps', function (Blueprint $table) {
+        Schema::create('user_info', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('otp');
-            $table->timestamp('expires_at');
-            $table->timestamps();
-    
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('img_url')->nullable();
+            $table->string('idnumber')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('branch')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('otps');
+        Schema::dropIfExists('user_info');
     }
 };

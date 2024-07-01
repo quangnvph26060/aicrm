@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/new_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="{{ asset('validator/validator.js') }}"></script>
 </head>
 <body>
     <div class="container">
@@ -49,7 +50,7 @@
                         <a href="/contact">
                             <li>Liên hệ</li>
                         </a>
-                       
+
                 </div>
             </div>
             <div class="header_menu mt-2" id='header_fixed'>
@@ -90,7 +91,7 @@
                         </li>
                         <li class="menu-main-hover">
                             <a href="{{route('employee')}}">Nhân viên</a>
-                           
+
                         </li>
                     </ul>
                     <div class="icon_menu_mobi">
@@ -100,7 +101,7 @@
                     </div>
                     <div class="menu-overlay"></div>
                     <div class="menu-content">
-                       
+
                         <button class="mb-2 btn btn-danger close-button close-button">&times;</button>
                         <ul class="ul_mobi">
                             <li>
@@ -128,11 +129,11 @@
                                 <a href="">VIDEO</a>
                             </li>
                         </ul>
-                    
+
                     </div>
                </div>
             </div>
-           
+
         </header>
     </div>
     <style scoped>

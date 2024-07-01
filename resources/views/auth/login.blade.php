@@ -64,7 +64,7 @@
                                     </div>
 
                                     <div class="mt-4">
-                                        <form action="{{ url('/login') }}" method="post">
+                                        <form action="{{ route('login') }}" method="post">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">Email</label>

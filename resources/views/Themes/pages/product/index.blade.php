@@ -1,12 +1,12 @@
 @extends('Themes.layouts.app')
 @section('content')
 <div class="container">
-   
+
     <div class="table-responsive table-card mt-100 mb-100" >
         <div class="row d-flex justify-content-end">
            <div class=" d-flex justify-content-end mb-2">
             <div class="dropdown">
-                    
+
                 <button class="dropbtn"> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16">
                     <path fill="currentColor" d="M8.25 3a.5.5 0 0 1 .5.5v3.75h3.75a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H8.75v3.75a.5.5 0 0 1-.5.5h-.5a.5.5 0 0 1-.5-.5V8.75H3.5a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h3.75V3.5a.5.5 0 0 1 .5-.5z"/>
                 </svg>Thêm mới</button>
@@ -46,7 +46,7 @@
                     <p id="openModalProduct">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16">
                             <path fill="currentColor" d="M8.25 3a.5.5 0 0 1 .5.5v3.75h3.75a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H8.75v3.75a.5.5 0 0 1-.5.5h-.5a.5.5 0 0 1-.5-.5V8.75H3.5a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h3.75V3.5a.5.5 0 0 1 .5-.5z"/>
-                        </svg>Thêm sản phẩm 
+                        </svg>Thêm sản phẩm
                     </p>
                     <div id="myModalProduct" class="modal" class="modal fade">
                         <div class="modal-dialog modal-dialog-centered"style="max-width: 1000px">
@@ -120,7 +120,7 @@
             </div>
            </div>
         </div>
-        
+
         <table class="table table-nowrap table-striped-columns mb-0">
             <thead class="table-light">
                 <tr>
@@ -135,7 +135,7 @@
                     <th scope="col">Date</th>
                     <th scope="col">Total</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Action</th>   
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>

@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\CategorieController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
+
+// Route::get('', [CategorieController::class, 'index']);
 
 Route::get('/login', function () {
     return view('auth.login');
