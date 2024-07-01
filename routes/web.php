@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
+use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 
@@ -33,14 +34,17 @@ Route::get('forget-password', function () {
 Route::get('/product', function () {
     return view('Themes.pages.product.index');
 })->name('product');
-
-Route::get('/category', function () {
-    return view('Themes.pages.category.index');
-})->name('category');
-Route::get('/employee', function () {
+// Route::get('/category',function(){
+//         return view('Themes.pages.category.index');
+//         })->name('category');
+Route::get('/employee',function(){
     return view('Themes.pages.employee.index');
-})->name('employee');
-
+            })->name('employee');
+Route::get('/category',  [CategorieController::class, 'index'])->name('category.index');
+Route::post('/createCategory', [CategorieController::class, 'store'])->name('category.store');
+Route::get('delete/{id}', [CategorieController::class, 'delete'])->name('category.delete');
+Route::get('/category/detail/{id}', [CategorieController::class, 'edit'])->name('category.detail');
+Route::put('/category/update/{id}', [CategorieController::class, 'update'])->name('category.update');
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('product')->name('product.')->group(function(){

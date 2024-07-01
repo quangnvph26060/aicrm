@@ -74,9 +74,9 @@
                         </li>
                         <li class="menu-main-hover">
                             <a href="">Hàng hóa</a>
-                            <ul class="submenu" >
-                                <li><a href="">Danh mục</a></li>
-                                <li><a href="">Sản phẩm</a></li>
+                            <ul class="submenu">
+                                <li><a href="{{route('category.index')}}">Danh mục</a></li>
+                                <li><a href="{{route('product')}}">Sản phẩm</a></li>
                             </ul>
                         </li>
                         <li class="menu-main-hover">
@@ -86,7 +86,7 @@
                             <a href="">Đối tác</a>
                             <ul class="submenu">
                                 <li><a href="">Khách hàng</a></li>
-                                <li><a href="">Nhà cung cấp</a></li>
+                                <li><a href="{{route('product')}}">Nhà cung cấp</a></li>
                             </ul>
                         </li>
                         <li class="menu-main-hover">
