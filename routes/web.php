@@ -63,3 +63,8 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::put('/update/{id}', [CategorieController::class, 'update'])->name('update');
     });
 });
+
+
+Route::get('demo',function(){
+    return view('Themes.pages.layout_staff.index');
+});
