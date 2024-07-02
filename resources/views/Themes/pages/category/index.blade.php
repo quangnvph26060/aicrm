@@ -41,7 +41,7 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ route('category.store') }}" method="POST" id="submitform"
+                                            <form action="{{ route('admin.category.store') }}" method="POST" id="submitform"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="mb-3">
@@ -190,10 +190,10 @@
                             <td>{!! $item->description !!}</td>
                             <td>
                                 <a class="btn btn-warning"
-                                    href="{{ route('category.detail', ['id' => $item->id]) }}">Sửa</a>
+                                    href="{{ route('admin.category.detail', ['id' => $item->id]) }}">Sửa</a>
                                 <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" type="button"
                                     class="btn btn-sm btn-danger btn-fixed-width"
-                                    href="{{ route('category.delete', ['id' => $item->id]) }}">Xóa</a>
+                                    href="{{ route('admin.category.delete', ['id' => $item->id]) }}">Xóa</a>
                             </td>
                         </tr>
                     @endforeach
