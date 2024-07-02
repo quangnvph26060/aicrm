@@ -66,7 +66,7 @@ class CategorieController extends Controller
         try {
             $category = $this->categoryService->updateCategory($id, $request->all());
             session()->flash('success', 'Cập nhật danh mục thành công');
-            return redirect()->route('category.index');
+            return redirect()->route('admin.category.index');
         } catch (\Exception $e) {
             Log::error('Failed to update category: ' . $e->getMessage());
             return ApiResponse::error('Failed to update category', 500);

@@ -37,17 +37,13 @@ Route::get('/product', function () {
 // Route::get('/category',function(){
 //         return view('Themes.pages.category.index');
 //         })->name('category');
-Route::get('/employee',function(){
+Route::get('/employee', function () {
     return view('Themes.pages.employee.index');
-            })->name('employee');
-Route::get('/category',  [CategorieController::class, 'index'])->name('category.index');
-Route::post('/createCategory', [CategorieController::class, 'store'])->name('category.store');
-Route::get('delete/{id}', [CategorieController::class, 'delete'])->name('category.delete');
-Route::get('/category/detail/{id}', [CategorieController::class, 'edit'])->name('category.detail');
-Route::put('/category/update/{id}', [CategorieController::class, 'update'])->name('category.update');
+})->name('employee');
+
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::prefix('product')->name('product.')->group(function(){
+    Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
         Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
         Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
@@ -58,5 +54,12 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('product-images/{id}', [ProductController::class, 'deleteImagesProduct'])->name('deleteImagesProduct');
         Route::post('product-category', [ProductController::class, 'Changecategory'])->name('changecategory');
         Route::post('product-status', [ProductController::class, 'Changestatus'])->name('changestatus');
+    });
+    Route::prefix('category')->name('category.')->group(function () {
+        Route::get('/',  [CategorieController::class, 'index'])->name('index');
+        Route::post('/create', [CategorieController::class, 'store'])->name('store');
+        Route::get('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
+        Route::get('/detail/{id}', [CategorieController::class, 'edit'])->name('detail');
+        Route::put('/update/{id}', [CategorieController::class, 'update'])->name('update');
     });
 });

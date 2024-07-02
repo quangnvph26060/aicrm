@@ -75,8 +75,8 @@
                         <li class="menu-main-hover">
                             <a href="">Hàng hóa</a>
                             <ul class="submenu">
-                                <li><a href="{{route('category.index')}}">Danh mục</a></li>
-                                <li><a href="{{route('product')}}">Sản phẩm</a></li>
+                                <li><a href="{{route('admin.category.index')}}">Danh mục</a></li>
+                                <li><a href="{{route('admin.product.store')}}">Sản phẩm</a></li>
                             </ul>
                         </li>
                         <li class="menu-main-hover">
