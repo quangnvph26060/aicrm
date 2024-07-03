@@ -264,7 +264,11 @@
     </div>
 </div>
 <style>
-
+    .modal-content{
+        margin: 0px !important; 
+        overflow-y: auto;
+        max-height: calc(100vh - 200px);
+    }
     .table {
         box-sizing: content-box;
     }
