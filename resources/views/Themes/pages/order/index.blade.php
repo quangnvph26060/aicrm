@@ -3,61 +3,63 @@
     <div class="container">
         <div class="table-card mt-100 mb-100">
             @if (session('success'))
-        {{-- <div class="alert alert-success">
+                {{-- <div class="alert alert-success">
             {{ session('success') }}
         </div> --}}
-        <script>
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: ' {{ session('success') }} ',
-                toast: true,
-                width: '300px',
-                padding: '1rem',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                background: '#e8e8f4',
-                customClass: {
-                        popup: 'align-top'
-                    }
+                <script>
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: ' {{ session('success') }} ',
+                        toast: true,
+                        width: '300px',
+                        padding: '1rem',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        background: '#e8e8f4',
+                        customClass: {
+                            popup: 'align-top'
+                        }
 
-                }).then((result) => {
-                // Chuyển hướng hoặc thực hiện hành động khác (nếu cần)
-                if (result.isConfirmed) {
-                    window.location.href = "{{ route('admin.staff.store') }}";
-                }
-                });
-        </script>
-        @endif
+                    }).then((result) => {
+                        // Chuyển hướng hoặc thực hiện hành động khác (nếu cần)
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('admin.staff.store') }}";
+                        }
+                    });
+                </script>
+            @endif
             <table class="table table-nowrap table-striped-columns mb-0">
                 <thead class="table-light">
                     <tr>
 
-                        <th>STT</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Tên nhân viên</th>
                         <th>Tên khách hàng</th>
-                        <th>SĐT</th>
-                        <th>Email</th>
-                        <th>Địa chỉ</th>
+                        <th>Trạng thái</th>
+                        <th>Tổng tiền</th>
                         <th style="text-align: center">Hành động</th>
                     </tr>
                 </thead>
-                @if ($client->count() > 0)
+                @if ($order->count() > 0)
                     <tbody>
 
-                        @foreach ($client as $key => $value)
+                        @foreach ($order as $key => $value)
                             <tr>
 
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $value->name ?? '' }}</td>
-                                <td>{{ $value->phone ?? '' }}</td>
-                                <td>{{ $value->email ?? '' }}</td>
-                                <td>{{ $value->address ?? '' }}</td>
+                                <td>{{ $value->id ?? '' }}</td>
+                                <td>{{ $value->user_id->name ?? '' }}</td>
+                                <td>{{ $value->client_id->name ?? '' }}</td>
+                                @if ($value->status == 1)
+                                    <td>Completed</td>
+                                @else
+                                    <td>Pending</td>
+                                @endif
+                                <td>{{ number_format($value->total_money ?? '') }} VND</td>
                                 <td style="text-align:center">
                                     <a class="btn btn-warning"
-                                        href="{{ route('admin.client.detail', ['id' => $value->id]) }}">Sửa</a>
-                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger"
-                                        href="{{ route('admin.client.delete', ['id' => $value->id]) }}">Xóa</a>
+                                        href="{{ route('admin.order.detail', ['id' => $value->id]) }}">Sửa</a>
                                 </td>
                             </tr>
                         @endforeach

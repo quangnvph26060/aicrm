@@ -24,7 +24,7 @@
 
 <body>
     <style>
-        .cke_notifications_area{
+        .cke_notifications_area {
             display: none;
         }
     </style>
@@ -58,8 +58,8 @@
                                 <span class="fw-bold">{{ session('authUser')->name }}</span>
                             </span>
                         </a>
-                        <ul class="dropdown-menu dropdown-user animated fadeIn user" style="display: none; background: bisque;"
-                            data-bs-popper="static">
+                        <ul class="dropdown-menu dropdown-user animated fadeIn user"
+                            style="display: none; background: bisque;" data-bs-popper="static">
                             <div class="scroll-wrapper dropdown-user-scroll scrollbar-outer"
                                 style="position: relative;">
                                 <div class="dropdown-user-scroll scrollbar-outer scroll-content"
@@ -72,14 +72,15 @@
                                                     alt="" class="avatar-img rounded">
                                             </div>
                                             <div class="u-text" style="line-height: 20px">
-                                                <h4 style="margin: 0px; font-size: 16px">{{ session('authUser')->name }}</h4>
-                                                <p class="text-muted" style="font-size:11px; margin: 0px ">{{
-                                                    session('authUser')->email }}</p>
+                                                <h4 style="margin: 0px; font-size: 16px">{{ session('authUser')->name }}
+                                                </h4>
+                                                <p class="text-muted" style="font-size:11px; margin: 0px ">
+                                                    {{ session('authUser')->email }}</p>
                                             </div>
                                         </div>
                                     </li>
 
-                                    <li >
+                                    <li>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#profileModal">My
                                             Profile</a>
 
@@ -101,33 +102,40 @@
 
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('admin.staff.updateAdmin', ['id' => session('authUser')->id]) }}" method="post">
+                                                        <form
+                                                            action="{{ route('admin.staff.updateAdmin', ['id' => session('authUser')->id]) }}"
+                                                            method="post">
                                                             @csrf
                                                             <div class="form-group">
                                                                 <label for="new-user-name">Tên:</label>
                                                                 <input type="text" class="form-control"
-                                                                    id="new-user-name" name="name" value=" {{  session('authUser')->name ?? "" }}">
+                                                                    id="new-user-name" name="name"
+                                                                    value=" {{ session('authUser')->name ?? '' }}">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="new-user-email">Email:</label>
                                                                 <input type="email" class="form-control"
-                                                                    id="new-user-email" name="email" value=" {{  session('authUser')->email ?? "" }}">
+                                                                    id="new-user-email" name="email"
+                                                                    value=" {{ session('authUser')->email ?? '' }}">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="new-user-phone">Số điện
                                                                     thoại:</label>
                                                                 <input type="text" class="form-control"
-                                                                    id="new-user-phone" name="phone" value=" {{  session('authUser')->phone ?? "" }}">
+                                                                    id="new-user-phone" name="phone"
+                                                                    value=" {{ session('authUser')->phone ?? '' }}">
                                                             </div>
 
 
                                                             <div class="form-group">
                                                                 <label for="new-user-address">Địa chỉ:</label>
                                                                 <input type="text" class="form-control"
-                                                                    id="new-user-address" name="address" value=" {{  session('authUser')->address ?? "" }}">
+                                                                    id="new-user-address" name="address"
+                                                                    value=" {{ session('authUser')->address ?? '' }}">
                                                             </div>
                                                             <div class="form-group">
-                                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Lưu</button>
                                                             </div>
                                                     </div>
                                                     </form>
@@ -139,23 +147,26 @@
 
                     </li>
                 </div>
-<<<<<<< Updated upstream
-=======
             </div>
             <div class="header_menu " id='header_fixed'>
-               <div class="container header_menu_item">
+                <div class="container header_menu_item">
                     <div class="icon_menu">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 20 20" fill="none">
-                            <path d="M16.7 5.68333L11.9 2.325C10.5917 1.40833 8.58333 1.45833 7.32499 2.43333L3.14999 5.69167C2.31666 6.34167 1.65833 7.675 1.65833 8.725V14.475C1.65833 16.6 3.38333 18.3333 5.50833 18.3333H14.4917C16.6167 18.3333 18.3417 16.6083 18.3417 14.4833V8.83333C18.3417 7.70833 17.6167 6.325 16.7 5.68333ZM14.0667 11.1667C14.0667 11.4917 13.8083 11.75 13.4833 11.75C13.1583 11.75 12.9 11.4917 12.9 11.1667V11.0167L10.6333 13.2833C10.5083 13.4083 10.3417 13.4667 10.1667 13.45C9.99999 13.4333 9.84166 13.3333 9.74999 13.1917L8.89999 11.925L6.91666 13.9083C6.79999 14.025 6.65833 14.075 6.50833 14.075C6.35833 14.075 6.20833 14.0167 6.09999 13.9083C5.87499 13.6833 5.87499 13.3167 6.09999 13.0833L8.58333 10.6C8.70833 10.475 8.87499 10.4167 9.04999 10.4333C9.22499 10.45 9.38333 10.5417 9.47499 10.6917L10.325 11.9583L12.0833 10.2H11.9333C11.6083 10.2 11.35 9.94167 11.35 9.61667C11.35 9.29167 11.6083 9.03333 11.9333 9.03333H13.4833C13.5583 9.03333 13.6333 9.05 13.7083 9.075C13.85 9.13333 13.9667 9.25 14.025 9.39167C14.0583 9.46667 14.0667 9.54167 14.0667 9.61667V11.1667Z" fill="white"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 20 20"
+                            fill="none">
+                            <path
+                                d="M16.7 5.68333L11.9 2.325C10.5917 1.40833 8.58333 1.45833 7.32499 2.43333L3.14999 5.69167C2.31666 6.34167 1.65833 7.675 1.65833 8.725V14.475C1.65833 16.6 3.38333 18.3333 5.50833 18.3333H14.4917C16.6167 18.3333 18.3417 16.6083 18.3417 14.4833V8.83333C18.3417 7.70833 17.6167 6.325 16.7 5.68333ZM14.0667 11.1667C14.0667 11.4917 13.8083 11.75 13.4833 11.75C13.1583 11.75 12.9 11.4917 12.9 11.1667V11.0167L10.6333 13.2833C10.5083 13.4083 10.3417 13.4667 10.1667 13.45C9.99999 13.4333 9.84166 13.3333 9.74999 13.1917L8.89999 11.925L6.91666 13.9083C6.79999 14.025 6.65833 14.075 6.50833 14.075C6.35833 14.075 6.20833 14.0167 6.09999 13.9083C5.87499 13.6833 5.87499 13.3167 6.09999 13.0833L8.58333 10.6C8.70833 10.475 8.87499 10.4167 9.04999 10.4333C9.22499 10.45 9.38333 10.5417 9.47499 10.6917L10.325 11.9583L12.0833 10.2H11.9333C11.6083 10.2 11.35 9.94167 11.35 9.61667C11.35 9.29167 11.6083 9.03333 11.9333 9.03333H13.4833C13.5583 9.03333 13.6333 9.05 13.7083 9.075C13.85 9.13333 13.9667 9.25 14.025 9.39167C14.0583 9.46667 14.0667 9.54167 14.0667 9.61667V11.1667Z"
+                                fill="white" />
                         </svg>
                     </div>
                     <ul class="ul_menu">
                         <li class="menu-main-hover">
                             <a href="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
-                                    <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2">
-                                        <path d="M29 16c0 3-5.82 9-13 9S3 19 3 16s5.82-9 13-9s13 6 13 9Z"/>
-                                        <path d="M21 16a5 5 0 1 1-10 0a5 5 0 0 1 10 0Z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                    viewBox="0 0 32 32">
+                                    <g fill="none" stroke="currentColor" stroke-linejoin="round"
+                                        stroke-width="2">
+                                        <path d="M29 16c0 3-5.82 9-13 9S3 19 3 16s5.82-9 13-9s13 6 13 9Z" />
+                                        <path d="M21 16a5 5 0 1 1-10 0a5 5 0 0 1 10 0Z" />
                                     </g>
                                 </svg>
                                 Tổng quan
@@ -164,8 +175,8 @@
                         <li class="menu-main-hover">
                             <a href="">Hàng hóa</a>
                             <ul class="submenu">
-                                <li><a href="{{route('admin.category.index')}}">Danh mục</a></li>
-                                <li><a href="{{route('admin.product.store')}}">Sản phẩm</a></li>
+                                <li><a href="{{ route('admin.category.index') }}">Danh mục</a></li>
+                                <li><a href="{{ route('admin.product.store') }}">Sản phẩm</a></li>
                             </ul>
                         </li>
                         <li class="menu-main-hover">
@@ -174,24 +185,23 @@
                         <li class="menu-main-hover">
                             <a href="">Đối tác</a>
                             <ul class="submenu">
-                                <li><a href="{{route('admin.client.index')}}">Khách hàng</a></li>
-                                <li><a href="{{route('product')}}">Nhà cung cấp</a></li>
+                                <li><a href="{{ route('admin.client.index') }}">Khách hàng</a></li>
+                                <li><a href="{{ route('admin.brand.store') }}">Thương hiệu</a></li>
                             </ul>
                         </li>
                         <li class="menu-main-hover">
-                            <a href="">Nhân viên</a>
->>>>>>> Stashed changes
-
+                            <a href="{{ route('admin.staff.store') }}">Nhân viên</a>
+                </div>
+                </ul>
+                </li>
             </div>
-            </ul>
-            </li>
-    </div>
 
     </div>
-    <div class="header_menu " id='header_fixed'>
+    {{-- <div class="header_menu " id='header_fixed'>
         <div class="container header_menu_item">
             <div class="icon_menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 20 20" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 20 20"
+                    fill="none">
                     <path
                         d="M16.7 5.68333L11.9 2.325C10.5917 1.40833 8.58333 1.45833 7.32499 2.43333L3.14999 5.69167C2.31666 6.34167 1.65833 7.675 1.65833 8.725V14.475C1.65833 16.6 3.38333 18.3333 5.50833 18.3333H14.4917C16.6167 18.3333 18.3417 16.6083 18.3417 14.4833V8.83333C18.3417 7.70833 17.6167 6.325 16.7 5.68333ZM14.0667 11.1667C14.0667 11.4917 13.8083 11.75 13.4833 11.75C13.1583 11.75 12.9 11.4917 12.9 11.1667V11.0167L10.6333 13.2833C10.5083 13.4083 10.3417 13.4667 10.1667 13.45C9.99999 13.4333 9.84166 13.3333 9.74999 13.1917L8.89999 11.925L6.91666 13.9083C6.79999 14.025 6.65833 14.075 6.50833 14.075C6.35833 14.075 6.20833 14.0167 6.09999 13.9083C5.87499 13.6833 5.87499 13.3167 6.09999 13.0833L8.58333 10.6C8.70833 10.475 8.87499 10.4167 9.04999 10.4333C9.22499 10.45 9.38333 10.5417 9.47499 10.6917L10.325 11.9583L12.0833 10.2H11.9333C11.6083 10.2 11.35 9.94167 11.35 9.61667C11.35 9.29167 11.6083 9.03333 11.9333 9.03333H13.4833C13.5583 9.03333 13.6333 9.05 13.7083 9.075C13.85 9.13333 13.9667 9.25 14.025 9.39167C14.0583 9.46667 14.0667 9.54167 14.0667 9.61667V11.1667Z"
                         fill="white" />
@@ -212,8 +222,8 @@
                 <li class="menu-main-hover">
                     <a href="">Hàng hóa</a>
                     <ul class="submenu">
-                        <li><a href="{{route('admin.category.index')}}">Danh mục</a></li>
-                        <li><a href="{{route('admin.product.store')}}">Sản phẩm</a></li>
+                        <li><a href="{{ route('admin.category.index') }}">Danh mục</a></li>
+                        <li><a href="{{ route('admin.product.store') }}">Sản phẩm</a></li>
                     </ul>
                 </li>
                 <li class="menu-main-hover">
@@ -223,11 +233,11 @@
                     <a href="">Đối tác</a>
                     <ul class="submenu">
                         <li><a href="">Khách hàng</a></li>
-                        <li><a href="{{route('admin.brand.store')}}">Thương hiệu</a></li>
+                        <li><a href="{{ route('admin.brand.store') }}">Thương hiệu</a></li>
                     </ul>
                 </li>
                 <li class="menu-main-hover">
-                    <a href="{{route('admin.staff.store')}}">Nhân viên</a>
+                    <a href="{{ route('admin.staff.store') }}">Nhân viên</a>
 
                 </li>
             </ul>
@@ -240,7 +250,7 @@
 
 
         </div>
-    </div>
+    </div> --}}
 
     </header>
     </div>
@@ -288,7 +298,8 @@
 
             // Đóng dropdown-menu khi click bên ngoài
             document.addEventListener('click', function(event) {
-                var isClickInside = dropdownToggle.contains(event.target) || dropdownMenu.contains(event.target);
+                var isClickInside = dropdownToggle.contains(event.target) || dropdownMenu.contains(event
+                    .target);
 
                 if (!isClickInside) {
                     dropdownMenu.style.display = 'none';
