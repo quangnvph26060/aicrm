@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
@@ -76,10 +77,15 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::prefix('brand')->name('brand.')->group(function(){
         Route::get('', [BrandController::class, 'index'])->name('store');
         Route::post('add', [BrandController::class, 'add'])->name('add');
+    Route::prefix('client')->name('client.')->group(function(){
+        Route::get('/', [ClientController::class, 'index'])->name('index');
+        Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
+        Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
+        Route::get('/delete', [ClientController::class, 'delete'])->name('delete');
     });
 });
 
 
-Route::get('demo',function(){
-    return view('Themes.pages.layout_staff.index');
-});
+// Route::get('demo',function(){
+//     return view('Themes.pages.layout_staff.index');
+// });

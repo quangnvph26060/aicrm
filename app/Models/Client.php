@@ -14,5 +14,8 @@ class Client extends Model
         'phone',
         'zip_code',
         'address',
+        'dob',
+        'email',
+        'gender',
     ];
 }
