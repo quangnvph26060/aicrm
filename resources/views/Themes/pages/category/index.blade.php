@@ -5,6 +5,74 @@
             width: 100px;
             /* Set your desired width */
         }
+        .table {
+            box-sizing: content-box;
+        }
+
+        .table .form-select {
+            padding-right: 2rem;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+
+            background: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%22http%3A//www.w3.org/2000/svg%22 viewBox%3D%220 0 4 5%22%3E%3Cpath fill%3D%22%23000%22 d%3D%22M2 0L0 2h4zM2 5L0 3h4z%22/%3E%3C/svg%3E') no-repeat right 0.75rem center;
+            background-size: 0.65rem auto;
+        }
+
+        .table .form-select option {
+            padding-right: 1rem;
+        }
+
+        .col-lg-6>div {
+            margin-bottom: 20px;
+        }
+
+        .table thead th {
+            text-align: center;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table tbody td img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .table tbody td select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            /* box-sizing: content-box; */
+        }
+
+        .table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table tbody tr td:last-child a {
+            margin: 0 5px;
+        }
+
+        .table tbody tr td:last-child a.btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
     </style>
     <div class="container">
 
@@ -176,7 +244,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($category as $item)
+                    @foreach ($category as $key => $value)
                         <tr>
                             <td>
                                 <div class="form-check">
@@ -185,15 +253,14 @@
                                     <label class="form-check-label" for="cardtableCheck{{ $loop->index }}"></label>
                                 </div>
                             </td>
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{!! $item->description !!}</td>
-                            <td>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $value->name ?? ''  }}</td>
+                            <td>{!! $value->description !!}</td>
+                            <td style="text-align:center">
                                 <a class="btn btn-warning"
-                                    href="{{ route('admin.category.detail', ['id' => $item->id]) }}">Sửa</a>
-                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" type="button"
-                                    class="btn btn-sm btn-danger btn-fixed-width"
-                                    href="{{ route('admin.category.delete', ['id' => $item->id]) }}">Xóa</a>
+                                    href="{{ route('admin.category.detail', ['id' => $value->id]) }}">Sửa</a>
+                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger"
+                                    href="{{ route('admin.category.delete', ['id' => $value->id]) }}">Xóa</a>
                             </td>
                         </tr>
                     @endforeach
