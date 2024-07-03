@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Categories;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.login');
-})->name('login');
+})->name('formlogin');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/verify-otp', [AuthController::class, 'showVerifyOtp'])->name('verify-otp');
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify_otp_confirm');
@@ -61,6 +63,19 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
         Route::get('/detail/{id}', [CategorieController::class, 'edit'])->name('detail');
         Route::put('/update/{id}', [CategorieController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('user')->name('staff.')->group(function(){
+        Route::get('', [UserController::class, 'index'])->name('store');
+        Route::post('update/{id}', [UserController::class, 'update'])->name('update');
+        Route::post('add', [UserController::class, 'add'])->name('add');
+        Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete');
+        Route::post('updateAdmin/{id}', [UserController::class, 'updateadmin'])->name('updateAdmin');
+    });
+
+    Route::prefix('brand')->name('brand.')->group(function(){
+        Route::get('', [BrandController::class, 'index'])->name('store');
+        Route::post('add', [BrandController::class, 'add'])->name('add');
     });
 });
 
