@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Models\OrderDetail;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +13,6 @@ class Order extends Model
 {
     use HasFactory;
     protected $table = 'orders';
-
     protected $fillable = [
         "total_money",
         "status",
@@ -22,19 +24,19 @@ class Order extends Model
         'phone',
         'zip_code',
     ];
-    protected $appends = ['order_detail','user_id','client_id'];
-    public function getOrderDetailAttribute(){
-        return OrderDetail::where('order_id', $this->attributes['id'])->with('product')->get();
-    }
-    public function getUserIdAttribute(){
-        return User::where('id', $this->attributes['user_id'])->first();
-    }
-    public function getClientIdAttribute(){
-        return Client::where('id', $this->attributes['client_id'])->first();
-    }
-    public function orderDetail()
+
+    public function orderDetails()
     {
-        return $this->hasMany(OrderDetail::class)->with('product');
+        return $this->hasMany(OrderDetail::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

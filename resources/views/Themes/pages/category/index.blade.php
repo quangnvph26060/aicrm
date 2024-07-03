@@ -231,12 +231,12 @@
             <table class="table table-nowrap table-striped-columns mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th scope="col">
+                        {{-- <th scope="col">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="cardtableCheck">
                                 <label class="form-check-label" for="cardtableCheck"></label>
                             </div>
-                        </th>
+                        </th> --}}
                         <th scope="col">Mã danh mục</th>
                         <th scope="col">Tên danh mục</th>
                         <th scope="col">Mô tả</th>
@@ -246,13 +246,13 @@
                 <tbody>
                     @foreach ($category as $key => $value)
                         <tr>
-                            <td>
+                            {{-- <td>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value=""
                                         id="cardtableCheck{{ $loop->index }}">
                                     <label class="form-check-label" for="cardtableCheck{{ $loop->index }}"></label>
                                 </div>
-                            </td>
+                            </td> --}}
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $value->name ?? ''  }}</td>
                             <td>{!! $value->description !!}</td>
