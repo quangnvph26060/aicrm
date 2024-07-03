@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Thêm nhân viên</button>
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
                                     </div>
                                 </form>
                             </div>
@@ -172,7 +172,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post">
+                    <form method="post" action="" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
@@ -186,7 +186,7 @@
 
                             <div class="form-group">
                                 <label for="brand-name">Logo:</label>
-                                <input type="text" class="form-control" id="brand-logo" name="logo">
+                                <input type="file" class="form-control" id="brand-logo" name="images">
                             </div>
                             <div class="form-group">
                                 <label for="brand-email">Email:</label>
@@ -198,7 +198,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="brand-address">Address:</label>
-                                <input type="text" class="form-control" id="v-address" name="address">
+                                <input type="text" class="form-control" id="brand-address" name="address">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -239,7 +239,7 @@
         modal.find('.modal-body #brand-address').val(Address);
 
         var form = modal.find('form');
-        var action = "{{ route('admin.staff.update', ['id' => ':id']) }}".replace(':id', Id);
+        var action = "{{ route('admin.brand.update', ['id' => ':id']) }}".replace(':id', Id);
         form.attr('action', action);
     });
 

@@ -27,7 +27,7 @@ class AuthController extends Controller
                   return redirect()->route('admin.product.store');
             } elseif ($result['user']->role_id == 2) {
                  session()->put('authUser', $result['user']);
-                return redirect()->route('user');
+                return redirect()->route('staff.index');
             }
         } catch (\Exception $e) {
              return $this->handleLoginError($request, $e);
