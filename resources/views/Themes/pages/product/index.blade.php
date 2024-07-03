@@ -52,7 +52,7 @@
                                     d="M8.25 3a.5.5 0 0 1 .5.5v3.75h3.75a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H8.75v3.75a.5.5 0 0 1-.5.5h-.5a.5.5 0 0 1-.5-.5V8.75H3.5a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h3.75V3.5a.5.5 0 0 1 .5-.5z" />
                             </svg>Thêm sản phẩm
                         </p>
-                        <div id="myModalProduct" class="modal" class="modal fade">
+                        <div id="myModalProduct" class="modal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel"  aria-hidden="true" data-backdrop="static" data-keyboard="true">
                             <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px">
                                 <div class="modal-content">
                                     <div class="modal-header">
