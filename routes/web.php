@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,7 @@ Route::get('/employee', function () {
     return view('Themes.pages.employee.index');
 })->name('employee');
 
-Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
@@ -77,7 +78,9 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::prefix('brand')->name('brand.')->group(function(){
         Route::get('', [BrandController::class, 'index'])->name('store');
         Route::post('add', [BrandController::class, 'add'])->name('add');
-        });
+        Route::get('delete', [BrandController::class, 'delete'])->name('delete');
+        Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
+    });
     Route::prefix('client')->name('client.')->group(function(){
         Route::get('/', [ClientController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
@@ -89,7 +92,10 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     });
 });
 
-
-Route::get('demo',function(){
-    return view('Themes.pages.layout_staff.index');
+Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function(){
+    Route::get('', [StaffProductController::class, 'index'])->name('index');
 });
+
+
+
+

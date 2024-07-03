@@ -52,7 +52,7 @@ class BrandController extends Controller
 
      public function update($id, Request $request){
         $brand = $this->brandService->updateBrand($id, $request->all());
-        return redirect()->route('admin.brand.index')->with('success', 'Thêm thành công');
+        return redirect()->route('admin.brand.store')->with('success', 'Sửa thành công');
      }
 
 }
