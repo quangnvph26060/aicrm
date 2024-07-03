@@ -88,7 +88,7 @@ class ClientService
             ->orWhere('email', $phone)
             ->first();
 
-            if($client->isEmty()){
+            if($client->isEmpty()){
                 throw new Exception('Client not found');
             }
             Log::info($client);

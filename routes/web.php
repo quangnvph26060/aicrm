@@ -85,7 +85,10 @@ Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('ad
         Route::get('/', [ClientController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
-        Route::get('/delete', [ClientController::class, 'delete'])->name('delete');
+        Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('order')->name('order.')->group(function(){
+        Route::get('/', [OrderController::class, 'index'])->name('index');
     });
 });
 
