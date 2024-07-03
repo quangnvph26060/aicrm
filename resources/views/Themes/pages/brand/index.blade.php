@@ -8,6 +8,7 @@
         top: 3rem !important;
 
     }
+
     table {
         box-sizing: content-box;
     }
@@ -24,7 +25,7 @@
                             <path fill="currentColor"
                                 d="M8.25 3a.5.5 0 0 1 .5.5v3.75h3.75a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H8.75v3.75a.5.5 0 0 1-.5.5h-.5a.5.5 0 0 1-.5-.5V8.75H3.5a.5.5 0 0 1-.5-.5v-.5a.5.5 0 0 1 .5-.5h3.75V3.5a.5.5 0 0 1 .5-.5z" />
                         </svg>
-                        Nhân viên
+                        Thương hiệu
                     </button>
 
 
@@ -33,49 +34,49 @@
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel">Thêm Nhân Viên Mới</h5>
+                                    <h5 class="modal-title" id="myModalLabel">Thêm thương hiệu</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="{{ route('admin.staff.add') }}" method="post">
+                                <form action="{{ route('admin.brand.add') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="new-user-name">Tên:</label>
-                                                    <input type="text" class="form-control" id="new-user-name"
+                                                    <label for="new-brand-name">Tên:</label>
+                                                    <input type="text" class="form-control" id="new-brand-name"
                                                         name="name" required>
                                                 </div>
+
                                                 <div class="form-group">
-                                                    <label for="new-user-email">Email:</label>
-                                                    <input type="email" class="form-control" id="new-user-email"
+                                                    <label for="new-brand-name">Logo:</label>
+                                                    <input type="file" class="form-control" id="new-brand-name"
+                                                        name="images" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="new-brand-email">Email:</label>
+                                                    <input type="email" class="form-control" id="new-brand-email"
                                                         name="email" required>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="new-user-phone">Số điện thoại:</label>
-                                                    <input type="text" class="form-control" id="new-user-phone"
-                                                        name="phone">
-                                                </div>
+
                                             </div>
                                             <div class="col-md-6">
 
                                                 <div class="form-group">
-                                                    <label for="new-user-address">Địa chỉ:</label>
-                                                    <input type="text" class="form-control" id="new-user-address"
+                                                    <label for="new-brand-phone">Số điện thoại:</label>
+                                                    <input type="text" class="form-control" id="new-brand-phone"
+                                                        name="phone">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="new-brand-address">Địa chỉ:</label>
+                                                    <input type="text" class="form-control" id="new-brand-address"
                                                         name="address">
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="new-user-password">Mật khẩu:</label>
-                                                    <input type="password" class="form-control" id="new-user-password"
-                                                        name="password" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="new-user-password-confirm">Xác nhận mật khẩu:</label>
-                                                    <input type="password" class="form-control"
-                                                        id="new-user-password-confirm" required>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -127,6 +128,7 @@
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Logo</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Address</th>
@@ -134,22 +136,23 @@
                 </tr>
             </thead>
             <tbody>
-                @if (!empty($user))
-                @foreach ($user as $item )
+                @if (!empty($brand))
+                @foreach ($brand as $item )
                 <tr>
                     <td><a href="#" class="fw-semibold">{{ $item->id }}</a></td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->name ?? "" }}</td>
+                    <td>{{ $item->logo ?? "" }}</td>
+                    <td>{{ $item->email ?? "" }}</td>
                     <td>{{ $item->phone ?? "" }}</td>
                     <td>{{ $item->address ?? "" }}</td>
                     <td>
                         <button type="button" class=" btn btn-warning" data-toggle="modal"
-                            data-target="#userDetailModal" data-id="{{ $item->id }}" data-name="{{ $item->name }}"
-                            data-email="{{ $item->email }}" data-phone="{{ $item->phone }}"
-                            data-address="{{ $item->address }}">Sửa</button>
+                            data-target="#brandDetailModal" data-id="{{ $item->id }}" data-logo="{{ $item->logo }}"
+                            data-name="{{ $item->name }}" data-email="{{ $item->email }}"
+                            data-phone="{{ $item->phone }}" data-address="{{ $item->address }}">Sửa</button>
 
-                            <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger"
-                            href="{{ route('admin.staff.delete', ['id' =>  $item->id]) }}">Xóa</a>
+                        {{-- <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger"
+                            href="{{ route('admin.brand.delete', ['id' =>  $item->id]) }}">Xóa</a> --}}
                     </td>
                 </tr>
                 @endforeach
@@ -159,12 +162,12 @@
             </tbody>
         </table>
 
-        <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel"
+        <div class="modal fade" id="brandDetailModal" tabindex="-1" aria-labelledby="brandDetailModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userDetailModalLabel">Thông tin</h5>
+                        <h5 class="modal-title" id="brandDetailModalLabel">Thông tin</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -173,28 +176,33 @@
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="user-id">ID:</label>
-                                <input type="text" class="form-control" id="user-id">
+                                <label for="brand-id">ID:</label>
+                                <input type="text" class="form-control" id="brand-id">
                             </div>
                             <div class="form-group">
-                                <label for="user-name">Name:</label>
-                                <input type="text" class="form-control" id="user-name" name="name">
+                                <label for="brand-name">Name:</label>
+                                <input type="text" class="form-control" id="brand-name" name="name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brand-name">Logo:</label>
+                                <input type="text" class="form-control" id="brand-logo" name="logo">
                             </div>
                             <div class="form-group">
-                                <label for="user-email">Email:</label>
-                                <input type="email" class="form-control" id="user-email" name="email">
+                                <label for="brand-email">Email:</label>
+                                <input type="email" class="form-control" id="brand-email" name="email">
                             </div>
                             <div class="form-group">
-                                <label for="user-phone">Phone:</label>
-                                <input type="text" class="form-control" id="user-phone" name="phone">
+                                <label for="brand-phone">Phone:</label>
+                                <input type="text" class="form-control" id="brand-phone" name="phone">
                             </div>
                             <div class="form-group">
-                                <label for="user-address">Address:</label>
-                                <input type="text" class="form-control" id="user-address" name="address">
+                                <label for="brand-address">Address:</label>
+                                <input type="text" class="form-control" id="v-address" name="address">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="save-user-details">Lưu</button>
+                            <button type="submit" class="btn btn-primary" id="save-brand-details">Lưu</button>
                         </div>
                     </form>
                 </div>
@@ -213,23 +221,25 @@
         modal.show();
     });
 
-    $('#userDetailModal').on('show.bs.modal', function (event) {
+    $('#brandDetailModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Nút bấm mà kích hoạt modal
-        var userId = button.data('id');
-        var userName = button.data('name');
-        var userEmail = button.data('email');
-        var userPhone = button.data('phone');
-        var userAddress = button.data('address');
+        var Id = button.data('id');
+        var Name = button.data('name');
+        var Logo = button.data('logo');
+        var Email = button.data('email');
+        var Phone = button.data('phone');
+        var Address = button.data('address');
 
         var modal = $(this);
-        modal.find('.modal-body #user-id').val(userId);
-        modal.find('.modal-body #user-name').val(userName);
-        modal.find('.modal-body #user-email').val(userEmail);
-        modal.find('.modal-body #user-phone').val(userPhone);
-        modal.find('.modal-body #user-address').val(userAddress);
+        modal.find('.modal-body #brand-id').val(Id);
+        modal.find('.modal-body #brand-name').val(Name);
+        modal.find('.modal-body #brand-logo').val(Logo);
+        modal.find('.modal-body #brand-email').val(Email);
+        modal.find('.modal-body #brand-phone').val(Phone);
+        modal.find('.modal-body #brand-address').val(Address);
 
         var form = modal.find('form');
-        var action = "{{ route('admin.staff.update', ['id' => ':id']) }}".replace(':id', userId);
+        var action = "{{ route('admin.staff.update', ['id' => ':id']) }}".replace(':id', Id);
         form.attr('action', action);
     });
 

@@ -39,7 +39,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         $request->session()->flush();
-        return redirect()->route('login');
+        return redirect()->route('formlogin');
     }
 
     protected function handleLoginError($request, \Exception $e)

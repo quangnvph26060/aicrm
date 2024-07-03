@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
-class UserService
+/**
+ * Summary of AdminService
+ */
+class AdminService
 {
     protected $user;
     public function __construct(User $user)
@@ -39,6 +42,63 @@ class UserService
             DB::rollBack();
             Log::error("Failed to update user: {$e->getMessage()}");
             throw $e;
+        }
+    }
+
+    /**
+     * Summary of getStaff
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getStaff(): \Illuminate\Database\Eloquent\Collection
+    {
+        DB::beginTransaction();
+        try {
+            $admin = $this->user->where('role_id', 2)->get();
+            DB::commit();
+            return $admin;
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Failed to  staff: {$e->getMessage()}");
+            throw $e;
+        }
+    }
+
+    /**
+     * Summary of addStaff
+     */
+    public function addStaff($data):User
+    {
+        DB::beginTransaction();
+        try {
+            $admin = $this->user->create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'phone' => $data['phone'],
+                'address' => $data['address'],
+                'role_id' => 2,
+                'status' => 'active'
+            ]);
+            DB::commit();
+            return $admin;
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Failed to add staff: {$e->getMessage()}");
+            throw $e;
+        }
+    }
+
+    public function deleteStaff(int $id): void
+    {
+        DB::beginTransaction();
+        try {
+            $staff = $this->getUserById($id);
+            $staff->delete();
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Failed to delete staff: {$e->getMessage()}");
+            throw new Exception('Failed to delete staff');
         }
     }
 
