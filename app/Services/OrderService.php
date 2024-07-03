@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Client;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -12,16 +14,20 @@ use Illuminate\Support\Facades\Log;
 class OrderService
 {
     protected $order;
-    public function __construct(Order $order)
+    protected $client;
+    protected $user;
+    public function __construct(Order $order, Client $client, User $user)
     {
+        $this->user = $user;
+        $this->client = $client;
         $this->order = $order;
     }
 
     public function getOrderAll()
     {
         try {
-            $orders = $this->order->all();
-            return $orders;
+            $order = $this->order->all();
+            return $order;
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders: ' . $e->getMessage());
             throw new Exception('Failed to retrieve orders');
@@ -106,5 +112,22 @@ class OrderService
             'totalOrders' => $todayData->totalOrders,
             'totalMoney' => $todayData->totalMoney,
         ];
+    }
+    public function getOrderByDate()
+    {
+    }
+    public function getOrderByInfo($phone)
+    {
+        try {
+            $order = $this->order->where('phone', $phone)->first();
+            if ($order->isEmpty()) {
+                throw new Exception("Order not found");
+            }
+            Log::info($order);
+            return $order;
+        } catch (Exception $e) {
+            Log::error('Failed to find orders: ' . $e->getMessage());
+            throw new Exception('Failed to find orders');
+        }
     }
 }
