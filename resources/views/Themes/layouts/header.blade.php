@@ -180,7 +180,7 @@
                             </ul>
                         </li>
                         <li class="menu-main-hover">
-                            <a href="">Giao dịch</a>
+                            <a href="{{route('admin.order.index')}}">Giao dịch</a>
                         </li>
                         <li class="menu-main-hover">
                             <a href="">Đối tác</a>

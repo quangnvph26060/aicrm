@@ -39,7 +39,6 @@
                         <th>Tên khách hàng</th>
                         <th>Trạng thái</th>
                         <th>Tổng tiền</th>
-                        <th style="text-align: center">Hành động</th>
                     </tr>
                 </thead>
                 @if ($order->count() > 0)
@@ -47,20 +46,15 @@
 
                         @foreach ($order as $key => $value)
                             <tr>
-
-                                <td>{{ $value->id ?? '' }}</td>
-                                <td>{{ $value->user_id->name ?? '' }}</td>
-                                <td>{{ $value->client_id->name ?? '' }}</td>
+                                <td><a href="{{ route('admin.order.detail', ['id' => $value->id]) }}">{{ $value->id ?? '' }}</a></td>
+                                <td>{{ $value->user->name ?? '' }}</td>
+                                <td>{{ $value->client->name ?? '' }}</td>
                                 @if ($value->status == 1)
                                     <td>Completed</td>
                                 @else
                                     <td>Pending</td>
                                 @endif
                                 <td>{{ number_format($value->total_money ?? '') }} VND</td>
-                                <td style="text-align:center">
-                                    <a class="btn btn-warning"
-                                        href="{{ route('admin.order.detail', ['id' => $value->id]) }}">Sửa</a>
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
