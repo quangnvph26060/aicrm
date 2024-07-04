@@ -72,7 +72,7 @@ class ProductController extends Controller
 
     public function update($id ,Request $request){
         $product = $this->productService->updateProduct($id, $request->all());
-        return redirect()->back()->with('success', 'Cập nhật sản phẩm thành công');
+        return redirect()->route('admin.product.store')->with('success', 'Cập nhật sản phẩm thành công');
     }
 
 

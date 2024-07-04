@@ -89,7 +89,7 @@
         </div>
         <!-- Right Column: Customer Information and Payment Method 123-->
         @include('Themes.pages.layout_staff.delivery-selling')
-        <div class="col-lg-4" id="regular-selling-content" style="display: none;">
+        {{-- <div class="col-lg-4" id="regular-selling-content" style="display: none;">
             <div class="card">
                 <div class="card-header">Bán nhanh</div>
                 <div class="card-body">
@@ -147,6 +147,6 @@
         </div>
         <div class="col-lg-4" id="fast-selling-content" style="display: none;">
             bán nhanh
-        </div>
+        </div> --}}
     </div>
     @endsection

@@ -17,7 +17,7 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Danh mục</a>
+                <a href="#">Thương hiệu</a>
             </li>
             <li class="separator">
                 <i class="icon-arrow-right"></i>

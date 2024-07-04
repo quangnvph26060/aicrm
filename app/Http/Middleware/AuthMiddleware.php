@@ -17,7 +17,7 @@ class AuthMiddleware
     {
         if (!session('verify_otp_confirm')) {
             // Nếu session chưa được đặt, chuyển hướng người dùng đến trang login
-            return redirect()->route('login')->with('error', 'Please verify your OTP first.');
+            return redirect()->route('formlogin')->with('error', 'Please verify your OTP first.');
         }
         return $next($request);
     }

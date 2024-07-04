@@ -68,6 +68,7 @@
     <script src="{{ asset('assets/js/setting-demo.js') }}"></script>
     <script src="{{ asset('assets/js/setting-demo2.js') }}"></script>
     <script src="{{ asset('assets/js/demo.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
           type: "line",

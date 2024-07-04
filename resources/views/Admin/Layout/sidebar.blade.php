@@ -2,7 +2,7 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
+            <a href="{{ route('admin.dashboard') }}" class="logo">
                 <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
@@ -129,7 +129,7 @@
                     <div class="collapse" id="sidebarordẻ">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="sidebar-style-2.html">
+                                <a href="{{ route('admin.order.index') }}">
                                     <span class="sub-item">Danh sách </span>
                                 </a>
                             </li>
@@ -139,13 +139,13 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarclient">
                         <i class="fas fa-th-list"></i>
-                        <p>Khách hàng   </p>
+                        <p>Khách hàng </p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="sidebarclient">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="sidebar-style-2.html">
+                                <a href="{{ route('admin.client.index') }}">
                                     <span class="sub-item">Danh sách </span>
                                 </a>
                             </li>

@@ -18,7 +18,7 @@ class ClientController extends Controller
     public function index(){
         try{
             $client = $this->clientService->getAllClient();
-            return view('Themes.pages.client.index', compact('client'));
+            return view('Admin.Client.index', compact('client'));
         }
         catch(Exception$e){
             Log::error('Failed to fetch clients: ' . $e->getMessage());
@@ -29,7 +29,7 @@ class ClientController extends Controller
     public function edit($id){
         try{
             $client =  $this->clientService->getClientByID($id);
-            return view('Themes.pages.client.detail', compact('client'));
+            return view('Admin.Client.edit', compact('client'));
         }
         catch(\Exception $e){
             Log::error('Failed to find client profile');
