@@ -2,20 +2,20 @@
     <div class="col-lg-6">
         <ul class="d-flex justify-content-between">
             <li class="d-flex justify-content-between align-items-center " id="fast-selling">
-                <i class="fas fa-bolt"></i> Bán nhanh
+                {{-- <i class="fas fa-bolt"></i> Bán nhanh --}}
             </li>
             <li class="d-flex justify-content-between align-items-center" id="regular-selling">
-                <i class="fas fa-shopping-bag"></i> Bán thường
+                {{-- <i class="fas fa-shopping-bag"></i> Bán thường --}}
             </li>
             <li class="d-flex justify-content-between align-items-center" id="delivery-selling">
-                <i class="fas fa-truck"></i> Bán giao hàng
+                {{-- <i class="fas fa-truck"></i> Bán giao hàng --}}
             </li>
 
         </ul>
     </div>
     <div class="col-lg-6">
         <li class="d-flex justify-content-end align-items-center" id="phone-number">
-            <i class="fas fa-phone"></i> Số điện thoại: 1234567890
+            {{-- <i class="fas fa-phone"></i> Số điện thoại: 1234567890 --}}
         </li>
     </div>
 </div>

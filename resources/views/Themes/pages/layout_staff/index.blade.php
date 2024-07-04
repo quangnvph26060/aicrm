@@ -1,7 +1,7 @@
 @extends('Themes.layout_staff.app')
 @section('content')
 <style>
-        #listproduct .product-item1 .card-body img {
+    #listproduct .product-item1 .card-body img {
         width: 145px;
         height: auto;
         object-fit: cover;
@@ -10,24 +10,36 @@
     #listproduct .product-item1 .card-body {
         text-align: center;
     }
+
+    .card-body {
+        max-height: 400px;
+        /* Chiều cao cố định */
+        overflow-y: auto;
+    }
+
+    .icon-bell:before {
+        content: "\f0f3";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
 </style>
 <!-- Content section -->
 <div class=" container-fluid mt-4">
     <div class="row" id="row">
         <!-- Left Column: Product List -->
         <div class="col-lg-8" id="row1">
-            <div class="card" id="delivery-selling-content1" style="display: none;">
+            <div class="card">
                 <div class="card-header">Product List</div>
                 <div class="card-body">
                     <!-- Product items go here -->
-                    <div class="row">
+                    <div class="row" style="">
                         @if ($product)
                         @foreach ($product as $item )
-                        <div class="col-md-3 mb-4" id="listproduct">
+                        <div class="col-md-3 mb-3" id="listproduct">
                             <div class="product-item1">
                                 <div class="card-body">
-                                    <img src="{{ asset($item->images[0]->image_path) }}"
-                                        alt="" style="width: 145px; height: 109px;">
+                                    <img src="{{ asset($item->images[0]->image_path) }}" alt=""
+                                        style="width: 145px; height: 109px;">
                                     <p class="card-title">{{ $item->name }}</p>
 
                                     <div class="input-group mb-3">
@@ -36,7 +48,7 @@
                                             <button class="btn btn-outline-secondary quantity-control" type="button"
                                                 onclick="decreaseQuantity(this)">-</button>
                                         </div>
-                                        <input type="text" class="form-control quantity" value="1">
+                                        <input type="text" class="form-control quantity" value="0">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary quantity-control" type="button"
                                                 onclick="increaseQuantity(this)">+</button>
@@ -46,6 +58,7 @@
                                 </div>
                             </div>
                         </div>
+
                         @endforeach
 
                         @endif
@@ -89,7 +102,7 @@
         </div>
         <!-- Right Column: Customer Information and Payment Method 123-->
         @include('Themes.pages.layout_staff.delivery-selling')
-        <div class="col-lg-4" id="regular-selling-content" style="display: none;">
+        {{-- <div class="col-lg-4" id="regular-selling-content" style="display: none;">
             <div class="card">
                 <div class="card-header">Bán nhanh</div>
                 <div class="card-body">
@@ -147,6 +160,6 @@
         </div>
         <div class="col-lg-4" id="fast-selling-content" style="display: none;">
             bán nhanh
-        </div>
+        </div> --}}
     </div>
     @endsection

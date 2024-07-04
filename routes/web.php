@@ -45,7 +45,7 @@ Route::get('/employee', function () {
     return view('Themes.pages.employee.index');
 })->name('employee');
 
-Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', function () {
         return view('welcome');
@@ -100,7 +100,7 @@ Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('ad
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
     });
-});
+})->middleware('checkRole:1');
 
 Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function(){
     Route::get('', [StaffProductController::class, 'index'])->name('index');

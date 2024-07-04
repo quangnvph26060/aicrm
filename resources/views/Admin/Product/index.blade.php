@@ -1,5 +1,11 @@
 @extends('Admin.Layout.index')
 @section('content')
+<style>
+        .icon-bell:before {
+            content: "\f0f3";
+            font-family: FontAwesome;
+        }
+    </style>
 <div class="page-inner">
     <div class="page-header">
         <ul class="breadcrumbs mb-3">
@@ -79,8 +85,10 @@
 
 
                                                 <td align="center" style="display: flex">
-                                                    <a class="btn btn-warning " style="margin-right: 10px;" href="{{ route('admin.product.edit', ['id'=> $value->id]) }}">Sửa</a>
-                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger"
+                                                    <a class="btn btn-warning " style="margin-right: 10px;"
+                                                        href="{{ route('admin.product.edit', ['id'=> $value->id]) }}">Sửa</a>
+                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+                                                        class="btn btn-danger"
                                                         href="{{ route('admin.product.delete', ['id' =>  $value->id]) }}">Xóa</a>
                                                 </td>
                                             </tr>
@@ -138,4 +146,25 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
+@if (session('success'))
+<script>
+    $(document).ready(function() {
+    $.notify({
+        icon: 'icon-bell',
+        title: 'Sản phẩm',
+        message: '{{ session('success') }}',
+    },{
+        type: 'secondary',
+        placement: {
+            from: "bottom",
+            align: "right"
+        },
+        time: 1000,
+    });
+});
+</script>
+@endif
 @endsection

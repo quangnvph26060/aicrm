@@ -183,7 +183,7 @@ Circles.create({
 	styleText:    true
 })
 
-//Notify
+// Notify
 // $.notify({
 // 	icon: 'icon-bell',
 // 	title: 'Kaiadmin',

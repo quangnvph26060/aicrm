@@ -21,7 +21,7 @@ class OrderController extends Controller
         try {
             $order = $this->orderService->getOrderAll();
             // dd($order);
-            return view('Themes.pages.order.index', compact('order'));
+            return view('Admin.Order.index', compact('order'));
        } catch (Exception $e) {
            Log::error('Failed to fetch Order: ' . $e->getMessage());
            return ApiResponse::error('Failed to fetch Order', 500);

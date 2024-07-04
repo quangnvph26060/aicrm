@@ -12,7 +12,7 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Thương hiệu</a>
+                <a href="#">Khách hàng</a>
             </li>
             <li class="separator">
                 <i class="icon-arrow-right"></i>
@@ -29,7 +29,7 @@
                     <h4 class="card-title">Basic</h4>
                 </div>
                 <div class="card-body">
-                    <div class="">
+                    <div class="table-responsive">
                         <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
@@ -49,40 +49,47 @@
                                         class="display table table-striped table-hover dataTable" role="grid"
                                         aria-describedby="basic-datatables_info">
                                         <thead>
-                                            <tr role="row">
-
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Logo</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">Phone</th>
-                                                <th scope="col">Address</th>
-                                                <th scope="col">Action</th>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>SĐT</th>
+                                                <th>Email</th>
+                                                <th>Địa chỉ</th>
+                                                <th style="text-align: center">Hành động</th>
                                             </tr>
                                         </thead>
 
-
+                                        @if ($client->count() > 0)
                                         <tbody>
-                                            @if (!empty($brand))
-                                            @foreach ($brand as $item )
+
+                                            @foreach ($client as $key => $value)
                                             <tr>
 
-                                                <td>{{ $item->name ?? "" }}</td>
-                                                <td><img style="width: 80px ; height: 60px;;" src="{{ asset($item->logo) ?? "" }}" alt=""></td>
-                                                <td>{{ $item->email ?? "" }}</td>
-                                                <td>{{ $item->phone ?? "" }}</td>
-                                                <td>{{ $item->address ?? "" }}</td>
-                                                <td>
-                                                    <a  class="btn btn-danger"
-                                                        href="{{ route('admin.brand.edit', ['id' =>  $item->id]) }}">Edit</a>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $value->name ?? '' }}</td>
+                                                <td>{{ $value->phone ?? '' }}</td>
+                                                <td>{{ $value->email ?? '' }}</td>
+                                                <td>{{ $value->address ?? '' }}</td>
+                                                <td style="text-align:center">
+                                                    <a class="btn btn-warning"
+                                                        href="{{ route('admin.client.detail', ['id' => $value->id]) }}">Sửa</a>
+                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+                                                        class="btn btn-danger"
+                                                        href="{{ route('admin.client.delete', ['id' => $value->id]) }}">Xóa</a>
                                                 </td>
                                             </tr>
                                             @endforeach
-                                            @else
-                                            <!-- Handle empty user case -->
-                                            @endif
-
                                         </tbody>
+                                        @else
+                                        <tbody>
+                                            <td class="text-center" colspan="10">
+                                                <div class="">
 
+                                                    Chưa có khách hàng
+                                                </div>
+                                            </td>
+                                        </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>
@@ -139,7 +146,7 @@
     $(document).ready(function() {
     $.notify({
         icon: 'icon-bell',
-        title: 'Thương hiệu',
+        title: 'Khách hàng',
         message: '{{ session('success') }}',
     },{
         type: 'secondary',
