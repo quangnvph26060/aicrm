@@ -15,11 +15,11 @@ class BrandController extends Controller
     }
     public function index(){
         $brand = $this->brandService->getAllBrand();
-        return view('Themes.pages.brand.index', compact('brand'));
+        return view('Admin.Brand.index', compact('brand'));
     }
 
     public function addForm(){
-       return view('admin.brand.addbrand');
+       return view('Admin.Brand.add');
     }
 
     public function add(Request $request){
@@ -47,7 +47,7 @@ class BrandController extends Controller
 
      public function edit($id){
         $brand = $this->brandService->getBrandById($id);
-       return view('admin.brand.editbrand', compact('brand'));
+       return view('Admin.Brand.edit', compact('brand'));
      }
 
      public function update($id, Request $request){

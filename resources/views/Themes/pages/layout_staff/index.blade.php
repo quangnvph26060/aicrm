@@ -88,7 +88,7 @@
             </div>
         </div>
         <!-- Right Column: Customer Information and Payment Method 123-->
-        @include('Themes.pages.product.delivery-selling')
+        @include('Themes.pages.layout_staff.delivery-selling')
         <div class="col-lg-4" id="regular-selling-content" style="display: none;">
             <div class="card">
                 <div class="card-header">Bán nhanh</div>
