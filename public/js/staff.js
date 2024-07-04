@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("regular-selling").click();
+    document.getElementById("delivery-selling").click();
 });
 
 // Function to show the corresponding content when a footer item is clicked
@@ -10,13 +10,13 @@ function showFooterContent(id) {
     for (var i = 0; i < footerContent.length; i++) {
         footerContent[i].style.display = "none";
     }
-   
+
     // Show the selected footer content
     var selectedContent = document.getElementById(id + "-content");
     if (selectedContent) {
         selectedContent.style.display = "block";
     }
-   
+
     var selectedContent = document.getElementById(id + "-content1");
     if (selectedContent) {
         selectedContent.style.display = "block";

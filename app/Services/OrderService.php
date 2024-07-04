@@ -113,6 +113,16 @@ class OrderService
             'totalMoney' => $todayData->totalMoney,
         ];
     }
+    public function getOrderbyID($id){
+        try{
+            $order = $this->order->find($id);
+            return $order;
+        }
+        catch(Exception $e){
+            Log::error('Failed to find order: ' . $e->getMessage());
+            throw new Exception('Failed to find order');
+        }
+    }
     public function getOrderByDate()
     {
     }

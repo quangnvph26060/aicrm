@@ -27,4 +27,14 @@ class OrderController extends Controller
            return ApiResponse::error('Failed to fetch Order', 500);
        }
     }
+    public function detail($id)
+    {
+        try{
+            $order = $this->orderService->getOrderbyID($id);
+            return view('Themes.pages.order.detail', compact('order'));
+        }
+        catch(\Exception $e){
+            Log::error('Failed to find order');
+        }
+    }
 }

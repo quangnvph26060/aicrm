@@ -98,6 +98,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     });
     Route::prefix('order')->name('order.')->group(function(){
         Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
     });
 })->middleware('checkRole:1');
 
