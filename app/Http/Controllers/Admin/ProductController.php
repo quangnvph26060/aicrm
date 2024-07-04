@@ -32,7 +32,7 @@ class ProductController extends Controller
             $product = $this->productService->getProductAll();
             $category = $this->categoryService->getCategoryAll();
             $brand = $this->brandService->getAllBrand();
-            return view('Themes.pages.product.index', compact('product', 'category', 'brand'));
+            return view('Admin.Product.index', compact('product', 'category', 'brand'));
         } catch (ModelNotFoundException $e) {
             $exception = new ProductNotFoundException();
             return $exception->render(request());
@@ -42,12 +42,16 @@ class ProductController extends Controller
         }
     }
 
+    public function addForm(){
+        $brand = $this->brandService->getAllBrand();
+        $category = $this->categoryService->getCategoryAll();
+        return view('Admin.Product.add', compact('category', 'brand'));
+    }
+
     public function addSubmit(Request $request)
     {
-        //  dd($request->all());
 
         try {
-
             $product = $this->productService->createProduct($request->all());
             return redirect()->route('admin.product.store')->with('success', 'Thêm thành công !');
         } catch (ModelNotFoundException $e) {
@@ -58,11 +62,12 @@ class ProductController extends Controller
             return ApiResponse::error('Failed to fetch add products', 500);
         }
     }
+
     public function editForm($id){
         $category = $this->categoryService->getCategoryAll();
         $brand = $this->brandService->getAllBrand();
         $product = $this->productService->getProductById($id);
-        return view('Themes.pages.product.edit', compact('product', 'brand', 'category'));
+        return view('Admin.Product.edit', compact('product', 'brand', 'category'));
     }
 
     public function update($id ,Request $request){

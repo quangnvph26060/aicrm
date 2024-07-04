@@ -39,10 +39,20 @@ class UserController extends Controller
         try {
             $user = $this->adminService->getStaff();
             // dd($user);
-            return view('Themes.pages.employee.index', compact('user'));
+            return view('Admin.employee.index', compact('user'));
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch products', 500);
+        }
+    }
+
+    public function edit($id){
+        try{
+            $user = $this->adminService->getUserById($id);
+            return view('Admin.employee.edit', compact('user'));
+        }catch(Exception $e){
+            Log::error('Failed to find user: ' . $e->getMessage());
+            return ApiResponse::error('Failed to find user', 500);
         }
     }
 
@@ -51,11 +61,10 @@ class UserController extends Controller
 
         try {
             $user = $this->adminService->updateUser($id, $request->all());
-            // dd($user);
             return redirect()->route('admin.staff.store')->with('success', 'Update thành công');
         } catch (Exception $e) {
-            Log::error('Failed to fetch products: ' . $e->getMessage());
-            return ApiResponse::error('Failed to fetch products', 500);
+            Log::error('Failed to update user: ' . $e->getMessage());
+            return ApiResponse::error('Failed to update user', 500);
         }
     }
 
@@ -73,6 +82,9 @@ class UserController extends Controller
         }
     }
 
+    public function addForm(){
+        return view('Admin.employee.add');
+    }
     public function add(Request $request)
     {
         try {

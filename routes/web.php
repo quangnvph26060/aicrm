@@ -47,8 +47,12 @@ Route::get('/employee', function () {
 
 Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', function () {
+        return view('welcome');
+    })->name('dashboard');
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
+        Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
         Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
         Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
         Route::post('{id}', [ProductController::class, 'update'])->name('update');
@@ -61,15 +65,18 @@ Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('ad
     });
     Route::prefix('category')->name('category.')->group(function () {
         Route::get('/',  [CategorieController::class, 'index'])->name('index');
+        Route::get('/create', [CategorieController::class, 'add'])->name('add');
         Route::post('/create', [CategorieController::class, 'store'])->name('store');
         Route::get('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
         Route::get('/detail/{id}', [CategorieController::class, 'edit'])->name('detail');
-        Route::put('/update/{id}', [CategorieController::class, 'update'])->name('update');
+        Route::post('/update/{id}', [CategorieController::class, 'update'])->name('update');
     });
 
     Route::prefix('user')->name('staff.')->group(function(){
         Route::get('', [UserController::class, 'index'])->name('store');
+        Route::get('update/{id}', [UserController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [UserController::class, 'update'])->name('update');
+        Route::get('add', [UserController::class, 'addForm'])->name('addForm');
         Route::post('add', [UserController::class, 'add'])->name('add');
         Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete');
         Route::post('updateAdmin/{id}', [UserController::class, 'updateadmin'])->name('updateAdmin');
@@ -77,8 +84,10 @@ Route::middleware(['checkRole:1', CheckLogin::class])->prefix('admin')->name('ad
 
     Route::prefix('brand')->name('brand.')->group(function(){
         Route::get('', [BrandController::class, 'index'])->name('store');
+        Route::get('add', [BrandController::class, 'addForm'])->name('addForm');
         Route::post('add', [BrandController::class, 'add'])->name('add');
         Route::get('delete', [BrandController::class, 'delete'])->name('delete');
+        Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
     });
     Route::prefix('client')->name('client.')->group(function(){
