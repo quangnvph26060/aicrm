@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
@@ -105,4 +106,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
 
 Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function () {
     Route::get('', [StaffProductController::class, 'index'])->name('index');
+    Route::post('/cart/add', [StaffProductController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/remove', [StaffProductController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/client/add', [StaffClientController::class, 'addClient'])->name('client.add');
 });

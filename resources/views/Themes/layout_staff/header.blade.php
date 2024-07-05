@@ -9,11 +9,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{asset('css/staff.css')}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+=======
     <!-- Owl Carousel CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/staff.css') }}">
+>>>>>>> master
 </head>
 
 <body>
