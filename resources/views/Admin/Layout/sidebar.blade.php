@@ -121,20 +121,19 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#sidebarordẻ">
+                    <a href="{{ route('admin.order.index') }}">
                         <i class="fas fa-th-list"></i>
-                        <p>Đơn hàng  </p>
-                        <span class="caret"></span>
+                        <p>Đơn hàng</p>
                     </a>
-                    <div class="collapse" id="sidebarordẻ">
+                    {{-- <div class="collapse" id="sidebarordẻ">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ route('admin.order.index') }}">
+                                <a >
                                     <span class="sub-item">Danh sách </span>
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
                 </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarclient">

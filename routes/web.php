@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
@@ -48,9 +49,7 @@ Route::get('/employee', function () {
 
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', function () {
-        return view('welcome');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
         Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
@@ -100,6 +99,8 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
+        // Route::get('/find/phone', [OrderController::class, 'getOrderbyPhone'])->name('findByPhone');
+        Route::get('/admin/order/filter', [OrderController::class, 'filterOrder'])->name('filter');
     });
 })->middleware('checkRole:1');
 

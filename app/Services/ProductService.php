@@ -21,7 +21,11 @@ class ProductService
     {
         try {
             Log::info('Fetching all products');
-            return $this->product->all();
+            $product= $this->product->all();
+            // dd($product[0]->images[0]->image_path);
+            return $product;
+
+
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             throw new Exception('Failed to fetch products');

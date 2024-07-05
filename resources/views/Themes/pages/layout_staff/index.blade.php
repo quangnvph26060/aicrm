@@ -127,6 +127,7 @@
                             <div class="product-item1 ">
                                 <div class="card-body listproduct" data-id="{{ $item->id }}">
                                     <img src="{{ asset($item->images[0]->image_path) }}" alt=""
+<<<<<<< HEAD
                                         style="width: 145px; height: 60px;">
                                     <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">
                                         {{ $item->name }}</p>
@@ -136,16 +137,92 @@
                                         <P style="margin: 0px; cursor: pointer;"><i
                                                 style="font-size: 15px; color: rgb(105, 97, 223)"
                                                 class="fas fa-shopping-cart fa-lg"></i></P>
+=======
+                                        style="width: 145px; height: 109px;">
+                                    <p class="card-title">{{ $item->name }}</p>
+
+                                                <div class="input-group mb-3">
+
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary quantity-control" type="button"
+                                                onclick="decreaseQuantity(this)">-</button>
+                                        </div>
+                                        <input type="text" class="form-control quantity" value="0">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary quantity-control" type="button"
+                                                onclick="increaseQuantity(this)">+</button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+
+
+                        </div>
+
+                        <!-- Additional row within col-lg-8 -->
+
+                    </div>
+                </div>
+                <div class="card" id="regular-selling-content1" style="display: none;">
+                </div>
+                {{-- thanh toán --}}
+                <div class="row mt-4 main_note">
+                    <div class="col-lg-8 mt-4 mb-4">
+                        <div class="product-item">
+                            <div class="form-group">
+
+                                <input type="text" class="form-control" id="note" placeholder="Enter note">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mt-4 mb-4">
+
+                        <li class=" d-flex justify-content-between align-items-center">
+                            Tổng tiền hàng
+                            <span class="badge badge-primary badge-pill">4,924,624</span>
+                        </li>
+                        <li class=" d-flex justify-content-between align-items-center mt-2">
+                            Giảm giá
+                            <span class="badge badge-primary badge-pill">0</span>
+                        </li>
+                        <li class=" d-flex justify-content-between align-items-center mt-2">
+                            Khách cần trả
+                            <span class="badge badge-primary badge-pill">4,924,624</span>
+                        </li>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column: Customer Information and Payment Method 123-->
+            @include('Themes.pages.layout_staff.delivery-selling')
+            <div class="col-lg-4" id="regular-selling-content" style="display: none;">
+                <div class="card">
+                    <div class="card-header">Bán nhanh</div>
+                    <div class="card-body">
+                        <!-- Product items go here -->
+                        <div class="row">
+                            @foreach ($product as $item)
+                                <div class="col-md-3 mb-4">
+                                    <div class="product-item1">
+                                        <div class="card-body">
+                                            <img src="{{ asset($item->images[0]->image_path) }}" alt="">
+                                            <p class="card-title">{{ $item->name }}</p>
+                                        </div>
+>>>>>>> master
                                     </div>
 
                                 </div>
-                            </div>
+                            @endforeach
+                        </div>
+                        <div style="display: flex; justify-content: center;" class="row">
+                            <button class="btn btn-primary">Thanh toán</button>
                         </div>
 
                         @endforeach
 
                         @endif
                     </div>
+<<<<<<< HEAD
                     <!-- Additional row within col-lg-8 -->
                 </div>
             </div>
@@ -194,6 +271,12 @@
                     </ul>
                 </div>
 
+=======
+                </div>
+            </div>
+            <div class="col-lg-4" id="fast-selling-content" style="display: none;">
+                bán nhanh
+>>>>>>> master
             </div>
         </div>
         <!-- Right Column: Customer Information and Payment Method 123-->
