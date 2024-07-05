@@ -115,7 +115,10 @@ body {
 
 #fullName,
 #email,
+#address,
+#phone,
 #phoneNumber,
+#name,
 #paymentMethod,
 #driverNote {
    border-right: none;
