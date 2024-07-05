@@ -113,31 +113,65 @@ class OrderService
             'totalMoney' => $todayData->totalMoney,
         ];
     }
-    public function getOrderbyID($id){
-        try{
+    public function getOrderbyID($id)
+    {
+        try {
             $order = $this->order->find($id);
             return $order;
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             Log::error('Failed to find order: ' . $e->getMessage());
             throw new Exception('Failed to find order');
         }
     }
-    public function getOrderByDate()
-    {
-    }
-    public function getOrderByInfo($phone)
+    public function filterOrder($startDate, $endDate, $phone)
     {
         try {
-            $order = $this->order->where('phone', $phone)->first();
-            if ($order->isEmpty()) {
-                throw new Exception("Order not found");
+            // $orders = $this->order
+            //     ->whereDate('created_at', '>=', $startDate)
+            //     ->whereDate('created_at', '<=', $endDate)
+            //     ->whereHas('client', function ($query) use ($phone) {
+            //         $query->where('phone', $phone);
+            //     })
+            //     ->get();
+            $order = $this->order;
+
+            if ($startDate) {
+                $order = $order->whereDate('created_at', '>=', $startDate);
             }
-            Log::info($order);
-            return $order;
+
+            if ($endDate) {
+                $order = $order->whereDate('created_at', '<=', $endDate);
+            }
+
+            if ($phone) {
+                $order = $order->whereHas('client', function ($query) use ($phone) {
+                    $query->where('phone', $phone);
+                });
+            }
+
+            $orders = $order->get();
+            return $orders;
         } catch (Exception $e) {
-            Log::error('Failed to find orders: ' . $e->getMessage());
-            throw new Exception('Failed to find orders');
+            Log::error('Failed to retrieve orders by date range: ' . $e->getMessage());
+            throw new Exception('Failed to retrieve orders by date range');
         }
     }
+
+    // public function getOrderbyPhone($phone)
+    // {
+    //     try {
+    // $orders = $this->order->whereHas('client', function ($query) use ($phone) {
+    //     $query->where('phone', $phone);
+    // })->get();
+
+    //         // if ($orders->isEmpty()) {
+    //         //     throw new Exception("Orders not found");
+    //         // }
+
+    //         return $orders;
+    //     } catch (Exception $e) {
+    //         Log::error('Failed to find orders: ' . $e->getMessage());
+    //         throw new Exception('Failed to find orders');
+    //     }
+    // }
 }
