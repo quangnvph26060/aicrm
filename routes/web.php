@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
@@ -47,9 +48,7 @@ Route::get('/employee', function () {
 
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', function () {
-        return view('welcome');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
         Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
@@ -72,7 +71,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('/update/{id}', [CategorieController::class, 'update'])->name('update');
     });
 
-    Route::prefix('user')->name('staff.')->group(function(){
+    Route::prefix('user')->name('staff.')->group(function () {
         Route::get('', [UserController::class, 'index'])->name('store');
         Route::get('update/{id}', [UserController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [UserController::class, 'update'])->name('update');
@@ -82,7 +81,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('updateAdmin/{id}', [UserController::class, 'updateadmin'])->name('updateAdmin');
     });
 
-    Route::prefix('brand')->name('brand.')->group(function(){
+    Route::prefix('brand')->name('brand.')->group(function () {
         Route::get('', [BrandController::class, 'index'])->name('store');
         Route::get('add', [BrandController::class, 'addForm'])->name('addForm');
         Route::post('add', [BrandController::class, 'add'])->name('add');
@@ -90,22 +89,20 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
     });
-    Route::prefix('client')->name('client.')->group(function(){
+    Route::prefix('client')->name('client.')->group(function () {
         Route::get('/', [ClientController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
     });
-    Route::prefix('order')->name('order.')->group(function(){
+    Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
+        // Route::get('/find/phone', [OrderController::class, 'getOrderbyPhone'])->name('findByPhone');
+        Route::get('/admin/order/filter', [OrderController::class, 'filterOrder'])->name('filter');
     });
 })->middleware('checkRole:1');
 
-Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function(){
+Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function () {
     Route::get('', [StaffProductController::class, 'index'])->name('index');
 });
-
-
-
-
