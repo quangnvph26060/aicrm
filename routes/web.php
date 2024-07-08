@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\ClientController;
@@ -50,6 +51,9 @@ Route::get('/employee', function () {
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/detail/{id}', [AdminController::class, 'getAdminInfor'])->name('detail');
+    Route::post('/update/{id}', [AdminController::class, 'updateAdminInfor'])->name('update');
+    Route::post('/changePassword', [AdminController::class, 'changePassword'])->name('changePassword');
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
         Route::get('add', [ProductController::class, 'addForm'])->name('addForm');

@@ -325,11 +325,11 @@
                                             <td class="text-center">{{ number_format($item->total_money) }}</td>
                                             @if ($item->status == 1)
                                                 <td class="text-center">
-                                                    <span class="badge badge-danger">Đang chờ</span>
+                                                    <span class="badge badge-danger">Hoàn thành</span>
                                                 </td>
                                             @else
                                                 <td class="text-center">
-                                                    <span class="badge badge-success">Hoàn thành</span>
+                                                    <span class="badge badge-success">Đang chờ</span>
                                                 </td>
                                             @endif
                                         </tr>
