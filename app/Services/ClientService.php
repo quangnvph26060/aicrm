@@ -87,11 +87,10 @@ class ClientService
             ->where('phone', $phone)
             ->orWhere('email', $phone)
             ->first();
-
-            if($client->isEmpty()){
-                throw new Exception('Client not found');
-            }
-            Log::info($client);
+            // if($client->isEmpty()){
+            //     throw new Exception('Client not found');
+            // }
+            // Log::info($client);
             return $client;
         }
         catch(Exception $e){

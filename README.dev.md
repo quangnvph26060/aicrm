@@ -8,4 +8,5 @@ php artisan vendor:publish --tag=laravel-assets --ansi --force
 composer require maatwebsite/excel
 
 php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
+composer require barryvdh/laravel-dompdf
 
