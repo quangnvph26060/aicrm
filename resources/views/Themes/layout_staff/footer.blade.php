@@ -1,4 +1,4 @@
-<div class="row mt-4  custom-border-shadow custom-list-item">
+<div class="row mt-4  custom-bclient-shadow custom-list-item">
     <div class="col-lg-6">
         <ul class="d-flex justify-content-between">
             <li class="d-flex justify-content-between align-items-center " id="fast-selling">
@@ -39,30 +39,34 @@ aria-hidden="true">
                         @csrf
                         <div class="form-group">
                             <label for="fullName">Full Name</label>
-                            <input type="text" class="form-control" id="name"
+                            <input type="text" class="form-control" id="nameclient"
                                 placeholder="Enter name" name="name">
+                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                    style="font-weight: 500" id="clientName_error"></span> </div>
                         </div>
                         <div class="form-group">
                             <label for="email">Email address</label>
-                            <input type="email" class="form-control" id="email"
+                            <input type="email" class="form-control" id="emailclient"
                                 placeholder="Enter email" name="email">
+                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                    style="font-weight: 500" id="clientEmail_error"></span> </div>
                         </div>
                         <div class="form-group">
                             <label for="email"> Address</label>
-                            <input type="text" class="form-control" id="address"
+                            <input type="text" class="form-control" id="addressclient"
                                 placeholder="Enter address" name="address">
+                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                    style="font-weight: 500" id="clientAddress_error"></span> </div>
                         </div>
                         <div class="form-group">
                             <label for="phoneNumber">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone"
+                            <input type="tel" class="form-control" id="phoneclient"
                                 placeholder="Enter phone number" name="phone">
+                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                    style="font-weight: 500" id="clientPhone_error"></span> </div>
                         </div>
-                        <div class="form-group">
-                            <label for="driverNote">Driver's Note</label>
-                            <input type="text" class="form-control" id="driverNote"
-                                placeholder="Enter note for driver">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block mt-4">Lưu</button>
+
+                        <button type="buttom" onclick="submitclient(event)"  class="btn btn-primary btn-block mt-4">Lưu</button>
                     </form>
                 </div>
                 {{-- <div class="col-lg-6 user-image">
@@ -80,7 +84,65 @@ aria-hidden="true">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- JavaScript code -->
 <script src="{{asset('js/staff.js')}}"></script>
+<script>
+    var validateClient = {
+        'name': {
+            'element': document.getElementById('nameclient'),
+            'error': document.getElementById('clientName_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E032')
+                },
+            ]
+        },
+        'email': {
+            'element': document.getElementById('emailclient'),
+            'error': document.getElementById('clientEmail_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E033')
+                },
+            ]
+        },
+        'phoneNumber': {
+            'element': document.getElementById('phoneclient'),
+            'error': document.getElementById('clientPhone_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E034')
+                },
+            ]
+        },
+        'address': {
+            'element': document.getElementById('addressclient'),
+            'error': document.getElementById('clientAddress_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E035')
+                },
+            ]
+        }
 
+    }
+    function submitclient(event){
+        event.preventDefault();
+            if (validateAllFields(validateClient)){
+                document.getElementById('clientsubmit').submit();
+            }
+    }
+</script>
 </body>
 
 </html>

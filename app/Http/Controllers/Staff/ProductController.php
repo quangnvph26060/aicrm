@@ -47,50 +47,58 @@ class ProductController extends Controller
         $existingCartItem = Cart::where('product_id', $productId)
             ->where('user_id', $user->id)
             ->first();
-        $amount = $request->input('amount', 1);
+        $amount = $request->input('amount');
 
-        // if ($amount == 1) {
-        //     $cartItem = Cart::updateOrCreate(
-        //         [
-        //             'product_id' => $productId,
-        //             'user_id' => $user->id,
-        //         ],
-        //         [
-        //             'amount' => DB::raw('amount + ' . $amount)
-        //         ]
-        //     );
-        // } else {
-        //     $cartItem = Cart::updateOrCreate(
-        //         [
-        //             'product_id' => $productId,
-        //             'user_id' => $user->id,
-        //         ],
-        //         [
-        //             'amount' => DB::raw($amount)
-        //         ]
-        //     );
-        // }
 
         if ($existingCartItem) {
-            if ($amount == 1 && $existingCartItem->amount > 1) {
+            // Giảm số lượng xuống 0 hoặc loại bỏ sản phẩm khỏi giỏ hàng nếu giảm xuống dưới 1
+                $existingCartItem->update(['amount' => $existingCartItem->amount + 1]);
 
-                $existingCartItem->decrement('amount', 1);
-                $cartItem = $existingCartItem;
-            } elseif ($amount > 0) {
-
-                $existingCartItem->update(['amount' => $amount]);
-                $cartItem = $existingCartItem;
-            }
         } else {
 
-            $cartItem = Cart::create([
+            Cart::create([
                 'product_id' => $productId,
                 'user_id' => $user->id,
                 'amount' => $amount
             ]);
         }
 
+        $cartItems = Cart::where('user_id', $user->id)->get();
+        $products = [];
+        $sum = 0;
+        foreach ($cartItems as $item) {
+            $sum += $item->amount * $item->product->priceBuy;
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $products[] = [
+                    'id' => $item->id,
+                    'product_id' => $item->product_id,
+                    'amount' => $item->amount,
+                    'priceBuy' => $product->priceBuy,
+                    'product_name' => $product->name,
+                ];
+            }
+        }
+        return response()->json(['success' => 'Product added to cart!', 'cart' => $products, 'sum' => number_format($sum)]);
+    }
 
+
+    public function updateCart(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $product = $this->productService->getProductById($productId);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found.'], 404);
+        }
+
+        $user = Auth::user();
+        $existingCartItem = Cart::where('product_id', $productId)
+            ->where('user_id', $user->id)
+            ->first();
+        $amount = $request->input('amount');
+
+        $existingCartItem->update(['amount' => $amount]);
 
         $cartItems = Cart::where('user_id', $user->id)->get();
         $products = [];

@@ -120,6 +120,13 @@ function generateErrorMessage(code, values = []) {
         E029: ' Email không để trống',
         E030: ' Số điện thoại không để trống',
         E031: ' Địa chỉ không để trống',
+        // order
+        E032 : ' Nhập tên khách hàng ',
+        E033 : ' Nhập email thoại khách hàng ',
+        E034 : ' Nhập số điện thoại khách hàng ',
+        E035 : ' Nhập địa chỉ khách hàng ',
+        E036 : ' Chọn phương thức thanh toán ',
+
 
 
 

@@ -111,6 +111,9 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
 Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function () {
     Route::get('', [StaffProductController::class, 'index'])->name('index');
     Route::post('/cart/add', [StaffProductController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update', [StaffProductController::class, 'updateCart'])->name('cart.update');
     Route::post('/cart/remove', [StaffProductController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('/client/add', [StaffClientController::class, 'addClient'])->name('client.add');
+    Route::post('pay', [StaffClientController::class, 'pay'])->name('pay');
+    Route::get('cart', [StaffClientController::class, 'cart'])->name('cart.data');
 });
