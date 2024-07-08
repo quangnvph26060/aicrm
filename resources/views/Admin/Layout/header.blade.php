@@ -275,9 +275,10 @@
                 </li>
 
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                        aria-expanded="false">
                         <div class="avatar-sm">
-                            <img src="{{ asset('assets/img/profile.jpg') }}" alt="..."
+                            <img src="{{ asset(session('authUser')->user_info->img_url) }}" alt="..."
                                 class="avatar-img rounded-circle">
                         </div>
                         <span class="profile-username">
@@ -292,34 +293,24 @@
                                 <li>
                                     <div class="user-box">
                                         <div class="avatar-lg">
-                                            <img src="{{ asset('assets/img/profile.jpg') }}" alt="image profile"
-                                                class="avatar-img rounded">
+                                            <img src="{{ asset(session('authUser')->user_info->img_url) }}"
+                                                alt="image profile" class="avatar-img rounded">
                                         </div>
                                         <div class="u-text">
                                             <h4>{{ session('authUser')->name }}</h4>
                                             <p class="text-muted">{{ session('authUser')->email }}</p>
-                                            <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View
-                                                Profile</a>
+                                            <a href="{{ route('admin.detail', ['id' => session('authUser')->id]) }}"
+                                                class="btn btn-xs btn-secondary btn-sm">Trang cá nhân</a>
+                                            <a href="#" class="btn btn-xs btn-danger btn-sm"
+                                                onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Logout</a>
+                                            <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
+                                                style="display: none;">
+                                                @csrf
+                                            </form>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">My Profile</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Account Setting</a>
-                                    <div class="dropdown-divider"></div>
-                                    <div>
-                                        <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
-                                            style="display: none;">
-                                            @csrf
-                                        </form>
-                                        <a class="dropdown-item" href="#"
-                                            onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-                                            Logout
-                                        </a>
-                                    </div>
-                                </li>
+
                             </div>
                             <div class="scroll-element scroll-x">
                                 <div class="scroll-element_outer">

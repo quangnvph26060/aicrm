@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\User;
+use App\Models\UserInfo;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Summary of AdminService
@@ -35,7 +38,31 @@ class AdminService
         try {
             $admin = $this->getUserById($id);
             Log::info("Updating user with ID: $id");
+
+            // Update the admin data
             $admin->update($data);
+
+            // Check if there is an image to update
+            if (isset($data['img_url']) && $data['img_url']->isValid()) {
+                $image = $data['img_url'];
+                $imageFileName = 'image_' . $image->getClientOriginalName();
+                $imageFilePath = 'storage/admin/' . $imageFileName;
+                Storage::putFileAs('public/admin', $image, $imageFileName);
+
+                // Ensure the user_info relationship is loaded
+                $userInfo = $admin->user_info;
+                if ($userInfo) {
+                    $userInfo->img_url = $imageFilePath;
+                    $userInfo->save();
+                } else {
+                    // Handle the case where user_info is not present
+                    $userInfo = new UserInfo();
+                    $userInfo->user_id = $admin->id;
+                    $userInfo->img_url = $imageFilePath;
+                    $userInfo->save();
+                }
+            }
+
             DB::commit();
             return $admin;
         } catch (Exception $e) {
@@ -44,6 +71,40 @@ class AdminService
             throw $e;
         }
     }
+
+    public function changePassword($userId, $currentPassword, $newPassword, $confirmPassword)
+    {
+        $admin = User::findOrFail($userId);
+
+        if (!Hash::check($currentPassword, $admin->password)) {
+            return [
+                'status' => 'error',
+                'message' => 'Mật khẩu hiện tại không đúng !'
+            ];
+        }
+        if($newPassword === $currentPassword)
+        {
+            return [
+                'status' => 'error',
+                'message' => 'Mật khẩu mới không được trùng mật khẩu cũ!',
+            ];
+        }
+        if ($newPassword !== $confirmPassword) {
+            return [
+                'status' => 'error',
+                'message' => 'Xác nhận mật khẩu không đúng !'
+            ];
+        }
+
+        $admin->password = Hash::make($newPassword);
+        $admin->save();
+
+        return [
+            'status' => 'success',
+            'message' => 'Đổi mật khẩu thành công !'
+        ];
+    }
+
 
     /**
      * Summary of getStaff
@@ -66,7 +127,7 @@ class AdminService
     /**
      * Summary of addStaff
      */
-    public function addStaff($data):User
+    public function addStaff($data): User
     {
         DB::beginTransaction();
         try {
@@ -101,6 +162,4 @@ class AdminService
             throw new Exception('Failed to delete staff');
         }
     }
-
 }
-
