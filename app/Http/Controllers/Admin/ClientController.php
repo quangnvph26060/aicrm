@@ -7,44 +7,65 @@ use App\Http\Responses\ApiResponse;
 use App\Services\ClientService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
     protected $clientService;
-    public function __construct(ClientService $clientService) {
+    public function __construct(ClientService $clientService)
+    {
         $this->clientService = $clientService;
     }
-    public function index(){
-        try{
-            $client = $this->clientService->getAllClient();
-            return view('Admin.Client.index', compact('client'));
-        }
-        catch(Exception$e){
+    public function index()
+    {
+        try {
+            $clients = $this->clientService->getAllClient();
+            return view('Admin.Client.index', compact('clients'));
+        } catch (Exception $e) {
             Log::error('Failed to fetch clients: ' . $e->getMessage());
-            return ApiResponse::error('Failed to fetch clients', 500);
+            return response()->json(['error' => 'Failed to fetch clients'], 500);
         }
     }
 
-    public function edit($id){
-        try{
+    public function findClient(Request $request)
+    {
+        try {
+            $client = $this->clientService->findClientByPhone($request->phone);
+
+            // Convert single client to a paginator instance
+            $clients = new LengthAwarePaginator(
+                $client ? [$client] : [],
+                $client ? 1 : 0,
+                10,
+                1,
+                ['path' => Paginator::resolveCurrentPath()]
+            );
+
+            return view('Admin.Client.index', compact('clients'));
+        } catch (Exception $e) {
+            Log::error('Failed to find client: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to find client'], 500);
+        }
+    }
+    public function edit($id)
+    {
+        try {
             $client =  $this->clientService->getClientByID($id);
             return view('Admin.Client.edit', compact('client'));
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             Log::error('Failed to find client profile');
         }
     }
 
     public function update($id, Request $request)
     {
-        try{
+        try {
             $client = $this->clientService->updateClient($id, $request->all());
             session()->flash('success', 'Cập nhật thông tin khách hàng thành công!');
             return redirect()->route('admin.client.index');
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             Log::error('Failed to update client profile: ' . $e->getMessage());
             return ApiResponse::error('Failed to update client profile', 500);
         }
@@ -52,15 +73,13 @@ class ClientController extends Controller
 
     public function delete($id)
     {
-        try{
+        try {
             $this->clientService->deleteClient($id);
             session()->flash('success', 'Xóa thông tin khách hàng thành công');
             return redirect()->back();
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             Log::error('Failed to delete client profile: ' . $e->getMessage());
-            return ApiResponse::error('Failed to update client profile ',500);
+            return ApiResponse::error('Failed to update client profile ', 500);
         }
     }
 }

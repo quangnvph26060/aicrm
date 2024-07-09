@@ -232,7 +232,7 @@
                                         <div class="status">{{ $item->phone }}</div>
                                     </div>
                                     <div class="info-user ms-2">
-                                        {{ \Carbon\Carbon::parse($item->created_at)->format('m/Y') }}
+                                        {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
                                     </div>
                                     <button class="btn btn-icon btn-link op-8 me-1">
                                         <i class="far fa-envelope"></i>
@@ -280,7 +280,7 @@
                                         <div class="status">{{ $item->phone }}</div>
                                     </div>
                                     <div class="info-user ms-2">
-                                        {{ \Carbon\Carbon::parse($item->created_at)->format('m/Y') }}
+                                        {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
                                     </div>
                                     <button class="btn btn-icon btn-link op-8 me-1">
                                         <i class="far fa-envelope"></i>
