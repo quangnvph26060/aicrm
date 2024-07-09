@@ -136,20 +136,11 @@
                     </div> --}}
                 </li>
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#sidebarclient">
+                    <a href="{{ route('admin.client.index') }}">
                         <i class="fas fa-th-list"></i>
                         <p>Khách hàng </p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="sidebarclient">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.client.index') }}">
-                                    <span class="sub-item">Danh sách </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+
                 </li>
             </ul>
         </div>
