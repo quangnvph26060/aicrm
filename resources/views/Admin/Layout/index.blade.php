@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css.map') }}">
@@ -15,7 +16,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.css.map') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.css">
 
     <title>Document</title>
 </head>
@@ -27,8 +29,6 @@
     .collapse.show {
         display: block;
     }
-
-
 </style>
 
 <body>
@@ -103,20 +103,22 @@
 
     <script>
         WebFont.load({
-    google: { families: ["Public Sans:300,400,500,600,700"] },
-    custom: {
-      families: [
-        "Font Awesome 5 Solid",
-        "Font Awesome 5 Regular",
-        "Font Awesome 5 Brands",
-        "simple-line-icons",
-      ],
-      urls: ["{{ asset('assets/css/fonts.min.css') }}"],
-    },
-    active: function () {
-      sessionStorage.fonts = true;
-    },
-  });
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('assets/css/fonts.min.css') }}"],
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            },
+        });
     </script>
 
 

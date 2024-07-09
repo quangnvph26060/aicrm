@@ -27,14 +27,39 @@ class OrderService
     public function getOrderAll()
     {
         try {
-            $order = $this->order->all();
-            return $order;
+            return $this->order->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders: ' . $e->getMessage());
             throw new Exception('Failed to retrieve orders');
         }
     }
 
+    public function filterOrder($startDate, $endDate, $phone)
+    {
+        try {
+            $query = $this->order->query();
+
+            if ($startDate) {
+                $query->whereDate('created_at', '>=', $startDate);
+            }
+
+            if ($endDate) {
+                $query->whereDate('created_at', '<=', $endDate);
+            }
+
+            if ($phone) {
+                $query->whereHas('client', function ($query) use ($phone) {
+                    $query->where('phone', $phone);
+                });
+            }
+
+            $orders = $query->paginate(10);
+            return $orders;
+        } catch (Exception $e) {
+            Log::error('Failed to retrieve orders by date range: ' . $e->getMessage());
+            throw new Exception('Failed to retrieve orders by date range');
+        }
+    }
     public function getOrderByUser($id)
     {
         try {
@@ -124,39 +149,7 @@ class OrderService
             throw new Exception('Failed to find order');
         }
     }
-    public function filterOrder($startDate, $endDate, $phone)
-    {
-        try {
-            // $orders = $this->order
-            //     ->whereDate('created_at', '>=', $startDate)
-            //     ->whereDate('created_at', '<=', $endDate)
-            //     ->whereHas('client', function ($query) use ($phone) {
-            //         $query->where('phone', $phone);
-            //     })
-            //     ->get();
-            $order = $this->order;
 
-            if ($startDate) {
-                $order = $order->whereDate('created_at', '>=', $startDate);
-            }
-
-            if ($endDate) {
-                $order = $order->whereDate('created_at', '<=', $endDate);
-            }
-
-            if ($phone) {
-                $order = $order->whereHas('client', function ($query) use ($phone) {
-                    $query->where('phone', $phone);
-                });
-            }
-
-            $orders = $order->get();
-            return $orders;
-        } catch (Exception $e) {
-            Log::error('Failed to retrieve orders by date range: ' . $e->getMessage());
-            throw new Exception('Failed to retrieve orders by date range');
-        }
-    }
 
     // public function getOrderbyPhone($phone)
     // {

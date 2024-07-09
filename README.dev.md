@@ -10,3 +10,4 @@ composer require maatwebsite/excel
 php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
 composer require barryvdh/laravel-dompdf
 
+php artisan vendor:publish --tag=laravel-pagination

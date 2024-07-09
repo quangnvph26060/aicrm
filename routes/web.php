@@ -100,6 +100,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
+        Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
