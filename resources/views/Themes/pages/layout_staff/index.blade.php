@@ -112,6 +112,16 @@
         white-space: nowrap;
         max-width: 80px;
     }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #timkiem {
+        color: rgb(5, 5, 5) !important;
+        border: 1px solid;
+    }
 </style>
 <!-- Content section -->
 <div class="container-fluid mt-4">
@@ -119,38 +129,47 @@
         <!-- Left Column: Product List -->
         <div class="col-lg-8" id="row1">
             <div class="card">
-                <div class="card-header">Product List</div>
-                <div class="card-body" style="overflow-y: scroll;">
+                <div class="card-header">
+                    <p>Danh sách sản phẩm</p>
+                    <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}">
+                        @csrf
+                        <input id="search_product" class="form-control mr-sm-2" name="name" type="search"
+                            placeholder="Search products..." aria-label="Search">
+                        {{-- <button class="btn btn-outline-light my-2 my-sm-0" id="timkiem" type="submit"><i
+                                class="fas fa-search"></i></button> --}}
+                    </form>
+                </div>
+                <div class="card-body" style="overflow-x: hidden;">
                     <!-- Product items go here -->
-                    <div class="row">
-                        @if ($product)
-                        @foreach ($product as $item)
-                        <div class="col-md-2 mb-3" style="cursor: pointer;">
-                            <div class="product-item1" title="{{ $item->name }}">
-                                <div class="card-body listproduct" data-id="{{ $item->id }}">
-                                    <img src="{{ asset($item->images[0]->image_path) }}" alt=""
-                                        style="width: 145px; height: 60px;">
-                                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
-                                        class="card-title product-name">
-                                        {{ $item->name }}</p>
-                                    <div style="display: flex; justify-content: space-between;">
+                    <div class="row" id="productContainer">
+                        {{-- @if ($product)
+                            @foreach ($product as $item)
+                            <div class="col-md-2 mb-3" style="cursor: pointer;">
+                                <div class="product-item1" title="{{ $item->name }}">
+                                    <div class="card-body listproduct" data-id="{{ $item->id }}">
+                                        <img src="{{ asset($item->images[0]->image_path) }}" alt=""
+                                            style="width: 145px; height: 60px;">
                                         <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
-                                            class="card-title">{{ number_format($item->priceBuy) }}đ</p>
-                                        <p style="margin: 0px; cursor: pointer;"><i
-                                                style="font-size: 15px; color: rgb(105, 97, 223)"
-                                                class="fas fa-shopping-cart fa-lg"></i></p>
+                                            class="card-title product-name">
+                                            {{ $item->name }}</p>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
+                                                class="card-title">{{ number_format($item->priceBuy) }}đ</p>
+                                            <p style="margin: 0px; cursor: pointer;"><i
+                                                    style="font-size: 15px; color: rgb(105, 97, 223)"
+                                                    class="fas fa-shopping-cart fa-lg"></i></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        @endforeach
-                        @endif
+                            @endforeach
+                        @endif --}}
                     </div>
                 </div>
             </div>
             <div class="card" id="regular-selling-content1" style="display: none;"></div>
             <!-- thanh toán -->
-            <div class="row mt-4 main_note">
+            <div class="row mt-4 main_note" style="margin: 0px;">
                 <div class="col-lg-8 mt-4 mb-4">
                     <div class="product-item">
                         @if($cart)
@@ -210,6 +229,90 @@
 
 $j(document).ready(function() {
 
+    $j("#search_product").on("keyup", function() {
+
+        var name = $j(this).val();
+            $j.ajax({
+                url: '{{ route('staff.product.search') }}',
+                type: 'GET',
+                data: {
+                    name: name
+                },
+                success: function(data) {
+                    var productContainer = $j('#productContainer');
+                    productContainer.empty(); // Clear previous products
+
+                    if (data.length > 0) {
+                        data.forEach(function(item) {
+                            var productHtml = `
+                                <div class="col-md-2 mb-3" style="cursor: pointer;">
+                                    <div class="product-item1" title="${item.name}">
+                                        <div class="card-body listproduct" data-id="${item.id}">
+                                            <img src="${item.images[0].image_path}" alt="" style="width: 145px; height: 60px;">
+                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
+                                            <div style="display: flex; justify-content: space-between;">
+                                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
+                                                <p style="margin: 0px; cursor: pointer;">
+                                                    <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            productContainer.append(productHtml);
+                        });
+                    } else {
+                        productContainer.append('<p style="padding : 30px;">Không tìm thấy sản phẩm.</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('AJAX Error: ' + status + error);
+                }
+            });
+            function numberFormat(number) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
+        }
+
+    });
+
+
+    $j(document).ready(function() {
+        $j.ajax({
+        url: '{{ route('staff.product.get') }}',
+        type: 'GET',
+        success: function(data) {
+            var productContainer = $j('#productContainer');
+              productContainer.empty();
+
+            data.forEach(function(item) {
+            var productHtml = `
+                <div class="col-md-2 mb-3" style="cursor: pointer;">
+                    <div class="product-item1" title="${item.name}">
+                        <div class="card-body listproduct" data-id="${item.id}">
+                        <img src="${item.images[0].image_path}" alt="" style="width: 145px; height: 60px;">
+                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
+                        <div style="display: flex; justify-content: space-between;">
+                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
+                            <p style="margin: 0px; cursor: pointer;">
+                            <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                            </p>
+                        </div>
+                        </div>
+                    </div>
+                </div>`;
+            productContainer.append(productHtml);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.log('AJAX Error: ' + status + error);
+        }
+    });
+
+    function numberFormat(number) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
+    }
+    });
+
     $j("#search").on("keyup", function() {
         var query = $j(this).val().toLowerCase();
         var hasResults = false;
@@ -237,7 +340,6 @@ $j(document).ready(function() {
     });
 
 
-   // Xử lý sự kiện click trên sản phẩm để thêm vào giỏ hàng
 
    $j(document).on('click', '.listproduct', function(e) {
     e.preventDefault();
@@ -254,7 +356,7 @@ $j(document).ready(function() {
             updateCart(response.cart);
             updateCartBill(response.cart);
             var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (!response.cart) {
+            if (response.cart.length <= 0) {
                 submitBuyOrderBill.setAttribute('disabled', 'disabled');
             } else {
                 submitBuyOrderBill.removeAttribute('disabled');
@@ -294,7 +396,7 @@ $j(document).on('input', '.custom-input', function(e) {
             updateCart(response.cart);
             updateCartBill(response.cart);
             var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (!response.cart) {
+            if (response.cart.length <= 0) {
                 submitBuyOrderBill.setAttribute('disabled', 'disabled');
             } else {
                 submitBuyOrderBill.removeAttribute('disabled');
@@ -330,7 +432,7 @@ $j(document).on('click', '.closebtn', function(e) {
             updateCart(response.cart);
             updateCartBill(response.cart);
             var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (response.cart) {
+            if (response.cart.length <= 0) {
                 submitBuyOrderBill.setAttribute('disabled', 'disabled');
             } else {
                 submitBuyOrderBill.removeAttribute('disabled');
@@ -354,19 +456,16 @@ $j(document).on('click', '.closebtn', function(e) {
 });
 
 $j('#paymentbill').submit(function(event) {
-        // Ngăn chặn hành động mặc định của form
         event.preventDefault();
 
-        // Lấy action và method của form
         var actionUrl = $(this).attr('action');
         var method = $(this).attr('method');
 
-        // Gửi Ajax request
         $j.ajax({
             url: actionUrl,
             method: method,
             dataType: 'json',
-            data: $(this).serialize(), // Serialize form data
+            data: $(this).serialize(),
             success: function(response) {
 
                 var downloadLink = document.createElement('a');

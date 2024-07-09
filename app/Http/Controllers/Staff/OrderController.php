@@ -16,7 +16,8 @@ class OrderController extends Controller
     public function orderFetch(Request $request)
     {
         if ($request->ajax()) {
-            $orders = Order::paginate(6);
+            $page = 6;
+            $orders = Order::paginate($page);
             $formattedOrders = $orders->map(function ($order) {
                 return [
                     'id' => $order->id,
@@ -33,6 +34,7 @@ class OrderController extends Controller
                 'data' => $formattedOrders,
                 'current_page' => $orders->currentPage(),
                 'last_page' => $orders->lastPage(),
+                'pageOrder' => $page
             ]);
         }
     }
