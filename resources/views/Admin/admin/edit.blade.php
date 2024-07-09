@@ -226,12 +226,12 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        @if ($admin->user_info && $admin->user_info->img_url)
-                                            <img class="avatar" src="{{ asset($admin->user_info->img_url) }}"
-                                                alt="Avatar">
-                                        @else
+                                        {{-- @if ($admin->user_info && $admin->user_info->img_url) --}}
+                                        <img src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
+                                        alt="image profile" class="avatar">
+                                        {{-- @else
                                             <span>No image found</span>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 </div>
                                 <!-- Buttons Row -->

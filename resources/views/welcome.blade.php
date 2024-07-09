@@ -1,11 +1,56 @@
 @extends('Admin.Layout.index')
+
 @section('content')
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            min-height: 375px;
+        }
+
+        #statisticsChart {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        #myChartLegend {
+            margin-top: 10px;
+        }
+
+        .chart-legend {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chart-legend li {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 10px;
+            margin-right: 5px;
+            border-radius: 2px;
+        }
+
+        #myChartLegend .legend-color {
+            vertical-align: middle;
+        }
+    </style>
+
     <div class="page-inner">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
             <div>
                 <h3 class="fw-bold mb-3">Thống kê </h3>
             </div>
         </div>
+
         <div class="row">
             <div class="col-sm-6 col-md-4">
                 <div class="card card-stats card-round">
@@ -26,6 +71,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-6 col-md-4">
                 <div class="card card-stats card-round">
                     <div class="card-body">
@@ -45,6 +91,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-sm-6 col-md-4">
                 <div class="card card-stats card-round">
                     <div class="card-body">
@@ -65,6 +112,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-8">
                 <div class="card card-round">
@@ -88,32 +136,19 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="chart-container" style="min-height: 375px">
-                            <div class="chartjs-size-monitor"
-                                style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                                <div class="chartjs-size-monitor-expand"
-                                    style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                    <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink"
-                                    style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                                    <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                                </div>
-                            </div>
-                            <canvas id="statisticsChart" width="609" height="375"
-                                style="display: block; width: 609px; height: 375px;"
-                                class="chartjs-render-monitor"></canvas>
+                        <div class="chart-container">
+                            <canvas id="columnChart"></canvas>
                         </div>
                         <div id="myChartLegend">
-                            <ul class="0-legend html-legend">
-                                <li><span style="background-color:#f3545d"></span>Subscribers</li>
-                                <li><span style="background-color:#fdaf4b"></span>New Visitors</li>
-                                <li><span style="background-color:#177dff"></span>Active Users</li>
+                            <ul class="chart-legend">
+                                <li><span class="legend-color" style="background-color:#f3545d"></span>Doanh thu hàng tháng
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="card card-primary card-round">
                     <div class="card-header">
@@ -157,23 +192,12 @@
                                 style="display: block; width: 307px; height: 150px;"
                                 class="chartjs-render-monitor"></canvas>
                         </div>
+
                     </div>
                 </div>
-                {{-- <div class="card card-round">
-                    <div class="card-body pb-0">
-                        <div class="h1 fw-bold float-end text-primary">+5%</div>
-                        <h2 class="mb-2">17</h2>
-                        <p class="text-muted">Users online</p>
-                        <div class="pull-in sparkline-fix">
-                            <div id="lineChart"><canvas width="309" height="70"
-                                    style="display: inline-block; width: 309.781px; height: 70px; vertical-align: top;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
         </div>
-        {{-- card-body pb-0 --}}
+
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-round">
@@ -199,13 +223,16 @@
                                 <div class="item-list">
                                     <div class="avatar">
                                         <span
-                                            class="avatar-title rounded-circle border border-white text-uppercase {{ randomClass() }}">
+                                            class="avatar-title rounded-circle border border-white text-uppercase {{ 'bg-' . substr(md5($item->name), 0, 6) }}">
                                             {{ substr($item->name, 0, 1) }}
                                         </span>
                                     </div>
-                                    <div class="info-user ms-3">
+                                    <div class="info-user ms-1">
                                         <div class="username">{{ $item->name }}</div>
                                         <div class="status">{{ $item->phone }}</div>
+                                    </div>
+                                    <div class="info-user ms-2">
+                                        {{ \Carbon\Carbon::parse($item->created_at)->format('m/Y') }}
                                     </div>
                                     <button class="btn btn-icon btn-link op-8 me-1">
                                         <i class="far fa-envelope"></i>
@@ -215,27 +242,11 @@
                                     </button>
                                 </div>
                             @endforeach
-
-                            @php
-                                function randomColor()
-                                {
-                                    // Define a range of colors or use an algorithm to generate them dynamically
-                                    $colors = ['#FF5733', '#33FF57', '#5733FF', '#33B5E5', '#FFBB33'];
-                                    return $colors[array_rand($colors)];
-                                }
-
-                                function randomClass()
-                                {
-                                    // Define a range of classes or use an algorithm to generate them dynamically
-                                    $classes = ['bg-primary', 'bg-success', 'bg-info', 'bg-warning', 'bg-danger'];
-                                    return $classes[array_rand($classes)];
-                                }
-                            @endphp
-
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="card card-round">
                     <div class="card-body">
@@ -260,7 +271,7 @@
                                 <div class="item-list">
                                     <div class="avatar">
                                         <span
-                                            class="avatar-title rounded-circle border border-white text-uppercase {{ randomClass() }}">
+                                            class="avatar-title rounded-circle border border-white text-uppercase {{ 'bg-' . substr(md5($item->name), 0, 6) }}">
                                             {{ substr($item->name, 0, 1) }}
                                         </span>
                                     </div>
@@ -268,7 +279,9 @@
                                         <div class="username">{{ $item->name }}</div>
                                         <div class="status">{{ $item->phone }}</div>
                                     </div>
-                                    <div class="info-user ms-2">{{ \Carbon\Carbon::parse($item->created_at)->format('m/Y') }}</div>
+                                    <div class="info-user ms-2">
+                                        {{ \Carbon\Carbon::parse($item->created_at)->format('m/Y') }}
+                                    </div>
                                     <button class="btn btn-icon btn-link op-8 me-1">
                                         <i class="far fa-envelope"></i>
                                     </button>
@@ -281,6 +294,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-12">
                 <div class="card card-round">
                     <div class="card-header">
@@ -303,7 +317,6 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <!-- Projects table -->
                             <table class="table align-items-center mb-0">
                                 <thead class="thead-light">
                                     <tr>
@@ -342,4 +355,64 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('columnChart').getContext('2d');
+            var months = {!! json_encode(range(1, 12)) !!};
+            var monthlyRevenue = {!! json_encode($getMonthlyRevenue) !!};
+
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months.map(function(month) {
+                        return 'Tháng ' + month
+                    }),
+                    datasets: [{
+                        label: 'Doanh thu hàng tháng',
+                        data: monthlyRevenue,
+                        backgroundColor: [
+                            '#f3545d',
+                            '#fdaf4b',
+                            '#177dff',
+                            '#6f42c1',
+                            '#20c997',
+                            '#ffc107',
+                            '#007bff',
+                            '#28a745',
+                            '#dc3545',
+                            '#17a2b8',
+                            '#6610f2',
+                            '#6c757d',
+                        ],
+                        borderColor: [
+                            '#f3545d',
+                            '#fdaf4b',
+                            '#177dff',
+                            '#6f42c1',
+                            '#20c997',
+                            '#ffc107',
+                            '#007bff',
+                            '#28a745',
+                            '#dc3545',
+                            '#17a2b8',
+                            '#6610f2',
+                            '#6c757d',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -75,6 +76,7 @@ class OrderService
     public function getMonthlyRevenue()
     {
         $currentYear = date('Y');
+
         $monthlyRevenue = Order::select(
             DB::raw('YEAR(created_at) as year'),
             DB::raw('MONTH(created_at) as month'),
@@ -98,7 +100,6 @@ class OrderService
             'totalAnnualRevenue' => $totalAnnualRevenue,
         ];
     }
-
     public function getTodayRevenueAndOrders()
     {
         $currentDate = date('Y-m-d');

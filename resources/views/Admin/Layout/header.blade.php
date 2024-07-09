@@ -278,8 +278,8 @@
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">
                         <div class="avatar-sm">
-                            <img src="{{ asset(session('authUser')->user_info->img_url) }}" alt="..."
-                                class="avatar-img rounded-circle">
+                            <img src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
+                                alt="image profile" class="avatar-img rounded-circle">
                         </div>
                         <span class="profile-username">
                             <span class="op-7">Hi,</span>
@@ -293,8 +293,8 @@
                                 <li>
                                     <div class="user-box">
                                         <div class="avatar-lg">
-                                            <img src="{{ asset(session('authUser')->user_info->img_url) }}"
-                                                alt="image profile" class="avatar-img rounded">
+                                            <img src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
+                                                alt="image profile" class="avatar-img rounded-circle">
                                         </div>
                                         <div class="u-text">
                                             <h4>{{ session('authUser')->name }}</h4>
