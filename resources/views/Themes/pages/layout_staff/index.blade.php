@@ -330,7 +330,7 @@ $j(document).on('click', '.closebtn', function(e) {
             updateCart(response.cart);
             updateCartBill(response.cart);
             var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (!response.cart) {
+            if (response.cart) {
                 submitBuyOrderBill.setAttribute('disabled', 'disabled');
             } else {
                 submitBuyOrderBill.removeAttribute('disabled');
@@ -352,6 +352,39 @@ $j(document).on('click', '.closebtn', function(e) {
         }
     });
 });
+
+$j('#paymentbill').submit(function(event) {
+        // Ngăn chặn hành động mặc định của form
+        event.preventDefault();
+
+        // Lấy action và method của form
+        var actionUrl = $(this).attr('action');
+        var method = $(this).attr('method');
+
+        // Gửi Ajax request
+        $j.ajax({
+            url: actionUrl,
+            method: method,
+            dataType: 'json',
+            data: $(this).serialize(), // Serialize form data
+            success: function(response) {
+
+                var downloadLink = document.createElement('a');
+                downloadLink.href = response.pdf_url;
+                downloadLink.download = 'order.pdf';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('Đã xảy ra lỗi khi xử lý thanh toán và tải xuống.');
+            }
+        });
+    });
 
 function updateCartBill(cart) {
     // Cập nhật nội dung giỏ hàng trong HTML

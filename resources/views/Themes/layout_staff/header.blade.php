@@ -104,7 +104,7 @@
 
 @if (session('action'))
 <script>
-   
+
     $(document).ready(function(){
         Swal.fire({
         icon: 'success',
@@ -177,12 +177,12 @@
                     <div id="submenu" class="submenu">
                         <ul>
                             <li><a href="#">Thông tin tài khoản</a></li>
-                            <li><a href="#">Lịch sử mua hàng</a></li>
+                            <li><a href="{{ route('staff.order') }}">Lịch sử mua hàng</a></li>
                             <li> <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
                                 style="display: none;">
                                 @csrf
                             </form>
-                            <a class="dropdown-item" href="#"
+                            <a style="padding: 0px" class="dropdown-item" href="#"
                                 onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a></li>

@@ -135,13 +135,12 @@
                             <p style='margin: 0px;'>Cảm ơn quý khách!</p>
                             <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png"
                                 alt="QR Code">
+                            <div>
+                                <p>ViETTIN - NGUYEN VAN A - QUANAN</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {{-- @if (session('action'))
-
-                    {{ session('action') }}
-                @else --}}
                 <div class="modal-footer" style="justify-content: center">
                     <form action="{{ route('staff.pay') }}" method="POST" id="paymentbill">
                         @csrf
@@ -153,11 +152,6 @@
         </div>
     </div>
 </div>
-{{-- @if(Session::has('action'))
-    <div class="alert alert-success">
-        {{ Session::get('action') }}
-    </div>
-@endif --}}
 
 
 

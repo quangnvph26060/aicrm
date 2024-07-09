@@ -138,7 +138,7 @@
                     <p>Ngày tạo: 01/07/2024</p>
                     <p>Tên khách: {{ $client->name }}</p>
                     <p>Số điện thoại: {{ $client->phone }}</p>
-                    <p>Tên thu ngân: Trần Thị B</p>
+                    <p>Tên thu ngân: {{ $user->name }}</p>
                 </div>
                 <div class="receipt-items">
                     <table>
@@ -166,23 +166,26 @@
                 </div>
                 <div class="receipt-totals">
                     <div class="total">
-                        <span style="float: left;">Tổng cộng :</span>
+                        <span style="float: left;">Tổng cộng</span>
                         <span>{{ number_format($sum) }} VND</span>
                     </div>
                     <hr>
                     <div class="total">
-                        <span style="float: left;">Tổng tiền phải trả : </span>
+                        <span style="float: left;">Tổng tiền phải trả  </span>
                         <span>{{ number_format($sum) }} VND</span>
                     </div>
                     <hr>
                     <div class="total">
-                        <span style="float: left;">Còn phải trả : </span>
+                        <span style="float: left;">Còn phải trả  </span>
                         <span>{{ number_format($sum) }} VND</span>
                     </div>
                 </div>
                 <div class="receipt-footer">
                     <p>Cảm ơn quý khách!</p>
                     <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png" alt="QR Code">
+                    <div>
+                        <p>ViETTIN - NGUYEN VAN A - QUANAN</p>
+                    </div>
                 </div>
             </div>
         </div>

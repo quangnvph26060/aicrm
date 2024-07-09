@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Staff\ClientController as StaffClientController;
+use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
@@ -116,4 +117,6 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     Route::post('/client/add', [StaffClientController::class, 'addClient'])->name('client.add');
     Route::post('pay', [StaffClientController::class, 'pay'])->name('pay');
     Route::get('cart', [StaffClientController::class, 'cart'])->name('cart.data');
+    Route::get('order', [StaffOrderController::class, 'index'])->name('order');
+    Route::get('order/fetch', [StaffOrderController::class, 'orderFetch'])->name('orderFetch');
 });

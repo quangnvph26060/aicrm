@@ -98,14 +98,18 @@ class ClientController extends Controller
                 ]);
             }
             Cart::where('user_id', $user->id)->delete();
-            $html = view('Themes.pages.bill.index', compact('cartItems','sum', 'client'))->render();
+            $html = view('Themes.pages.bill.index', compact('cartItems','sum', 'client', 'user'))->render();
             $pdf = Pdf::loadHTML($html);
             $pdfFileName = 'order.pdf';
             $pdf->save(public_path($pdfFileName));
             $response = $this->bill($pdfFileName);
             Session::flash('action', 'Thanh toán thành công');
 
-            return $response;
+            // return $response;
+            return response()->json([
+                'pdf_url' => asset($pdfFileName),
+                'message' => 'Thanh toán thành công'
+            ]);
         } catch (Exception $e) {
             Log::error('Failed to process payment: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to process payment'], 500);
