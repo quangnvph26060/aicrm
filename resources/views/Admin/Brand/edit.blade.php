@@ -2,63 +2,135 @@
 
 @section('content')
     <style>
-        .add_product>div {
-            margin-top: 20px !important;
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .icon-bell:before {
+            content: "\f0f3";
+            font-family: FontAwesome;
         }
 
         .card {
-            border-radius: 10px !important;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background-color: #fff;
+            margin-bottom: 2rem;
         }
 
         .card-header {
-            background-color: #007bff !important;
-            color: #fff !important;
-            border-bottom: none !important;
-            border-top-left-radius: 10px !important;
-            border-top-right-radius: 10px !important;
+            background: linear-gradient(135deg, #6f42c1, #007bff);
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            padding: 1.5rem;
         }
 
         .card-title {
-            text-align: center !important;
-            margin-bottom: 0 !important;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
         }
 
-        .card-body {
-            padding: 20px !important;
+        .breadcrumbs {
+            background: #fff;
+            padding: 0.75rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .form-control {
-            border-radius: 8px !important;
-            padding: 12px !important;
-            box-shadow: none !important;
+        .breadcrumbs a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
         }
 
-        .form-control:focus {
-            border-color: #007bff !important;
-            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25) !important;
+        .breadcrumbs i {
+            color: #6c757d;
         }
 
-        .btn-primary {
-            background-color: #007bff !important;
-            border-color: #007bff !important;
-            border-radius: 8px !important;
-            padding: 12px 20px !important;
-            transition: background-color 0.3s ease !important;
+        .table-responsive {
+            margin-top: 1rem;
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3 !important;
-            border-color: #0056b3 !important;
+        .table {
+            margin-bottom: 0;
         }
 
-        img.brand-logo {
-            width: 100px !important;
-            height: 70px !important;
-            margin-top: 10px !important;
+        .table th,
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .btn {
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .dataTables_info,
+        .dataTables_paginate {
+            margin-top: 1rem;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .page-item:hover .page-link {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .pagination .page-item.active .page-link,
+        .pagination .page-item .page-link {
+            transition: all 0.3s ease;
         }
     </style>
-
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -143,4 +215,3 @@
         CKEDITOR.replace('description');
     </script>
 @endsection
- style="color:white"

@@ -1,99 +1,60 @@
 @extends('Admin.Layout.index')
 @section('content')
     <style>
-        .add_product>div {
-            margin-top: 20px;
-        }
-
-        h4 {
-            text-align: center;
-            color: white !important;
-        }
-
-        .card-header {
-            background: linear-gradient(90deg, #007bff, #33b5e5);
-            color: white;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
         .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        border-radius: 15px;
+        overflow: hidden;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
+    .card-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        background: linear-gradient(135deg, #6f42c1, #007bff);
+    }
 
-        .btn-primary {
-            background: linear-gradient(90deg, #007bff, #0056b3);
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
+    .card-body {
+        padding: 2rem;
+        background-color: #f8f9fa;
+    }
 
-        .btn-primary:hover {
-            background: #0056b3;
-            transform: scale(1.05);
-        }
+    .table th,
+    .table td {
+        vertical-align: middle;
+        padding: 1rem;
+        font-size: 1rem;
+    }
 
-        .form-control {
-            border-radius: 0.375rem;
-            box-shadow: none;
-            transition: box-shadow 0.2s ease, border-color 0.2s ease;
-        }
+    .table th {
+        background-color: #e9ecef;
+        font-weight: bold;
+        color: #495057;
+    }
 
-        .form-control:focus {
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-            border-color: #007bff;
-        }
+    .table-hover tbody tr:hover {
+        background-color: #dee2e6;
+    }
 
-        .breadcrumbs {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
 
-        .breadcrumbs a {
-            color: #007bff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+        transform: translateY(-2px);
+    }
 
-        .breadcrumbs a:hover {
-            color: #0056b3;
-        }
+    .text-primary {
+        color: #007bff !important;
+    }
 
-        .form-label {
-            font-weight: bold;
-        }
-
-        .mb-12 {
-            margin-bottom: 1.5rem !important;
-        }
-
-        .card-body {
-            background: #f8f9fa;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-            padding: 20px;
-        }
-
-        .table-responsive {
-            margin-top: 20px;
-        }
-
-        .page-inner {
-            margin-top: 20px;
-        }
+    .nowrap {
+        white-space: nowrap;
+        display: flex;
+        justify-content: space-between;
+    }
     </style>
     <div class="page-inner">
         <div class="page-header">
@@ -121,7 +82,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Chỉnh sửa danh mục số {{ $category->id }}</h4>
+                        <h4 class="card-title" style="text-align: center; color:white;">Chỉnh sửa danh mục số {{ $category->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

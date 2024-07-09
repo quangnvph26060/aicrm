@@ -2,6 +2,61 @@
 
 @section('content')
     <style>
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            background: linear-gradient(135deg, #6f42c1, #007bff);
+        }
+
+        .card-body {
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+            padding: 1rem;
+            font-size: 1rem;
+        }
+
+        .table th {
+            background-color: #e9ecef;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #dee2e6;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .text-primary {
+            color: #007bff !important;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+            display: flex;
+            justify-content: space-between;
+        }
+
         /* Custom styles for form decoration */
         .form-group {
             position: relative !important;
@@ -114,13 +169,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title text-center">Chỉnh sửa thông tin Admin</h4>
+                        <h4 class="card-title text-center" style="color:white">Chỉnh sửa thông tin Admin</h4>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.update', ['id' => $admin->id]) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row">
+                                <!-- First Column -->
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="name" class="form-label">Tên</label>
@@ -143,6 +199,9 @@
                                             </span>
                                         @enderror
                                     </div>
+                                </div>
+                                <!-- Second Column -->
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="email" class="form-label">Email</label>
                                         <input id="email" class="form-control @error('email') is-invalid @enderror"
@@ -167,7 +226,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        @if ($admin->user_info->img_url)
+                                        @if ($admin->user_info && $admin->user_info->img_url)
                                             <img class="avatar" src="{{ asset($admin->user_info->img_url) }}"
                                                 alt="Avatar">
                                         @else
@@ -175,6 +234,7 @@
                                         @endif
                                     </div>
                                 </div>
+                                <!-- Buttons Row -->
                                 <div class="col-lg-12 d-flex justify-content-between">
                                     <div>
                                         <button type="submit" class="btn btn-primary w-md">
@@ -285,7 +345,7 @@
                         console.log(xhr);
                         $('#changePasswordMessage').html(
                             '<div class="alert alert-danger mt-3">Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại sau.</div>'
-                        );
+                            );
                     },
                     complete: function() {
                         $('#changePasswordModal').modal('show');
