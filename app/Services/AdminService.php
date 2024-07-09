@@ -41,7 +41,6 @@ class AdminService
 
             // Update the admin data
             $admin->update($data);
-
             // Check if there is an image to update
             if (isset($data['img_url']) && $data['img_url']->isValid()) {
                 $image = $data['img_url'];
