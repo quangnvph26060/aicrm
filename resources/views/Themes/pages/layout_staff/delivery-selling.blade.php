@@ -60,9 +60,13 @@
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderPay_error"></span> </div>
                 </div>
-                <button type="button" id="submitBuyOrderBill" disabled onclick="submitorder(event)"
-                    class="btn btn-primary btn-block">Sumbit
+                @if($cart->count() > 0)
+                <button type="button" id="submitBuyOrderBill" onclick="submitorder(event)"
+                    class="btn btn-primary btn-block">Submit Order</button>
+                @else
+                <button type="button" id="submitBuyOrderBill" disabled class="btn btn-primary btn-block">Submit
                     Order</button>
+                @endif
             </form>
         </div>
     </div>
