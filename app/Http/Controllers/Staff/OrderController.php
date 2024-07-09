@@ -16,11 +16,23 @@ class OrderController extends Controller
     public function orderFetch(Request $request)
     {
         if ($request->ajax()) {
-            $order = Order::paginate(1);
+            $orders = Order::paginate(6);
+            $formattedOrders = $orders->map(function ($order) {
+                return [
+                    'id' => $order->id,
+                    'user_name' => $order->user->name,
+                    'client_name' => $order->client->name,
+                    'total_money' => $order->total_money,
+                    'created_at' => $order->created_at,
+                    'status' => $order->status,
+                    // Thêm các thông tin khác của đơn hàng cần hiển thị
+                ];
+            });
+
             return response()->json([
-                'data' => $order->items(),
-                'current_page' => $order->currentPage(),
-                'last_page' => $order->lastPage(),
+                'data' => $formattedOrders,
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
             ]);
         }
     }
