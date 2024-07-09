@@ -119,4 +119,7 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     Route::get('cart', [StaffClientController::class, 'cart'])->name('cart.data');
     Route::get('order', [StaffOrderController::class, 'index'])->name('order');
     Route::get('order/fetch', [StaffOrderController::class, 'orderFetch'])->name('orderFetch');
+    Route::get('product', [StaffProductController::class, 'product'])->name('product.get');
+    Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
+
 });

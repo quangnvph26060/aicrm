@@ -111,14 +111,15 @@
                 method: 'GET',
                 success: function(data) {
                     let html = '';
+                    var start_index = (page - 1) * data.pageOrder;
                     j.each(data.data, function(index, order) {
                         let formattedDate = moment(order.created_at).format('DD/MM/YYYY');
                         html += `
                             <tr>
-                                <td>${index + 1}</td>
+                                <td>${start_index + index + 1}</td>
                                 <td>${order.id}</td>
                                 <td>${order.client_name}</td>
-                                <td>${order.total_money}</td>
+                                <td>${(Math.ceil(order.total_money / 500) * 500).toLocaleString('en-US')}</td>
                                 <td>${order.user_name}</td>
                                 <td>${formattedDate}</td>
                                 <td>${order.status === 1 ? '<span class="badge badge-success p-2">Đã thanh toán</span>' : '<span class="badge badge-success p-2">Chưa thanh toán</span>'}</td>

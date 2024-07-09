@@ -34,6 +34,11 @@ class ProductController extends Controller
         return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum'));
     }
 
+    public function product(){
+        $products = $this->productService->getProductAll();
+        return response()->json($products);
+    }
+
     public function addToCart(Request $request)
     {
         $productId = $request->input('product_id');
@@ -142,5 +147,13 @@ class ProductController extends Controller
             }
         }
         return response()->json(['success' => 'Product added to cart!', 'cart' => $products, 'sum' => number_format($sum)]);
+    }
+
+    public function search(Request $request){
+        $searchTerm = $request->input('name');
+
+        $products = $this->productService->productByName($searchTerm);
+
+        return response()->json($products);
     }
 }

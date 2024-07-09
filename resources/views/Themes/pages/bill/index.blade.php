@@ -184,7 +184,7 @@
                     <p>Cảm ơn quý khách!</p>
                     <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png" alt="QR Code">
                     <div>
-                        <p>ViETTIN - NGUYEN VAN A - QUANAN</p>
+                        <p>VIETIN - NGUYEN VAN A - QUANAN</p>
                     </div>
                 </div>
             </div>

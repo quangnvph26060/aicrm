@@ -7,6 +7,7 @@ use App\Http\Responses\ApiResponse;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Services\ClientService;
+use App\Services\ProductService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
@@ -26,9 +27,11 @@ class ClientController extends Controller
 {
     //
     protected $clientService;
-    public function __construct(ClientService $clientService)
+    protected $productService;
+    public function __construct(ClientService $clientService, ProductService $productService)
     {
         $this->clientService = $clientService;
+        $this->productService = $productService;
     }
 
     public function addClient(Request $request)
@@ -79,6 +82,7 @@ class ClientController extends Controller
             $client= array();
             foreach ($cartItems as $key => $item) {
                 $sum += $item->product->priceBuy * $item->amount;
+                $this->productService->updateProduct($item->product_id, ['quantity' => $item->product->quantity - $item->amount]);
             }
             if ($listphone->contains($request->phone)) {
                 $client = $this->clientService->findClientByPhone($request->phone);

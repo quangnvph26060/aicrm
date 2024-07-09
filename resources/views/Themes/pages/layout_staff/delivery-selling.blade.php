@@ -60,13 +60,10 @@
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderPay_error"></span> </div>
                 </div>
-                @if($cart->count() > 0)
-                <button type="button" id="submitBuyOrderBill" onclick="submitorder(event)"
+
+                <button type="button" id="submitBuyOrderBill" disabled onclick="submitorder(event)"
                     class="btn btn-primary btn-block">Submit Order</button>
-                @else
-                <button type="button" id="submitBuyOrderBill" disabled class="btn btn-primary btn-block">Submit
-                    Order</button>
-                @endif
+
             </form>
         </div>
     </div>
@@ -140,7 +137,7 @@
                             <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png"
                                 alt="QR Code">
                             <div>
-                                <p>ViETTIN - NGUYEN VAN A - QUANAN</p>
+                                <p>VIETIN - NGUYEN VAN A - QUANAN</p>
                             </div>
                         </div>
                     </div>
@@ -149,7 +146,7 @@
                     <form action="{{ route('staff.pay') }}" method="POST" id="paymentbill">
                         @csrf
                         <div id="info_client"></div>
-                        <button type="submit" class="btn btn-secondary">Thành toán</button>
+                        <button type="submit" class="btn btn-secondary">Thanh toán</button>
                     </form>
                 </div>
             </div>
