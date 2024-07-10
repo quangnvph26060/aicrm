@@ -1,5 +1,7 @@
 @extends('Admin.Layout.index')
 @section('content')
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
@@ -111,7 +113,7 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Thêm</a>
+                <a href="#">Thêm</a> d
             </li>
         </ul>
     </div>
@@ -131,6 +133,8 @@
                                         <div>
                                             <label for="placeholderInput" class="form-label">Tên sản phẩm</label>
                                             <input type="text" class="form-control" name="name" id="name">
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="name_error"></span> </div>
                                         </div>
                                         <div>
                                             <label for="placeholderInput" class="form-label">Thương hiệu</label>
@@ -140,6 +144,8 @@
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="brand_error"></span> </div>
                                         </div>
                                         <div>
                                             <label for="example-text-input" class="form-label">Loại Danh Mục<span class="text text-danger">*</span></label>
@@ -153,38 +159,53 @@
                                         </div>
                                         <div>
                                             <label for="placeholderInput" class="form-label">Tồn kho</label>
-                                            <input value="" required class="form-control" name="quantity" type="number" id="quantity">
+                                            <input value="" min='1' required class="form-control" name="quantity" type="number" id="quantity">
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="quantity_error"></span> </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 add_product">
                                         <div>
                                             <label for="example-search-input" class="form-label">Giá nhập<span class="text text-danger">*</span></label>
-                                            <input value="" required class="form-control" name="price" type="number" id="price">
+                                            <input value="" min='1' required class="form-control" name="price" type="number" id="price">
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="price_error"></span> </div>
                                         </div>
                                         <div>
                                             <label for="example-search-input" class="form-label">Giá bán<span class="text text-danger">*</span></label>
-                                            <input value="" required class="form-control" name="priceBuy" type="number" id="priceBuy">
+                                            <input value="" min='1' required class="form-control" name="priceBuy" type="number" id="priceBuy">
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="priceBuy_error"></span> </div>
                                         </div>
                                         <div>
                                             <label for="example-text-input" class="form-label">Ảnh sản phẩm<span class="text text-danger">*</span></label>
-                                            <input id="images" class="form-control" type="file" name="images[]" multiple accept="image/*" required>
+                                            <input id="images" class="form-control" type="file" name="images[]" multiple accept="image/*" >
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="image_error"></span> </div>
                                         </div>
                                         <div>
                                             <label for="example-text-input" class="form-label">Trạng thái<span class="text text-danger">*</span></label>
                                             <select class="form-select status trang-thai" id="status" name="status">
+                                                <option value="">--- Chọn trạng thái ---</option>
                                                 <option value="published">Được phát hành</option>
                                                 <option value="inactive">Không hoạt động</option>
                                                 <option value="scheduled">Lên kế hoạch</option>
                                             </select>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="status_error"></span> </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <label for="">Mô tả</label>
                                         <textarea id="description" cols="30" rows="10" name="description"></textarea>
+                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                            id="description_error"></span> </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer m-2">
-                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                    <button type="button" onclick="submitaddProduct(event)" class="btn btn-primary w-md">
+                                        Xác nhận
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -195,11 +216,124 @@
     </div>
 </div>
 
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
-    function submitForm() {
-        document.getElementById('addproduct').submit();
+ CKEDITOR.replace('description');
+var validateorder = {
+        'name': {
+            'element': document.getElementById('name'),
+            'error': document.getElementById('name_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E010')
+                },
+            ]
+        },
+        'brand_id': {
+            'element': document.getElementById('brand_id'),
+            'error': document.getElementById('brand_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E027')
+                },
+            ]
+        },
+        'category_id': {
+            'element': document.getElementById('category_id'),
+            'error': document.getElementById('category_id_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E015')
+                },
+            ]
+        },
+        'quantity': {
+            'element': document.getElementById('quantity'),
+            'error': document.getElementById('quantity_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E013')
+                },
+            ]
+        },
+        'price': {
+            'element': document.getElementById('price'),
+            'error': document.getElementById('price_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E012')
+                },
+            ]
+        },
+        'priceBuy': {
+            'element': document.getElementById('priceBuy'),
+            'error': document.getElementById('priceBuy_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E012')
+                },
+            ]
+        },
+        'images': {
+            'element': document.getElementById('images'),
+            'error': document.getElementById('image_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E011')
+                },
+            ]
+        },
+        'status': {
+            'element': document.getElementById('status'),
+            'error': document.getElementById('status_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E017')
+                },
+            ]
+        },
+        'description': {
+            'element': document.getElementById('description'),
+            'error': document.getElementById('description_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E016')
+                },
+            ]
+        },
+
     }
-    CKEDITOR.replace('description');
+    function submitaddProduct(event){
+        event.preventDefault();
+        if(validateAllFields(validateorder)){
+            document.getElementById('addproduct').submit();
+        }
+    }
 </script>
 @endsection

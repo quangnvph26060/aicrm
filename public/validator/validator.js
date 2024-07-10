@@ -102,7 +102,7 @@ function generateErrorMessage(code, values = []) {
         E012: 'Giá sản phẩm không được dể trông',
         E013: 'Số lượng sản phẩm không được dể trông',
         E014: 'Hoa hồng không được để sống',
-        E015: 'Loại danh mục không dược để trống',
+        E015: 'Danh mục không dược để trống',
         E016: 'Mô tả không được để trống',
         E017: 'Trạng thái không được để trống',
         E018: ' Không được để trống ',
@@ -126,6 +126,15 @@ function generateErrorMessage(code, values = []) {
         E034 : ' Nhập số điện thoại khách hàng ',
         E035 : ' Nhập địa chỉ khách hàng ',
         E036 : ' Chọn phương thức thanh toán ',
+        E042 : ' Nhập ngày sinh ',
+        E043 : ' Nhập mã bưu diện ',
+        E044 : ' Chọn giới tính ',
+        // nhanvien
+        E037 : ' Nhập tên nhân viên ',
+        E038 : ' Nhập email nhân viên ',
+        E039 : ' Nhập số điện thoại nhân viên ',
+        E040 : ' Nhập địa chỉ nhân viên ',
+        E041 : ' Xác nhận mật khẩu mới ',
 
 
 

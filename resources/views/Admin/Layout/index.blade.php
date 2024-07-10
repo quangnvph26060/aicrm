@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.css">
+    <script src="{{ asset('validator/validator.js') }}"></script>
 
     <title>Document</title>
 </head>

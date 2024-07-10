@@ -124,19 +124,23 @@
                     <div class="card-body">
                         <div class="">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                                <form action="{{ route('admin.category.store') }}" method="POST" id="submitform"
+                                <form action="{{ route('admin.category.store') }}" method="POST" id="addcategory"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="name" class="col-form-label form-label">Tên danh mục:</label>
                                         <input type="text" class="form-control" name="name" id="name" required>
+                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                            id="name_error"></span> </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="col-form-label form-label">Mô tả:</label>
                                         <textarea required class="form-control" name="description" id="description" rows="4"></textarea>
+                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                            id="description_error"></span> </div>
                                     </div>
                                     <div class="mb-3 text-center">
-                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                        <button type="button" onclick="addcategory(event)" class="btn btn-primary">Lưu</button>
                                     </div>
                                 </form>
                             </div>
@@ -150,8 +154,41 @@
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
         function submitForm() {
-            document.getElementById('addproduct').submit();
+            document.getElementById('addcategory').submit();
         }
         CKEDITOR.replace('description');
+        var validateorder = {
+        'name': {
+            'element': document.getElementById('name'),
+            'error': document.getElementById('name_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E015')
+                },
+            ]
+        },
+        'description': {
+            'element': document.getElementById('description'),
+            'error': document.getElementById('description_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E016')
+                },
+            ]
+        },
+
+    }
+    function addcategory(event){
+        event.preventDefault();
+        if(validateAllFields(validateorder)){
+            submitForm();
+        }
+    }
     </script>
 @endsection
