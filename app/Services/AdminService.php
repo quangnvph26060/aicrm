@@ -123,7 +123,19 @@ class AdminService
             throw $e;
         }
     }
-
+    public function findStaffByPhone($phone)
+    {
+        try {
+            $staff = $this->user
+                ->where('phone', $phone)
+                ->where('role_id', 2)
+                ->first();
+            return $staff;
+        } catch (Exception $e) {
+            Log::error('Failed to find client profile: ' . $e->getMessage());
+            throw new Exception('Failed to find client profile');
+        }
+    }
     /**
      * Summary of addStaff
      */

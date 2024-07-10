@@ -5,6 +5,7 @@ use App\Models\Product;
 use App\Models\ProductImages;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -184,10 +185,11 @@ class ProductService
         }
     }
 
-    public function productByName($name): \Illuminate\Database\Eloquent\Collection
+    public function productByName($name):LengthAwarePaginator
     {
         try {
-            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->get();
+            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->paginate(5);
+            // dd($products);
             return $products;
         } catch (Exception $e) {
             Log::error("Failed to search products: {$e->getMessage()}");

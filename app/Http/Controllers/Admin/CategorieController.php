@@ -29,7 +29,18 @@ class CategorieController extends Controller
             return ApiResponse::error('Failed to fetch Category', 500);
         }
     }
-
+    public function findByName(Request $request)
+    {
+        try{
+            $category = $this->categoryService->findCategoryByName($request->input('name'));
+            return view('Admin.category.index', compact('category'));
+        }
+        catch(Exception $e)
+        {
+            Log::error('Failed to fin category: ' .$e->getMessage());
+            return ApiResponse::error('Failed to find category', 500);
+        }
+    }
     public function add(){
         return view('Admin.category.add');
     }

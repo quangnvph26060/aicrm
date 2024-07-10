@@ -158,11 +158,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Chỉnh sửa thông tin sản phẩm số {{ $product->id }}</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Chỉnh sửa thông tin sản phẩm số {{ $products->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form action="{{ route('admin.product.update', ['id' => $product->id]) }}" id="editproduct" method="POST"
+                            <form action="{{ route('admin.product.update', ['id' => $products->id]) }}" id="editproduct" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
@@ -171,7 +171,7 @@
                                             <label for="example-text-input" class="form-label">Tên sản phẩm <span
                                                     class="text text-danger">*</span></label>
                                             <input class="form-control" name="name" type="text"
-                                                id="name" value="{{ $product->name }}" required>
+                                                id="name" value="{{ $products->name }}" required>
                                             <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                                                     id="name_error"></span> </div>
                                         </div>
@@ -182,7 +182,7 @@
                                             <select class="form-control" name="brand_id" id="brand_id" required>
                                                 <option value="">Chọn thương hiệu</option>
                                                 @foreach ($brand as $item)
-                                                    <option {{ $product->brands->id == $item->id ? 'selected' : '' }}
+                                                    <option {{ $products->brands->id == $item->id ? 'selected' : '' }}
                                                         value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
@@ -194,7 +194,7 @@
                                             <label for="example-search-input" class="form-label">Giá nhập <span
                                                     class="text text-danger">*</span></label>
                                             <input required class="form-control" name="price" type="number"
-                                                id="price" value="{{ $product->price }}">
+                                                id="price" value="{{ $products->price }}">
                                                 <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                                                     id="price_error"></span> </div>
                                             </div>
@@ -203,7 +203,7 @@
                                             <label for="example-search-input" class="form-label">Giá bán <span
                                                     class="text text-danger">*</span></label>
                                             <input required class="form-control" name="priceBuy" type="number"
-                                                id="priceBuy" value="{{ $product->priceBuy }}">
+                                                id="priceBuy" value="{{ $products->priceBuy }}">
                                                 <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                                                     id="priceBuy_error"></span> </div>
                                         </div>
@@ -214,7 +214,7 @@
                                             <label for="example-url-input" class="form-label">Số lượng <span
                                                     class="text text-danger">*</span></label>
                                             <input required class="form-control" name="quantity" type="number"
-                                                id="quantity" value="{{ $product->quantity }}">
+                                                id="quantity" value="{{ $products->quantity }}">
                                                 <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                                                     id="quantity_error"></span> </div>
                                         </div>
@@ -225,7 +225,7 @@
                                             <select class="form-control" name="category_id" id="category_id" required>
                                                 <option value="">Chọn danh mục</option>
                                                 @foreach ($category as $item)
-                                                    <option {{ $product->category_id == $item->id ? 'selected' : '' }}
+                                                    <option {{ $products->category_id == $item->id ? 'selected' : '' }}
                                                         value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
@@ -238,11 +238,11 @@
                                                     class="text text-danger">*</span></label>
                                             <select class="form-control" name="status" id="status">
                                                 <option value="">Chọn trạng thái</option>
-                                                <option {{ $product->status == 'published' ? 'selected' : '' }}
+                                                <option {{ $products->status == 'published' ? 'selected' : '' }}
                                                     value="published">Được phát hành</option>
-                                                <option {{ $product->status == 'inactive' ? 'selected' : '' }}
+                                                <option {{ $products->status == 'inactive' ? 'selected' : '' }}
                                                     value="inactive">Không hoạt động</option>
-                                                <option {{ $product->status == 'scheduled' ? 'selected' : '' }}
+                                                <option {{ $products->status == 'scheduled' ? 'selected' : '' }}
                                                     value="scheduled">Lên kế hoạch</option>
                                             </select>
                                             <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
@@ -257,7 +257,7 @@
                                             <input  class="form-control" id="images" type="file" name="images[]"
                                                 multiple accept="image/*">
                                             <div style="display: flex">
-                                                @foreach ($product->images as $key => $item)
+                                                @foreach ($products->images as $key => $item)
                                                     <div style="position: relative; margin-top: 10px; margin-right: 10px;">
                                                         <img title="{{ $item->image_path }}"
                                                             style="width: 100px; height: 75px;"
@@ -275,7 +275,7 @@
                                         <div class="mb-3">
                                             <label for="example-url-input" class="form-label">Mô tả <span
                                                     class="text text-danger">*</span></label>
-                                            <textarea class="form-control" id="description" name="description" rows="2">{{ $product->description }}</textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="2">{{ $products->description }}</textarea>
                                         </div>
                                         <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                                             id="description_error"></span> </div>

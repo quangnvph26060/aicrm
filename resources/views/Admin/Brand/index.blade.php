@@ -36,12 +36,13 @@
 
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <div id="basic-datatables_filter" class="dataTables_filter">
-                                            <label>Tìm kiếm:
-                                                <input type="search" class="form-control form-control-sm" placeholder=""
-                                                    aria-controls="basic-datatables">
-                                            </label>
-                                        </div>
+                                        <form action="{{ route('admin.brand.findByName') }}" method="GET">
+                                            <div class="dataTables_filter">
+                                                <label>Tìm kiếm</label>
+                                                <input type="text" name="name" class="form-control form-control-sm"
+                                                    placeholder="Nhập tên" value="{{ old('name') }}">
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -77,7 +78,13 @@
                                                         </tr>
                                                     @endforeach
                                                 @else
-                                                    <!-- Handle empty user case -->
+                                                    <tr>
+                                                        <td class="text-center" colspan="6">
+                                                            <div class="">
+                                                                Chưa có thương hiệu
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 @endif
                                             </tbody>
                                         </table>

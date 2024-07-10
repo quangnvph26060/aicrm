@@ -87,13 +87,9 @@ class CategoryService
             throw new Exception('Failed to find category');
         }
     }
-    public function findCategory($name)  {
+    public function findCategoryByName($name): LengthAwarePaginator  {
         try{
-            $category = $this->categories->where('name', 'LIKE', '%' . $name . '%')->get();
-            if ($category->isEmpty()) {
-                throw new Exception('Category not found');
-            }
-            Log::info($category );
+            $category = $this->categories->where('name', 'LIKE', '%' . $name . '%')->paginate(5);
             return $category;
         }catch(Exception $e){
             Log::error('Failed to find category: ' . $e->getMessage());

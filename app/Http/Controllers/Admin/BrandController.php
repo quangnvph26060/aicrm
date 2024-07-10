@@ -4,25 +4,49 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\BrandService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
     //
     protected $brandService;
-    public function __construct(BrandService $brandService){
+    public function __construct(BrandService $brandService)
+    {
         $this->brandService = $brandService;
     }
-    public function index(){
+    public function index()
+    {
         $brand = $this->brandService->getAllBrand();
         return view('Admin.Brand.index', compact('brand'));
     }
-
-    public function addForm(){
-       return view('Admin.Brand.add');
+    public function findByName(Request $request)
+    {
+        try {
+            $brands = $this->brandService->brandByName($request->input('name'));
+            $brand = new LengthAwarePaginator(
+                $brands ? [$brands] : [],
+                $brands ? 1 : 0,
+                10,
+                1,
+                ['path' => Paginator::resolveCurrentPath()]
+            );
+            return view('Admin.Brand.index', compact('brand'));
+        } catch (Exception $e) {
+            Log::error('Failed to find brand: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to find brand'], 500);
+        }
+    }
+    public function addForm()
+    {
+        return view('Admin.Brand.add');
     }
 
-    public function add(Request $request){
+    public function add(Request $request)
+    {
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -43,16 +67,17 @@ class BrandController extends Controller
 
         $brand = $this->brandService->createBrand($data);
         return redirect()->route('admin.brand.store')->with('success', 'Thêm thành công');
-     }
+    }
 
-     public function edit($id){
+    public function edit($id)
+    {
         $brand = $this->brandService->getBrandById($id);
-       return view('Admin.Brand.edit', compact('brand'));
-     }
+        return view('Admin.Brand.edit', compact('brand'));
+    }
 
-     public function update($id, Request $request){
+    public function update($id, Request $request)
+    {
         $brand = $this->brandService->updateBrand($id, $request->all());
         return redirect()->route('admin.brand.store')->with('success', 'Sửa thành công');
-     }
-
+    }
 }

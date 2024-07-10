@@ -132,7 +132,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Sản phẩm</a>
+                    <a href="{{route('admin.product.store')}}">Sản phẩm</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -158,10 +158,12 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <div id="basic-datatables_filter" class="dataTables_filter">
-                                            <label>Tìm kiếm:<input type="search" class="form-control form-control-sm"
-                                                    placeholder="" aria-controls="basic-datatables"></label>
-                                        </div>
+                                        <form action="{{route('admin.product.findName')}}" method="GET">
+                                            <div id="basic-datatables_filter" class="dataTables_filter">
+                                                <label>Tìm kiếm:<input name="name" type="search" class="form-control form-control-sm"
+                                                        placeholder="" aria-controls="basic-datatables"></label>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -180,7 +182,7 @@
                                                     <th style="width: 120.2656px;"></th>
                                                 </tr>
                                             </thead>
-                                            @if ($product)
+                                            @if ($product && $product->count()>0)
                                                 <tbody>
                                                     @foreach ($product as $key => $value)
                                                         <tr>
@@ -201,7 +203,13 @@
                                                     @endforeach
                                                 </tbody>
                                             @else
-                                                <!-- Content for no products can be added here -->
+                                                <tr>
+                                                    <td class="text-center" colspan="6">
+                                                        <div class="">
+                                                            Không có sản phẩm
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endif
                                         </table>
                                         {{ $product->links('vendor.pagination.custom') }}
