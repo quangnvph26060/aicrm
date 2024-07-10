@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserInfo;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -107,13 +108,13 @@ class AdminService
 
     /**
      * Summary of getStaff
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return LengthAwarePaginator
      */
-    public function getStaff(): \Illuminate\Database\Eloquent\Collection
+    public function getStaff(): LengthAwarePaginator
     {
         DB::beginTransaction();
         try {
-            $admin = $this->user->where('role_id', 2)->get();
+            $admin = $this->user->where('role_id', 2)->paginate(5);
             DB::commit();
             return $admin;
         } catch (Exception $e) {
