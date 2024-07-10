@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\ConfigService;
@@ -31,7 +31,8 @@ class ConfigController extends Controller
     {
         try {
             $config = $this->configService->updateConfig($request->all());
-            return redirect()->back()->with('success', 'Chỉnh sửa thông tin thành công');
+            session()->flash('success', 'Thay đổi thông tin thành công');
+            return redirect()->back();
         } catch (\Exception $e) {
             Log::error('Failed to update configuration: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to update configuration');

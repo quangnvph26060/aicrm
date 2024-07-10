@@ -134,7 +134,7 @@
                     <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}">
                         @csrf
                         <input id="search_product" class="form-control mr-sm-2" name="name" type="search"
-                            placeholder="Search products..." aria-label="Search">
+                            placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
                         {{-- <button class="btn btn-outline-light my-2 my-sm-0" id="timkiem" type="submit"><i
                                 class="fas fa-search"></i></button> --}}
                     </form>

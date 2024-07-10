@@ -300,9 +300,15 @@
                                             <h4>{{ session('authUser')->name }}</h4>
                                             <p class="text-muted">{{ session('authUser')->email }}</p>
                                             <a href="{{ route('admin.detail', ['id' => session('authUser')->id]) }}"
+<<<<<<< HEAD
                                                 class="btn btn-xs btn-secondary btn-sm" >Trang cá nhân</a>
                                             <a href="#" class="btn btn-xs  btn-sm" style="background: red; color: #ffff"
                                                 onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Logout</a>
+=======
+                                                class="btn btn-xs btn-secondary btn-sm">Trang cá nhân</a>
+                                            <a href="#" class="btn btn-xs btn-danger btn-sm"
+                                                onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Đăng xuất</a>
+>>>>>>> 80fdba1039cf3111aec199027d5252d2039d1487
                                             <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
                                                 style="display: none;">
                                                 @csrf

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Categories;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -16,10 +17,10 @@ class CategoryService
         $this->categories = $categories;
     }
 
-    public function getCategoryAll(){
+    public function getCategoryAll():LengthAwarePaginator{
         try {
             Log::info('Fetching all categories');
-            return $this->categories->all();
+            return $this->categories->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to fetch categories: ' . $e->getMessage());
             throw new Exception('Failed to fetch categories');

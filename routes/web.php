@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
+use App\Http\Controllers\Admin\ConfigController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
@@ -107,6 +108,10 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
         // Route::get('/find/phone', [OrderController::class, 'getOrderbyPhone'])->name('findByPhone');
         Route::get('/admin/order/filter', [OrderController::class, 'filterOrder'])->name('filter');
+    });
+    Route::prefix('config')->name('config.')->group(function(){
+        Route::get('/detail', [ConfigController::class, 'index'])->name('detail');
+        Route::post('/update', [ConfigController::class, 'updateConfig'])->name('update');
     });
 })->middleware('checkRole:1');
 
