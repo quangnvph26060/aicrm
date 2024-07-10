@@ -304,6 +304,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -329,6 +330,8 @@
                     time: 1000,
                 });
             });
+
 </script>
 @endif
+
 @endsection

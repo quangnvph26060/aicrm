@@ -31,7 +31,6 @@ class ConfigService
 
     public function updateConfig(array $data): Config
     {
-
         try {
             DB::beginTransaction();
 
