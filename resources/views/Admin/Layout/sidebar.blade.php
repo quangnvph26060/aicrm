@@ -125,22 +125,18 @@
                         <i class="fas fa-th-list"></i>
                         <p>Đơn hàng</p>
                     </a>
-                    {{-- <div class="collapse" id="sidebarordẻ">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a >
-                                    <span class="sub-item">Danh sách </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div> --}}
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.client.index') }}">
                         <i class="fas fa-th-list"></i>
                         <p>Khách hàng </p>
                     </a>
-
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.config.detail') }}">
+                        <i class="fas fa-th-list"></i>
+                        <p>Cấu hình </p>
+                    </a>
                 </li>
             </ul>
         </div>

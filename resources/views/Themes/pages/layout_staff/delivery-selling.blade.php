@@ -1,6 +1,6 @@
 <div class="col-lg-4" id="delivery-selling-content" style="display: none;">
     <div class="card">
-        <div class="card-header">Customer Information</div>
+        <div class="card-header">Thông tin khách hàng</div>
         <div class="card-body" style="max-height: 700px; overflow-y: auto;">
             <!-- Customer information form -->
             <form action="">
@@ -25,44 +25,44 @@
             <form id="ordersubmit" method="GET">
                 @csrf
                 <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter full name">
+                    <label for="fullName">Tên</label>
+                    <input type="text" class="form-control" id="name" placeholder="Nhập họ tên">
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderName_error"></span> </div>
                 </div>
                 <div class="form-group">
                     <label for="email">Email </label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" placeholder="Nhập email">
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderEmail_error"></span> </div>
                 </div>
                 <div class="form-group">
-                    <label for="phoneNumber">Phone Number</label>
-                    <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number">
+                    <label for="phoneNumber">Số điện thoại</label></label>
+                    <input type="tel" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại">
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderPhone_error"></span> </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">Address</label>
-                    <input type="address" class="form-control" id="address" placeholder="Enter address">
+                    <label for="address">Địa chỉ</label>
+                    <input type="address" class="form-control" id="address" placeholder="Nhập địa chỉ">
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderAddress_error"></span> </div>
                 </div>
                 <div class="form-group">
-                    <label for="paymentMethod">Payment Method</label>
+                    <label for="paymentMethod">Phương thức thanh toán</label></label>
                     <select class="form-control" id="paymentMethod">
-                        <option value="">----- Payment Methods ----- </option>
-                        <option value="1">Credit Card</option>
+                        <option value="">----- Chọn phương thức ----- </option>
+                        <option value="1">Thẻ tín dụng</option>
                         <option value="2">PayPal</option>
-                        <option value="3">Bank Transfer</option>
+                        <option value="3">Chuyển khoản bằng tài khoản ngân hàng</option>
                     </select>
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderPay_error"></span> </div>
                 </div>
 
                 <button type="button" id="submitBuyOrderBill" disabled onclick="submitorder(event)"
-                    class="btn btn-primary btn-block">Submit Order</button>
+                    class="btn btn-primary btn-block">Tạo hóa đơn</button>
 
             </form>
         </div>
@@ -73,7 +73,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="orderModalLabel">Order Submitted</h5>
+                    <h5 class="modal-title" id="orderModalLabel" style="text-align: center">Hóa đơn</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -137,7 +137,7 @@
                             <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png"
                                 alt="QR Code">
                             <div>
-                                <p>VIETIN - NGUYEN VAN A - QUANAN</p>
+                                <p>VIETINBANK - NGUYEN VAN A - QUANAN</p>
                             </div>
                         </div>
                     </div>

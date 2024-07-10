@@ -11,4 +11,9 @@ class Bank extends Model
     protected $table = 'banks';
 
     protected $fillable = ['name', 'code', 'bin', 'shortName'];
+
+    public function config()
+    {
+        return $this->hasOne(Config::class);
+    }
 }
