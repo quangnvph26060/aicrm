@@ -81,9 +81,9 @@
                 <div class="modal-body" id="modalContent" style="padding: 0px;">
                     <div class="receipt">
                         <div class="receipt-header">
-                            <h2>Thanh Toán đi đừng hỏi Tên Quán</h2>
-                            <p>Địa chỉ: Mỗ Lao - Hà Dông - Hà Nội</p>
-                            <p>Điện thoại: 0982162777</p>
+                            <h2>{{ isset($config) ? $config->name : '' }}</h2>
+                            <p>Địa chỉ: {{ isset($config) ? $config->address : '' }} </p>
+                            <p>Điện thoại: {{ isset($config) ? $config->phone : '' }}</p>
                         </div>
                         <div class="receipt-title">
                             <h3>Phiếu Tạm Thu</h3>
@@ -134,11 +134,16 @@
                         </div>
                         <div class="receipt-footer">
                             <p style='margin: 0px;'>Cảm ơn quý khách!</p>
-                            <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png"
-                                alt="QR Code">
+                            @if (isset($config))
+                            <img style="width: 200px;" src="{{ $config->qr }}"
+                            alt="QR Code">
                             <div>
-                                <p>VIETINBANK - NGUYEN VAN A - QUANAN</p>
+                                <p>{{ $config->bank->code }} - {{ $config->tin }} - {{  $config->name }}</p>
                             </div>
+                            @else
+                            <img style="width: 200px;" src="" alt="QR Code">
+                            @endif
+
                         </div>
                     </div>
                 </div>

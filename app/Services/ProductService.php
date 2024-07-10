@@ -32,6 +32,20 @@ class ProductService
         }
     }
 
+    public function getProductAll_Staff() : \Illuminate\Database\Eloquent\Collection
+    {
+        try {
+            Log::info('Fetching all products');
+             $product= $this->product->all();
+            // dd($product[0]->images[0]->image_path);
+            return $product;
+
+        } catch (Exception $e) {
+            Log::error('Failed to fetch products: ' . $e->getMessage());
+            throw new Exception('Failed to fetch products');
+        }
+    }
+
     public function getProductById($id): Product
     {
         try {

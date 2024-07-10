@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\Config;
 use App\Models\Product;
 use App\Services\ClientService;
 use App\Services\ProductService;
@@ -23,6 +24,7 @@ class ProductController extends Controller
     }
     public function index()
     {
+        $config = Config::first();
         $product = $this->productService->getProductAll();
         $clients = $this->clientService->getAllClient();
         $user = Auth::user();
@@ -31,11 +33,11 @@ class ProductController extends Controller
         foreach ($cart as $key => $value) {
             $sum += $value->product->priceBuy * $value->amount;
         }
-        return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum'));
+        return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config'));
     }
 
     public function product(){
-        $products = $this->productService->getProductAll();
+        $products = $this->productService->getProductAll_Staff();
         return response()->json($products);
     }
 

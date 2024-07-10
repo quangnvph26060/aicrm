@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Models\Config;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,8 @@ class OrderController extends Controller
 {
     //
     public function index(){
-        return view("Themes.pages.order.index");
+        $config = Config::first();
+        return view("Themes.pages.order.index", compact('config'));
     }
 
     public function orderFetch(Request $request)

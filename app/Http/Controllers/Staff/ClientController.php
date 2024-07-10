@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\Cart;
+use App\Models\Config;
 use App\Models\Order;
 use App\Services\ClientService;
 use App\Services\ProductService;
@@ -102,7 +103,8 @@ class ClientController extends Controller
                 ]);
             }
             Cart::where('user_id', $user->id)->delete();
-            $html = view('Themes.pages.bill.index', compact('cartItems','sum', 'client', 'user'))->render();
+            $config = Config::first();
+            $html = view('Themes.pages.bill.index', compact('cartItems','sum', 'client', 'user', 'config'))->render();
             $pdf = Pdf::loadHTML($html);
             $pdfFileName = 'order.pdf';
             $pdf->save(public_path($pdfFileName));
