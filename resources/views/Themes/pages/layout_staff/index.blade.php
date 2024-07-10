@@ -143,26 +143,26 @@
                     <!-- Product items go here -->
                     <div class="row" id="productContainer">
                         {{-- @if ($product)
-                            @foreach ($product as $item)
-                            <div class="col-md-2 mb-3" style="cursor: pointer;">
-                                <div class="product-item1" title="{{ $item->name }}">
-                                    <div class="card-body listproduct" data-id="{{ $item->id }}">
-                                        <img src="{{ asset($item->images[0]->image_path) }}" alt=""
-                                            style="width: 145px; height: 60px;">
+                        @foreach ($product as $item)
+                        <div class="col-md-2 mb-3" style="cursor: pointer;">
+                            <div class="product-item1" title="{{ $item->name }}">
+                                <div class="card-body listproduct" data-id="{{ $item->id }}">
+                                    <img src="{{ asset($item->images[0]->image_path) }}" alt=""
+                                        style="width: 145px; height: 60px;">
+                                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
+                                        class="card-title product-name">
+                                        {{ $item->name }}</p>
+                                    <div style="display: flex; justify-content: space-between;">
                                         <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
-                                            class="card-title product-name">
-                                            {{ $item->name }}</p>
-                                        <div style="display: flex; justify-content: space-between;">
-                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
-                                                class="card-title">{{ number_format($item->priceBuy) }}đ</p>
-                                            <p style="margin: 0px; cursor: pointer;"><i
-                                                    style="font-size: 15px; color: rgb(105, 97, 223)"
-                                                    class="fas fa-shopping-cart fa-lg"></i></p>
-                                        </div>
+                                            class="card-title">{{ number_format($item->priceBuy) }}đ</p>
+                                        <p style="margin: 0px; cursor: pointer;"><i
+                                                style="font-size: 15px; color: rgb(105, 97, 223)"
+                                                class="fas fa-shopping-cart fa-lg"></i></p>
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
+                        </div>
+                        @endforeach
                         @endif --}}
                     </div>
                 </div>
@@ -228,6 +228,41 @@
     var $j = jQuery.noConflict();
 
 $j(document).ready(function() {
+        $j.ajax({
+            url: '{{ route('staff.product.get') }}',
+            type: 'GET',
+            success: function(data) {
+                var productContainer = $j('#productContainer');
+                productContainer.empty();
+                // list = data.data;
+                data.forEach(function(item) {
+                var productHtml = `
+                    <div class="col-md-2 mb-3" style="cursor: pointer;">
+                        <div class="product-item1" title="${item.name}">
+                            <div class="card-body listproduct" data-id="${item.id}">
+                            <img src="${item.images[0].image_path}" alt="" style="width: 145px; height: 60px;">
+                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
+                            <div style="display: flex; justify-content: space-between;">
+                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
+                                <p style="margin: 0px; cursor: pointer;">
+                                <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                                </p>
+                            </div>
+                            </div>
+                        </div>
+                    </div>`;
+                productContainer.append(productHtml);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log('AJAX Error: ' + status + error);
+            }
+        });
+
+        function numberFormat(number) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
+        }
+
 
     $j("#search_product").on("keyup", function() {
 
@@ -273,44 +308,6 @@ $j(document).ready(function() {
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
         }
 
-    });
-
-
-    $j(document).ready(function() {
-        $j.ajax({
-        url: '{{ route('staff.product.get') }}',
-        type: 'GET',
-        success: function(data) {
-            var productContainer = $j('#productContainer');
-              productContainer.empty();
-
-            data.forEach(function(item) {
-            var productHtml = `
-                <div class="col-md-2 mb-3" style="cursor: pointer;">
-                    <div class="product-item1" title="${item.name}">
-                        <div class="card-body listproduct" data-id="${item.id}">
-                        <img src="${item.images[0].image_path}" alt="" style="width: 145px; height: 60px;">
-                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
-                        <div style="display: flex; justify-content: space-between;">
-                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
-                            <p style="margin: 0px; cursor: pointer;">
-                            <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                            </p>
-                        </div>
-                        </div>
-                    </div>
-                </div>`;
-            productContainer.append(productHtml);
-            });
-        },
-        error: function(xhr, status, error) {
-            console.log('AJAX Error: ' + status + error);
-        }
-    });
-
-    function numberFormat(number) {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
-    }
     });
 
     $j("#search").on("keyup", function() {

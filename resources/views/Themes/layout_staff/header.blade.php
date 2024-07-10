@@ -169,7 +169,11 @@
                                 class="fas fa-search"></i></button>
                     </form> --}}
                     <a href="{{ route('staff.index') }}">
+                        @if (isset($config))
+                        <img style="width: 50px; height: auto;" src="{{ asset($config->logo) }}" alt="logo">
+                        @else
                         <img style="width: 50px; height: auto;" src="https://png.pngtree.com/template/20191219/ourmid/pngtree-happy-shop-logo-designs-fun-store-logo-template-vector-illustration-image_341573.jpg" alt="">
+                        @endif
                     </a>
                 </div>
                 <!-- Right side: Icons -->

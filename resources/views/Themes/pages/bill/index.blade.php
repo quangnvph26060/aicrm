@@ -127,15 +127,15 @@
         <div class="content">
             <div class="receipt">
                 <div class="receipt-header">
-                    <h2>Đừng hỏi tên quán mà thanh toán đi</h2>
-                    <p>Địa chỉ: Mỗ Lao - Hà Đông - Hà Nội</p>
-                    <p>Điện thoại: 098211222</p>
+                    <h2>{{ isset($config) ? $config->name : '' }}</h2>
+                    <p>Địa chỉ: {{ isset($config) ? $config->address : '' }}</p>
+                    <p>Điện thoại: {{ isset($config) ? $config->phone : '' }}</p>
                 </div>
                 <div class="receipt-title">
                     <h3>Phiếu Tạm Thu</h3>
                 </div>
                 <div class="receipt-info">
-                    <p>Ngày tạo: 01/07/2024</p>
+                    <p>Ngày tạo: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
                     <p>Tên khách: {{ $client->name }}</p>
                     <p>Số điện thoại: {{ $client->phone }}</p>
                     <p>Tên thu ngân: {{ $user->name }}</p>
@@ -181,11 +181,16 @@
                     </div>
                 </div>
                 <div class="receipt-footer">
-                    <p>Cảm ơn quý khách!</p>
-                    <img style="width: 200px;" src="https://qrcode-gen.com/images/qrcode-default.png" alt="QR Code">
+                    <p style='margin: 0px;'>Cảm ơn quý khách!</p>
+                    @if (isset($config))
+                    <img style="width: 200px;" src="{{ $config->qr }}"
+                    alt="QR Code">
                     <div>
-                        <p>VIETIN - NGUYEN VAN A - QUANAN</p>
+                        <p>{{ $config->bank->code }} - {{ $config->tin }} - {{  $config->name }}</p>
                     </div>
+                    @else
+                    <img style="width: 200px;" src="" alt="QR Code">
+                    @endif
                 </div>
             </div>
         </div>

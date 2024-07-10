@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Bank;
 use App\Models\Config;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -33,12 +34,19 @@ class ConfigService
         try {
             DB::beginTransaction();
 
-            $config = Config::firstOrNew(); // Use firstOrNew to create or retrieve a new instance
+            $config = Config::firstOrNew([]);
             $config->name = $data['name'];
             $config->email = $data['email'];
             $config->phone = $data['phone'];
+            $config->address = $data['address'];
             $config->bank_account = $data['bank_account'];
-            $config->bank_name = $data['bank_name'];
+            $config->bank_id = $data['bank'];
+            $config->tin = $data['name_bank'];
+            if(!empty($data['bank_account']) && !empty($data['bank'])){
+                $bank = Bank::find($data['bank'])->code;
+                $bank_account = $data['bank_account'];
+                $config->qr = "https://img.vietqr.io/image/{$bank}-{$bank_account}-compact.jpg";
+            }
 
             if (isset($data['logo'])) {
                 $logo = $data['logo'];

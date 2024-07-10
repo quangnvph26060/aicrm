@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bank;
 use App\Services\ConfigService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +21,8 @@ class ConfigController extends Controller
     {
         try {
             $data = $this->configService->getConfig();
-            return view('admin.configuration.config', compact('data'));
+            $bank = Bank::get();
+            return view('admin.configuration.config', compact('data','bank'));
         } catch (\Exception $e) {
             Log::error('Failed to get configuration: ' . $e->getMessage());
             return view('admin.dashboard.dashboard', ['error' => 'Failed to get configuration']);
