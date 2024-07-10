@@ -21,6 +21,8 @@
     <link href="asset/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="asset/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
