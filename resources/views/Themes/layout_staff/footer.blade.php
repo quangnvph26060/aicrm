@@ -27,7 +27,7 @@ aria-hidden="true">
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="customerModalLabel">Customer Information</h5>
+            <h5 class="modal-title" id="customerModalLabel">Thông tin khách hàng</h5></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -38,28 +38,28 @@ aria-hidden="true">
                     <form id="client" method="POST" action="{{ route('staff.client.add') }}">
                         @csrf
                         <div class="form-group">
-                            <label for="fullName">Full Name</label>
+                            <label for="fullName">Tên</label>
                             <input type="text" class="form-control" id="nameclient"
                                 placeholder="Enter name" name="name">
                                 <div class="col-lg-9"><span class="invalid-feedback d-block"
                                     style="font-weight: 500" id="clientName_error"></span> </div>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email address</label>
+                            <label for="email">Email</label>
                             <input type="email" class="form-control" id="emailclient"
                                 placeholder="Enter email" name="email">
                                 <div class="col-lg-9"><span class="invalid-feedback d-block"
                                     style="font-weight: 500" id="clientEmail_error"></span> </div>
                         </div>
                         <div class="form-group">
-                            <label for="email"> Address</label>
+                            <label for="email">Địa chỉ</label>
                             <input type="text" class="form-control" id="addressclient"
                                 placeholder="Enter address" name="address">
                                 <div class="col-lg-9"><span class="invalid-feedback d-block"
                                     style="font-weight: 500" id="clientAddress_error"></span> </div>
                         </div>
                         <div class="form-group">
-                            <label for="phoneNumber">Phone Number</label>
+                            <label for="phoneNumber">Số điện thoại</label>
                             <input type="tel" class="form-control" id="phoneclient"
                                 placeholder="Enter phone number" name="phone">
                                 <div class="col-lg-9"><span class="invalid-feedback d-block"

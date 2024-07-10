@@ -187,7 +187,7 @@
                             </form>
                             <a style="padding: 0px" class="dropdown-item" href="#"
                                 onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-                                Logout
+                                Đăng xuất
                             </a></li>
                         </ul>
                     </div>

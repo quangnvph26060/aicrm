@@ -183,7 +183,7 @@
                                 <div class="row">
                                     <div class="text-center mt-2">
                                         <div class="d-inline-block">
-                                            <button type="submit" class="btn btn-primary">Lọc</button>
+                                            <button type="submit" class="btn btn-primary">Tìm</button>
                                         </div>
                                         <div class="d-inline-block ml-2">
                                             <button type="button"
@@ -220,7 +220,7 @@
                                                                 href="{{ route('admin.order.detail', ['id' => $order->id]) }}">{{ $order->id }}</a>
                                                         </td>
                                                         <td>{{ $order->user->name ?? '' }}</td>
-                                                        <td>{{ $order->created_at }}</td>
+                                                        <td>{{ $order->created_at->format('d/m/y') }}</td>
                                                         <td>{{ $order->client->name ?? '' }}</td>
                                                         <td>
                                                             @if ($order->status == 1)
