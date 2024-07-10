@@ -63,11 +63,10 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
         Route::post('{id}', [ProductController::class, 'update'])->name('update');
         Route::get('delete/{id}', [ProductController::class, 'delete'])->name('delete');
-        Route::get('product-search-name', [ProductController::class, 'search'])->name('search');
-        Route::get('product-filter/{id}', [ProductController::class, 'productFilter'])->name('filter');
         Route::get('product-images/{id}', [ProductController::class, 'deleteImagesProduct'])->name('deleteImagesProduct');
         Route::post('product-category', [ProductController::class, 'Changecategory'])->name('changecategory');
         Route::post('product-status', [ProductController::class, 'Changestatus'])->name('changestatus');
+        Route::get('search/name', [ProductController::class, 'findByName'])->name('findName');
     });
     Route::prefix('category')->name('category.')->group(function () {
         Route::get('/',  [CategorieController::class, 'index'])->name('index');
@@ -76,6 +75,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
         Route::get('/detail/{id}', [CategorieController::class, 'edit'])->name('detail');
         Route::post('/update/{id}', [CategorieController::class, 'update'])->name('update');
+        Route::get('search/name', [CategorieController::class, 'findByName'])->name('findName');
     });
 
     Route::prefix('user')->name('staff.')->group(function () {
@@ -86,6 +86,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('add', [UserController::class, 'add'])->name('add');
         Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete');
         Route::post('updateAdmin/{id}', [UserController::class, 'updateadmin'])->name('updateAdmin');
+        Route::get('search/phone', [UserController::class, 'findByPhone'])->name('findByPhone');
     });
 
     Route::prefix('brand')->name('brand.')->group(function () {
@@ -95,6 +96,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('delete', [BrandController::class, 'delete'])->name('delete');
         Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
+        Route::get('search/name', [BrandController::class, 'findByName'])->name('findByName');
     });
     Route::prefix('client')->name('client.')->group(function () {
         Route::get('/', [ClientController::class, 'index'])->name('index');
@@ -109,7 +111,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         // Route::get('/find/phone', [OrderController::class, 'getOrderbyPhone'])->name('findByPhone');
         Route::get('/admin/order/filter', [OrderController::class, 'filterOrder'])->name('filter');
     });
-    Route::prefix('config')->name('config.')->group(function(){
+    Route::prefix('config')->name('config.')->group(function () {
         Route::get('/detail', [ConfigController::class, 'index'])->name('detail');
         Route::post('/update', [ConfigController::class, 'updateConfig'])->name('update');
     });
@@ -127,5 +129,4 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     Route::get('order/fetch', [StaffOrderController::class, 'orderFetch'])->name('orderFetch');
     Route::get('product', [StaffProductController::class, 'product'])->name('product.get');
     Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
-
 });

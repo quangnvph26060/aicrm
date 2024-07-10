@@ -139,12 +139,6 @@
                         <div class="chart-container">
                             <canvas id="columnChart"></canvas>
                         </div>
-                        <div id="myChartLegend">
-                            <ul class="chart-legend">
-                                <li><span class="legend-color" style="background-color:#f3545d"></span>Doanh thu hàng tháng
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -8,6 +8,8 @@ use App\Services\AdminService;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -45,12 +47,29 @@ class UserController extends Controller
             return ApiResponse::error('Failed to fetch products', 500);
         }
     }
-
-    public function edit($id){
-        try{
+    public function findByPhone(Request $request)
+    {
+        try {
+            $staff = $this->adminService->findStaffByPhone($request->input('phone'));
+            $user = new LengthAwarePaginator(
+                $staff ? [$staff] : [],
+                $staff ? 1 : 0,
+                10,
+                1,
+                ['path' => Paginator::resolveCurrentPath()]
+            );
+            return view('Admin.employee.index', compact('user'));
+        } catch (Exception $e) {
+            Log::error('Failed to find staff: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to find staff'], 500);
+        }
+    }
+    public function edit($id)
+    {
+        try {
             $user = $this->adminService->getUserById($id);
             return view('Admin.employee.edit', compact('user'));
-        }catch(Exception $e){
+        } catch (Exception $e) {
             Log::error('Failed to find user: ' . $e->getMessage());
             return ApiResponse::error('Failed to find user', 500);
         }
@@ -82,7 +101,8 @@ class UserController extends Controller
         }
     }
 
-    public function addForm(){
+    public function addForm()
+    {
         return view('Admin.employee.add');
     }
     public function add(Request $request)

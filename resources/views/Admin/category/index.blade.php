@@ -119,6 +119,7 @@
             transition: all 0.3s ease;
         }
     </style>
+
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -149,42 +150,73 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="basic-datatables" class="display table table-striped table-hover" role="grid">
-                                <thead>
-                                    <tr>
-                                        <th>Mã danh mục</th>
-                                        <th>Tên danh mục</th>
-                                        <th>Mô tả</th>
-                                        <th>Hàng động</th>
-                                    </tr>
-                                </thead>
-                                @if ($category)
-                                    <tbody>
-                                        @foreach ($category as $key => $value)
-                                            <tr>
-                                                <td>{{ $value->id }}</td>
-                                                <td>{{ $value->name ?? '' }}</td>
-                                                <td>{!! $value->description !!}</td>
-                                                <td style="text-align:center">
-                                                    <a class="btn btn-warning"
-                                                        href="{{ route('admin.category.detail', ['id' => $value->id]) }}">Sửa</a>
-                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                        class="btn btn-danger"
-                                                        href="{{ route('admin.category.delete', ['id' => $value->id]) }}">Xóa</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                @endif
-                            </table>
-                            {{ $category->links('vendor.pagination.custom') }}
+                            <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="basic-datatables_length">
+                                            <!-- Content for length control can be added here -->
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <form action="{{route('admin.category.findName')}}" method="GET">
+                                            <div id="basic-datatables_filter" class="dataTables_filter">
+                                                <label>Tìm kiếm:<input name="name" type="search"
+                                                        class="form-control form-control-sm" placeholder=""
+                                                        aria-controls="basic-datatables"></label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="basic-datatables" class="display table table-striped table-hover"
+                                            role="grid">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã danh mục</th>
+                                                    <th>Tên danh mục</th>
+                                                    <th>Mô tả</th>
+                                                    <th>Hàng động</th>
+                                                </tr>
+                                            </thead>
+                                            @if ($category)
+                                                <tbody>
+                                                    @foreach ($category as $key => $value)
+                                                        <tr>
+                                                            <td>{{ $value->id }}</td>
+                                                            <td>{{ $value->name ?? '' }}</td>
+                                                            <td>{!! $value->description !!}</td>
+                                                            <td style="text-align:center">
+                                                                <a class="btn btn-warning"
+                                                                    href="{{ route('admin.category.detail', ['id' => $value->id]) }}">Sửa</a>
+                                                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+                                                                    class="btn btn-danger"
+                                                                    href="{{ route('admin.category.delete', ['id' => $value->id]) }}">Xóa</a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            @else
+                                                <tr>
+                                                    <td class="text-center" colspan="6">
+                                                        <div class="">
+                                                            Không có danh mục
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        </table>
+                                        {{ $category->links('vendor.pagination.custom') }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
     @if (session('success'))

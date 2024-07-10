@@ -122,10 +122,10 @@ class BrandService
         }
     }
 
-    public function brandtByName($name): \Illuminate\Database\Eloquent\Collection
+    public function brandByName($name)
     {
         try {
-            $brand = $this->brand->where('name', 'LIKE', '%' . $name . '%')->get();
+            $brand = $this->brand->where('name', 'LIKE', '%' . $name . '%')->first();
             return $brand;
         } catch (Exception $e) {
             Log::error("Failed to search products: {$e->getMessage()}");

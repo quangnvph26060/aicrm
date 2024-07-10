@@ -168,9 +168,13 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <div id="basic-datatables_filter" class="dataTables_filter"><label>Tìm kiếm:<input
-                                                    type="search" class="form-control form-control-sm" placeholder=""
-                                                    aria-controls="basic-datatables"></label></div>
+                                        <form action="{{ route('admin.staff.findByPhone') }}" method="GET">
+                                            <div id="basic-datatables_filter" class="dataTables_filter"><label>Tìm
+                                                    kiếm:<input type="text" name="phone"
+                                                        class="form-control form-control-sm"
+                                                        placeholder="Nhập số điện thoại"
+                                                        aria-controls="basic-datatables"></label></div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -185,7 +189,8 @@
                                                     <th class="" tabindex="0" aria-controls="basic-datatables"
                                                         rowspan="1" colspan="1" style="width: 180.125px;">Email </th>
                                                     <th class="" tabindex="0" aria-controls="basic-datatables"
-                                                        rowspan="1" colspan="1" style="width: 100.1875px;">Số điện thoại </th>
+                                                        rowspan="1" colspan="1" style="width: 100.1875px;">Số điện
+                                                        thoại </th>
                                                     <th class="" tabindex="0" aria-controls="basic-datatables"
                                                         rowspan="1" colspan="1" style="width: 94.1875px;">Địa chỉ</th>
                                                     <th class="" tabindex="0" aria-controls="basic-datatables"
@@ -215,6 +220,13 @@
 
                                                 </tbody>
                                             @else
+                                                <tr>
+                                                    <td class="text-center" colspan="6">
+                                                        <div class="">
+                                                            Không có nhân viên
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endif
                                         </table>
                                         {{ $user->links('vendor.pagination.custom') }}

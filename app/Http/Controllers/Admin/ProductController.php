@@ -12,6 +12,8 @@ use App\Services\ProductService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -41,7 +43,20 @@ class ProductController extends Controller
             return ApiResponse::error('Failed to fetch products', 500);
         }
     }
+    public function findByName(Request $request)
+    {
 
+        $product = $this->productService->productByName($request->input('name'));
+        // $product = new LengthAwarePaginator(
+        //     $products ? [$products] : [],
+        //     $products ? 1 : 0,
+        //     10,
+        //     1,
+        //     ['path' =>Paginator::resolveCurrentPath()]
+        // );
+
+        return view('Admin.Product.index', compact('product'));
+    }
     public function addForm(){
         $brand = $this->brandService->getAllBrand();
         $category = $this->categoryService->getCategoryAll();
@@ -66,8 +81,8 @@ class ProductController extends Controller
     public function editForm($id){
         $category = $this->categoryService->getCategoryAll();
         $brand = $this->brandService->getAllBrand();
-        $product = $this->productService->getProductById($id);
-        return view('Admin.Product.edit', compact('product', 'brand', 'category'));
+        $products = $this->productService->getProductById($id);
+        return view('Admin.Product.edit', compact('products', 'brand', 'category'));
     }
 
     public function update($id ,Request $request){
