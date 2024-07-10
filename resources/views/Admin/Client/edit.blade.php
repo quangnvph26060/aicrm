@@ -162,7 +162,7 @@
                         <div class="">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
 
-                                <form action="{{ route('admin.client.update', ['id' => $client->id]) }}" method="POST"
+                                <form id="editclient" action="{{ route('admin.client.update', ['id' => $client->id]) }}" method="POST"
                                     enctype="multipart/form-data">
                                     @method('PUT')
                                     @csrf
@@ -171,16 +171,25 @@
                                             <label for="name" class="form-label">Tên khách hàng</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 value="{{ $client->name }}" required>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="name_error"></span> </div>
+
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
                                             <input type="text" class="form-control" id="phone" name="phone"
                                                 value="{{ $client->phone }}" required>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="phone_error"></span> </div>
+
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="email" class="form-label">Email</label>
                                             <input type="email" class="form-control" id="email" name="email"
                                                 value="{{ $client->email }}" required>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="email_error"></span> </div>
+
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="gender" class="form-label">Giới tính</label>
@@ -190,25 +199,37 @@
                                                 <option value="Female" {{ $client->gender == 'Female' ? 'selected' : '' }}>
                                                     Nữ</option>
                                             </select>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                id="gender_error"></span> </div>
+
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="dob" class="form-label">Ngày sinh</label>
                                             <input type="date" class="form-control" id="dob" name="dob"
                                                 value="{{ $client->dob }}" required>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="dob_error"></span> </div>
+
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="address" class="form-label">Địa chỉ</label>
                                             <input type="text" class="form-control" id="address" name="address"
                                                 value="{{ $client->address }}" required>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="address_error"></span> </div>
+
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="zip_code" class="form-label">Mã bưu điện</label>
                                             <input type="text" class="form-control" id="zip_code" name="zip_code"
                                                 value="{{ $client->zip_code }}" required>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="zip_code_error"></span> </div>
+
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary w-md">Xác nhận</button>
+                                        <button type="button" onclick="editclient(event)" class="btn btn-primary w-md">Xác nhận</button>
                                     </div>
                                 </form>
                             </div>
@@ -222,8 +243,105 @@
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
         function submitForm() {
-            document.getElementById('addproduct').submit();
+            document.getElementById('editclient').submit();
         }
-        CKEDITOR.replace('description');
+        var validateorder = {
+        'name': {
+            'element': document.getElementById('name'),
+            'error': document.getElementById('name_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E037')
+                },
+            ]
+        },
+        'email': {
+            'element': document.getElementById('email'),
+            'error': document.getElementById('email_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E038')
+                },
+            ]
+        },
+
+        'phone': {
+            'element': document.getElementById('phone'),
+            'error': document.getElementById('phone_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E039')
+                },
+            ]
+        },
+
+        'address': {
+            'element': document.getElementById('address'),
+            'error': document.getElementById('address_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E040')
+                },
+            ]
+        },
+
+
+        'gender': {
+            'element': document.getElementById('gender'),
+            'error': document.getElementById('gender_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E044')
+                },
+            ]
+        },
+
+        'dob': {
+            'element': document.getElementById('dob'),
+            'error': document.getElementById('dob_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E042')
+                },
+            ]
+        },
+        'zip_code': {
+            'element': document.getElementById('zip_code'),
+            'error': document.getElementById('zip_code_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E043')
+                },
+            ]
+        },
+
+    }
+    function editclient(event){
+        event.preventDefault();
+        if(validateAllFields(validateorder)){
+            submitForm();
+        }
+    }
     </script>
 @endsection

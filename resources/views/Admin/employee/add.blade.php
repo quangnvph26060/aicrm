@@ -128,49 +128,62 @@
                     <div class="card-body">
                         <div class="">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                                <form action="{{ route('admin.staff.add') }}" method="post">
+                                <form action="{{ route('admin.staff.add') }}" id="addemployee" method="post">
                                     @csrf
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="new-user-name">Tên:</label>
-                                                    <input type="text" class="form-control" id="new-user-name"
+                                                    <input type="text" class="form-control" id="name"
                                                         name="name" required>
+                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                        id="name_error"></span> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="new-user-email">Email:</label>
-                                                    <input type="email" class="form-control" id="new-user-email"
+                                                    <input type="email" class="form-control" id="email"
                                                         name="email" required>
+                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                        id="email_error"></span> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="new-user-phone">Số điện thoại:</label>
-                                                    <input type="text" class="form-control" id="new-user-phone"
+                                                    <input type="text" class="form-control" id="phone"
                                                         name="phone">
+                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                            id="phone_error"></span> </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-
                                                 <div class="form-group">
                                                     <label for="new-user-address">Địa chỉ:</label>
-                                                    <input type="text" class="form-control" id="new-user-address"
+                                                    <input type="text" class="form-control" id="address"
                                                         name="address">
+                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                            id="address_error"></span> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="new-user-password">Mật khẩu:</label>
-                                                    <input type="password" class="form-control" id="new-user-password"
+                                                    <input type="password" class="form-control" id="password"
                                                         name="password" required>
+
+                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                            id="password_error"></span> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="new-user-password-confirm">Xác nhận mật khẩu:</label>
-                                                    <input type="password" class="form-control"
-                                                        id="new-user-password-confirm" required>
+                                                    <input type="password" class="form-control" name="password_confirm"
+                                                        id="password_confirm" required>
+
+                                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                            id="password_confirm_error"></span> </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer" style="margin: 20px">
-                                        <button style="text-align: center;" type="submit" class="btn btn-primary">Thêm nhân
+                                        <button style="text-align: center;" type="button" onclick="addemployee(event)" class="btn btn-primary">Thêm nhân
                                             viên</button>
                                     </div>
                                 </form>
@@ -185,8 +198,93 @@
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
         function submitForm() {
-            document.getElementById('addproduct').submit();
+            document.getElementById('addemployee').submit();
         }
-        CKEDITOR.replace('description');
+        var validateorder = {
+        'name': {
+            'element': document.getElementById('name'),
+            'error': document.getElementById('name_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E037')
+                },
+            ]
+        },
+        'email': {
+            'element': document.getElementById('email'),
+            'error': document.getElementById('email_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E038')
+                },
+            ]
+        },
+
+        'phone': {
+            'element': document.getElementById('phone'),
+            'error': document.getElementById('phone_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E039')
+                },
+            ]
+        },
+
+        'address': {
+            'element': document.getElementById('address'),
+            'error': document.getElementById('address_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E040')
+                },
+            ]
+        },
+
+
+        'password': {
+            'element': document.getElementById('password'),
+            'error': document.getElementById('password_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E001')
+                },
+            ]
+        },
+
+        'password_confirm': {
+            'element': document.getElementById('password_confirm'),
+            'error': document.getElementById('password_confirm_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E041')
+                },
+            ]
+        },
+
+    }
+    function addemployee(event){
+        event.preventDefault();
+        if(validateAllFields(validateorder)){
+            submitForm();
+        }
+    }
     </script>
 @endsection
