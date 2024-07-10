@@ -163,4 +163,24 @@
         </div>
     </footer>
     <!-- end Footer -->
+    <script>
+        $(document).ready(function() {
+            $('#password-addon').on('click', function() {
+                var passwordField = $('#password');
+                var passwordFieldType = passwordField.attr('type');
+                var eyeIcon = $('#eye-icon');
+
+                if (passwordFieldType === 'password') {
+                    passwordField.attr('type', 'text');
+                    eyeIcon.removeClass('ri-eye-fill').addClass('ri-eye-off-fill');
+                } else {
+                    passwordField.attr('type', 'password');
+                    eyeIcon.removeClass('ri-eye-off-fill').addClass('ri-eye-fill');
+                }
+            });
+        });
+    </script>
+
+    <!-- Add necessary icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/2.5.0/remixicon.css" rel="stylesheet">
 @endsection
