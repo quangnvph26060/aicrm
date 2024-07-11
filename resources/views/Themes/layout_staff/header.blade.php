@@ -162,12 +162,6 @@
             <div class="row align-items-center">
                 <!-- Left side: Search bar -->
                 <div class="col-lg-8">
-                    {{-- <form class="form-inline my-2 my-lg-0 search-bar">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search products..."
-                            aria-label="Search">
-                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i
-                                class="fas fa-search"></i></button>
-                    </form> --}}
                     <a href="{{ route('staff.index') }}">
                         @if (isset($config))
                         <img style="width: 50px; height: auto;" src="{{ asset($config->logo) }}" alt="logo">
@@ -183,7 +177,7 @@
                     </a>
                     <div id="submenu" class="submenu">
                         <ul>
-                            {{-- <li><a href="#">Thông tin tài khoản</a></li> --}}
+                            <li><a href="{{ route('staff.Inventory.get') }}">Kiểm kho</a></li>
                             <li><a style="padding: 0px" class="dropdown-item" href="{{ route('staff.order') }}">Lịch sử mua hàng</a></li>
                             <li> <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
                                 style="display: none;">

@@ -15,6 +15,8 @@ use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Staff\CheckInventoryController;
+use App\Http\Controllers\Staff\WareHomeController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
@@ -135,5 +137,11 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     Route::get('order', [StaffOrderController::class, 'index'])->name('order');
     Route::get('order/fetch', [StaffOrderController::class, 'orderFetch'])->name('orderFetch');
     Route::get('product', [StaffProductController::class, 'product'])->name('product.get');
+    //checkInventory
     Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
+    Route::get('checkInventory', [CheckInventoryController::class, 'index'])->name('Inventory.get');
+    Route::get('checkInventory/add', [CheckInventoryController::class, 'add'])->name('Inventory.add');
+    // warehome
+    Route::get('warehome', [WareHomeController::class, 'index'])->name('warehome.get');
+    Route::post('warehome/add', [WareHomeController::class, 'add'])->name('warehome.add');
 });
