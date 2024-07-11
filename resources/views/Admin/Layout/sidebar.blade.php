@@ -127,6 +127,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.check.index') }}">
+                        <i class="fas fa-th-list"></i>
+                        <p>Phiếu kiểm kho</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.client.index') }}">
                         <i class="fas fa-th-list"></i>
                         <p>Khách hàng </p>

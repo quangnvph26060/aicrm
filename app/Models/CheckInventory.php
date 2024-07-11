@@ -16,7 +16,10 @@ class CheckInventory extends Model
     {
         return $this->hasMany(CheckDetail::class, 'check_inventory_id');
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function getCheckdetailAttribute(){
         return CheckDetail::where('check_inventory_id',$this->attributes['id'])->get();
     }
