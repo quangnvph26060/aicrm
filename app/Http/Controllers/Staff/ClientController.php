@@ -7,6 +7,7 @@ use App\Http\Responses\ApiResponse;
 use App\Models\Cart;
 use App\Models\Config;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Services\ClientService;
 use App\Services\ProductService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -87,20 +88,35 @@ class ClientController extends Controller
             }
             if ($listphone->contains($request->phone)) {
                 $client = $this->clientService->findClientByPhone($request->phone);
-                Order::create([
+                $order = Order::create([
                     'user_id' => $user->id,
                     'client_id' => $client->id,
                     'total_money' => $sum,
                     'status' => 1
                 ]);
+                foreach ($cartItems as $key => $item) {
+                    OrderDetail::create([
+                        'order_id' => $order->id,
+                        'quantity' => $item->amount,
+                        'product_id' => $item->product_id
+                    ]);
+                }
             } else {
                 $client = $this->clientService->addClient($request->all());
-                Order::create([
+                $order = Order::create([
                     'user_id' => $user->id,
                     'client_id' => $client->id,
                     'total_money' => $sum,
                     'status' => 1
                 ]);
+                foreach ($cartItems as $key => $item) {
+                    OrderDetail::create([
+                        'order_id' => $order->id,
+                        'quantity' => $item->amount,
+                        'product_id' => $item->product_id
+                    ]);
+                }
+
             }
             Cart::where('user_id', $user->id)->delete();
             $config = Config::first();
