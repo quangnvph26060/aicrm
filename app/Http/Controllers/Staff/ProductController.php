@@ -154,7 +154,7 @@ class ProductController extends Controller
     public function search(Request $request){
         $searchTerm = $request->input('name');
 
-        $products = $this->productService->productByName($searchTerm);
+        $products = $this->productService->productByNameStaff($searchTerm);
 
         return response()->json($products);
     }

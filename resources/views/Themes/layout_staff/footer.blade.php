@@ -139,7 +139,7 @@ aria-hidden="true">
     function submitclient(event){
         event.preventDefault();
             if (validateAllFields(validateClient)){
-                document.getElementById('clientsubmit').submit();
+                document.getElementById('client').submit();
             }
     }
 </script>

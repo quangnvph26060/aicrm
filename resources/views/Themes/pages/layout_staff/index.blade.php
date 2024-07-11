@@ -267,6 +267,7 @@ $j(document).ready(function() {
     $j("#search_product").on("keyup", function() {
 
         var name = $j(this).val();
+        // alert(name);
             $j.ajax({
                 url: '{{ route('staff.product.search') }}',
                 type: 'GET',
