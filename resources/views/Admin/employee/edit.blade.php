@@ -160,14 +160,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Chỉnh sửa thông tin nhân viên số
+                        <h4 class="card-title" style="text-align: center; color:white">Thông tin nhân viên số
                             {{ $user->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
 
-                                <form method="post" action="{{ route('admin.staff.update', ['id' => $user->id]) }}" id="editemployee">
+                                <form method="post" action="{{ route('admin.staff.update', ['id' => $user->id]) }}"
+                                    id="editemployee">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6">
@@ -175,15 +176,15 @@
                                                 <label for="user-name">Tên:</label>
                                                 <input type="text" class="form-control" id="name" name="name"
                                                     value="{{ $user->name }}">
-                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                        id="name_error"></span> </div>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                        style="font-weight: 500" id="name_error"></span> </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="user-email">Email:</label>
                                                 <input type="email" class="form-control" id="email" name="email"
                                                     value="{{ $user->email }}">
-                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                        id="email_error"></span> </div>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                        style="font-weight: 500" id="email_error"></span> </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -191,21 +192,22 @@
                                                 <label for="user-address">Địa chỉ:</label>
                                                 <input type="text" class="form-control" id="address" name="address"
                                                     value="{{ $user->address }}">
-                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                        id="address_error"></span> </div>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                        style="font-weight: 500" id="address_error"></span> </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="user-phone">Số điện thoại:</label>
                                                 <input type="text" class="form-control" id="phone" name="phone"
                                                     value="{{ $user->phone }}">
-                                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                        id="phone_error"></span> </div>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                        style="font-weight: 500" id="phone_error"></span> </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="text-center mt-4">
                                         <div>
-                                            <button type="buttom" onclick="editemployee(event)" class="btn btn-primary w-md">Lưu</button>
+                                            <button type="buttom" onclick="editemployee(event)"
+                                                class="btn btn-primary w-md">Lưu</button>
                                         </div>
                                     </div>
                                 </form>
@@ -223,62 +225,55 @@
             document.getElementById('editemployee').submit();
         }
         var validateorder = {
-        'name': {
-            'element': document.getElementById('name'),
-            'error': document.getElementById('name_error'),
-            'validations': [
-                {
-                    'func': function(value){
+            'name': {
+                'element': document.getElementById('name'),
+                'error': document.getElementById('name_error'),
+                'validations': [{
+                    'func': function(value) {
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E037')
-                },
-            ]
-        },
-        'email': {
-            'element': document.getElementById('email'),
-            'error': document.getElementById('email_error'),
-            'validations': [
-                {
-                    'func': function(value){
+                }, ]
+            },
+            'email': {
+                'element': document.getElementById('email'),
+                'error': document.getElementById('email_error'),
+                'validations': [{
+                    'func': function(value) {
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E038')
-                },
-            ]
-        },
+                }, ]
+            },
 
-        'phone': {
-            'element': document.getElementById('phone'),
-            'error': document.getElementById('phone_error'),
-            'validations': [
-                {
-                    'func': function(value){
+            'phone': {
+                'element': document.getElementById('phone'),
+                'error': document.getElementById('phone_error'),
+                'validations': [{
+                    'func': function(value) {
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E039')
-                },
-            ]
-        },
+                }, ]
+            },
 
-        'address': {
-            'element': document.getElementById('address'),
-            'error': document.getElementById('address_error'),
-            'validations': [
-                {
-                    'func': function(value){
+            'address': {
+                'element': document.getElementById('address'),
+                'error': document.getElementById('address_error'),
+                'validations': [{
+                    'func': function(value) {
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E040')
-                },
-            ]
-        },
-    }
-    function editemployee(event){
-        event.preventDefault();
-        if(validateAllFields(validateorder)){
-            submitForm();
+                }, ]
+            },
         }
-    }
+
+        function editemployee(event) {
+            event.preventDefault();
+            if (validateAllFields(validateorder)) {
+                submitForm();
+            }
+        }
     </script>
 @endsection

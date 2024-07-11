@@ -27,7 +27,7 @@ class OrderService
     public function getOrderAll()
     {
         try {
-            return $this->order->paginate(10);
+            return $this->order->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders: ' . $e->getMessage());
             throw new Exception('Failed to retrieve orders');
@@ -53,7 +53,7 @@ class OrderService
                 });
             }
 
-            $orders = $query->paginate(10);
+            $orders = $query->paginate(5);
             return $orders;
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders by date range: ' . $e->getMessage());

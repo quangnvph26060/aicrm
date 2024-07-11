@@ -186,7 +186,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title text-center" style="color:white">Chỉnh sửa thông tin Admin</h4>
+                        <h4 class="card-title text-center" style="color:white">Thông tin Admin</h4>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.update', ['id' => $admin->id]) }}" method="POST"

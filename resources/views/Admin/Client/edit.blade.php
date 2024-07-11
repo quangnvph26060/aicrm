@@ -156,7 +156,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center;color:white">Chỉnh sửa thông tin khách hàng số {{$client->id}}</h4>
+                        <h4 class="card-title" style="text-align: center;color:white">Thông tin khách hàng số {{$client->id}}</h4>
                     </div>
                     <div class="card-body">
                         <div class="">

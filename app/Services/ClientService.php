@@ -17,7 +17,7 @@ class ClientService
     public function getAllClient()
     {
         try {
-            return $this->client->paginate(10);
+            return $this->client->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to get all clients: ' . $e->getMessage());
             throw new Exception('Failed to get all clients');
