@@ -20,7 +20,7 @@ class CategoryService
     public function getCategoryAll():LengthAwarePaginator{
         try {
             Log::info('Fetching all categories');
-            return $this->categories->paginate(10);
+            return $this->categories->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to fetch categories: ' . $e->getMessage());
             throw new Exception('Failed to fetch categories');

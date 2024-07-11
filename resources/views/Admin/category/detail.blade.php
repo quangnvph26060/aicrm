@@ -82,7 +82,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white;">Chỉnh sửa danh mục số {{ $category->id }}</h4>
+                        <h4 class="card-title" style="text-align: center; color:white;">Danh mục số {{ $category->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

@@ -25,7 +25,7 @@ class ProductService
             Log::info('Fetching all products');
             // $product= $this->product->paginate(10);
             // dd($product[0]->images[0]->image_path);
-            return $this->product->paginate(10);
+            return $this->product->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             throw new Exception('Failed to fetch products');

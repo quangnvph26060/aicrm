@@ -205,9 +205,9 @@
                                             <thead>
                                                 <tr role="row">
                                                     <th>Mã đơn hàng</th>
-                                                    <th>Tên nhân viên</th>
+                                                    <th>Nhân viên</th>
                                                     <th>Ngày tạo</th>
-                                                    <th>Tên khách hàng</th>
+                                                    <th>Khách hàng</th>
                                                     <th>Trạng thái</th>
                                                     <th>Tổng tiền</th>
                                                 </tr>
@@ -219,9 +219,19 @@
                                                             <a style="color: black; font-weight:bold"
                                                                 href="{{ route('admin.order.detail', ['id' => $order->id]) }}">{{ $order->id }}</a>
                                                         </td>
-                                                        <td>{{ $order->user->name ?? '' }}</td>
+                                                        <td>
+                                                            <a style="color:black"
+                                                                href="{{ route('admin.staff.edit', ['id' => $order->user->id]) }}">
+                                                                {{ $order->user->name ?? '' }}
+                                                            </a>
+                                                        </td>
                                                         <td>{{ $order->created_at->format('d/m/y') }}</td>
-                                                        <td>{{ $order->client->name ?? '' }}</td>
+                                                        <td>
+                                                            <a style="color:black"
+                                                                href="{{ route('admin.client.detail', ['id' => $order->client->id]) }}">
+                                                                {{ $order->client->name ?? '' }}
+                                                            </a>
+                                                        </td>
                                                         <td>
                                                             @if ($order->status == 1)
                                                                 <span class="badge badge-success">Completed</span>

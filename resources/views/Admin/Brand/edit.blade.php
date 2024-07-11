@@ -158,7 +158,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="color:white">Chỉnh sửa thương hiệu số {{ $brand->id }}</h4>
+                        <h4 class="card-title" style="color:white">Thương hiệu số {{ $brand->id }}</h4>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.brand.update', ['id' => $brand->id]) }}" method="POST"
