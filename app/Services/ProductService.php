@@ -210,5 +210,17 @@ class ProductService
         }
     }
 
+    public function productByNameStaff($name):\Illuminate\Database\Eloquent\Collection
+    {
+        try {
+            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->get();
+            // dd($products);
+            return $products;
+        } catch (Exception $e) {
+            Log::error("Failed to search products: {$e->getMessage()}");
+            throw new Exception('Failed to search products');
+        }
+    }
+
 
 }
