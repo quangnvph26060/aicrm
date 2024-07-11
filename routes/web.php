@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
+use App\Http\Controllers\Admin\CheckInventoryController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
@@ -114,6 +115,12 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::prefix('config')->name('config.')->group(function () {
         Route::get('/detail', [ConfigController::class, 'index'])->name('detail');
         Route::post('/update', [ConfigController::class, 'updateConfig'])->name('update');
+    });
+
+    Route::prefix('checkInventory')->name('check.')->group(function () {
+        Route::get('/', [CheckInventoryController::class, 'index'])->name('index');
+        Route::get('/filter', [CheckInventoryController::class, 'filterCheck'])->name('filter');
+        Route::get('/detail/{id}', [CheckInventoryController::class, 'detail'])->name('detail');
     });
 })->middleware('checkRole:1');
 

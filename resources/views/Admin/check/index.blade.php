@@ -135,13 +135,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Đơn hàng</a>
+                    <a href="{{ route('admin.check.index') }}">Phiếu kiểm kho</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Danh sách</a>
+                    <a href="{{ route('admin.check.index') }}">Danh sách</a>
                 </li>
             </ul>
         </div>
@@ -150,25 +150,25 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách đơn hàng</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Danh sách phiếu kiểm kho</h4>
                     </div>
 
                     <div class="card-body">
                         <div class="">
                             <!-- Filter Form -->
-                            <form action="{{ route('admin.order.filter') }}" method="GET">
+                            <form action="{{ route('admin.check.filter') }}" method="GET">
                                 <div class="row">
                                     <!-- Start Date Input -->
                                     <div class="col-md-4 mb-3">
                                         <label for="start_date">Ngày bắt đầu</label>
-                                        <input type="date" name="start_date" id="start_date" class="form-control"
+                                        <input type="date" name="startDate" id="start_date" class="form-control"
                                             value="{{ old('start_date') }}">
                                     </div>
 
                                     <!-- End Date Input -->
                                     <div class="col-md-4 mb-3">
                                         <label for="end_date">Ngày kết thúc</label>
-                                        <input type="date" name="end_date" id="end_date" class="form-control"
+                                        <input type="date" name="endDate" id="end_date" class="form-control"
                                             value="{{ old('end_date') }}">
                                     </div>
 
@@ -187,7 +187,7 @@
                                         </div>
                                         <div class="d-inline-block ml-2">
                                             <button type="button"
-                                                onclick="window.location.href='{{ route('admin.order.index') }}'"
+                                                onclick="window.location.href='{{ route('admin.check.index') }}'"
                                                 class="btn btn-danger">Xóa</button>
                                         </div>
                                     </div>
@@ -204,43 +204,35 @@
                                             aria-describedby="basic-datatables_info">
                                             <thead>
                                                 <tr role="row">
-                                                    <th>Mã đơn hàng</th>
-                                                    <th>Tên nhân viên</th>
+                                                    <th>Mã phiếu kiểm</th>
+                                                    <th>Người tạo</th>
                                                     <th>Ngày tạo</th>
-                                                    <th>Tên khách hàng</th>
-                                                    <th>Trạng thái</th>
-                                                    <th>Tổng tiền</th>
+                                                    <th>Ghi chú</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @forelse ($orders as $order)
+                                                @forelse ($check as $item)
                                                     <tr>
                                                         <td>
                                                             <a style="color: black; font-weight:bold"
-                                                                href="{{ route('admin.order.detail', ['id' => $order->id]) }}">{{ $order->id }}</a>
+                                                                href="{{ route('admin.check.detail', ['id' => $item->id]) }}">{{ $item->id }}</a>
                                                         </td>
-                                                        <td>{{ $order->user->name ?? '' }}</td>
-                                                        <td>{{ $order->created_at->format('d/m/y') }}</td>
-                                                        <td>{{ $order->client->name ?? '' }}</td>
-                                                        <td>
-                                                            @if ($order->status == 1)
-                                                                <span class="badge badge-success">Completed</span>
-                                                            @else
-                                                                <span class="badge badge-warning">Pending</span>
-                                                            @endif
+                                                        <td><a style="color: black"
+                                                                href="{{ route('admin.staff.edit', ['id' => $item->user->id]) }}">{{ $item->user->name ?? '' }}
                                                         </td>
-                                                        <td>{{ number_format($order->total_money) }} VND</td>
+                                                        <td>{{ $item->created_at->format('d/m/y') }}</td>
+                                                        <td>{{ $item->note }}</td>
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td class="text-center" colspan="6">Không có đơn hàng nào</td>
+                                                        <td class="text-center" colspan="6">Không có phiếu kiểm nào</td>
                                                     </tr>
                                                 @endforelse
                                             </tbody>
                                         </table>
 
                                         <!-- Pagination -->
-                                        {{ $orders->appends(request()->query())->links('vendor.pagination.custom') }}
+                                        {{ $check->appends(request()->query())->links('vendor.pagination.custom') }}
                                     </div>
                                 </div>
                             </div>
