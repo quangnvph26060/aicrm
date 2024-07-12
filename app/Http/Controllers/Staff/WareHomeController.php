@@ -23,11 +23,12 @@ class WareHomeController extends Controller
         $productId = $request->input('product');
          $product = warehome::where(['product_id' => $productId, 'user_id' => $user->id])->first();
          if(empty($product)){
-            $warehome = warehome::create([
+            warehome::create([
                 'product_id' => $productId,
                 'user_id' => $user->id,
             ]);
          }
-        return response()->json($productId);
+         $warehome = warehome::with('product')->get();
+        return response()->json($warehome);
     }
 }
