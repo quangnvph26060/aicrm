@@ -32,7 +32,7 @@
                                             <th scope="row"><i class="fas fa-user"></i>Người tạo</th>
                                             <td>
                                                 <div class="nowrap"> <a style="color: black"
-                                                        href="{{ route('admin.staff.edit', ['id' => $check->id]) }}">{{ $check->user->name }}</a>
+                                                        href="{{ route('admin.staff.edit', ['id' => $check->user->id]) }}">{{ $check->user->name }}</a>
                                                 </div>
                                             </td>
                                         </tr>
