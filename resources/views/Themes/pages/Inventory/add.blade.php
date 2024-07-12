@@ -359,7 +359,9 @@
                 warehouse.empty();
                 data.forEach(function(item,index) {
                 var productHtml = `
+
                         <tr data-id='${item.id}'>
+
                             <td><i data-id='${item.id}' class="fas fa-trash-alt"></i></td>
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
@@ -368,6 +370,7 @@
                             <td><input style='text-align: center;'  type="number" class="numberInput" name="quantity" value='${item.reality !== null ? item.reality : ''}' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
                             <td class="chenhlech">${item.difference !== null ? item.difference : ''}</td>
                             <td class="gtlech">${item.gia_chenh_lech !== null ? formatNumber(item.gia_chenh_lech) : ''}</td>
+
                         </tr>
                     `;
                     warehouse.append(productHtml);
@@ -426,6 +429,7 @@
 
                 },
             });
+
         });
 
 
@@ -438,6 +442,7 @@
                 $.each(warehouse, function(index, item) {
                     var productHtml = `
                         <tr data-id='${item.id}'>
+
                             <td><i class="fas fa-trash-alt"></i></td>
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
@@ -446,6 +451,7 @@
                             <td><input style='text-align: center;' type="number" class="numberInput" name="quantity" value='${item.reality !== null ? item.reality : ''}' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
                             <td class="chenhlech">${item.difference !== null ? item.difference : ''}</td>
                             <td class="gtlech">${item.gia_chenh_lech !== null ? formatNumber(item.gia_chenh_lech) : ''}</td>
+
                         </tr>
                     `;
                     warehousehtml.append(productHtml);

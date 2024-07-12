@@ -30,6 +30,7 @@ class WareHomeController extends Controller
          }
          $warehome = warehome::with('product')->get();
         return response()->json($warehome);
+
     }
 
     public function update(Request $request){
@@ -58,5 +59,6 @@ class WareHomeController extends Controller
             'difference' => $difference ?? null,
             'gia_chenh_lech' => $gia_chenh_lech ?? null
         ]);
+
     }
 }
