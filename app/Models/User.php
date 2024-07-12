@@ -20,13 +20,10 @@ class User extends Authenticatable
      */
     protected $table = 'users';
     protected $fillable = [
-        "email",
-        "name",
-        "address",
-        "password",
-        "referral_code",
-        'referrer_id',
-        'commission_id',
+        'email',
+        'name',
+        'address',
+        'password',
         'phone',
         'role_id',
         'status',
@@ -34,6 +31,11 @@ class User extends Authenticatable
         'district_id',
         'wards_id',
         'remember_token',
+        'company_name',
+        'tax_code',
+        'store_name',
+        'field_id',
+        'domain',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -55,8 +57,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     protected $appends = ['user_info'];
-    public function getUserInfoAttribute(){
+    public function getUserInfoAttribute()
+    {
         return UserInfo::where('user_id', $this->attributes['id'])->first();
     }
 
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function field()
+    {
+        return $this->belongsTo((Field::class));
+    }
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
 use App\Models\Categories;
@@ -22,7 +23,8 @@ use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('', [CategorieController::class, 'index']);
-
+Route::get('/register', [SignUpController::class, 'index'])->name('register.index');
+Route::post('/register_account', [SignUpController::class, 'store'])->name('register.signup');
 Route::get('/', function () {
     return view('auth.login');
 })->name('formlogin');

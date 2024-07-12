@@ -1,6 +1,12 @@
 @extends('Themes.main.main')
 
 @section('content')
+    @if (session('success'))
+        <div id="alert-success" class="alert alert-success position-fixed top-0 end-0 m-3" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="bg-overlay"></div>
     <!-- auth-page content -->
     <div class="auth-page-content overflow-hidden pt-lg-5">
@@ -74,7 +80,7 @@
 
                                             <div class="mb-3">
                                                 <div class="float-end">
-                                                    <a href="{{route('forget-password')}}" class="text-muted">Quên mật
+                                                    <a href="{{ route('forget-password') }}" class="text-muted">Quên mật
                                                         khẩu?</a>
                                                 </div>
                                                 <label class="form-label" for="password-input">Mật Khẩu</label>
@@ -125,7 +131,7 @@
                                     </div>
 
                                     <div class="mt-5 text-center">
-                                        <p class="mb-0">Don't have an account ? <a href="auth-signup-cover.html"
+                                        <p class="mb-0">Don't have an account ? <a href="{{ route('register.index') }}"
                                                 class="fw-semibold text-primary text-decoration-underline"> Signup</a> </p>
                                     </div>
                                 </div>
@@ -178,6 +184,21 @@
                     eyeIcon.removeClass('ri-eye-off-fill').addClass('ri-eye-fill');
                 }
             });
+        });
+    </script>
+    <script>
+        // Đợi cho đến khi trang đã load xong
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chọn phần tử thông báo
+            var alertSuccess = document.getElementById('alert-success');
+
+            // Nếu có thông báo và phần tử tồn tại
+            if (alertSuccess) {
+                // Đợi 5 giây sau đó ẩn đi
+                setTimeout(function() {
+                    alertSuccess.style.display = 'none';
+                }, 3000);
+            }
         });
     </script>
 
