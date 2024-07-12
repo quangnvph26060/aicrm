@@ -359,15 +359,17 @@
                 warehouse.empty();
                 data.forEach(function(item,index) {
                 var productHtml = `
-                        <tr>
+
+                        <tr data-id='${item.id}'>
+
                             <td><i data-id='${item.id}' class="fas fa-trash-alt"></i></td>
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
                             <td>${item.product.name}</td>
                             <td>${item.product.quantity}</td>
-                            <td><input type="number" class="numberInput" name="quantity" value='' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
-                            <td class='chenhlech'></td>
-                            <td class='gtlech'></td>
+                            <td><input style='text-align: center;'  type="number" class="numberInput" name="quantity" value='${item.reality !== null ? item.reality : ''}' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
+                            <td class="chenhlech">${item.difference !== null ? item.difference : ''}</td>
+                            <td class="gtlech">${item.gia_chenh_lech !== null ? formatNumber(item.gia_chenh_lech) : ''}</td>
 
                         </tr>
                     `;
@@ -406,8 +408,28 @@
             e.preventDefault();
             var value = $j(this).val();
             var tr = $j(this).closest('tr');
+            var dataId = tr.data('id');
             var chenhlech = tr.find('.chenhlech');
-            chenhlech.text(value);
+            var gtlech = tr.find('.gtlech');
+            $j.ajax({
+                url: '{{ route('staff.warehome.update') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    value: value,
+                    dataId : dataId
+                },
+                success: function(response) {
+                    chenhlech.html(response.difference);
+                    if(response.gia_chenh_lech !== null){
+                        gtlech.html(formatNumber(response.gia_chenh_lech));
+                    }else{
+                        gtlech.html(response.gia_chenh_lech);
+                    }
+
+                },
+            });
+
         });
 
 
@@ -419,15 +441,17 @@
             } else {
                 $.each(warehouse, function(index, item) {
                     var productHtml = `
-                        <tr>
+                        <tr data-id='${item.id}'>
+
                             <td><i class="fas fa-trash-alt"></i></td>
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
                             <td>${item.product.name}</td>
                             <td>${item.product.quantity}</td>
-                            <td><input type="number" class="numberInput" name="quantity" value='' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
-                            <td class='chenhlech'></td>
-                            <td class='gtlech'></td>
+                            <td><input style='text-align: center;' type="number" class="numberInput" name="quantity" value='${item.reality !== null ? item.reality : ''}' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
+                            <td class="chenhlech">${item.difference !== null ? item.difference : ''}</td>
+                            <td class="gtlech">${item.gia_chenh_lech !== null ? formatNumber(item.gia_chenh_lech) : ''}</td>
+
                         </tr>
                     `;
                     warehousehtml.append(productHtml);
@@ -437,6 +461,12 @@
 
 
     });
+
+    function formatNumber(number) {
+    var parts = number.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+    }
 
 </script>
 

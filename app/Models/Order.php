@@ -25,6 +25,11 @@ class Order extends Model
         'zip_code',
     ];
 
+    protected $appends = ['orderdetail'];
+
+    public function getOrderdetailAttribute(){
+        return OrderDetail::where('order_id',$this->attributes['id'])->get();
+    }
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);

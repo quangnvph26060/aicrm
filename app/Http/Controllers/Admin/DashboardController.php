@@ -31,11 +31,31 @@ class DashboardController extends Controller
             $newClient = $this->dashboardService->getNewestClient();
             $newOrder = $this->dashboardService->getNewestOrder();
             $newStaff = $this->dashboardService->getNewestStaff();
-
             return view('welcome', compact('clientnumber', 'ordernumber', 'amount', 'daily', 'newClient', 'newOrder', 'newStaff', 'getMonthlyRevenue', 'totalAnnualRevenue'));
         } catch (Exception $e) {
             Log::error('Failed to get statistic this year: ' . $e->getMessage());
             return ApiResponse::error('Failed to get statistic this year', 500);
         }
+    }
+
+    public function StatisticsByDay(){
+        $daily = $this->dashboardService->getDailySale();
+        return response()->json([
+            'daily' => $daily
+        ]);
+    }
+
+    public function StatisticsByMonth(){
+        $daily = $this->dashboardService->StatisticsByMonth();
+        return response()->json([
+            'daily' => $daily
+        ]);
+    }
+
+    public function StatisticsByYear(){
+        $daily = $this->dashboardService->StatisticsByYear();
+        return response()->json([
+            'daily' => $daily
+        ]);
     }
 }

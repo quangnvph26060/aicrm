@@ -30,5 +30,35 @@ class WareHomeController extends Controller
          }
          $warehome = warehome::with('product')->get();
         return response()->json($warehome);
+
+    }
+
+    public function update(Request $request){
+        $id = $request->input('dataId');
+        $wareHouse = warehome::find($id);
+        $reality = $request->input('value');
+        if($reality == null){
+            $wareHouse ->update([
+                'reality' => null,
+                'difference' => null,
+                'gia_chenh_lech' => null
+            ]);
+        }else{
+            $difference	 = $reality -  $wareHouse->product->quantity;
+            $gia_chenh_lech	 = $reality * $wareHouse->product->priceBuy -  $wareHouse->product->quantity * $wareHouse->product->priceBuy;
+            $wareHouse ->update([
+                'reality' => $reality,
+                'difference' => $difference,
+                'gia_chenh_lech' => $gia_chenh_lech
+            ]);
+        }
+
+
+        return response()->json([
+            'reality' => $reality,
+            'difference' => $difference ?? null,
+            'gia_chenh_lech' => $gia_chenh_lech ?? null
+        ]);
+
     }
 }

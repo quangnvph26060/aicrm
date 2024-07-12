@@ -275,8 +275,7 @@
                 </li>
 
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                        aria-expanded="false">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                         <div class="avatar-sm">
                             <img src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
                                 alt="image profile" class="avatar-img rounded-circle">
@@ -299,14 +298,18 @@
                                         <div class="u-text">
                                             <h4>{{ session('authUser')->name }}</h4>
                                             <p class="text-muted">{{ session('authUser')->email }}</p>
-                                            <a href="{{ route('admin.detail', ['id' => session('authUser')->id]) }}"
-                                                class="btn btn-xs btn-secondary btn-sm" >Trang cá nhân</a>
-                                            <a href="#" class="btn btn-xs  btn-sm" style="background: red; color: #ffff"
-                                                onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Đăng xuất</a>
-                                            <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                            </form>
+                                            <div style="display: flex">
+                                                <a href="{{ route('admin.detail', ['id' => session('authUser')->id]) }}"
+                                                    class="btn btn-xs btn-secondary btn-sm p-1" >Trang cá nhân</a>
+                                                <a href="#" class="btn btn-xs  btn-sm p-1"
+                                                    style="background: red; color: #ffff; margin-left: 10px"
+                                                    onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Đăng
+                                                    xuất</a>
+                                                <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>

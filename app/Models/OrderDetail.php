@@ -10,6 +10,12 @@ class OrderDetail extends Model
     protected $table = 'order_details';
     protected $fillable = ['quantity', 'order_id', 'product_id'];
 
+    protected $appends = ['product'];
+
+    public function getproductAttribute(){
+        return Product::where('id',$this->attributes['product_id'])->first();
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);

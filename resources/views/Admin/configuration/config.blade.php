@@ -282,7 +282,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="address" class="form-label">Email</label>
+                                    <label for="address" class="form-label">Địa chỉ</label>
                                     <input id="address" class="form-control @error('address') is-invalid @enderror"
                                         name="address" type="text"
                                         value="{{ old('address', isset($data) ? $data->address : '') }}">
