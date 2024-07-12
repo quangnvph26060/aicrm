@@ -169,7 +169,8 @@
         color: #007bff;
         cursor: pointer;
     }
-    .numberInput{
+
+    .numberInput {
         width: 100px;
     }
 </style>
@@ -225,6 +226,7 @@
                             <th scope="col">Tồn kho </th>
                             <th scope="col"> Thực tế </th>
                             <th scope="col">SL lệch </th>
+                            <th scope="col">Giá trị lệch </th>
                         </tr>
                     </thead>
                     <tbody id="inventory-data-product">
@@ -355,18 +357,17 @@
             success: function(data) {
                 var warehouse = $j('#inventory-data-product');
                 warehouse.empty();
-                // list = data.data;
-                console.log(data);
                 data.forEach(function(item,index) {
                 var productHtml = `
                         <tr>
-                            <td><i class="fas fa-trash-alt"></i></td>
+                            <td><i data-id='${item.id}' class="fas fa-trash-alt"></i></td>
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
                             <td>${item.product.name}</td>
                             <td>${item.product.quantity}</td>
                             <td><input type="number" class="numberInput" name="quantity" value='' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
-                            <td></td>
+                            <td class='chenhlech'></td>
+                            <td class='gtlech'></td>
 
                         </tr>
                     `;
@@ -381,6 +382,7 @@
         $j('.product_inventory').click(function(e){
             e.preventDefault();
             var product = $(this).data('id');
+
             $j.ajax({
                 url: '{{ route('staff.warehome.add') }}',
                 method: 'POST',
@@ -389,13 +391,51 @@
                     product: product,
                 },
                 success: function(response) {
-                    alert(response);
+                    $('#search').val('');
+                    $j('#results').hide();
+                    updateWarehouse(response);
                 },
                 error: function(xhr) {
                     alert(xhr.responseJSON.error);
                 }
             });
         });
+
+
+        $j(document).on('input', '.numberInput', function(e){
+            e.preventDefault();
+            var value = $j(this).val();
+            var tr = $j(this).closest('tr');
+            var chenhlech = tr.find('.chenhlech');
+            chenhlech.text(value);
+        });
+
+
+        function updateWarehouse(warehouse) {
+            var warehousehtml = $j('#inventory-data-product');
+            warehousehtml.empty();
+            if(warehouse.length === 0) {
+                warehousehtml.append('<p>Your cart is empty.</p>');
+            } else {
+                $.each(warehouse, function(index, item) {
+                    var productHtml = `
+                        <tr>
+                            <td><i class="fas fa-trash-alt"></i></td>
+                            <td>${ index }</td>
+                            <td>${item.product.id}</td>
+                            <td>${item.product.name}</td>
+                            <td>${item.product.quantity}</td>
+                            <td><input type="number" class="numberInput" name="quantity" value='' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
+                            <td class='chenhlech'></td>
+                            <td class='gtlech'></td>
+                        </tr>
+                    `;
+                    warehousehtml.append(productHtml);
+                });
+            }
+        }
+
+
     });
 
 </script>
