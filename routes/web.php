@@ -56,6 +56,9 @@ Route::get('/employee', function () {
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/day', [DashboardController::class, 'StatisticsByDay'])->name('dashboard.day');
+    Route::get('/dashboard/month', [DashboardController::class, 'StatisticsByMonth'])->name('dashboard.month');
+    Route::get('/dashboard/year', [DashboardController::class, 'StatisticsByYear'])->name('dashboard.year');
     Route::get('/detail/{id}', [AdminController::class, 'getAdminInfor'])->name('detail');
     Route::post('/update/{id}', [AdminController::class, 'updateAdminInfor'])->name('update');
     Route::post('/changePassword', [AdminController::class, 'changePassword'])->name('changePassword');
@@ -144,4 +147,5 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     // warehome
     Route::get('warehome', [WareHomeController::class, 'index'])->name('warehome.get');
     Route::post('warehome/add', [WareHomeController::class, 'add'])->name('warehome.add');
+    Route::post('warehome/update', [WareHomeController::class, 'update'])->name('warehome.update');
 });
