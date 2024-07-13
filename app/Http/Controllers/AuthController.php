@@ -29,7 +29,7 @@ class AuthController extends Controller
             } elseif ($result['user']->role_id == 2) {
                 session()->put('authUser', $result['user']);
                 return redirect()->route('staff.index');
-            } elseif ($result['user']->role_id == 3) {
+            } elseif ($result['user']->role_id == 4) {
                 session()->put('authUser', $result['user']);
                 return redirect()->route('as.store.index');
             }

@@ -22,6 +22,7 @@ class StoreController extends Controller
     {
         try {
             $stores = $this->storeService->getAllStore();
+            dd($stores);
             return view('sa.store.index', compact('stores'));
         } catch (Exception $e) {
             Log::error('Failed to find any store' . $e->getMessage());

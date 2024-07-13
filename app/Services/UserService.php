@@ -32,16 +32,14 @@ class UserService
 
     public function authenticateUser($credentials)
     {
-
-        $user = User::where('phone', $credentials['email'])
-            ->orWhere('email', $credentials['email'])
-            ->first();
+        // dd($credentials);
+        $user = User::where('email', $credentials['email'])->first();
         if (!$user) {
             throw new Exception('Not an User');
         }
         $userRoleId = $user->role_id;
 
-        if ($userRoleId != 1 && $userRoleId != 2 && $userRoleId != 3) {
+        if ($userRoleId != 1 && $userRoleId != 2 && $userRoleId != 4) {
             throw new Exception('Not authorized');
         }
 
