@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
+use App\Http\Controllers\SuperAdmin\StoreController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
@@ -146,4 +147,11 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     // warehome
     Route::get('warehome', [WareHomeController::class, 'index'])->name('warehome.get');
     Route::post('warehome/add', [WareHomeController::class, 'add'])->name('warehome.add');
+});
+
+Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function(){
+    Route::prefix('store')->name('store.')->group(function () {
+        Route::get('/index', [StoreController::class, 'index'])->name('index');
+        Route::post('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
+    });
 });

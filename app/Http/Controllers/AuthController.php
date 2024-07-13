@@ -14,7 +14,8 @@ use Carbon\Carbon;
 class AuthController extends Controller
 {
     protected $userService;
-    public function __construct(UserService $userService){
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
     public function login(Request $request)
@@ -23,15 +24,17 @@ class AuthController extends Controller
             $credentials = $request->only(['email', 'password']);
             $result = $this->userService->authenticateUser($credentials);
             if ($result['user']->role_id == 1) {
-                 session()->put('authUser', $result['user']);
-                  return redirect()->route('admin.dashboard');
+                session()->put('authUser', $result['user']);
+                return redirect()->route('admin.dashboard');
             } elseif ($result['user']->role_id == 2) {
-                 session()->put('authUser', $result['user']);
+                session()->put('authUser', $result['user']);
                 return redirect()->route('staff.index');
+            } elseif ($result['user']->role_id == 3) {
+                session()->put('authUser', $result['user']);
+                return redirect()->route('as.store.index');
             }
         } catch (\Exception $e) {
-             return $this->handleLoginError($request, $e);
-
+            return $this->handleLoginError($request, $e);
         }
     }
 
