@@ -153,6 +153,7 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     Route::post('warehome/update', [WareHomeController::class, 'update'])->name('warehome.update');
 });
 
+
 Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function(){
     Route::prefix('store')->name('store.')->group(function () {
         Route::get('/index', [StoreController::class, 'index'])->name('index');
