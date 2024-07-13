@@ -26,6 +26,17 @@ class CategoryService
             throw new Exception('Failed to fetch categories');
         }
     }
+
+    public function getCategoryAllStaff()
+    {
+        try {
+            Log::info('Fetching all categories');
+            return $this->categories->all();
+        } catch (Exception $e) {
+            Log::error('Failed to fetch categories: ' . $e->getMessage());
+            throw new Exception('Failed to fetch categories');
+        }
+    }
     public function createCategory(array $data): Categories
     {
         try{
