@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\warehome;
+use App\Services\CategoryService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +13,19 @@ use Illuminate\Support\Facades\Log;
 
 class WareHomeController extends Controller
 {
-    //
+
+    protected $categoryService;
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
     public function index(){
+        $category = $this->categoryService->getCategoryAllStaff();
         $warehome = warehome::with('product')->get();
-        return response()->json($warehome);
+        return response()->json([
+            'warehome' => $warehome,
+            'category' => $category
+        ]);
     }
 
     public function add(Request $request){

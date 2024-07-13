@@ -173,6 +173,49 @@
     .numberInput {
         width: 100px;
     }
+
+    #category_kho {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #category_kho h2 {
+        color: #343a40;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    #category_kho label{
+        padding: 0px 25px;
+    }
+
+    #category_kho .form-control {
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 1.1em;
+    }
+
+    #category_kho .form-check-input {
+        margin-top: 6px;
+    }
+
+    #category_kho .form-check-label {
+        font-size: 1.1em;
+    }
+
+    #category_kho .form-check {
+        margin-bottom: 10px;
+    }
+
+
+    input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+    }
+
+
 </style>
 <div class="container">
     <div class="row mt-4">
@@ -310,13 +353,40 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="category_kho">
 
+                    <div class="row">
+                        <div class="col-lg-12 mb-3" id="searh_category">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm nhóm hàng">
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="selectAll">
+                                <label class="form-check-label" for="selectAll" style="font-size: 14px">
+                                    Chọn tất cả loại hàng
+                                </label>
+                            </div>
+                            <form id="checkboxForm_category">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="checkbox2">
+                                    <label class="form-check-label" for="checkbox2">
+                                        Checkbox 2
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="checkbox3">
+                                    <label class="form-check-label" for="checkbox3">
+                                        Checkbox 3
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
+                    <button type="button" class="btn btn-primary">Xong</button>
                 </div>
             </div>
         </div>
@@ -356,10 +426,12 @@
             type: 'GET',
             success: function(data) {
                 var warehouse = $j('#inventory-data-product');
+                var category = $j('#checkboxForm_category');
                 warehouse.empty();
-                data.forEach(function(item,index) {
+                category.empty();
+                var list = data['warehome'];
+                list.forEach(function(item,index) {
                 var productHtml = `
-
                         <tr data-id='${item.id}'>
 
                             <td><i data-id='${item.id}' class="fas fa-trash-alt"></i></td>
@@ -374,6 +446,20 @@
                         </tr>
                     `;
                     warehouse.append(productHtml);
+                });
+
+                var list_category = data['category'];
+
+                list_category.forEach(function(item,index) {
+                var categoryHtml = `
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="${item.id}" id="${'checkbox' + index}">
+                            <label class="form-check-label" for="${'checkbox' + index}">
+                               ${item.name}
+                            </label>
+                        </div>
+                    `;
+                    category.append(categoryHtml);
                 });
             },
             error: function(xhr, status, error) {
@@ -463,13 +549,23 @@
     });
 
     function formatNumber(number) {
-    var parts = number.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
+        var parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
     }
 
 </script>
 
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('#checkboxForm_category .form-check-input');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+</script>
 
 @endsection
