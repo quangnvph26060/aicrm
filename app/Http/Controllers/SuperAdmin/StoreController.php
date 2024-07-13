@@ -21,8 +21,8 @@ class StoreController extends Controller
     public function index()
     {
         try {
-            $stores = $this->storeService->getAllStore();
-            return view('sa.store.index', compact('stores'));
+             $stores = $this->storeService->getAllStore();
+             return view('sa.layout.store.index', compact('stores'));
         } catch (Exception $e) {
             Log::error('Failed to find any store' . $e->getMessage());
             return ApiResponse::error('Failed to find any store', 500);

@@ -70,7 +70,7 @@ class DashboardService
             $orders = $this->order->whereDate('created_at', '=', date('Y-m-d'))->get();
             $interest = 0;
             $principal = 0;
-            $sum = 0;
+            $sum = 1;
             foreach ($orders as $key => $value) {
                 $sum += $value->total_money;
                 foreach ($value->orderdetail as $key => $item) {
@@ -149,7 +149,7 @@ class DashboardService
 
             $interest = 0;
             $principal = 0;
-            $sum = 0;
+            $sum = 1;
 
             foreach ($orders as $key => $value) {
                 $sum += $value->total_money;
@@ -182,7 +182,7 @@ class DashboardService
 
             $interest = 0;
             $principal = 0;
-            $sum = 0;
+            $sum = 1;
 
             foreach ($orders as $key => $value) {
                 $sum += $value->total_money;
