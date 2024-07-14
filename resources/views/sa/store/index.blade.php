@@ -29,6 +29,7 @@
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
             padding: 1.5rem;
+            text-align: center;
         }
 
         .card-title {
@@ -118,6 +119,16 @@
         .pagination .page-item .page-link {
             transition: all 0.3s ease;
         }
+
+        .dataTables_filter {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .dataTables_filter label {
+            margin-right: 0.5rem;
+        }
     </style>
     <div class="page-inner">
         <div class="page-header">
@@ -145,25 +156,20 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách khách hàng</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Danh sách cửa hàng</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="basic-datatables_length">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                        {{-- <form action="{{ route('admin.client.filter') }}" method="GET">
+                                    <div class="col-sm-12">
+                                        <form action="{{ route('sa.store.findByPhone') }}" method="GET">
                                             <div class="dataTables_filter">
                                                 <label>Tìm kiếm</label>
                                                 <input type="text" name="phone" class="form-control form-control-sm"
                                                     placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
                                             </div>
-                                        </form> --}}
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -189,11 +195,14 @@
                                                                 <td>{{ intval($key) + 1 }}</td>
                                                                 <td>{{ $value->store_name ?? '' }}</td>
                                                                 <td>{{ $value->name ?? '' }}</td>
-                                                                <td>{{ $value->created_at ?? '' }}</td>
-                                                                <td>{{ isset($value->created_at) ? Carbon\Carbon::parse($value->created_at)->addMonths(6)->toDateString() : '' }}</td>
+                                                                <td>{{ $value->created_at ? $value->created_at->format('d/m/Y') : '' }}
+                                                                </td>
+                                                                <td>{{ isset($value->created_at)? \Carbon\Carbon::parse($value->created_at)->addMonths(6)->format('d/m/Y'): '' }}
+                                                                </td>
                                                                 <td style="text-align:center">
                                                                     <a class="btn btn-warning"
-                                                                        href="{{ route('sa.store.detail', ['id' => $value->id]) }}">Chi tiết</a>
+                                                                        href="{{ route('sa.store.detail', ['id' => $value->id]) }}">Chi
+                                                                        tiết</a>
                                                                     {{-- <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
                                                                         class="btn btn-danger"
                                                                         href="{{ route('admin.client.delete', ['id' => $value->id]) }}">Xóa</a> --}}
@@ -212,8 +221,8 @@
                                                 @endif
                                             </tbody>
                                         </table>
-                                        @if ($clients instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                                            {{ $clients->links('vendor.pagination.custom') }}
+                                        @if ($stores instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                            {{ $stores->links('vendor.pagination.custom') }}
                                         @endif
                                     </div>
                                 </div>
