@@ -154,9 +154,10 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
 });
 
 
-Route::middleware(['checkRole:4', CheckLogin::class])->prefix('supper')->name('supper.')->group(function(){
+Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function () {
     Route::prefix('store')->name('store.')->group(function () {
         Route::get('/index', [StoreController::class, 'index'])->name('index');
-        Route::post('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
+        Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
+        Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
     });
 });

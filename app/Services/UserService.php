@@ -38,7 +38,7 @@ class UserService
             throw new Exception('Not an User');
         }
         $userRoleId = $user->role_id;
-        if ($userRoleId != 1 && $userRoleId != 2 && $userRoleId != 4) {
+        if ($userRoleId != 1 && $userRoleId != 2 && $userRoleId != 3) {
             throw new Exception('Not authorized');
         }
 
