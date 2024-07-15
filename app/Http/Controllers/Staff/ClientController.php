@@ -39,12 +39,15 @@ class ClientController extends Controller
     public function addClient(Request $request)
     {
         try {
-            $listphone = $this->clientService->getAllClient()->pluck('phone');
+
+            $listphone = $this->clientService->getAllClientStaff()->pluck('phone');
             if ($listphone->contains($request->phone)) {
-                return redirect()->back()->with('fail', 'Khách hàng đã tồn tại ');
+                return redirect()->back()->with('fail', 'Khách hàng đã tồn tại');
+            }else{
+                $client = $this->clientService->addClient($request->all());
+                return redirect()->back()->with('action', 'Thêm khách hàng thành công');
             }
-            $client = $this->clientService->addClient($request->all());
-            return redirect()->back()->with('action', 'Thêm khách hàng thành công');
+
         } catch (Exception $e) {
             Log::error('Failed to fetch clients: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch clients', 500);
