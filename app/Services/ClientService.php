@@ -23,6 +23,16 @@ class ClientService
             throw new Exception('Failed to get all clients');
         }
     }
+
+    public function getAllClientStaff()
+    {
+        try {
+            return $this->client->get();
+        } catch (Exception $e) {
+            Log::error('Failed to get all clients: ' . $e->getMessage());
+            throw new Exception('Failed to get all clients');
+        }
+    }
     public function findClientByPhone($phone)
     {
         try {
