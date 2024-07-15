@@ -218,7 +218,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <p id="interest">Lãi xuất : {{ $daily['interest'] }}</p>
+                        <p id="interest">Lãi suất : {{ $daily['interest'] }}</p>
                         <p id="moneyinterest">{{ $daily['moneyinterest'] }} </p>
                     </div>
                 </div>
@@ -567,8 +567,6 @@
                             '#6f42c1',
                             '#20c997',
                             '#ffc107',
-                            '#007bff',
-                            '#28a745',
                             '#dc3545',
                             '#17a2b8',
                             '#6610f2',
@@ -581,8 +579,6 @@
                             '#6f42c1',
                             '#20c997',
                             '#ffc107',
-                            '#007bff',
-                            '#28a745',
                             '#dc3545',
                             '#17a2b8',
                             '#6610f2',

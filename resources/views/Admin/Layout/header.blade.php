@@ -22,6 +22,9 @@
     <!-- Navbar Header -->
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div class="container-fluid">
+            <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px" >
+                <marquee direction="circle" scrollamount="3" style="color: red"><span>Thông báo  -  quảng cáo  -  thông báo !</span></marquee>
+            </div>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
 
                 <li class="nav-item topbar-icon dropdown hidden-caret">
