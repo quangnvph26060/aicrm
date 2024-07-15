@@ -21,9 +21,10 @@ class CategorieController extends Controller
 
     public function index()
     {
+        $title = 'Danh mục';
         try {
             $category = $this->categoryService->getCategoryAll();
-            return view('Admin.category.index', compact('category'));
+            return view('Admin.category.index', compact('category', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch Category: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch Category', 500);
@@ -31,9 +32,10 @@ class CategorieController extends Controller
     }
     public function findByName(Request $request)
     {
+        $title = 'Danh mục';
         try{
             $category = $this->categoryService->findCategoryByName($request->input('name'));
-            return view('Admin.category.index', compact('category'));
+            return view('Admin.category.index', compact('category', 'title'));
         }
         catch(Exception $e)
         {
@@ -42,7 +44,8 @@ class CategorieController extends Controller
         }
     }
     public function add(){
-        return view('Admin.category.add');
+        $title = 'Thêm danh mục';
+        return view('Admin.category.add', compact('title'));
     }
     public function store(StoreCategoryRequest $request)
     {
@@ -68,9 +71,11 @@ class CategorieController extends Controller
 
     public function edit($id)
     {
+        $title = 'Sửa danh muc';
+
         try {
             $category = $this->categoryService->findOrFailCategory($id);
-            return view('Admin.category.detail', compact('category'));
+            return view('Admin.category.detail', compact('category', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find category: ' . $e->getMessage());
         }
@@ -78,6 +83,7 @@ class CategorieController extends Controller
 
     public function update($id, Request $request)
     {
+
         try {
             $category = $this->categoryService->updateCategory($id, $request->all());
             session()->flash('success', 'Cập nhật danh mục thành công');

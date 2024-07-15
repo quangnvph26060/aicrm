@@ -74,15 +74,11 @@
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="email" name="email"
+                                                <input type="text" class="form-control" id="email" name="email"
                                                     placeholder="Enter username">
                                             </div>
 
                                             <div class="mb-3">
-                                                <div class="float-end">
-                                                    <a href="{{ route('forget-password') }}" class="text-muted">Quên mật
-                                                        khẩu?</a>
-                                                </div>
                                                 <label class="form-label" for="password-input">Mật Khẩu</label>
                                                 <div class="position-relative auth-pass-inputgroup mb-3">
                                                     <input type="password" id="password" name="password"
@@ -105,10 +101,13 @@
                                             <div class="mt-4">
                                                 <button class="btn btn-success w-100" type="submit">Đăng nhập</button>
                                             </div>
-
-                                            <div class="mt-4 text-center">
+                                            <div style="margin: 0px; display: flex; justify-content: flex-end; padding: 10px 5px;">
+                                                <a href="{{ route('forget-password') }}" class="text-muted">Quên mật
+                                                    khẩu?</a>
+                                            </div>
+                                            <div class="mt-2 text-center">
                                                 <div class="signin-other-title">
-                                                    <h5 class="fs-13 mb-4 title">Sign In with</h5>
+                                                    <h5 class="fs-13 mb-4 title"  style="padding: 10px;">Sign In with</h5>
                                                 </div>
 
                                                 <div>

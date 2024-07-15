@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Tạo tài khoản dùng thử miễn ph</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <style>
@@ -42,13 +42,15 @@
         }
 
         .register-left {
-            background: url('https://gcs.tripi.vn/public-tripi/tripi-feed/img/473382NTG/image-33-hinh-nen-dien-thoai-dep-doc-nhat-tai-xuong-mien-phi-166340206951773.jpg') no-repeat center center;
+            background: url('https://it.mobifone.vn/wp-content/uploads/cac-mo-hinh-quan-ly-ban-hang-thuong-se-bao-gom-quan-ly-nhan-vien-tai-chinh-700x408.jpg') no-repeat center center;
             background-size: cover;
             color: white;
             text-align: center;
             padding: 50px 20px;
             flex: 1;
-            display: flex;
+            background-size: cover;
+            background-repeat: no-repeat;
+            F display: flex;
             flex-direction: column;
             justify-content: center;
         }
@@ -117,11 +119,11 @@
 
     <div class="register-container">
         <div class="register-left">
-            <h1>Quản lý dễ dàng</h1>
+            {{-- <h1>Quản lý dễ dàng</h1>
             <p>Bán hàng đơn giản</p>
             <p>Hỗ trợ đăng ký 1800 6162</p>
             <p>Đăng ký tài khoản dùng thử ngay để trải nghiệm những tính năng tuyệt vời của chúng tôi.</p>
-            <p>Liên hệ với chúng tôi để được hỗ trợ tốt nhất.</p>
+            <p>Liên hệ với chúng tôi để được hỗ trợ tốt nhất.</p> --}}
         </div>
         <div class="register-right">
             <h4 style="text-align: center;">Tạo tài khoản dùng thử miễn phí</h4>
@@ -132,14 +134,15 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Họ và tên</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Nhập họ và tên" required>
+                                placeholder="Nhập họ và tên">
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="name_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="company_name" class="form-label">Tên công ty</label>
                             <input type="text" class="form-control" id="company_name" name="company_name"
-                                placeholder="Nhập tên công ty" required>
+                                placeholder="Nhập tên công ty">
                         </div>
                     </div>
                 </div>
@@ -147,23 +150,17 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="phone" class="form-label">Số điện thoại</label>
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                id="phone" name="phone" placeholder="Nhập số điện thoại"
-                                value="{{ old('phone') }}" required>
-                            @error('phone')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" class="form-control" id="phone" name="phone"
+                                placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="phone_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                id="email" name="email" placeholder="Nhập địa chỉ email"
-                                value="{{ old('email') }}" required>
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="Nhập địa chỉ email" value="{{ old('email') }}">
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="email_error"></div>
                         </div>
                     </div>
                 </div>
@@ -179,46 +176,52 @@
                         <div class="mb-3">
                             <label for="store_name" class="form-label">Tên cửa hàng</label>
                             <input type="text" class="form-control" id="store_name" name="store_name"
-                                placeholder="Nhập tên cửa hàng" required oninput="updateDomain()">
+                                placeholder="Nhập tên cửa hàng" oninput="updateDomain()">
+                            <p id="store_domain1"></p>
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="store_name_error"></div>
+
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="city_id" class="form-label">Khu vực</label>
-                            <select class="form-select" id="city_id" name="city_id" required>
+                            <label for="city" class="form-label">Khu vực</label>
+                            <select class="form-select" id="city" name="city">
                                 <option value="">Chọn thành phố</option>
                                 @foreach ($city as $cities)
                                     <option value="{{ $cities->id }}">{{ $cities->name }}</option>
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="city_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="field_id" class="form-label">Lĩnh vực hoạt động</label>
-                            <select class="form-select" id="field_id" name="field_id" required>
+                            <select class="form-select" id="field" name="field">
                                 <option value="">Chọn lĩnh vực</option>
                                 @foreach ($field as $fields)
                                     <option value="{{ $fields->id }}">{{ $fields->name }}</option>
                                 @endforeach
                             </select>
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="field_error"></div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="mb3">
+                        <div class="mb-3">
                             <label for="address" class="form-label">Địa chỉ</label>
                             <input type="text" class="form-control" id="address" name="address"
-                                placeholder="Nhập địa chỉ" required>
+                                placeholder="Nhập địa chỉ">
+                            <div class="invalid-feedback d-block" style="font-weight: 500;" id="address_error"></div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <div class="col-md-12">
-                        <div class="mb3">
+                        <div class="mb-3">
                             <label for="store_domain" class="form-label">Tên miền</label>
                             <input type="text" class="form-control" id="store_domain" name="store_domain"
                                 placeholder="Tên miền của bạn" readonly>
@@ -226,17 +229,19 @@
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-success w-100">Đăng ký</button>
+                    <button onclick="submitRegisterForm(event)" type="button" class="btn btn-success w-100">Đăng
+                        ký</button>
+                    <a href="{{ route('formlogin') }}">Quay lại</a>
                 </div>
             </form>
         </div>
     </div>
-
+    <script src="{{ asset('/validator/validator.js') }}"></script>
     <script>
         function updateDomain() {
             var storeNameInput = document.getElementById('store_name');
+            var storeDomainInput1 = document.getElementById('store_domain1');
             var storeDomainInput = document.getElementById('store_domain');
-
             var storeName = storeNameInput.value.trim();
             var domainSuffix = '.aicrm.vn'; // Thay đổi tên miền của bạn tại đây
 
@@ -245,9 +250,102 @@
                 var storeDomain = storeName.toLowerCase()
                     .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
                     .replace(/\s+/g, '') + domainSuffix;
-                storeDomainInput.value = storeDomain;
+                 storeDomainInput.value = storeDomain;
+                storeDomainInput1.textContent = storeDomain;
             } else {
-                storeDomainInput.value = '';
+                 storeDomainInput.value = '';
+                storeDomainInput.textContent = '';
+            }
+        }
+
+        var formRegister = {
+            'name': {
+                'element': document.getElementById('name'),
+                'error': document.getElementById('name_error'),
+                'validations': [{
+                        'func': function(value) {
+                            return checkRequired(value);
+                        },
+                        'message': generateErrorMessage('R042')
+                    }
+                    // Add other validations as needed
+                ]
+            },
+            'phone': {
+                'element': document.getElementById('phone'),
+                'error': document.getElementById('phone_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('R043')
+                }]
+            },
+            'email': {
+                'element': document.getElementById('email'),
+                'error': document.getElementById('email_error'),
+                'validations': [{
+                        'func': function(value) {
+                            return checkRequired(value);
+                        },
+                        'message': generateErrorMessage('R046')
+                    },
+                    {
+                        'func': function(value) {
+                            return checkEmail(value);
+                        },
+                        'message': generateErrorMessage('R047')
+                    }
+                ]
+            },
+            'store_name': {
+                'element': document.getElementById('store_name'),
+                'error': document.getElementById('store_name_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('R048')
+                }]
+            },
+            'city': {
+                'element': document.getElementById('city'),
+                'error': document.getElementById('city_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('R049')
+                }]
+            },
+            'field': {
+                'element': document.getElementById('field'),
+                'error': document.getElementById('field_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('R050')
+                }]
+            },
+            'address': {
+                'element': document.getElementById('address'),
+                'error': document.getElementById('address_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('R051')
+                }]
+            }
+        };
+
+
+        function submitRegisterForm(event) {
+            event.preventDefault();
+
+            if (validateAllFields(formRegister)) {
+                document.getElementById('registerForm').submit();
             }
         }
     </script>

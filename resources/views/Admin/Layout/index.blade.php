@@ -23,7 +23,7 @@
     <script src="{{ asset('validator/validator.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Document</title>
+    <title>{{isset($title) ? $title : 'document' }}</title>
 </head>
 <style>
     .collapse {

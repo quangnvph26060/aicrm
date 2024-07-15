@@ -21,6 +21,7 @@ class DashboardController extends Controller
     public function index()
     {
         try {
+            $title = "Dashboard";
             $getMonth = $this->orderService->getMonthlyRevenue();
             $getMonthlyRevenue = $getMonth['monthlyRevenue'];
             $totalAnnualRevenue = $getMonth['totalAnnualRevenue'];
@@ -31,7 +32,7 @@ class DashboardController extends Controller
             $newClient = $this->dashboardService->getNewestClient();
             $newOrder = $this->dashboardService->getNewestOrder();
             $newStaff = $this->dashboardService->getNewestStaff();
-            return view('welcome', compact('clientnumber', 'ordernumber', 'amount', 'daily', 'newClient', 'newOrder', 'newStaff', 'getMonthlyRevenue', 'totalAnnualRevenue'));
+            return view('welcome', compact('clientnumber', 'ordernumber', 'amount', 'daily', 'newClient', 'newOrder', 'newStaff', 'getMonthlyRevenue', 'totalAnnualRevenue', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to get statistic this year: ' . $e->getMessage());
             return ApiResponse::error('Failed to get statistic this year', 500);
