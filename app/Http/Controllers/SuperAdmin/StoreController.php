@@ -8,6 +8,8 @@ use App\Services\StoreService;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
 
 class StoreController extends Controller
@@ -22,13 +24,31 @@ class StoreController extends Controller
     {
         try {
              $stores = $this->storeService->getAllStore();
-             return view('sa.layout.store.index', compact('stores'));
+             return view('sa.store.index', compact('stores'));
         } catch (Exception $e) {
             Log::error('Failed to find any store' . $e->getMessage());
             return ApiResponse::error('Failed to find any store', 500);
         }
     }
-
+    public function findByPhone(Request $request)
+    {
+        try{
+            $owner = $this->storeService->findOwnerByPhone($request->input('phone'));
+            $stores = new LengthAwarePaginator(
+                $owner ? [$owner] : [],
+                $owner ? 1 : 0,
+                10,
+                1,
+                ['path' => Paginator::resolveCurrentPath()]
+            );
+            return view('sa.store.index', compact('stores'));
+        }
+        catch(Exception $e)
+        {
+            Log::error('Failed to find store owner:' .$e->getMessage());
+            return response()->json(['error' => 'Failed to find store owner'], 500);
+        }
+    }
     public function detail($id)
     {
         try {
