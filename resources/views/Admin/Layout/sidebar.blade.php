@@ -138,8 +138,9 @@
                         <p>Khách hàng</p>
                     </a>
                 </li>
+                {{-- {{session('authUser')->id}} --}}
                 <li class="nav-item">
-                    <a href="{{ route('admin.config.detail') }}">
+                    <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
                         <i class="fas fa-cogs"></i>
                         <p>Cấu hình</p>
                     </a>

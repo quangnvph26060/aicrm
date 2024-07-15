@@ -18,31 +18,34 @@ class ConfigService
         $this->config = $config;
     }
 
-    public function getConfig()
+    public function getConfig($id)
     {
         try {
             Log::info('Fetching all configuration');
-            return Config::first();
+            return $this->config->where('user_id', $id)->first();
         } catch (Exception $e) {
             Log::error('Failed to fetch configuration: ' . $e->getMessage());
             throw new Exception('Failed to fetch configuration');
         }
     }
-
-    public function updateConfig(array $data): Config
+    public function updateConfig(int $id, array $data): Config
     {
         try {
             DB::beginTransaction();
 
-            $config = Config::firstOrNew([]);
-            $config->name = $data['name'];
-            $config->email = $data['email'];
-            $config->phone = $data['phone'];
-            $config->address = $data['address'];
+            $config = Config::firstOrNew(['user_id' => $id]);
+
+            // Cập nhật giá trị cho cột receiver
+            $config->receiver = $data['receiver'];
+
+            // Thiết lập user_id
+            $config->user_id = $id;
+
+            // Thiết lập các cột khác
             $config->bank_account = $data['bank_account'];
             $config->bank_id = $data['bank'];
-            $config->tin = $data['name_bank'];
-            if(!empty($data['bank_account']) && !empty($data['bank'])){
+
+            if (!empty($data['bank_account']) && !empty($data['bank'])) {
                 $bank = Bank::find($data['bank'])->code;
                 $bank_account = $data['bank_account'];
                 $config->qr = "https://img.vietqr.io/image/{$bank}-{$bank_account}-compact.jpg";

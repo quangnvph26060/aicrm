@@ -135,10 +135,18 @@ function generateErrorMessage(code, values = []) {
         E039 : ' Nhập số điện thoại nhân viên ',
         E040 : ' Nhập địa chỉ nhân viên ',
         E041 : ' Xác nhận mật khẩu mới ',
-
-
-
-
+        // dang ky
+        R042: ' Họ tên không được để trống',
+        R043: ' Số điện thoại không được để trống',
+        R044: ' Số điện thoại đã tồn tại trong hệ thống',
+        R045: ' Toàn bộ ký tự phải là số',
+        R046: ' Email không được để trống',
+        R047: ' Email không đúng định dạng',
+        R048: ' Tên cửa hàng không được để trống',
+        R049: ' Vui lòng chọn khu vực hoạt động',
+        R050: ' Vui lòng chọn lĩnh vực hoạt động',
+        R051: ' Địa chỉ không được để trống',
+        R052: ' Email đã tồn tại trong hệ thống'
     };
     const errorMessage = errorMessages[code];
     if (typeof errorMessage === 'function') {

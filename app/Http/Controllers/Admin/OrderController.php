@@ -20,9 +20,10 @@ class OrderController extends Controller
     }
     public function index()
     {
+        $title = 'Đơn hàng';
         try {
             $orders = $this->orderService->getOrderAll();
-            return view('admin.order.index', compact('orders'));
+            return view('admin.order.index', compact('orders', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch orders: ' . $e->getMessage());
             return redirect()->route('admin.order.index')->with('error', 'Failed to fetch orders');
@@ -34,10 +35,10 @@ class OrderController extends Controller
         $phone = $request->input('phone');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
+        $title = 'Đơn hàng';
         try {
             $orders = $this->orderService->filterOrder($startDate, $endDate, $phone);
-            return view('admin.order.index', compact('orders'));
+            return view('admin.order.index', compact('orders', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch orders by filter: ' . $e->getMessage());
             return redirect()->route('admin.order.index')->with('error', 'Failed to fetch orders by filter');
@@ -46,9 +47,10 @@ class OrderController extends Controller
 
     public function detail($id)
     {
+        $title = 'Chi tiết đơn hàng';
         try {
             $order = $this->orderService->getOrderbyID($id);
-            return view('Admin.Order.detail', compact('order'));
+            return view('Admin.Order.detail', compact('order', 'title'));
         } catch (\Exception $e) {
             Log::error('Failed to find order');
         }

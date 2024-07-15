@@ -20,9 +20,10 @@ class AdminController extends Controller
 
     public function getAdminInfor($id)
     {
+        $title = 'Thông tin người dùng';
         try {
             $admin = $this->adminService->getUserById($id);
-            return view('Admin.admin.edit', compact('admin'));
+            return view('Admin.admin.edit', compact('admin', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch info: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch info', 500);

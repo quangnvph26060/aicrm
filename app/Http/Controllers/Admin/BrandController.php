@@ -20,12 +20,14 @@ class BrandController extends Controller
     }
     public function index()
     {
+        $title = 'Thương hiêu ';
         $brand = $this->brandService->getAllBrand();
-        return view('Admin.Brand.index', compact('brand'));
+        return view('Admin.Brand.index', compact('brand', 'title'));
     }
     public function findByName(Request $request)
     {
         try {
+            $title = 'Thương hiêu ';
             $brands = $this->brandService->brandByName($request->input('name'));
             $brand = new LengthAwarePaginator(
                 $brands ? [$brands] : [],
@@ -34,7 +36,7 @@ class BrandController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('Admin.Brand.index', compact('brand'));
+            return view('Admin.Brand.index', compact('brand','title'));
         } catch (Exception $e) {
             Log::error('Failed to find brand: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find brand'], 500);
@@ -42,7 +44,8 @@ class BrandController extends Controller
     }
     public function addForm()
     {
-        return view('Admin.Brand.add');
+        $title = 'Thêm thương hiệu ';
+        return view('Admin.Brand.add', compact('title'));
     }
 
     public function add(Request $request)
@@ -71,8 +74,9 @@ class BrandController extends Controller
 
     public function edit($id)
     {
+        $title = 'Sửa thương hiệu';
         $brand = $this->brandService->getBrandById($id);
-        return view('Admin.Brand.edit', compact('brand'));
+        return view('Admin.Brand.edit', compact('brand', 'title'));
     }
 
     public function update($id, Request $request)

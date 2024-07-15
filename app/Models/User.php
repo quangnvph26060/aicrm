@@ -71,4 +71,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo((Field::class));
     }
+    public function config()
+    {
+        return $this->hasOne(Config::class);
+    }
 }
