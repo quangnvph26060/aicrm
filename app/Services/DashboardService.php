@@ -70,20 +70,22 @@ class DashboardService
             $orders = $this->order->whereDate('created_at', '=', date('Y-m-d'))->get();
             $interest = 0;
             $principal = 0;
-            $sum = 1;
+            $sum = 0;
             foreach ($orders as $key => $value) {
                 $sum += $value->total_money;
                 foreach ($value->orderdetail as $key => $item) {
                     $principal += $item->product->price * $item->quantity;
                 }
             }
-            $moneyinterest = $sum - $principal;
-            $interest = $moneyinterest/$sum;
+            if($sum == 0){
+                $moneyinterest = 0;
+                $interest = 0;
+            }else{
+                $moneyinterest = $sum - $principal;
+                $interest = $moneyinterest/$sum;
+            }
+
             return [
-                // 'income' => $income,
-                // 'amount' => $amount,
-                // 'moneyinterest' => $moneyinterest,
-                // 'interest' => number_format($interest,1).'%'
                 'income' => number_format($income, 0, ',', '.') . ' VND',
                 'amount' => $amount,
                 'moneyinterest' => number_format($moneyinterest, 0, ',', '.') . ' VND',
@@ -149,7 +151,7 @@ class DashboardService
 
             $interest = 0;
             $principal = 0;
-            $sum = 1;
+            $sum = 0;
 
             foreach ($orders as $key => $value) {
                 $sum += $value->total_money;
@@ -158,8 +160,13 @@ class DashboardService
                 }
             }
 
-            $moneyinterest = $sum - $principal;
-            $interest = $moneyinterest / $sum;
+            if($sum == 0){
+                $moneyinterest = 0;
+                $interest = 0;
+            }else{
+                $moneyinterest = $sum - $principal;
+                $interest = $moneyinterest/$sum;
+            }
 
             return [
                 'income' => number_format($income, 0, ',', '.') . ' VND',
@@ -182,7 +189,7 @@ class DashboardService
 
             $interest = 0;
             $principal = 0;
-            $sum = 1;
+            $sum = 0;
 
             foreach ($orders as $key => $value) {
                 $sum += $value->total_money;
@@ -191,8 +198,13 @@ class DashboardService
                 }
             }
 
-            $moneyinterest = $sum - $principal;
-            $interest = $moneyinterest / $sum;
+            if($sum == 0){
+                $moneyinterest = 0;
+                $interest = 0;
+            }else{
+                $moneyinterest = $sum - $principal;
+                $interest = $moneyinterest/$sum;
+            }
 
             return [
                 'income' => number_format($income, 0, ',', '.') . ' VND',

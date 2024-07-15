@@ -6,17 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\warehome;
 use App\Services\CategoryService;
+use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Svg\Tag\Rect;
 
 class WareHomeController extends Controller
 {
 
     protected $categoryService;
-    public function __construct(CategoryService $categoryService)
+    protected $productService;
+    public function __construct(CategoryService $categoryService, ProductService $productService)
     {
+        $this->productService = $productService;
         $this->categoryService = $categoryService;
     }
     public function index(){
@@ -70,5 +74,46 @@ class WareHomeController extends Controller
             'gia_chenh_lech' => $gia_chenh_lech ?? null
         ]);
 
+    }
+
+    public function delete(Request $request){
+        $id = $request->input('id');
+        $warehome = warehome::find($id);
+        $warehome->delete();
+        $warehomes = warehome::get();
+        return response()->json($warehomes);
+    }
+
+    public function addByCategory(Request $request){
+        $list_id = $request->selectedValues;
+        $warehome = warehome::get();
+        $user = Auth::user();
+        foreach($list_id as $item){
+            $product = $this->productService->getProductByCategory($item);
+            foreach ($product as $key => $value) {
+
+                if (!$warehome->contains('product_id', $value->id)) {
+                    warehome::create([
+                        'product_id' => $value->id,
+                        'user_id' => $user->id,
+                    ]);
+                }
+            }
+        }
+        $warehomes = warehome::get();
+        return response()->json($warehomes);
+    }
+
+    public function checkwerehouse(){
+
+        $warehome = warehome::get();
+        if (!$warehome->isEmpty()) {
+            $hasReality = warehome::whereNotNull('reality')->exists();
+            $result = $hasReality ? 1 : 2;
+        } else {
+            $result = 3;
+        }
+
+        return response()->json(['result' => $result]);
     }
 }

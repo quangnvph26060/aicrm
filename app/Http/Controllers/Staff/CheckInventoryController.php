@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\Categories;
+use App\Models\CheckDetail;
+use App\Models\warehome;
 
 class CheckInventoryController extends Controller
 {
@@ -46,6 +48,35 @@ class CheckInventoryController extends Controller
         $user = Auth::user();
         $category = Categories::all();
         $product = $this->productService->getProductAll_Staff();
-        return view('Themes.pages.Inventory.add', compact('config', 'user', 'product','category'));
+        return view('Themes.pages.Inventory.add', compact('config', 'user', 'product', 'category'));
+    }
+    public function submitadd(Request $request)
+    {
+        try {
+
+            $user = Auth::user();
+            $data = [
+                'user_id' => $user->id,
+                'note' => $request->note,
+                'makho' => $request->makho
+            ];
+            $warehomes = warehome::whereNotNull('reality')->get();
+
+            $inventory =  $this->checkInventoryService->addCheckInventory($data);
+            foreach ($warehomes as  $value) {
+
+                CheckDetail::create([
+                    'check_inventory_id' => $inventory->id,
+                    'product_id' =>  $value->product_id,
+                    'difference' => $value->difference,
+                    'gia_chenh_lech' => $value->gia_chenh_lech,
+
+                ]);
+            }
+            warehome::truncate();
+        } catch (Exception $e) {
+            Log::error('Failed to fetch add inventory: ' . $e->getMessage());
+            return ApiResponse::error('Failed to fetch add inventory', 500);
+        }
     }
 }

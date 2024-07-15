@@ -9,7 +9,7 @@ class CheckDetail extends Model
 {
     use HasFactory;
     protected $table = 'check_detail';
-    protected $fillable = ['product_id', 'difference', 'check_inventory_id'];
+    protected $fillable = ['product_id', 'difference', 'check_inventory_id', 'gia_chenh_lech'];
 
     public function inventory()
     {

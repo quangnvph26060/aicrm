@@ -57,7 +57,8 @@
     #tieude div {
         text-align: left;
     }
-    #tieude h2{
+
+    #tieude h2 {
         display: block;
         margin: 0px auto;
     }
@@ -137,21 +138,26 @@
         }
 
         function createPagination(current, last) {
+            if (last == 1) {
+                return '';
+            }
+
             let pagination = '';
-            if (current > 1 && status !== 1) {
+
+            if (current > 1) {
                 pagination += `<li class="page-item">
                     <a class="page-link" href="#" data-page="${current - 1}"><i class="fas fa-backward"></i></a>
-                    </li>`;
-                }
+                </li>`;
+            }
 
             pagination += `<li class="page-item ${1 === current ? 'active' : ''}">
-                        <a class="page-link" href="#" data-page="1">1</a>
-                    </li>`;
+                <a class="page-link" href="#" data-page="1">1</a>
+            </li>`;
 
             if (current > 3) {
                 pagination += `<li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>`;
+                    <span class="page-link">...</span>
+                </li>`;
             }
 
             let start = Math.max(2, current - 1);
@@ -159,24 +165,24 @@
 
             for (let i = start; i <= end; i++) {
                 pagination += `<li class="page-item ${i === current ? 'active' : ''}">
-                                <a class="page-link" href="#" data-page="${i}">${i}</a>
-                            </li>`;
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>`;
             }
 
             if (current < last - 2) {
                 pagination += `<li class="page-item disabled">
-                                <span class="page-link">...</span>
-                            </li>`;
+                    <span class="page-link">...</span>
+                </li>`;
             }
 
             pagination += `<li class="page-item ${last === current ? 'active' : ''}">
-                            <a class="page-link" href="#" data-page="${last}">${last}</a>
-                        </li>`;
+                <a class="page-link" href="#" data-page="${last}">${last}</a>
+            </li>`;
 
-            if (current < last && status !== 1) {
+            if (current < last) {
                 pagination += `<li class="page-item">
-                        <a class="page-link" href="#" data-page="${current + 1}"><i class="fas fa-forward"></i></a>
-                      </li>`;
+                    <a class="page-link" href="#" data-page="${current + 1}"><i class="fas fa-forward"></i></a>
+                </li>`;
             }
 
             return pagination;
