@@ -177,7 +177,7 @@
                             <label for="store_name" class="form-label">Tên cửa hàng</label>
                             <input type="text" class="form-control" id="store_name" name="store_name"
                                 placeholder="Nhập tên cửa hàng" oninput="updateDomain()">
-                            <p id="store_domain"></p>
+                            <p id="store_domain1"></p>
                             <div class="invalid-feedback d-block" style="font-weight: 500;" id="store_name_error"></div>
 
                         </div>
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row">
+                <div class="row" style="display: none">
                     <div class="col-md-12">
                         <div class="mb-3">
                             <label for="store_domain" class="form-label">Tên miền</label>
@@ -227,7 +227,7 @@
                                 placeholder="Tên miền của bạn" readonly>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <div class="text-center mt-4">
                     <button onclick="submitRegisterForm(event)" type="button" class="btn btn-success w-100">Đăng
                         ký</button>
@@ -240,8 +240,8 @@
     <script>
         function updateDomain() {
             var storeNameInput = document.getElementById('store_name');
+            var storeDomainInput1 = document.getElementById('store_domain1');
             var storeDomainInput = document.getElementById('store_domain');
-
             var storeName = storeNameInput.value.trim();
             var domainSuffix = '.aicrm.vn'; // Thay đổi tên miền của bạn tại đây
 
@@ -250,10 +250,10 @@
                 var storeDomain = storeName.toLowerCase()
                     .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
                     .replace(/\s+/g, '') + domainSuffix;
-                // storeDomainInput.value = storeDomain;
-                storeDomainInput.textContent = storeDomain;
+                 storeDomainInput.value = storeDomain;
+                storeDomainInput1.textContent = storeDomain;
             } else {
-                // storeDomainInput.value = '';
+                 storeDomainInput.value = '';
                 storeDomainInput.textContent = '';
             }
         }
