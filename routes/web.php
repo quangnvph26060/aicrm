@@ -204,94 +204,10 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('warehome/check', [WareHomeController::class, 'checkwerehouse'])->name('warehome.check');
     });
 
-<<<<<<< HEAD
-
-
     Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function () {
         Route::prefix('store')->name('store.')->group(function () {
             Route::get('/index', [StoreController::class, 'index'])->name('index');
             Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
             Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
         });
-=======
-    Route::prefix('user')->name('staff.')->group(function () {
-        Route::get('', [UserController::class, 'index'])->name('store');
-        Route::get('update/{id}', [UserController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [UserController::class, 'update'])->name('update');
-        Route::get('add', [UserController::class, 'addForm'])->name('addForm');
-        Route::post('add', [UserController::class, 'add'])->name('add');
-        Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete');
-        Route::post('updateAdmin/{id}', [UserController::class, 'updateadmin'])->name('updateAdmin');
-        Route::get('search/phone', [UserController::class, 'findByPhone'])->name('findByPhone');
-    });
-
-    Route::prefix('brand')->name('brand.')->group(function () {
-        Route::get('', [BrandController::class, 'index'])->name('store');
-        Route::get('add', [BrandController::class, 'addForm'])->name('addForm');
-        Route::post('add', [BrandController::class, 'add'])->name('add');
-        Route::get('delete', [BrandController::class, 'delete'])->name('delete');
-        Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
-        Route::get('search/name', [BrandController::class, 'findByName'])->name('findByName');
-    });
-    Route::prefix('client')->name('client.')->group(function () {
-        Route::get('/', [ClientController::class, 'index'])->name('index');
-        Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
-        Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
-        Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
-        Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
-    });
-    Route::prefix('order')->name('order.')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('detail');
-        // Route::get('/find/phone', [OrderController::class, 'getOrderbyPhone'])->name('findByPhone');
-        Route::get('/admin/order/filter', [OrderController::class, 'filterOrder'])->name('filter');
-    });
-    Route::prefix('config')->name('config.')->group(function () {
-        Route::get('/detail/{id}', [ConfigController::class, 'index'])->name('detail');
-        Route::post('/update/{id}', [ConfigController::class, 'updateConfig'])->name('update');
-    });
-
-    Route::prefix('checkInventory')->name('check.')->group(function () {
-        Route::get('/', [CheckInventoryController::class, 'index'])->name('index');
-        Route::get('/filter', [CheckInventoryController::class, 'filterCheck'])->name('filter');
-        Route::get('/detail/{id}', [CheckInventoryController::class, 'detail'])->name('detail');
-    });
-})->middleware('checkRole:1');
-
-Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('staff.')->group(function () {
-    Route::get('', [StaffProductController::class, 'index'])->name('index');
-    Route::post('/cart/add', [StaffProductController::class, 'addToCart'])->name('cart.add');
-    Route::post('/cart/update', [StaffProductController::class, 'updateCart'])->name('cart.update');
-    Route::post('/cart/remove', [StaffProductController::class, 'removeFromCart'])->name('cart.remove');
-    Route::post('/client/add', [StaffClientController::class, 'addClient'])->name('client.add');
-    Route::post('pay', [StaffClientController::class, 'pay'])->name('pay');
-    Route::get('cart', [StaffClientController::class, 'cart'])->name('cart.data');
-    Route::get('order', [StaffOrderController::class, 'index'])->name('order');
-    Route::get('order/fetch', [StaffOrderController::class, 'orderFetch'])->name('orderFetch');
-    Route::get('product', [StaffProductController::class, 'product'])->name('product.get');
-    //checkInventory
-    Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
-    Route::get('checkInventory', [staffcheckController::class, 'index'])->name('Inventory.get');
-    Route::get('checkInventory/add', [staffcheckController::class, 'add'])->name('Inventory.add');
-    Route::post('checkInventory/add', [staffcheckController::class, 'submitadd'])->name('Inventory.add.submit');
-    // warehome
-    Route::get('warehome', [WareHomeController::class, 'index'])->name('warehome.get');
-    Route::post('warehome/add', [WareHomeController::class, 'add'])->name('warehome.add');
-    Route::post('warehome/update', [WareHomeController::class, 'update'])->name('warehome.update');
-    Route::get('warehome/delete', [WareHomeController::class, 'delete'])->name('warehome.delete');
-    Route::post('warehome/addByCategory', [WareHomeController::class, 'addByCategory'])->name('warehome.addByCategory');
-    Route::get('warehome/check', [WareHomeController::class, 'checkwerehouse'])->name('warehome.check');
-});
-
-
-
-Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function () {
-    Route::get('/detail/{id}', [SuperAdminController::class, 'getSuperAdminInfor'])->name('detail');
-    Route::post('/update/{id}', [SuperAdminController::class, 'updateSuperAdminInfo'])->name('update');
-    Route::prefix('store')->name('store.')->group(function () {
-        Route::get('/index', [StoreController::class, 'index'])->name('index');
-        Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
-        Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
->>>>>>> 3764bace693126fbda986ca1eb27a17b42ddd749
     });
