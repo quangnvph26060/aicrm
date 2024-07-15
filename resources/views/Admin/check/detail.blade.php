@@ -1,5 +1,23 @@
 @extends('Admin.Layout.index')
 @section('content')
+<style>
+    .breadcrumbs {
+            background: #fff;
+            padding: 0.75rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .breadcrumbs a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumbs i {
+            color: #6c757d;
+        }
+</style>
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -12,7 +30,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.check.index') }}">Đơn hàng</a>
+                    <a href="{{ route('admin.check.index') }}">Phiếu kiểm kho</a>
+                </li>
+                <li class="separator">
+                    <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                    <a >Chi tiết</a>
                 </li>
             </ul>
         </div>
@@ -42,12 +66,12 @@
                                                 <div class="nowrap">{{ $check->user->phone }}</div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <th scope="row"><i class="fas fa-envelope"></i> Email</th>
                                             <td>
                                                 <div class="nowrap">{{ $check->user->email }}</div>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -58,26 +82,53 @@
                                         <tr>
                                             <th scope="row"><i class="fas fa-receipt"></i> Mã phiếu kiểm</th>
                                             <td>
-                                                <div class="nowrap">{{ $check->id }}</div>
+                                                <div class="nowrap">{{ $check->test_code }}</div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th scope="row"><i class="fas fa-box-open"></i> Sản phẩm</th>
+                                            <th scope="row"><i class="fas fa-box-open"></i> Ngày kiểm </th>
                                             <td>
-                                                @foreach ($check->checkdetail as $item)
-                                                    <div class="d-flex justify-content-between nowrap">
-                                                        <span>{{ $item->product->name }}</span>
-                                                        <span>
-                                                            {{ $item->difference > 0 ? 'thừa' : ($item->difference < 0 ? 'thiếu' : 'đủ') }}
-                                                            {{ $item->difference != 0 ? abs($item->difference) : '' }} sản
-                                                            phẩm
-                                                        </span>
-                                                    </div>
-                                                @endforeach
+                                                <div class="nowrap">{{ $check->created_at }}</div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="basic-datatables"
+                                    class="display table table-striped table-hover dataTable" role="grid"
+                                    aria-describedby="basic-datatables_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Mã hàng hóa </th>
+                                            <th>Tên hàng hóa</th>
+                                            <th>Tồn kho</th>
+                                            <th>Thực tế</th>
+                                            <th>Số lượng lệch</th>
+                                            <th>Giá trị lệch</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($details as $detail )
+                                        <tr>
+                                            <td>{{ $detail->product->code }}</td>
+                                            <td>{{ $detail->product->name }}</td>
+                                            <td>{{ $detail->product->quantity }}</td>
+                                            <td>{{ $detail->difference + $detail->product->quantity  }}</td>
+                                            <td>{{ $detail->difference }}</td>
+                                            <td>{{ number_format($detail->gia_chenh_lech) }}</td>
+                                        </tr>
+                                        @endforeach
+
+
+
+                                    </tbody>
+                                </table>
+
+                                <!-- Pagination -->
+                                {{-- {{ $check->appends(request()->query())->links('vendor.pagination.custom') }} --}}
                             </div>
                         </div>
                         <div class="text-center mt-4">

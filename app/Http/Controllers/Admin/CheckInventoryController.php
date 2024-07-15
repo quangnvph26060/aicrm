@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\CheckDetail;
 use App\Services\CheckInventoryService;
 use Exception;
 use Illuminate\Http\Request;
@@ -51,7 +52,9 @@ class CheckInventoryController extends Controller
     {
         try{
             $check = $this->checkInventory->getCheckInventoryById($id);
-            return view('admin.check.detail', compact('check'));
+            $details = CheckDetail::where('check_inventory_id', $id)->get();
+            // dd($details);
+            return view('admin.check.detail', compact('check', 'details'));
         }
         catch(Exception $e)
         {

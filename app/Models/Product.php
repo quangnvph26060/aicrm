@@ -24,6 +24,7 @@ class Product extends Model
         "status",
         "discount_id",
         "brands_id",
+        "code"
     ];
 
     protected $appends = ['category','images','brands'];
@@ -48,6 +49,17 @@ class Product extends Model
     public function productImages()
     {
         return $this->hasMany(ProductImages::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $latastproduct = self::orderBy('id', 'desc')->first();
+            $nextNumber = $latastproduct ? ((int)substr($latastproduct->code, 2)) + 1 : 1;
+            $model->code = 'KH' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+        });
     }
 
 }
