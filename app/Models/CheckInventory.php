@@ -10,7 +10,7 @@ class CheckInventory extends Model
 {
     use HasFactory;
     protected $table = 'check_inventory';
-    protected $fillable = ['user_id', 'note'];
+    protected $fillable = ['test_code','user_id', 'note','tong_chenh_lech', 'sl_tang', 'sl_giam'];
 
     protected $appends = ['checkdetail'];
     public function details()
@@ -23,5 +23,16 @@ class CheckInventory extends Model
     }
     public function getCheckdetailAttribute(){
         return CheckDetail::where('check_inventory_id',$this->attributes['id'])->get();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $latestInventory = self::orderBy('id', 'desc')->first();
+            $nextNumber = $latestInventory ? ((int)substr($latestInventory->test_code, 2)) + 1 : 1;
+            $model->test_code = 'KH' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+        });
     }
 }

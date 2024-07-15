@@ -187,7 +187,7 @@
         font-weight: bold;
     }
 
-    #category_kho label{
+    #category_kho label {
         padding: 0px 25px;
     }
 
@@ -215,7 +215,9 @@
         height: 15px;
     }
 
-
+    .delete {
+        cursor: pointer;
+    }
 </style>
 <div class="container">
     <div class="row mt-4">
@@ -280,59 +282,67 @@
         </div>
         <div class="col-md-3">
             <div class="right-content">
-                <section class="kv2Right stockTake">
-                    <article class="kv2Right-content">
-                        <div class="kv2Box">
-                            <div class="form-wrapper form-labels-220">
-                                <div class="form-group">
-                                    <div class="pull-left user-created control-label ng-binding">
-                                        <span><i class="fa fa-user-circle-o" title="Người tạo"></i></span> {{
-                                        $user->name }}
-                                    </div>
-                                    <div class="pull-right">
-                                        <!-- Đoạn input thời gian -->
-                                        <input type="datetime-local" id="datetime" name="datetime"
-                                            class="datetime-input">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label control-label ng-binding">Mã kiểm kho</label>
-                                    <div class="form-wrap">
-                                        <input tabindex="100001" placeholder="Mã phiếu tự động" type="text"
-                                            class="form-control codeAuto " />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label control-label ng-binding">Trạng thái</label>
-                                    <div class="form-wrap form-control-static ng-binding">Phiếu tạm</div>
-                                </div>
-                                <!-- Các form-group khác ở đây -->
-                                <div class="form-group wrap-note">
-                                    <textarea tabindex="100002" placeholder="Ghi chú" class="form-control"
-                                        maxlength="2000"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="stock-history uln">
-                            <p style="padding: 7px 10px; font-weight: bold ; background: rgb(149, 236, 232)"
-                                class="ng-binding m-0">Kiểm gần đây</p>
-                            <div>
-                                <ul>
-                                    <!-- Dữ liệu lịch sử -->
-                                </ul>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="wrap-button mt-3" style="display: flex; box-sizing:border-box;">
-                        <a style="flex: 1" tabindex="100004" class="btn btn-primary ng-binding p-2 mr-1">
-                            <i class="fas fa-save"></i> Lưu tạm
-                        </a>
-                        <a style="flex: 1" tabindex="100005" class="btn btn-success ng-binding p-2 ml-1">
-                            <i class="fas fa-check"></i> Hoàn thành
-                        </a>
-                    </article>
-                </section>
+                <form method="post" action="{{ route('staff.Inventory.add.submit') }}" id="submit_form_inventory">
+                    {{-- action="{{ route('staff.Inventory.add.submit') }}" --}}
+                    @csrf
+                    <section class="kv2Right stockTake">
+                        <article class="kv2Right-content">
+                            <div class="kv2Box">
+                                <div class="form-wrapper form-labels-220">
 
+                                    <div class="form-group">
+                                        <div class="pull-left user-created control-label ng-binding">
+                                            <span><i class="fa fa-user-circle-o" title="Người tạo"></i></span> {{
+                                            $user->name }}
+                                        </div>
+                                        <div class="pull-right">
+                                            <!-- Đoạn input thời gian -->
+                                            @php
+                                            $currentDateTime = \Carbon\Carbon::now()->format('Y-m-d\TH:i');
+                                            @endphp
+
+                                            <input type="datetime-local" id="datetime" name="datetime"
+                                                class="datetime-input" value="{{ $currentDateTime }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="display: none">
+                                        <label class="form-label control-label ng-binding">Mã kiểm kho</label>
+                                        <div class="form-wrap">
+                                            <input style="padding: 0px" name="makho" placeholder="Mã phiếu tự động"
+                                                type="text" class="form-control codeAuto " />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="flex: 2" class="form-label control-label ng-binding">Trạng
+                                            thái</label>
+                                        <div style="flex : 2; margin-right: 28px"
+                                            class="form-wrap form-control-static ng-binding">Phiếu tạm</div>
+                                    </div>
+                                    <!-- Các form-group khác ở đây -->
+                                    <div class="form-group wrap-note">
+                                        <textarea tabindex="100002" placeholder="Ghi chú" name="note"
+                                            class="form-control" maxlength="2000"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {{-- <div class="stock-history uln">
+                                <p style="padding: 7px 10px; font-weight: bold ; background: rgb(149, 236, 232)"
+                                    class="ng-binding m-0">Kiểm gần đây</p>
+                                <div>
+                                    <ul>
+                                        <!-- Dữ liệu lịch sử -->
+                                    </ul>
+                                </div>
+                            </div> --}}
+                        </article>
+                        <article class="wrap-button mt-3" style="display: flex; justify-content: center">
+                            <button type="button" class="btn btn-success ng-binding p-2 ml-1" id="add_check_kho">
+                                <i class="fas fa-check"></i> Hoàn thành
+                            </button>
+                        </article>
+                    </section>
+                </form>
             </div>
         </div>
     </div>
@@ -385,8 +395,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
-                    <button type="button" class="btn btn-primary">Xong</button>
+                    <button type="button" class="btn btn-secondary miss_model" data-dismiss="modal">Bỏ qua</button>
+                    <button type="button" class="btn btn-primary submit_hang" data-dismiss="modal">Xong</button>
                 </div>
             </div>
         </div>
@@ -432,9 +442,8 @@
                 var list = data['warehome'];
                 list.forEach(function(item,index) {
                 var productHtml = `
-                        <tr data-id='${item.id}'>
-
-                            <td><i data-id='${item.id}' class="fas fa-trash-alt"></i></td>
+                        <tr data-id='${item.id}' data-product='${item.product.id}'>
+                            <td class='delete'><i class="fas fa-trash-alt"></i></td>s
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
                             <td>${item.product.name}</td>
@@ -518,18 +527,89 @@
 
         });
 
+        $j('table').on('click', '.delete i', function(e) {
+            e.preventDefault();
+            var id = $j(this).closest('tr').data('id');
+            var productId = $j(this).closest('tr').data('product');
+            var warehouse = $j('#inventory-data-product');
+
+            var confirmDelete = confirm("Bạn có chắc chắn muốn xóa sản phẩm có mã " + '#'+ productId +" không?");
+
+            if (confirmDelete) {
+                $j.ajax({
+                    url: '{{ route('staff.warehome.delete') }}',
+                    method: 'GET',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: id,
+                    },
+                    success: function(response) {
+                        updateWarehouse(response);
+                    },
+                });
+            }
+        });
+
+
+        $j('.submit_hang').on('click', function() {
+            var atLeastOneChecked = $('#checkboxForm_category input[type="checkbox"]:checked').length > 0;
+            if (!atLeastOneChecked) {
+                alert('Vui lòng chọn ít nhất một loại hàng!');
+                return false;
+            }
+            var selectedValues = [];
+            $j('#checkboxForm_category input[type="checkbox"]:checked').each(function() {
+                selectedValues.push($(this).val());
+            });
+            $j.ajax({
+                url: '{{ route('staff.warehome.addByCategory') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    selectedValues: selectedValues,
+                },
+                success: function(response) {
+                    $('input[type="checkbox"]').prop('checked', false);
+                    updateWarehouse(response);
+                },
+            });
+
+        });
+
+        $j('#add_check_kho').click(function(){
+            $j.ajax({
+                url: '{{ route('staff.warehome.check') }}',
+                method: 'GET',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    if(response.result == 1){
+                        $('#submit_form_inventory').submit();
+                    }
+
+                    if(response.result == 2){
+                        alert('Chi tiết phiếu kiểm hàng trống ');
+                    }
+
+                    if(response.result == 3){
+                        alert('Chưa có hàng hóa trong danh sách kiểm hàng');
+                    }
+                },
+            })
+        })
+
 
         function updateWarehouse(warehouse) {
             var warehousehtml = $j('#inventory-data-product');
             warehousehtml.empty();
             if(warehouse.length === 0) {
-                warehousehtml.append('<p>Your cart is empty.</p>');
+
             } else {
                 $.each(warehouse, function(index, item) {
                     var productHtml = `
-                        <tr data-id='${item.id}'>
-
-                            <td><i class="fas fa-trash-alt"></i></td>
+                        <tr data-id='${item.id}'  data-product='${item.product.id}'>
+                            <td class='delete'><i class="fas fa-trash-alt"></i></td>
                             <td>${ index }</td>
                             <td>${item.product.id}</td>
                             <td>${item.product.name}</td>

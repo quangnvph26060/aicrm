@@ -147,10 +147,14 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
     Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
     Route::get('checkInventory', [staffcheckController::class, 'index'])->name('Inventory.get');
     Route::get('checkInventory/add', [staffcheckController::class, 'add'])->name('Inventory.add');
+    Route::post('checkInventory/add', [staffcheckController::class, 'submitadd'])->name('Inventory.add.submit');
     // warehome
     Route::get('warehome', [WareHomeController::class, 'index'])->name('warehome.get');
     Route::post('warehome/add', [WareHomeController::class, 'add'])->name('warehome.add');
     Route::post('warehome/update', [WareHomeController::class, 'update'])->name('warehome.update');
+    Route::get('warehome/delete', [WareHomeController::class, 'delete'])->name('warehome.delete');
+    Route::post('warehome/addByCategory', [WareHomeController::class, 'addByCategory'])->name('warehome.addByCategory');
+    Route::get('warehome/check', [WareHomeController::class, 'checkwerehouse'])->name('warehome.check');
 });
 
 
