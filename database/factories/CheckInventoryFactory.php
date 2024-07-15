@@ -17,7 +17,7 @@ class CheckInventoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->randomElement(['2', '3', '4']),
+            'user_id' => $this->faker->randomElement(['1', '3', '5']),
             'note' => $this->faker->sentence(4),
         ];
     }

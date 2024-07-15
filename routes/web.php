@@ -19,12 +19,15 @@ use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
 use App\Http\Controllers\SuperAdmin\StoreController;
+use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('', [CategorieController::class, 'index']);
-Route::get('/register', [SignUpController::class, 'index'])->name('register.index');
+Route::get('/check-phone-exists', [SignUpController::class, 'checkPhoneExists'])->name('check-phone-exists');
+Route::get('/check-email-exists', [SignUpController::class, 'checkEmailExists'])->name('check-email-exists');
+Route::get('/dang-ky', [SignUpController::class, 'index'])->name('register.index');
 Route::post('/register_account', [SignUpController::class, 'store'])->name('register.signup');
 Route::get('/', function () {
     return view('auth.login');
@@ -121,8 +124,8 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/admin/order/filter', [OrderController::class, 'filterOrder'])->name('filter');
     });
     Route::prefix('config')->name('config.')->group(function () {
-        Route::get('/detail', [ConfigController::class, 'index'])->name('detail');
-        Route::post('/update', [ConfigController::class, 'updateConfig'])->name('update');
+        Route::get('/detail/{id}', [ConfigController::class, 'index'])->name('detail');
+        Route::post('/update/{id}', [ConfigController::class, 'updateConfig'])->name('update');
     });
 
     Route::prefix('checkInventory')->name('check.')->group(function () {
@@ -160,6 +163,8 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
 
 
 Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function () {
+    Route::get('/detail/{id}', [SuperAdminController::class, 'getSuperAdminInfor'])->name('detail');
+    Route::post('/update/{id}', [SuperAdminController::class, 'updateSuperAdminInfo'])->name('update');
     Route::prefix('store')->name('store.')->group(function () {
         Route::get('/index', [StoreController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');

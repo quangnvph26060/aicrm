@@ -20,9 +20,10 @@ class CheckInventoryController extends Controller
 
     public function index()
     {
+        $title = 'Quản lý kho';
         try{
             $check = $this->checkInventory->getAllCheckInventory();
-            return view('admin.check.index', compact('check'));
+            return view('admin.check.index', compact('check', 'title'));
         }
         catch(Exception $e)
         {
@@ -36,10 +37,10 @@ class CheckInventoryController extends Controller
         $phone = $request->input('phone');
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
-
+        $title = 'Quản lý kho';
         try{
             $check = $this->checkInventory->filterCheck($startDate, $endDate, $phone);
-            return view('admin.check.index', compact('check'));
+            return view('admin.check.index', compact('check', 'title'));
         }
         catch(Exception $e)
         {
@@ -50,11 +51,12 @@ class CheckInventoryController extends Controller
 
     public function detail($id)
     {
+        $title = 'Chi tiết kho';
         try{
             $check = $this->checkInventory->getCheckInventoryById($id);
             $details = CheckDetail::where('check_inventory_id', $id)->get();
             // dd($details);
-            return view('admin.check.detail', compact('check', 'details'));
+            return view('admin.check.detail', compact('check', 'details', 'title'));
         }
         catch(Exception $e)
         {

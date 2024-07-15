@@ -39,9 +39,10 @@ class UserController extends Controller
     public function index()
     {
         try {
+            $title = "Nhân viên";
             $user = $this->adminService->getStaff();
             // dd($user);
-            return view('Admin.employee.index', compact('user'));
+            return view('Admin.employee.index', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch products', 500);
@@ -50,6 +51,7 @@ class UserController extends Controller
     public function findByPhone(Request $request)
     {
         try {
+            $title = "Nhân viên";
             $staff = $this->adminService->findStaffByPhone($request->input('phone'));
             $user = new LengthAwarePaginator(
                 $staff ? [$staff] : [],
@@ -58,7 +60,7 @@ class UserController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('Admin.employee.index', compact('user'));
+            return view('Admin.employee.index', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find staff: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find staff'], 500);
@@ -66,9 +68,10 @@ class UserController extends Controller
     }
     public function edit($id)
     {
+        $title = "Sửa nhân viên";
         try {
             $user = $this->adminService->getUserById($id);
-            return view('Admin.employee.edit', compact('user'));
+            return view('Admin.employee.edit', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find user: ' . $e->getMessage());
             return ApiResponse::error('Failed to find user', 500);
@@ -103,7 +106,8 @@ class UserController extends Controller
 
     public function addForm()
     {
-        return view('Admin.employee.add');
+        $title = 'Thêm nhân viên';
+        return view('Admin.employee.add', compact('$title'));
     }
     public function add(Request $request)
     {

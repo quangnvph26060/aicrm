@@ -17,8 +17,8 @@ class CheckDetailFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => $this->faker->randomElement(['12', '13', '15']),
-            'check_inventory_id' => $this->faker->numberBetween(1,10),
+            'product_id' => $this->faker->numberBetween(13,26),
+            'check_inventory_id' => $this->faker->numberBetween(3,12),
             'difference' => $this->faker->numberBetweeN(-10, 10),
         ];
     }

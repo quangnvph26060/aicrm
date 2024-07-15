@@ -17,22 +17,25 @@ class ConfigController extends Controller
         $this->configService = $configService;
     }
 
-    public function index()
+    public function index($id)
     {
+        $title = 'Thông tin cửa hàng';
         try {
-            $data = $this->configService->getConfig();
+            $data = $this->configService->getConfig($id);
+            // dd($data);
             $bank = Bank::get();
-            return view('admin.configuration.config', compact('data','bank'));
+            return view('admin.configuration.config', compact('data', 'bank', 'title'));
         } catch (\Exception $e) {
             Log::error('Failed to get configuration: ' . $e->getMessage());
-            return view('admin.dashboard.dashboard', ['error' => 'Failed to get configuration']);
+            return redirect()->back()->with('error', 'Failed to get configuration');
         }
     }
 
-    public function updateConfig(Request $request)
+
+    public function updateConfig($id, Request $request)
     {
         try {
-            $config = $this->configService->updateConfig($request->all());
+            $config = $this->configService->updateConfig($id, $request->all());
             session()->flash('success', 'Thay đổi thông tin thành công');
             return redirect()->back();
         } catch (\Exception $e) {

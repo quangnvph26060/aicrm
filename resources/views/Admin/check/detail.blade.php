@@ -1,7 +1,7 @@
 @extends('Admin.Layout.index')
 @section('content')
-<style>
-    .breadcrumbs {
+    <style>
+        .breadcrumbs {
             background: #fff;
             padding: 0.75rem;
             border-radius: 10px;
@@ -17,7 +17,7 @@
         .breadcrumbs i {
             color: #6c757d;
         }
-</style>
+    </style>
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -36,7 +36,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a >Chi tiết</a>
+                    <a>Chi tiết</a>
                 </li>
             </ul>
         </div>
@@ -97,9 +97,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="basic-datatables"
-                                    class="display table table-striped table-hover dataTable" role="grid"
-                                    aria-describedby="basic-datatables_info">
+                                <table id="basic-datatables" class="display table table-striped table-hover dataTable"
+                                    role="grid" aria-describedby="basic-datatables_info">
                                     <thead>
                                         <tr role="row">
                                             <th>Mã hàng hóa </th>
@@ -111,15 +110,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($details as $detail )
-                                        <tr>
-                                            <td>{{ $detail->product->code }}</td>
-                                            <td>{{ $detail->product->name }}</td>
-                                            <td>{{ $detail->product->quantity }}</td>
-                                            <td>{{ $detail->difference + $detail->product->quantity  }}</td>
-                                            <td>{{ $detail->difference }}</td>
-                                            <td>{{ number_format($detail->gia_chenh_lech) }}</td>
-                                        </tr>
+                                        @foreach ($details as $detail)
+                                            <tr>
+                                                <td>{{ $detail->product->code }}</td>
+                                                <td>{{ $detail->product->name }}</td>
+                                                <td>{{ $detail->product->quantity }}</td>
+                                                <td>{{ $detail->difference + $detail->product->quantity }}</td>
+                                                <td>{{ $detail->difference }}</td>
+                                                <td>{{ number_format($detail->gia_chenh_lech) }}</td>
+                                            </tr>
                                         @endforeach
 
 

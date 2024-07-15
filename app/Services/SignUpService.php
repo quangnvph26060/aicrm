@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Mail\UserRegistered;
 use App\Models\City;
+use App\Models\Config;
 use App\Models\Field;
 use App\Models\User;
 use Exception;
@@ -27,7 +28,6 @@ class SignUpService
 
     public function signup(array $data)
     {
-
         DB::beginTransaction();
         try {
             Log::info("Creating new account: {$data['name']}");
@@ -35,7 +35,7 @@ class SignUpService
             $password = $this->RenderRandomPassword();
 
             $hashedPassword = Hash::make($password);
-            // dd($hashedPassword);
+
             $user = $this->user->create([
                 'name' => $data['name'],
                 'phone' => $data['phone'],
@@ -44,14 +44,16 @@ class SignUpService
                 'password' => $hashedPassword,
                 'status' => 'active',
                 'role_id' => 1,
-                'city_id' => $data['city_id'],
+                'city_id' => $data['city'],
                 'tax_code' => $data['tax_code'],
                 'store_name' => $data['store_name'],
-                'field_id' => $data['field_id'],
+                'field_id' => $data['field'],
                 'domain' => $data['store_domain'],
                 'address' => $data['address'],
             ]);
-
+            $config = new Config();
+            $config->user_id = $user->id;
+            $config->save();
             // dd($user);
             Mail::to($data['email'])->send(new UserRegistered($user, $password));
             DB::commit();
