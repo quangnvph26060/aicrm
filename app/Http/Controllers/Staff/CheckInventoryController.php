@@ -74,6 +74,7 @@ class CheckInventoryController extends Controller
                 ]);
             }
             warehome::truncate();
+            return redirect()->route('staff.Inventory.get');
         } catch (Exception $e) {
             Log::error('Failed to fetch add inventory: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch add inventory', 500);
