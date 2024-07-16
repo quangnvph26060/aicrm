@@ -37,17 +37,17 @@
 
 <body>
     <div id="wrapper">
-        @include('Admin.Layout.sidebar')
+        @include('admin.layout.sidebar')
 
         <div class="main-panel">
 
-            @include('Admin.Layout.header');
+            @include('admin.layout.header');
             <div class="container">
                 @yield('content')
             </div>
 
 
-            @include('Admin.Layout.footer')
+            @include('admin.layout.footer')
 
         </div>
 
