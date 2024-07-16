@@ -219,7 +219,7 @@
 </div>
 
 <!-- Right Column: Customer Information and Payment Method 123-->
-@include('Themes.pages.layout_staff.delivery-selling')
+{{-- @include('Themes.pages.layout_staff.delivery-selling') --}}
 
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

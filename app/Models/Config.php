@@ -22,7 +22,7 @@ class Config extends Model
     ];
 
     // Nếu bạn vẫn cần sử dụng thuộc tính 'bank', giữ lại 'appends' và các phương thức liên quan
-    protected $appends = ['bank'];
+    protected $appends = ['bank', 'user'];
 
     // Định nghĩa quan hệ với Bank
     public function bank()
@@ -34,6 +34,11 @@ class Config extends Model
     public function getBankAttribute()
     {
         return Bank::where('id', $this->attributes['bank_id'])->first();
+    }
+
+    public function getUserAttribute()
+    {
+        return User::where('id', $this->attributes['user_id'])->first();
     }
 
     // Định nghĩa quan hệ với User
