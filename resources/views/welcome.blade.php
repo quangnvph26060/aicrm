@@ -91,6 +91,14 @@
 </style>
 
 <div class="page-inner">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0" style="justify-content: flex-end">
+        <div>
+            <button style="padding: 5px 10px; border-radius: 10px">
+                <i class="fas fa-cart-plus"></i>
+                <a href="{{ route('staff.index') }}" class="fw-bold mb-3 p-0">Bán hàng </a>
+            </button>
+        </div>
+    </div>
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
             <h3 class="fw-bold mb-3">Thống kê </h3>
