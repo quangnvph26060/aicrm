@@ -107,7 +107,7 @@ class UserController extends Controller
     public function addForm()
     {
         $title = 'Thêm nhân viên';
-        return view('Admin.employee.add', compact('$title'));
+        return view('Admin.employee.add', compact('title'));
     }
     public function add(Request $request)
     {

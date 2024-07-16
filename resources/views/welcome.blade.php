@@ -218,7 +218,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <p id="interest">Lãi suất : {{ $daily['interest'] }}</p>
+                        <p id="interest">Lợi nhuận : {{ $daily['interest'] }}</p>
                         <p id="moneyinterest">{{ $daily['moneyinterest'] }} </p>
                     </div>
                 </div>
@@ -428,7 +428,7 @@
                     $('#dropdownMenuButton').text('Theo ngày');
                     $('#income').text(response.daily['income'] );
                     $('#amount').text(response.daily['amount'] + ' Đơn');
-                    $('#interest').text('Lãi xuất : '+response.daily['interest']);
+                    $('#interest').text('Lợi nhuận : '+response.daily['interest']);
                     $('#moneyinterest').text( response.daily['moneyinterest']);
                 },
                 error: function(xhr) {
@@ -479,7 +479,7 @@
                     $('#dropdownMenuButton').text('Theo năm');
                     $('#income').text(response.daily['income'] );
                     $('#amount').text(response.daily['amount'] + ' Đơn');
-                    $('#interest').text('Lãi xuất : '+response.daily['interest']);
+                    $('#interest').text('Lợi nhuận : '+response.daily['interest']);
                     $('#moneyinterest').text( response.daily['moneyinterest']);
                 },
                 error: function(xhr) {

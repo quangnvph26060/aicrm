@@ -138,7 +138,8 @@
                                     </div>
 
                                     <div class="mt-5 text-center">
-                                        <p class="mb-0">Tạo tài khoản dùng thử miễn phí ? <a href="{{ route('register.index') }}"
+                                        <p class="mb-0">Tạo tài khoản dùng thử miễn phí ? <a
+                                                href="http://aicrm.vn/dang-ky"
                                                 class="fw-semibold text-primary text-decoration-underline"> Đăng ký</a> </p>
                                     </div>
                                 </div>

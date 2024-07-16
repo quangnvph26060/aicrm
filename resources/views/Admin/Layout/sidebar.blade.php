@@ -26,14 +26,14 @@
                 <li class="nav-item active">
                     <a href="{{ route('admin.dashboard') }}">
                         <i class="fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
+                        <p>Tổng quan</p>
                     </a>
                 </li>
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                    <h4 class="text-section">Thành phần quản lý</h4>
+                    <h4 class="text-section">Hệ thống quản lý</h4>
                 </li>
 
                 <li class="nav-item">
@@ -46,20 +46,31 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ route('admin.product.store') }}">
-                                    <span class="sub-item">Danh sách</span>
+                                    <span class="sub-item">Danh sách sản phẩm</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.product.addForm') }}">
-                                    <span class="sub-item">Thêm sản phẩm</span>
+                                <a href="{{ route('admin.category.index') }}">
+                                    <span class="sub-item">Danh mục</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.brand.store') }}">
+                                    <span class="sub-item">Thương hiệu</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.client.index') }}">
+                        <i class="fas fa-users"></i>
+                        <p>Khách hàng</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarnhacungcap">
-                        <i class="fas fa-box-open"></i>
+                        <i class="fas fa-building"></i>
                         <p>Nhà cung cấp</p>
                         <span class="caret"></span>
                     </a>
@@ -79,25 +90,16 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#sidebarthuonghieu">
-                        <i class="fas fa-tags"></i>
-                        <p>Danh mục</p>
-                        <span class="caret"></span>
+                    <a href="{{ route('admin.order.index') }}">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Đơn hàng</p>
                     </a>
-                    <div class="collapse" id="sidebarthuonghieu">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.category.index') }}">
-                                    <span class="sub-item">Danh sách</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.category.add') }}">
-                                    <span class="sub-item">Thêm danh mục</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.check.index') }}">
+                        <i class="fas fa-clipboard-check"></i>
+                        <p>Phiếu kiểm kho</p>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarnhanvien">
@@ -119,45 +121,6 @@
                             </li>
                         </ul>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#sidebarbrand">
-                        <i class="fas fa-trademark"></i>
-                        <p>Thương hiệu</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="sidebarbrand">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.brand.store') }}">
-                                    <span class="sub-item">Danh sách</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.brand.addForm') }}">
-                                    <span class="sub-item">Thêm thương hiệu</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.order.index') }}">
-                        <i class="fas fa-shopping-cart"></i>
-                        <p>Đơn hàng</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.check.index') }}">
-                        <i class="fas fa-clipboard-check"></i>
-                        <p>Phiếu kiểm kho</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.client.index') }}">
-                        <i class="fas fa-users"></i>
-                        <p>Khách hàng</p>
-                    </a>
                 </li>
                 {{-- {{session('authUser')->id}} --}}
                 <li class="nav-item">

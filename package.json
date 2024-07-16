@@ -11,6 +11,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "ckeditor5": "^42.0.1",
         "sweetalert2": "^11.12.1"
     }
 }

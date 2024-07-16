@@ -154,7 +154,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
-                                            <!-- Content for length control can be added here -->
+                                            <a class="btn btn-primary" href="{{route('admin.category.add')}}">Thêm danh mục</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">

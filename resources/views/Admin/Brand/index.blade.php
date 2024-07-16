@@ -33,7 +33,7 @@
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row mb-3">
                                     <div class="col-sm-12 col-md-6">
-
+                                        <a class="btn btn-primary" href="{{route('admin.brand.addForm')}}">Thêm thương hiệu</a>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
                                         <form action="{{ route('admin.brand.findByName') }}" method="GET">
@@ -65,7 +65,7 @@
                                                     @foreach ($brand as $item)
                                                         <tr>
                                                             <td>{{ $item->name ?? '' }}</td>
-                                                            <td><img style="width: 80px; height: 60px;"
+                                                            <td><img style="width: 5rem; height: 3.75rem;"
                                                                     src="{{ asset($item->logo) ?? '' }}" alt="">
                                                             </td>
                                                             <td>{{ $item->email ?? '' }}</td>
@@ -140,32 +140,32 @@
     }
 
     .card {
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: .9375rem;
+        box-shadow: 0 .25rem .5rem rgba(0, 0, 0, 0.1);
         overflow: hidden;
         background-color: #fff;
-        margin-bottom: 2rem;
+        margin-bottom: 32px;
     }
 
     .card-header {
         background: linear-gradient(135deg, #6f42c1, #007bff);
         color: white;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        padding: 1.5rem;
+        border-top-left-radius: .9375rem;
+        border-top-right-radius: .9375rem;
+        padding: 24px;
     }
 
     .card-title {
-        font-size: 1.75rem;
+        font-size: 28px;
         font-weight: 700;
         margin: 0;
     }
 
     .breadcrumbs {
         background: #fff;
-        padding: 0.75rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 12px;
+        border-radius: .625rem;
+        box-shadow: 0 .125rem .25rem rgba(0, 0, 0, 0.1);
     }
 
     .breadcrumbs a {
@@ -179,7 +179,7 @@
     }
 
     .table-responsive {
-        margin-top: 1rem;
+        margin-top: 16px;
     }
 
     .table {
@@ -188,20 +188,20 @@
 
     .table th,
     .table td {
-        padding: 1rem;
+        padding: 16px;
         vertical-align: middle;
     }
 
     .table th {
         background-color: #f8f9fa;
-        border-bottom: 2px solid #dee2e6;
+        border-bottom: .125rem solid #dee2e6;
     }
 
     .btn-warning,
     .btn-danger {
-        border-radius: 20px;
-        padding: 5px 15px;
-        font-size: 14px;
+        border-radius: 1.25rem;
+        padding: .3125rem .9375rem;
+        font-size: .875rem;
         font-weight: bold;
         transition: background 0.3s ease, transform 0.3s ease;
     }
@@ -212,7 +212,7 @@
     }
 
     .page-header {
-        margin-bottom: 2rem;
+        margin-bottom: 32px;
     }
 
     .table-hover tbody tr:hover {
@@ -221,7 +221,7 @@
 
     .dataTables_info,
     .dataTables_paginate {
-        margin-top: 1rem;
+        margin-top: 16px;
     }
 
     .pagination .page-link {

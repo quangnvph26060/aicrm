@@ -42,7 +42,7 @@
         }
 
         .register-left {
-            background: url('https://it.mobifone.vn/wp-content/uploads/cac-mo-hinh-quan-ly-ban-hang-thuong-se-bao-gom-quan-ly-nhan-vien-tai-chinh-700x408.jpg') no-repeat center center;
+            background: url('https://www.baltana.com/files/wallpapers-25/Corsair-Wallpaper-1200x675-65528.jpg') no-repeat center center;
             background-size: cover;
             color: white;
             text-align: center;
@@ -236,6 +236,28 @@
             </form>
         </div>
     </div>
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Thông báo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ session('modal') }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{ asset('/validator/validator.js') }}"></script>
     <script>
         function updateDomain() {
@@ -250,10 +272,10 @@
                 var storeDomain = storeName.toLowerCase()
                     .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
                     .replace(/\s+/g, '') + domainSuffix;
-                 storeDomainInput.value = storeDomain;
+                storeDomainInput.value = storeDomain;
                 storeDomainInput1.textContent = storeDomain;
             } else {
-                 storeDomainInput.value = '';
+                storeDomainInput.value = '';
                 storeDomainInput.textContent = '';
             }
         }
@@ -348,6 +370,12 @@
                 document.getElementById('registerForm').submit();
             }
         }
+
+        $(document).ready(function() {
+            @if (session('modal'))
+                $('#successModal').modal('show');
+            @endif
+        });
     </script>
 
 </body>
