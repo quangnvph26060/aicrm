@@ -1,4 +1,4 @@
-@extends('Admin.Layout.index')
+@extends('admin.layout.index')
 @section('content')
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');

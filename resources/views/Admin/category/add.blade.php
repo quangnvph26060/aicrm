@@ -1,4 +1,4 @@
-@extends('Admin.Layout.index')
+@extends('admin.layout.index')
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -130,17 +130,18 @@
                                     <div class="mb-3">
                                         <label for="name" class="col-form-label form-label">Tên danh mục:</label>
                                         <input type="text" class="form-control" name="name" id="name" required>
-                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                            id="name_error"></span> </div>
+                                        <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                style="font-weight: 500" id="name_error"></span> </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="col-form-label form-label">Mô tả:</label>
                                         <textarea required class="form-control" name="description" id="description" rows="4"></textarea>
-                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                            id="description_error"></span> </div>
+                                        <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                style="font-weight: 500" id="description_error"></span> </div>
                                     </div>
                                     <div class="mb-3 text-center">
-                                        <button type="button" onclick="addcategory(event)" class="btn btn-primary">Lưu</button>
+                                        <button type="button" onclick="addcategory(event)"
+                                            class="btn btn-primary">Lưu</button>
                                     </div>
                                 </form>
                             </div>
@@ -158,37 +159,34 @@
         }
         CKEDITOR.replace('description');
         var validateorder = {
-        'name': {
-            'element': document.getElementById('name'),
-            'error': document.getElementById('name_error'),
-            'validations': [
-                {
-                    'func': function(value){
+            'name': {
+                'element': document.getElementById('name'),
+                'error': document.getElementById('name_error'),
+                'validations': [{
+                    'func': function(value) {
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E015')
-                },
-            ]
-        },
-        'description': {
-            'element': document.getElementById('description'),
-            'error': document.getElementById('description_error'),
-            'validations': [
-                {
-                    'func': function(value){
+                }, ]
+            },
+            'description': {
+                'element': document.getElementById('description'),
+                'error': document.getElementById('description_error'),
+                'validations': [{
+                    'func': function(value) {
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E016')
-                },
-            ]
-        },
+                }, ]
+            },
 
-    }
-    function addcategory(event){
-        event.preventDefault();
-        if(validateAllFields(validateorder)){
-            submitForm();
         }
-    }
+
+        function addcategory(event) {
+            event.preventDefault();
+            if (validateAllFields(validateorder)) {
+                submitForm();
+            }
+        }
     </script>
 @endsection
