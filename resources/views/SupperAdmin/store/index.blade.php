@@ -142,13 +142,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('sa.store.index') }}">Cửa hàng</a>
+                    <a href="{{ route('super.store.index') }}">Cửa hàng</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('sa.store.index') }}">Danh sách</a>
+                    <a href="{{ route('super.store.index') }}">Danh sách</a>
                 </li>
             </ul>
         </div>
@@ -163,7 +163,7 @@
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <form action="{{ route('sa.store.findByPhone') }}" method="GET">
+                                        <form action="{{ route('super.store.findByPhone') }}" method="GET">
                                             <div class="dataTables_filter">
                                                 <label>Tìm kiếm</label>
                                                 <input type="text" name="phone" class="form-control form-control-sm"
@@ -201,7 +201,7 @@
                                                                 </td>
                                                                 <td style="text-align:center">
                                                                     <a class="btn btn-warning"
-                                                                        href="{{ route('sa.store.detail', ['id' => $value->id]) }}">Chi
+                                                                        href="{{ route('super.store.detail', ['id' => $value->id]) }}">Chi
                                                                         tiết</a>
                                                                     {{-- <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
                                                                         class="btn btn-danger"
@@ -240,7 +240,7 @@
             $(document).ready(function() {
                 $.notify({
                     icon: 'icon-bell',
-                    title: 'Khách hàng',
+                    title: 'Thông báo',
                     message: '{{ session('success') }}',
                 }, {
                     type: 'secondary',

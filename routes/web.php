@@ -173,20 +173,24 @@ Route::middleware(['checkRole:2', CheckLogin::class])->prefix('staff')->name('st
 
 
 
-Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function () {
+// Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')->group(function () {
+//     Route::get('/detail/{id}', [SuperAdminController::class, 'getSuperAdminInfor'])->name('detail');
+//     Route::post('/update/{id}', [SuperAdminController::class, 'updateSuperAdminInfo'])->name('update');
+//     Route::prefix('store')->name('store.')->group(function () {
+//         Route::get('/index', [StoreController::class, 'index'])->name('index');
+//         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
+//         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
+//     });
+// });
+Route::get('super-dang-nhap', [SuperAdminController::class, 'loginForm'])->name('super.dang.nhap');
+Route::post('super-dang-nhap', [SuperAdminController::class, 'login'])->name('super.login.submit');
+Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('super.')->group(function () {
     Route::get('/detail/{id}', [SuperAdminController::class, 'getSuperAdminInfor'])->name('detail');
     Route::post('/update/{id}', [SuperAdminController::class, 'updateSuperAdminInfo'])->name('update');
+    Route::post('logout', [SuperAdminController::class, 'logout'])->name('logout');
     Route::prefix('store')->name('store.')->group(function () {
         Route::get('/index', [StoreController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
-    });
-});
-Route::get('super-dang-nhap', [SuperAdminController::class, 'loginForm'])->name('super.dang.nhap');
-Route::post('super-dang-nhap', [SuperAdminController::class, 'login'])->name('super.login.submit');
-Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('super.')->group(function(){
-    Route::post('logout', [SuperAdminController::class, 'logout'])->name('logout');
-    Route::prefix('store')->name('store.')->group(function () {
-        Route::get('/index', [StoreController::class, 'index'])->name('index');
     });
 });
