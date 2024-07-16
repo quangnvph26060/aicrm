@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\SuperAdmin;
 use App\Models\User;
 use App\Models\UserInfo;
 use Exception;
@@ -17,15 +18,15 @@ use Illuminate\Support\Facades\Storage;
  */
 class AdminService
 {
-    protected $user;
-    public function __construct(User $user)
+    protected $superAdmin;
+    public function __construct(SuperAdmin $superAdmin)
     {
-        $this->user = $user;
+        $this->superAdmin = $superAdmin;
     }
-    public function getUserById(int $id): User
+    public function getUserById(int $id): SuperAdmin
     {
         Log::info("Fetching user with ID: $id");
-        $user = $this->user->find($id);
+        $user = $this->superAdmin->find($id);
         if (!$user) {
             Log::warning("User with ID: $id not found");
             throw new ModelNotFoundException("User not found");
@@ -33,7 +34,7 @@ class AdminService
         return $user;
     }
 
-    public function updateUser(int $id, array $data): User
+    public function updateUser(int $id, array $data): SuperAdmin
     {
         DB::beginTransaction();
         try {
@@ -43,25 +44,25 @@ class AdminService
             // Update the admin data
             $admin->update($data);
             // Check if there is an image to update
-            if (isset($data['img_url']) && $data['img_url']->isValid()) {
-                $image = $data['img_url'];
-                $imageFileName = 'image_' . $image->getClientOriginalName();
-                $imageFilePath = 'storage/admin/' . $imageFileName;
-                Storage::putFileAs('public/admin', $image, $imageFileName);
+            // if (isset($data['img_url']) && $data['img_url']->isValid()) {
+            //     $image = $data['img_url'];
+            //     $imageFileName = 'image_' . $image->getClientOriginalName();
+            //     $imageFilePath = 'storage/admin/' . $imageFileName;
+            //     Storage::putFileAs('public/admin', $image, $imageFileName);
 
-                // Ensure the user_info relationship is loaded
-                $userInfo = $admin->user_info;
-                if ($userInfo) {
-                    $userInfo->img_url = $imageFilePath;
-                    $userInfo->save();
-                } else {
-                    // Handle the case where user_info is not present
-                    $userInfo = new UserInfo();
-                    $userInfo->user_id = $admin->id;
-                    $userInfo->img_url = $imageFilePath;
-                    $userInfo->save();
-                }
-            }
+            //     // Ensure the user_info relationship is loaded
+            //     $userInfo = $admin->user_info;
+            //     if ($userInfo) {
+            //         $userInfo->img_url = $imageFilePath;
+            //         $userInfo->save();
+            //     } else {
+            //         // Handle the case where user_info is not present
+            //         $userInfo = new UserInfo();
+            //         $userInfo->user_id = $admin->id;
+            //         $userInfo->img_url = $imageFilePath;
+            //         $userInfo->save();
+            //     }
+            // }
 
             DB::commit();
             return $admin;
@@ -82,8 +83,7 @@ class AdminService
                 'message' => 'Mật khẩu hiện tại không đúng !'
             ];
         }
-        if($newPassword === $currentPassword)
-        {
+        if ($newPassword === $currentPassword) {
             return [
                 'status' => 'error',
                 'message' => 'Mật khẩu mới không được trùng mật khẩu cũ!',
@@ -110,68 +110,68 @@ class AdminService
      * Summary of getStaff
      * @return LengthAwarePaginator
      */
-    public function getStaff(): LengthAwarePaginator
-    {
-        DB::beginTransaction();
-        try {
-            $admin = $this->user->where('role_id', 2)->paginate(5);
-            DB::commit();
-            return $admin;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Failed to  staff: {$e->getMessage()}");
-            throw $e;
-        }
-    }
-    public function findStaffByPhone($phone)
-    {
-        try {
-            $staff = $this->user
-                ->where('phone', $phone)
-                ->where('role_id', 2)
-                ->first();
-            return $staff;
-        } catch (Exception $e) {
-            Log::error('Failed to find client profile: ' . $e->getMessage());
-            throw new Exception('Failed to find client profile');
-        }
-    }
-    /**
-     * Summary of addStaff
-     */
-    public function addStaff($data): User
-    {
-        DB::beginTransaction();
-        try {
-            $admin = $this->user->create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-                'phone' => $data['phone'],
-                'address' => $data['address'],
-                'role_id' => 2,
-                'status' => 'active'
-            ]);
-            DB::commit();
-            return $admin;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Failed to add staff: {$e->getMessage()}");
-            throw $e;
-        }
-    }
+    // public function getStaff(): LengthAwarePaginator
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $admin = $this->user->where('role_id', 2)->paginate(5);
+    //         DB::commit();
+    //         return $admin;
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         Log::error("Failed to  staff: {$e->getMessage()}");
+    //         throw $e;
+    //     }
+    // }
+    // public function findStaffByPhone($phone)
+    // {
+    //     try {
+    //         $staff = $this->user
+    //             ->where('phone', $phone)
+    //             ->where('role_id', 2)
+    //             ->first();
+    //         return $staff;
+    //     } catch (Exception $e) {
+    //         Log::error('Failed to find client profile: ' . $e->getMessage());
+    //         throw new Exception('Failed to find client profile');
+    //     }
+    // }
+    // /**
+    //  * Summary of addStaff
+    //  */
+    // public function addStaff($data): User
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $admin = $this->user->create([
+    //             'name' => $data['name'],
+    //             'email' => $data['email'],
+    //             'password' => bcrypt($data['password']),
+    //             'phone' => $data['phone'],
+    //             'address' => $data['address'],
+    //             'role_id' => 2,
+    //             'status' => 'active'
+    //         ]);
+    //         DB::commit();
+    //         return $admin;
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         Log::error("Failed to add staff: {$e->getMessage()}");
+    //         throw $e;
+    //     }
+    // }
 
-    public function deleteStaff(int $id): void
-    {
-        DB::beginTransaction();
-        try {
-            $staff = $this->getUserById($id);
-            $staff->delete();
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("Failed to delete staff: {$e->getMessage()}");
-            throw new Exception('Failed to delete staff');
-        }
-    }
+    // public function deleteStaff(int $id): void
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $staff = $this->getUserById($id);
+    //         $staff->delete();
+    //         DB::commit();
+    //     } catch (Exception $e) {
+    //         DB::rollBack();
+    //         Log::error("Failed to delete staff: {$e->getMessage()}");
+    //         throw new Exception('Failed to delete staff');
+    //     }
+    // }
 }

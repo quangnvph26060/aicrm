@@ -22,34 +22,38 @@ class SuperAdminController extends Controller
         $this->supperAdminService = $supperAdminService;
     }
 
-    // public function getSuperAdminInfor($id)
-    // {
-    //     try {
-    //         $sa = $this->adminService->getUserById($id);
-    //         return view('sa.profile.detail', compact('sa'));
-    //     } catch (Exception $e) {
-    //         Log::error('Failed to fetch super admin info: ' . $e->getMessage());
-    //         return ApiResponse::error('Failed to fetch super admin info', 500);
-    //     }
-    // }
+    public function getSuperAdminInfor($id)
+    {
+        try {
+            $sa = $this->adminService->getUserById($id);
+            return view('SupperAdmin.profile.detail', compact('sa'));
+        } catch (Exception $e) {
+            Log::error('Failed to fetch super admin info: ' . $e->getMessage());
+            return ApiResponse::error('Failed to fetch super admin info', 500);
+        }
+    }
 
-    // public function updateSuperAdminInfo(Request $request, $id)
-    // {
-    //     try {
-    //         $sa = $this->adminService->updateUser($id, $request->all());
-    //         $authUser = session('authUser');
-    //         $authUser->name = $sa->name;
-    //         $authUser->email =  $sa->name;
-    //         $authUser->user_info->img_url = $sa->user_info->img_url;
-    //         session(['authUser' => $authUser]);
-    //         Log::info('Successfully updated super admin profile');
-    //         session()->flash('success', 'Thay đổi thông tin thành công');
-    //         return redirect()->back();
-    //     } catch (Exception $e) {
-    //         Log::error('Failed to update admin info: ' . $e->getMessage());
-    //         return ApiResponse::error('Failed to update admin info', 500);
-    //     }
-    // }
+    public function updateSuperAdminInfo(Request $request, $id)
+    {
+        try {
+            $sa = $this->adminService->updateUser($id, $request->all());
+            // dd($sa);
+            $authUser = session('authSuper');
+            $authUser->name = $sa->name;
+            // dd($authUser->name);
+            $authUser->email =  $sa->email;
+            // dd($authUser->email);
+            // $authUser->user_info->img_url = $sa->user_info->img_url;
+            // dd($authUser);
+            session(['authSuper' => $authUser]);
+            Log::info('Successfully updated super admin profile');
+            session()->flash('success', 'Thay đổi thông tin thành công');
+            return redirect()->back();
+        } catch (Exception $e) {
+            Log::error('Failed to update admin info: ' . $e->getMessage());
+            return ApiResponse::error('Failed to update admin info', 500);
+        }
+    }
 
 
     public function loginForm()

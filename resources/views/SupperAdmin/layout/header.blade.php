@@ -299,7 +299,7 @@
                                         <div class="u-text">
                                             <h4>{{ session('authSuper')->name }}</h4>
                                             <p class="text-muted">{{ session('authSuper')->email }}</p>
-                                            <a href="{{ route('sa.detail', ['id' => session('authSuper')->id]) }}"
+                                            <a href="{{ route('super.detail', ['id' => session('authSuper')->id]) }}"
                                                 class="btn btn-xs btn-secondary btn-sm">Trang cá nhân</a>
                                             <a href="#" class="btn btn-xs  btn-sm"
                                                 style="background: red; color: #ffff"

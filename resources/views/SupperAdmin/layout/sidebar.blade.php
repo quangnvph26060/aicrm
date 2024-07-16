@@ -24,7 +24,7 @@
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
                 <li class="nav-item active">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="">
                         <i class="fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -38,7 +38,7 @@
 
 
                 <li class="nav-item">
-                    <a href="{{ route('sa.store.index') }}">
+                    <a href="{{ route('super.store.index') }}">
                         <i class="fas fa-shopping-cart"></i>
                         <p>Cửa hàng</p>
                     </a>
