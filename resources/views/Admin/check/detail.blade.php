@@ -146,7 +146,7 @@
                                                     <td>  {{ number_format($sum3) }} </td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="200" >Tổng chênh lệch (-917) :</td>
+                                                    <td width="200" >Tổng chênh lệch ({{ $tong_lech }}) :</td>
                                                     <td>  {{ number_format($sum3 + $sum2)  }} </td>
                                                 </tr>
                                             </tbody>

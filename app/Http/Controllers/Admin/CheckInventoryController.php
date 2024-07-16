@@ -70,8 +70,10 @@ class CheckInventoryController extends Controller
                 }
             }
 
+            $tong_lech = $slgiam + $sltang;
 
-            return view('admin.check.detail', compact('check', 'details', 'title', 'tongthucte', 'slgiam', 'sltang', 'sum1', 'sum2', 'sum3'));
+
+            return view('admin.check.detail', compact('check', 'details', 'title', 'tongthucte', 'slgiam', 'sltang', 'sum1', 'sum2', 'sum3', 'tong_lech'));
         } catch (Exception $e) {
             Log::error('Failed to get check detail');
             return ApiResponse::error('Check not found', 500);

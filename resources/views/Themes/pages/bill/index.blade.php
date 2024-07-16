@@ -126,13 +126,13 @@
     <div id="bill" class="bill">
         <div class="content">
             <div class="receipt">
-                <div class="receipt-header">
-                    <h2>{{ isset($config) ? $config->name : '' }}</h2>
-                    <p>Địa chỉ: {{ isset($config) ? $config->address : '' }}</p>
-                    <p>Điện thoại: {{ isset($config) ? $config->phone : '' }}</p>
-                </div>
                 <div class="receipt-title">
-                    <h3>Phiếu Tạm Thu</h3>
+                    <h3>Phiếu Thanh Toán</h3>
+                </div>
+                <div class="receipt-header">
+                    <h2>{{ isset($config) ? $config->user->store_name : '' }}</h2>
+                    <p>Địa chỉ: {{ isset($config) ? $config->user->address : '' }}</p>
+                    <p>Điện thoại: {{ isset($config) ? $config->user->phone : '' }}</p>
                 </div>
                 <div class="receipt-info">
                     <p>Ngày tạo: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
@@ -186,7 +186,7 @@
                     <img style="width: 200px;" src="{{ $config->qr }}"
                     alt="QR Code">
                     <div>
-                        <p>{{ $config->bank->code }} - {{ $config->tin }} - {{  $config->name }}</p>
+                        <p>{{ $config->bank->code }} - {{ $config->receiver }} - {{  $config->user->store_name }}</p>
                     </div>
                     @else
                     <img style="width: 200px;" src="" alt="QR Code">
