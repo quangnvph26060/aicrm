@@ -21,13 +21,11 @@ class CheckInventoryController extends Controller
     public function index()
     {
         $title = 'Quản lý kho';
-        try{
+        try {
             $check = $this->checkInventory->getAllCheckInventory();
             return view('admin.check.index', compact('check', 'title'));
-        }
-        catch(Exception $e)
-        {
-            Log::error('Failed to get Check Tickets: ' .$e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Failed to get Check Tickets: ' . $e->getMessage());
             return redirect()->route('admin.check.index')->with('error', 'Failed to get check tickets');
         }
     }
@@ -38,13 +36,11 @@ class CheckInventoryController extends Controller
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
         $title = 'Quản lý kho';
-        try{
+        try {
             $check = $this->checkInventory->filterCheck($startDate, $endDate, $phone);
             return view('admin.check.index', compact('check', 'title'));
-        }
-        catch(Exception $e)
-        {
-            Log::error('Failed to find check ticket: ' .$e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Failed to find check ticket: ' . $e->getMessage());
             return redirect()->route('admin.check.index')->with('error', 'Failed to find Check Tickets');
         }
     }
@@ -52,14 +48,31 @@ class CheckInventoryController extends Controller
     public function detail($id)
     {
         $title = 'Chi tiết kho';
-        try{
+        try {
             $check = $this->checkInventory->getCheckInventoryById($id);
             $details = CheckDetail::where('check_inventory_id', $id)->get();
-            // dd($details);
-            return view('admin.check.detail', compact('check', 'details', 'title'));
-        }
-        catch(Exception $e)
-        {
+            $tongthucte = 0;
+            $slgiam = 0;
+            $sltang = 0;
+            $sum1 = 0;
+            $sum2 = 0;
+            $sum3 = 0;
+            foreach ($details as $item) {
+                $tongthucte += $item->difference + $item->product->quantity;
+                $sum1 += ($item->difference + $item->product->quantity) *$item->product->price;
+                if ($item->difference < 0) {
+                    $slgiam += $item->difference;
+                    $sum2 += $item->difference * $item->product->price;
+                }
+                if ($item->difference >= 0) {
+                    $sltang += $item->difference;
+                    $sum3 += $item->difference * $item->product->price;
+                }
+            }
+
+
+            return view('admin.check.detail', compact('check', 'details', 'title', 'tongthucte', 'slgiam', 'sltang', 'sum1', 'sum2', 'sum3'));
+        } catch (Exception $e) {
             Log::error('Failed to get check detail');
             return ApiResponse::error('Check not found', 500);
         }
