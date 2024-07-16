@@ -58,6 +58,27 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#sidebarnhacungcap">
+                        <i class="fas fa-box-open"></i>
+                        <p>Nhà cung cấp</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="sidebarnhacungcap">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('admin.supplier.index') }}">
+                                    <span class="sub-item">Danh sách</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.supplier.add') }}">
+                                    <span class="sub-item">Nhà cung cấp mới</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarthuonghieu">
                         <i class="fas fa-tags"></i>
                         <p>Danh mục</p>
