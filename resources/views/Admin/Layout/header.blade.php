@@ -22,8 +22,10 @@
     <!-- Navbar Header -->
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div class="container-fluid">
-            <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px" >
-                <marquee direction="circle" scrollamount="3" style="color: red"><span>Thông báo  -  quảng cáo  -  thông báo !</span></marquee>
+            <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px">
+                <marquee direction="circle" scrollamount="10" style="color: red"><span>Thông báo: Đây là phiên bản demo
+                        của phần mềm quản lý bán hàng AICRM. Quý khách hàng có nhu cầu trải nghiệm phần mềm đăng ký <a
+                            href="http://aicrm.vn/dang-ky">tại đây</a></span></marquee>
             </div>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
 
@@ -278,7 +280,8 @@
                 </li>
 
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                        aria-expanded="false">
                         <div class="avatar-sm">
                             <img src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
                                 alt="image profile" class="avatar-img rounded-circle">
@@ -303,13 +306,13 @@
                                             <p class="text-muted">{{ session('authUser')->email }}</p>
                                             <div style="display: flex">
                                                 <a href="{{ route('admin.detail', ['id' => session('authUser')->id]) }}"
-                                                    class="btn btn-xs btn-secondary btn-sm p-1" >Trang cá nhân</a>
+                                                    class="btn btn-xs btn-secondary btn-sm p-1">Trang cá nhân</a>
                                                 <a href="#" class="btn btn-xs  btn-sm p-1"
                                                     style="background: red; color: #ffff; margin-left: 10px"
                                                     onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Đăng
                                                     xuất</a>
-                                                <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
-                                                    style="display: none;">
+                                                <form id="logoutForm" action="{{ route('admin.logout') }}"
+                                                    method="POST" style="display: none;">
                                                     @csrf
                                                 </form>
                                             </div>

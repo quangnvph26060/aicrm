@@ -36,12 +36,13 @@ class SignUpController extends Controller
         try {
             $user = $this->signupService->signup($request->all());
 
-            return redirect()->route('formlogin')->with('success', 'Tài khoản của quý khách đã được gửi về email');
+            return redirect()->back()->with('modal', 'Chúc mừng bạn đã đăng ký tạo tài khoản thành công. Chúng tôi sẽ liên hệ với bạn trong 24h - 48h ngay sau khi phần mềm được tạo. Mọi liên hệ vui lòng liên hệ Hotline: 0981.185.620 hoặc truy cập website: aicrm.vn. Xin cảm ơn');
         } catch (Exception $e) {
             Log::error('Failed to signup: ' . $e->getMessage());
             return back()->withErrors(['message' => $e->getMessage()])->withInput();
         }
     }
+
     public function checkPhoneExists(Request $request)
     {
         $phone = $request->query('phone');
