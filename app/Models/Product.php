@@ -24,7 +24,8 @@ class Product extends Model
         "status",
         "discount_id",
         "brands_id",
-        "code"
+        "code",
+        "supplier_id"
     ];
 
     protected $appends = ['category','images','brands'];
@@ -49,6 +50,11 @@ class Product extends Model
     public function productImages()
     {
         return $this->hasMany(ProductImages::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
 
     public static function boot()
