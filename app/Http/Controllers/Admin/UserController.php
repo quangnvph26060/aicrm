@@ -42,7 +42,7 @@ class UserController extends Controller
             $title = "Nhân viên";
             $user = $this->adminService->getStaff();
             // dd($user);
-            return view('Admin.employee.index', compact('user', 'title'));
+            return view('admin.employee.index', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch products', 500);
@@ -60,7 +60,7 @@ class UserController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('Admin.employee.index', compact('user', 'title'));
+            return view('admin.employee.index', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find staff: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find staff'], 500);
@@ -71,7 +71,7 @@ class UserController extends Controller
         $title = "Sửa nhân viên";
         try {
             $user = $this->adminService->getUserById($id);
-            return view('Admin.employee.edit', compact('user', 'title'));
+            return view('admin.employee.edit', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find user: ' . $e->getMessage());
             return ApiResponse::error('Failed to find user', 500);
@@ -107,7 +107,7 @@ class UserController extends Controller
     public function addForm()
     {
         $title = 'Thêm nhân viên';
-        return view('Admin.employee.add', compact('title'));
+        return view('admin.employee.add', compact('title'));
     }
     public function add(Request $request)
     {

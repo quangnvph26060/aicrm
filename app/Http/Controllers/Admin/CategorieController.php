@@ -24,7 +24,7 @@ class CategorieController extends Controller
         $title = 'Danh mục';
         try {
             $category = $this->categoryService->getCategoryAll();
-            return view('Admin.category.index', compact('category', 'title'));
+            return view('admin.category.index', compact('category', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch Category: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch Category', 500);
@@ -35,7 +35,7 @@ class CategorieController extends Controller
         $title = 'Danh mục';
         try{
             $category = $this->categoryService->findCategoryByName($request->input('name'));
-            return view('Admin.category.index', compact('category', 'title'));
+            return view('admin.category.index', compact('category', 'title'));
         }
         catch(Exception $e)
         {
@@ -45,7 +45,7 @@ class CategorieController extends Controller
     }
     public function add(){
         $title = 'Thêm danh mục';
-        return view('Admin.category.add', compact('title'));
+        return view('admin.category.add', compact('title'));
     }
     public function store(StoreCategoryRequest $request)
     {
@@ -75,7 +75,7 @@ class CategorieController extends Controller
 
         try {
             $category = $this->categoryService->findOrFailCategory($id);
-            return view('Admin.category.detail', compact('category', 'title'));
+            return view('admin.category.detail', compact('category', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find category: ' . $e->getMessage());
         }
