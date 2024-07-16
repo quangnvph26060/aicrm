@@ -162,7 +162,12 @@
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="basic-datatables_length">
+                                            <a class="btn btn-primary" href="{{ route('super.store.add') }}">Thêm khách hàng</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
                                         <form action="{{ route('super.store.findByPhone') }}" method="GET">
                                             <div class="dataTables_filter">
                                                 <label>Tìm kiếm</label>
