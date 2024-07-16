@@ -392,7 +392,7 @@
                                     </td>
                                     @else
                                     <td class="text-center">
-                                        <span class="badge badge-success">Đang chờ</span>
+                                        <span class="badge badge-success">Công nợ</span>
                                     </td>
                                     @endif
                                 </tr>
