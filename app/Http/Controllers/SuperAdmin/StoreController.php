@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Services\SignUpService;
 use App\Services\StoreService;
 use App\Services\UserService;
 use Exception;
@@ -15,9 +16,11 @@ use Illuminate\Support\Facades\Log;
 class StoreController extends Controller
 {
     protected $storeService;
-    public function __construct(StoreService $storeService)
+    protected $signUpService;
+    public function __construct(StoreService $storeService, SignUpService $signUpService)
     {
         $this->storeService = $storeService;
+        $this->signUpService = $signUpService;
     }
 
     public function index()
@@ -55,6 +58,24 @@ class StoreController extends Controller
         } catch (Exception $e) {
             Log::error('Cannot find store info: ' . $e->getMessage());
             return ApiResponse::error('Cannot find store info', 500);
+        }
+    }
+
+    public function add()
+    {
+        $city = $this->signUpService->getAllCities();
+        $field = $this->signUpService->getAllFields();
+        return view('SupperAdmin.store.add', compact('city', 'field'));
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $store = $this->storeService->addNewStore($request->all());
+            return redirect()->route('super.store.index')->with('success', 'Thêm tài khoản dùng thử thành công');
+        } catch (Exception $e) {
+            Log::error('Failed to create account: ' . $e->getMessage());
+            return ApiResponse::error('Failed to create account', 500);
         }
     }
 }
