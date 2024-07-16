@@ -349,13 +349,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var marquee = document.getElementById('demoMarquee');
-        var link = document.getElementById('marqueeLink');
 
-        link.addEventListener('mouseenter', function() {
+        marquee.addEventListener('mouseenter', function() {
             marquee.stop();
         });
 
-        link.addEventListener('mouseleave', function() {
+        marquee.addEventListener('mouseleave', function() {
             marquee.start();
         });
     });
