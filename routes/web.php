@@ -22,7 +22,9 @@ use App\Http\Controllers\SuperAdmin\StoreController;
 use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\SuperAdminController as ControllersSuperAdminController;
 use App\Http\Middleware\CheckLogin;
+use App\Http\Middleware\CheckLoginSuperAdmin;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('', [CategorieController::class, 'index']);
@@ -178,5 +180,13 @@ Route::middleware(['checkRole:3', CheckLogin::class])->prefix('sa')->name('sa.')
         Route::get('/index', [StoreController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
+    });
+});
+Route::get('super-dang-nhap', [SuperAdminController::class, 'loginForm'])->name('super.dang.nhap');
+Route::post('super-dang-nhap', [SuperAdminController::class, 'login'])->name('super.login.submit');
+Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('super.')->group(function(){
+    Route::post('logout', [SuperAdminController::class, 'logout'])->name('logout');
+    Route::prefix('store')->name('store.')->group(function () {
+        Route::get('/index', [StoreController::class, 'index'])->name('index');
     });
 });
