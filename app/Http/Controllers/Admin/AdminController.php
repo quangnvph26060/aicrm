@@ -23,7 +23,7 @@ class AdminController extends Controller
         $title = 'Thông tin người dùng';
         try {
             $admin = $this->adminService->getUserById($id);
-            return view('Admin.admin.edit', compact('admin', 'title'));
+            return view('admin.admin.edit', compact('admin', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch info: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch info', 500);

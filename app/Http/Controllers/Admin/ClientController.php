@@ -23,7 +23,7 @@ class ClientController extends Controller
         $title = 'Khách hàng';
         try {
             $clients = $this->clientService->getAllClient();
-            return view('Admin.Client.index', compact('clients', 'title'));
+            return view('admin.client.index', compact('clients', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch clients: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to fetch clients'], 500);
@@ -45,7 +45,7 @@ class ClientController extends Controller
                 ['path' => Paginator::resolveCurrentPath()]
             );
 
-            return view('Admin.Client.index', compact('clients', 'title'));
+            return view('admin.client.index', compact('clients', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find client: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find client'], 500);
@@ -56,7 +56,7 @@ class ClientController extends Controller
         $title = 'Sửa thông tin khách hàng';
         try {
             $client =  $this->clientService->getClientByID($id);
-            return view('Admin.Client.edit', compact('client', 'title'));
+            return view('admin.client.edit', compact('client', 'title'));
         } catch (\Exception $e) {
             Log::error('Failed to find client profile');
         }

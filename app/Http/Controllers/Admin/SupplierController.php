@@ -24,6 +24,7 @@ class SupplierController extends Controller
     {
         try {
             $suppliers = $this->supplierService->GetAllSuppiler();
+            // dd($suppliers);
             return view('admin.supplier.index', compact('suppliers'));
         } catch (Exception $e) {
             Log::error('Failed to fetch all suppliers: ' . $e->getMessage());
@@ -42,7 +43,7 @@ class SupplierController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('Admin.supplier.index', compact('suppliers'));
+            return view('admin.supplier.index', compact('suppliers'));
         } catch (Exception $e) {
             Log::error('Failed to find supplier: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find supplier'], 500);
