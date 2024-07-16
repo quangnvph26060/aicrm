@@ -388,7 +388,7 @@
                                     <td class="text-center">{{ number_format($item->total_money) }}</td>
                                     @if ($item->status == 1)
                                     <td class="text-center">
-                                        <span class="badge badge-danger">Hoàn thành</span>
+                                        <span class="badge badge-success">Hoàn thành</span>
                                     </td>
                                     @else
                                     <td class="text-center">

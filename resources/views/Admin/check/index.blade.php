@@ -215,7 +215,7 @@
                                                     <tr>
                                                         <td>
                                                             <a style="color: black; font-weight:bold"
-                                                                href="{{ route('admin.check.detail', ['id' => $item->id]) }}">{{ $item->id }}</a>
+                                                                href="{{ route('admin.check.detail', ['id' => $item->id]) }}">{{ $item->test_code }}</a>
                                                         </td>
                                                         <td><a style="color: black"
                                                                 href="{{ route('admin.staff.edit', ['id' => $item->user->id]) }}">{{ $item->user->name ?? '' }}

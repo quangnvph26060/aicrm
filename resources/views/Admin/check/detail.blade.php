@@ -17,6 +17,10 @@
         .breadcrumbs i {
             color: #6c757d;
         }
+
+        #detail_kho{
+            color: black !important;
+        }
     </style>
     <div class="page-inner">
         <div class="page-header">
@@ -125,9 +129,31 @@
 
                                     </tbody>
                                 </table>
+                                <div style="display: flex; justify-content: flex-end; ">
+                                    <div >
+                                        <table cellspacing="0" id="detail_kho">
+                                            <tbody style="line-height: 30px; ">
+                                                <tr>
+                                                    <td width="250" >Tổng thực tế ({{ $tongthucte }}) : </td>
+                                                    <td width="110" >  {{ number_format($sum1)  }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200">Tổng chênh lệch tăng ({{  $sltang }}) :</td>
+                                                    <td>{{ number_format($sum2) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200" >Tổng chênh lệch giảm ({{ $slgiam }}) :</td>
+                                                    <td>  {{ number_format($sum3) }} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="200" >Tổng chênh lệch (-917) :</td>
+                                                    <td>  {{ number_format($sum3 + $sum2)  }} </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                                <!-- Pagination -->
-                                {{-- {{ $check->appends(request()->query())->links('vendor.pagination.custom') }} --}}
                             </div>
                         </div>
                         <div class="text-center mt-4">
