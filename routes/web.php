@@ -22,6 +22,7 @@ use App\Http\Controllers\SuperAdmin\StoreController;
 use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\SuperAdminController as ControllersSuperAdminController;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\CheckLoginSuperAdmin;
@@ -143,6 +144,9 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/', [CheckInventoryController::class, 'index'])->name('index');
         Route::get('/filter', [CheckInventoryController::class, 'filterCheck'])->name('filter');
         Route::get('/detail/{id}', [CheckInventoryController::class, 'detail'])->name('detail');
+    });
+    Route::prefix('support')->name('support.')->group(function(){
+        Route::get('/', [SupportController::class, 'contact'])->name('lienhe');
     });
 })->middleware('checkRole:1');
 

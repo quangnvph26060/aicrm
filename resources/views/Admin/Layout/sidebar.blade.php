@@ -129,6 +129,13 @@
                         <p>Cấu hình</p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.support.lienhe') }}">
+                        <i class="fas fa-medkit"></i>
+                        <p>Hỗ trợ</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
