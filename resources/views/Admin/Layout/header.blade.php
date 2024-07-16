@@ -23,9 +23,12 @@
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div class="container-fluid">
             <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px">
-                <marquee direction="circle" scrollamount="10" style="color: red"><span>Thông báo: Đây là phiên bản demo
-                        của phần mềm quản lý bán hàng AICRM. Quý khách hàng có nhu cầu trải nghiệm phần mềm đăng ký <a
-                            href="http://aicrm.vn/dang-ky">tại đây</a></span></marquee>
+                <marquee id="demoMarquee" scrollamount="7" style="color: red">
+                    <span>Thông báo: Đây là phiên bản demo của phần mềm quản lý bán hàng AICRM. Quý khách hàng có nhu
+                        cầu trải nghiệm phần mềm đăng ký
+                        <a href="http://aicrm.vn/dang-ky" id="marqueeLink">tại đây</a>
+                    </span>
+                </marquee>
             </div>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
 
@@ -343,3 +346,17 @@
     </nav>
     <!-- End Navbar -->
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var marquee = document.getElementById('demoMarquee');
+        var link = document.getElementById('marqueeLink');
+
+        link.addEventListener('mouseenter', function() {
+            marquee.stop();
+        });
+
+        link.addEventListener('mouseleave', function() {
+            marquee.start();
+        });
+    });
+</script>
