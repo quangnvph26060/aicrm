@@ -3,8 +3,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
             <a href="{{ route('admin.dashboard') }}" class="logo">
-                <img src="{{ asset('images/aicrm1.png') }}" alt="navbar brand" class="navbar-brand"
-                    height="20" />
+                <img src="{{ asset('images/aicrm1.png') }}" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -129,13 +128,39 @@
                         <p>Cấu hình</p>
                     </a>
                 </li>
-
                 <li class="nav-item">
                     <a href="{{ route('admin.support.lienhe') }}">
                         <i class="fas fa-medkit"></i>
                         <p>Hỗ trợ</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#sidebarbaocao">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Báo cáo</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="sidebarbaocao">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="">
+                                    <span class="sub-item">Thống kê ngày</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="sub-item">Công nợ</span>
+                                </a>
+                            </li>
+                            {{-- <li>
+                                <a href="{{ route('admin.brand.store') }}">
+                                    <span class="sub-item">Thương hiệu</span>
+                                </a>
+                            </li> --}}
+                        </ul>
+                    </div>
+                </li>
+
             </ul>
         </div>
     </div>
