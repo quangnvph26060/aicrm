@@ -21,6 +21,7 @@ use App\Http\Controllers\Staff\WareHomeController;
 use App\Http\Controllers\SuperAdmin\StoreController;
 use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Middleware\CheckLogin;
 use Illuminate\Support\Facades\Route;
 
@@ -116,6 +117,14 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
         Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
+    });
+    Route::prefix('supplier')->name('supplier.')->group(function () {
+        Route::get("/", [SupplierController::class, 'index'])->name('index');
+        Route::get('/findByPhone', [SupplierController::class, 'findByPhone'])->name('findByPhone');
+        Route::get('/add', [SupplierController::class, 'add'])->name('add');
+        Route::post('/store', [SupplierController::class, 'store'])->name('store');
+        Route::get('detail/{id}', [SupplierController::class, 'edit'])->name('detail');
+        Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
