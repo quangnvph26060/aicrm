@@ -58,7 +58,7 @@ class ClientController extends Controller
     {
         try {
             $user = Auth::user();
-            $listphone = $this->clientService->getAllClient()->pluck('phone');
+            $listphone = $this->clientService->getAllClientStaff()->pluck('phone');
             if ($listphone->contains($request->phone)) {
                 $client = $this->clientService->findClientByPhone($request->phone);
                 $cartItems = Cart::where('user_id', $user->id)->get();
@@ -81,7 +81,7 @@ class ClientController extends Controller
     {
         try {
             $user = Auth::user();
-            $listphone = $this->clientService->getAllClient()->pluck('phone');
+            $listphone = $this->clientService->getAllClientStaff()->pluck('phone');
             $cartItems = Cart::where('user_id', $user->id)->get();
             $sum = 0;
             $client= array();

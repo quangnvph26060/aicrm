@@ -26,7 +26,7 @@ class ProductController extends Controller
     {
         $config = Config::first();
         $product = $this->productService->getProductAll();
-        $clients = $this->clientService->getAllClient();
+        $clients = $this->clientService->getAllClientStaff();
         $user = Auth::user();
         $cart =  Cart::where('user_id', $user->id)->get();
         $sum = 0;
