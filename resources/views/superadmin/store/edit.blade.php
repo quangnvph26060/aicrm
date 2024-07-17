@@ -1,4 +1,4 @@
-@extends('SupperAdmin.layout.index')
+@extends('superadmin.layout.index')
 @section('content')
     <div class="page-inner">
         <div class="page-header">
@@ -12,7 +12,7 @@
                     <i class="fas fa-chevron-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('super.store.index') }}">Cửa hàng</a>
+                    <a href="{{ route('super.store.index') }}">Khách hàng</a>
                 </li>
             </ul>
         </div>
@@ -20,12 +20,12 @@
             <div class="col-md-12">
                 <div class="card shadow-lg">
                     <div class="card-header bg-gradient-primary text-white">
-                        <h4 class="text-center mb-sm-0 font-size-18">Chi tiết cửa hàng số {{ $stores->id }}</h4>
+                        <h4 class="text-center mb-sm-0 font-size-18">Chi tiết khách hàng số {{ $stores->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h5 class="text-center text-primary"><b>Thông tin chủ cửa hàng</b></h5>
+                                <h5 class="text-center text-primary"><b>Thông tin khách hàng</b></h5>
                                 <table class="table table-bordered table-hover">
                                     <tbody>
                                         <tr>

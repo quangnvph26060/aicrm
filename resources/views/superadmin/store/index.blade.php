@@ -1,4 +1,4 @@
-@extends('SupperAdmin.layout.index')
+@extends('superadmin.layout.index')
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -162,11 +162,11 @@
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6">
+                                    {{-- <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
                                             <a class="btn btn-primary" href="{{ route('super.store.add') }}">Thêm khách hàng</a>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-12 col-md-6">
                                         <form action="{{ route('super.store.findByPhone') }}" method="GET">
                                             <div class="dataTables_filter">
@@ -194,10 +194,13 @@
                                             </thead>
                                             <tbody>
                                                 @if ($stores && $stores->count() > 0)
-                                                    @foreach ($stores as $key => $value)
+                                                    @php
+                                                        $stt = ($stores->currentPage() - 1) * $stores->perPage();
+                                                    @endphp
+                                                    @foreach ($stores as $value)
                                                         @if (is_object($value))
                                                             <tr>
-                                                                <td>{{ intval($key) + 1 }}</td>
+                                                                <td>{{ ++$stt }}</td>
                                                                 <td>{{ $value->store_name ?? '' }}</td>
                                                                 <td>{{ $value->name ?? '' }}</td>
                                                                 <td>{{ $value->created_at ? $value->created_at->format('d/m/Y') : '' }}
@@ -208,9 +211,7 @@
                                                                     <a class="btn btn-warning"
                                                                         href="{{ route('super.store.detail', ['id' => $value->id]) }}">Chi
                                                                         tiết</a>
-                                                                    {{-- <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                        class="btn btn-danger"
-                                                                        href="{{ route('admin.client.delete', ['id' => $value->id]) }}">Xóa</a> --}}
+                                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger" href="{{ route('super.store.delete', ['id' => $value->id]) }}">Xóa</a>
                                                                 </td>
                                                             </tr>
                                                         @endif
@@ -226,6 +227,7 @@
                                                 @endif
                                             </tbody>
                                         </table>
+
                                         @if ($stores instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                             {{ $stores->links('vendor.pagination.custom') }}
                                         @endif

@@ -197,8 +197,6 @@ Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('sup
         Route::get('/index', [StoreController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
-        Route::get('/add', [StoreController::class, 'add'])->name('add');
-        Route::post('/store', [StoreController::class, 'store'])->name('store');
-
+        Route::get('/delete/{id}', [StoreController::class, 'delete'])->name('delete');
     });
 });

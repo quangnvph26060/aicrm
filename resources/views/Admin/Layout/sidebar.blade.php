@@ -121,6 +121,7 @@
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarthuchi">
                         <i class="fas fa-chart-line"></i>
@@ -142,6 +143,7 @@
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
                     <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
                         <i class="fas fa-cogs"></i>
@@ -172,18 +174,25 @@
                                 <a href="">
                                     <span class="sub-item">Công nợ</span>
                                 </a>
+                                <ul class="sub-nav">
+                                    <li>
+                                        <a href="">
+                                            <span class="sub-item">Khách hàng</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span class="sub-item">Nhà cung cấp</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
 
                         </ul>
                     </div>
                 </li>
 
-
-
             </ul>
         </div>
     </div>
 </div>
-
-
-</script>
