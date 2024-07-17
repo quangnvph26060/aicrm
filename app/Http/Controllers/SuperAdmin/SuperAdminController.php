@@ -26,7 +26,7 @@ class SuperAdminController extends Controller
     {
         try {
             $sa = $this->adminService->getUserById($id);
-            return view('SupperAdmin.profile.detail', compact('sa'));
+            return view('superadmin.profile.detail', compact('sa'));
         } catch (Exception $e) {
             Log::error('Failed to fetch super admin info: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch super admin info', 500);
@@ -58,7 +58,7 @@ class SuperAdminController extends Controller
 
     public function loginForm()
     {
-        return view('SupperAdmin.formlogin.index');
+        return view('superadmin.formlogin.index');
     }
 
     public function login(Request $request)
