@@ -109,7 +109,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('', [BrandController::class, 'index'])->name('store');
         Route::get('add', [BrandController::class, 'addForm'])->name('addForm');
         Route::post('add', [BrandController::class, 'add'])->name('add');
-        Route::get('delete', [BrandController::class, 'delete'])->name('delete');
+        Route::get('delete/{id}', [BrandController::class, 'delete'])->name('delete');
         Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
         Route::get('search/name', [BrandController::class, 'findByName'])->name('findByName');
@@ -128,6 +128,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('/store', [SupplierController::class, 'store'])->name('store');
         Route::get('detail/{id}', [SupplierController::class, 'edit'])->name('detail');
         Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [SupplierController::class, 'delete'])->name('delete');
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');

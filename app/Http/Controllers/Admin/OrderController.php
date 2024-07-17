@@ -50,7 +50,7 @@ class OrderController extends Controller
         $title = 'Chi tiết đơn hàng';
         try {
             $order = $this->orderService->getOrderbyID($id);
-            return view('Admin.Order.detail', compact('order', 'title'));
+            return view('admin.order.detail', compact('order', 'title'));
         } catch (\Exception $e) {
             Log::error('Failed to find order');
         }

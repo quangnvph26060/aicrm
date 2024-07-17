@@ -17,7 +17,7 @@ class ClientService
     public function getAllClient()
     {
         try {
-            return $this->client->paginate(5);
+            return $this->client->orderByDesc('created_at')->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to get all clients: ' . $e->getMessage());
             throw new Exception('Failed to get all clients');
@@ -92,6 +92,7 @@ class ClientService
             Log::info("Deleting client $id profile");
             $client = $this->client->find($id);
             $client->delete();
+            DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Failed to delete client profile: ' . $e->getMessage());

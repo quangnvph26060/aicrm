@@ -27,7 +27,7 @@ class CheckInventoryService
     {
 
         try {
-            $checkInventory = $this->checkInventory->paginate(5);
+            $checkInventory = $this->checkInventory->orderByDesc('created_at')->paginate(5);
             return $checkInventory;
         } catch (Exception $e) {
             Log::error('Failed to get all checkInventory: ' . $e->getMessage());

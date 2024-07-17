@@ -22,7 +22,7 @@ class UserService
     public function getUserByRole($role)
     {
         try {
-            $user = $this->user->where('role_id', $role)->get();
+            $user = $this->user->where('role_id', $role)->orderByDesc('created_at')->get();
             return $user;
         } catch (Exception $e) {
             Log::error("Failed to search products: {$e->getMessage()}");

@@ -88,4 +88,15 @@ class SupplierController extends Controller
             return ApiResponse::error('Failed to update supplier information', 500);
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $this->supplierService->deleteSupplier($id);
+            return redirect()->route('admin.supplier.index')->with('success', 'Xoá nhà cung cấp thành công');
+        } catch (Exception $e) {
+            Log::error('Failed to delete supplier: ' . $e->getMessage());
+            return ApiResponse::error('Failed to delete supplier', 500);
+        }
+    }
 }

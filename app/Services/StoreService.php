@@ -23,7 +23,7 @@ class StoreService
     public function getAllStore(): LengthAwarePaginator
     {
         try {
-            return $this->user->where('role_id', 1)->paginate(5);
+            return $this->user->where('role_id', 1)->orderByDesc('created_at')->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to fetch stores: ' . $e->getMessage());
             throw new Exception('Failed to fetch stores');

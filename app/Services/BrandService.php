@@ -25,7 +25,7 @@ class BrandService
     {
         try {
             Log::info('Fetching all categories');
-            $categories = $this->brand->paginate(5);
+            $categories = $this->brand->orderByDesc('created_at')->paginate(5);
             return $categories;
         } catch (Exception $e) {
             Log::error('Failed to fetch brand: ' . $e->getMessage());

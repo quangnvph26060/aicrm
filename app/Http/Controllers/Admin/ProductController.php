@@ -35,7 +35,7 @@ class ProductController extends Controller
             $product = $this->productService->getProductAll();
             $category = $this->categoryService->getCategoryAll();
             $brand = $this->brandService->getAllBrand();
-            return view('Admin.Product.index', compact('product', 'category', 'brand', 'title'));
+            return view('admin.product.index', compact('product', 'category', 'brand', 'title'));
         } catch (ModelNotFoundException $e) {
             $exception = new ProductNotFoundException();
             return $exception->render(request());
@@ -56,13 +56,13 @@ class ProductController extends Controller
         //     ['path' =>Paginator::resolveCurrentPath()]
         // );
 
-        return view('Admin.Product.index', compact('product'));
+        return view('admin.product.index', compact('product'));
     }
     public function addForm(){
         $title = 'Thêm sản phẩm';
         $brand = $this->brandService->getAllBrand();
         $category = $this->categoryService->getCategoryAll();
-        return view('Admin.Product.add', compact('category', 'brand', 'title'));
+        return view('admin.product.add', compact('category', 'brand', 'title'));
     }
 
     public function addSubmit(Request $request)
@@ -85,7 +85,7 @@ class ProductController extends Controller
         $category = $this->categoryService->getCategoryAll();
         $brand = $this->brandService->getAllBrand();
         $products = $this->productService->getProductById($id);
-        return view('Admin.Product.edit', compact('products', 'brand', 'category', 'title'));
+        return view('admin.product.edit', compact('products', 'brand', 'category', 'title'));
     }
 
     public function update($id ,Request $request){

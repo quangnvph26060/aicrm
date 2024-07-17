@@ -20,7 +20,7 @@ class SupplierService
     public function GetAllSuppiler()
     {
         try {
-            return $this->supplier->paginate(5);
+            return $this->supplier->orderByDesc('created_at')->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to fetch Supplier : ' . $e->getMessage());
             throw new Exception('Failed to fetch Supplier');
