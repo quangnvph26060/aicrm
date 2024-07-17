@@ -39,8 +39,8 @@
 
                 <li class="nav-item">
                     <a href="{{ route('super.store.index') }}">
-                        <i class="fas fa-shopping-cart"></i>
-                        <p>Cửa hàng</p>
+                        <i class="fas fa-user"></i>
+                        <p>Khách hàng</p>
                     </a>
                 </li>
 

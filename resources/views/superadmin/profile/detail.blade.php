@@ -1,5 +1,4 @@
-@extends('SupperAdmin.layout.index')
-
+@extends('superadmin.layout.index')
 @section('content')
     <style>
         .breadcrumbs {

@@ -36,17 +36,17 @@
 
 <body>
     <div id="wrapper">
-        @include('SupperAdmin.layout.sidebar')
+        @include('superadmin.layout.sidebar')
 
         <div class="main-panel">
 
-            @include('SupperAdmin.layout.header');
+            @include('superadmin.layout.header');
             <div class="container">
                 @yield('content')
             </div>
 
 
-            @include('SupperAdmin.layout.footer')
+            @include('superadmin.layout.footer')
 
         </div>
 

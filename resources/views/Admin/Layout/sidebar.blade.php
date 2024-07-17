@@ -151,6 +151,18 @@
                                 <a href="">
                                     <span class="sub-item">Công nợ</span>
                                 </a>
+                                <ul class="sub-nav">
+                                    <li>
+                                        <a href="">
+                                            <span class="sub-item">Khách hàng</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <span class="sub-item">Nhà cung cấp</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             {{-- <li>
                                 <a href="{{ route('admin.brand.store') }}">
@@ -159,6 +171,7 @@
                             </li> --}}
                         </ul>
                     </div>
+
                 </li>
 
             </ul>

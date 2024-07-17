@@ -27,7 +27,7 @@ class StoreController extends Controller
     {
         try {
             $stores = $this->storeService->getAllStore();
-            return view('SupperAdmin.store.index', compact('stores'));
+            return view('superadmin.store.index', compact('stores'));
         } catch (Exception $e) {
             Log::error('Failed to find any store' . $e->getMessage());
             return ApiResponse::error('Failed to find any store', 500);
@@ -44,7 +44,7 @@ class StoreController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('SupperAdmin.store.index', compact('stores'));
+            return view('superadmin.store.index', compact('stores'));
         } catch (Exception $e) {
             Log::error('Failed to find store owner:' . $e->getMessage());
             return response()->json(['error' => 'Failed to find store owner'], 500);
@@ -54,28 +54,11 @@ class StoreController extends Controller
     {
         try {
             $stores = $this->storeService->findStoreByID($id);
-            return view('SupperAdmin.store.edit', compact('stores'));
+            return view('superadmin.store.edit', compact('stores'));
         } catch (Exception $e) {
             Log::error('Cannot find store info: ' . $e->getMessage());
             return ApiResponse::error('Cannot find store info', 500);
         }
     }
 
-    public function add()
-    {
-        $city = $this->signUpService->getAllCities();
-        $field = $this->signUpService->getAllFields();
-        return view('SupperAdmin.store.add', compact('city', 'field'));
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            $store = $this->storeService->addNewStore($request->all());
-            return redirect()->route('super.store.index')->with('success', 'Thêm tài khoản dùng thử thành công');
-        } catch (Exception $e) {
-            Log::error('Failed to create account: ' . $e->getMessage());
-            return ApiResponse::error('Failed to create account', 500);
-        }
-    }
 }

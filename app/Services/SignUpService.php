@@ -87,16 +87,6 @@ class SignUpService
         // Shuffle the password to ensure the characters are randomly distributed
         return str_shuffle($password);
     }
-    // public function checkExistingUser($phone, $email)
-    // {
-    //     // Kiểm tra sự tồn tại của số điện thoại và email
-    //     $phoneExists = $this->user->where('phone', $phone)->exists();
-    //     $emailExists = $this->user->where('email', $email)->exists();
-
-    //     if ($phoneExists || $emailExists) {
-    //         throw new Exception('Tài khoản sử dụng email hoặc số điện thoại này đã tồn tại');
-    //     }
-    // }
     public function getAllCities()
     {
         try {
