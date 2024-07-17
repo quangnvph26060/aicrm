@@ -27,7 +27,7 @@ class OrderService
     public function getOrderAll()
     {
         try {
-            return $this->order->paginate(5);
+            return $this->order->orderByDesc('created_at')->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders: ' . $e->getMessage());
             throw new Exception('Failed to retrieve orders');

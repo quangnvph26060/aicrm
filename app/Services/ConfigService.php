@@ -33,13 +33,20 @@ class ConfigService
         try {
             DB::beginTransaction();
 
-            $config = Config::firstOrNew(['user_id' => $id]);
+            $config = Config::firstOrCreate(['user_id' => $id]);
 
             // Cập nhật giá trị cho cột receiver
             $config->receiver = $data['receiver'];
 
             // Thiết lập user_id
             $config->user_id = $id;
+            $user = $config->user;
+
+            // Update user details
+            $user->store_name = $data['store_name'];
+            $user->phone = $data['phone'];
+            $user->email = $data['email'];
+            $user->save();
 
             // Thiết lập các cột khác
             $config->bank_account = $data['bank_account'];

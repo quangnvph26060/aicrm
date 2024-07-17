@@ -1,4 +1,4 @@
-@extends('Admin.Layout.index')
+@extends('admin.layout.index')
 
 @section('content')
     <style>
@@ -381,7 +381,7 @@
             $(document).ready(function() {
                 $.notify({
                     icon: 'icon-bell',
-                    title: 'Danh mục',
+                    title: 'Thông báo',
                     message: '{{ session('success') }}',
                 }, {
                     type: 'secondary',

@@ -22,7 +22,7 @@ class BrandController extends Controller
     {
         $title = 'Thương hiêu ';
         $brand = $this->brandService->getAllBrand();
-        return view('Admin.Brand.index', compact('brand', 'title'));
+        return view('admin.brand.index', compact('brand', 'title'));
     }
     public function findByName(Request $request)
     {
@@ -36,7 +36,7 @@ class BrandController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('Admin.Brand.index', compact('brand','title'));
+            return view('admin.brand.index', compact('brand','title'));
         } catch (Exception $e) {
             Log::error('Failed to find brand: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find brand'], 500);
@@ -45,7 +45,7 @@ class BrandController extends Controller
     public function addForm()
     {
         $title = 'Thêm thương hiệu ';
-        return view('Admin.Brand.add', compact('title'));
+        return view('admin.brand.add', compact('title'));
     }
 
     public function add(Request $request)
@@ -76,7 +76,7 @@ class BrandController extends Controller
     {
         $title = 'Sửa thương hiệu';
         $brand = $this->brandService->getBrandById($id);
-        return view('Admin.Brand.edit', compact('brand', 'title'));
+        return view('admin.brand.edit', compact('brand', 'title'));
     }
 
     public function update($id, Request $request)

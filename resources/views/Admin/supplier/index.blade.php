@@ -1,4 +1,4 @@
-@extends('Admin.Layout.index')
+@extends('admin.layout.index')
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -131,13 +131,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.supplier.index')}}">Nhà cung cấp</a>
+                    <a href="{{ route('admin.supplier.index') }}">Nhà cung cấp</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.supplier.index')}}">Danh sách</a>
+                    <a href="{{ route('admin.supplier.index') }}">Danh sách</a>
                 </li>
             </ul>
         </div>
@@ -186,7 +186,8 @@
                                                     @foreach ($suppliers as $key => $value)
                                                         @if (is_object($value))
                                                             <tr>
-                                                                <td>{{ intval($key) + 1 }}</td>
+                                                                <td>{{ ($suppliers->currentPage() - 1) * $suppliers->perPage() + $loop->index + 1 }}
+                                                                </td>
                                                                 <td>{{ $value->name ?? '' }}</td>
                                                                 <td>{{ $value->phone ?? '' }}</td>
                                                                 <td>{{ $value->email ?? '' }}</td>
@@ -196,7 +197,7 @@
                                                                         href="{{ route('admin.supplier.detail', ['id' => $value->id]) }}">Sửa</a>
                                                                     <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
                                                                         class="btn btn-danger"
-                                                                        href="{{ route('admin.client.delete', ['id' => $value->id]) }}">Xóa</a>
+                                                                        href="{{ route('admin.supplier.delete', ['id' => $value->id]) }}">Xóa</a>
                                                                 </td>
                                                             </tr>
                                                         @endif
@@ -212,7 +213,7 @@
                                                 @endif
                                             </tbody>
                                         </table>
-                                        @if($suppliers instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                        @if ($suppliers instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                             {{ $suppliers->links('vendor.pagination.custom') }}
                                         @endif
                                     </div>

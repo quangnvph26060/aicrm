@@ -450,7 +450,7 @@
                             <td>${item.product.quantity}</td>
                             <td><input style='text-align: center;'  type="number" class="numberInput" name="quantity" value='${item.reality !== null ? item.reality : ''}' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
                             <td class="chenhlech">${item.difference !== null ? item.difference : ''}</td>
-                            <td class="gtlech">${item.gia_chenh_lech !== null ? formatNumber(item.gia_chenh_lech) : ''}</td>
+                            <td class="gtlech">${item.gia_chenh_lech !== null ? item.gia_chenh_lech : ''}</td>
 
                         </tr>
                     `;
@@ -517,7 +517,7 @@
                 success: function(response) {
                     chenhlech.html(response.difference);
                     if(response.gia_chenh_lech !== null){
-                        gtlech.html(formatNumber(response.gia_chenh_lech));
+                        gtlech.html(response.gia_chenh_lech);
                     }else{
                         gtlech.html(response.gia_chenh_lech);
                     }
@@ -616,7 +616,7 @@
                             <td>${item.product.quantity}</td>
                             <td><input style='text-align: center;' type="number" class="numberInput" name="quantity" value='${item.reality !== null ? item.reality : ''}' oninput="this.value = this.value.replace(/[^0-9]/g, '');" ></td>
                             <td class="chenhlech">${item.difference !== null ? item.difference : ''}</td>
-                            <td class="gtlech">${item.gia_chenh_lech !== null ? formatNumber(item.gia_chenh_lech) : ''}</td>
+                            <td class="gtlech">${item.gia_chenh_lech !== null ? item.gia_chenh_lech : ''}</td>
 
                         </tr>
                     `;
@@ -628,11 +628,11 @@
 
     });
 
-    function formatNumber(number) {
-        var parts = number.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    }
+    // function formatNumber(number) {
+    //     var parts = number.toString().split(".");
+    //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    //     return parts.join(".");
+    // }
 
 </script>
 

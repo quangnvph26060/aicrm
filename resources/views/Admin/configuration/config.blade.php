@@ -1,4 +1,4 @@
-@extends('Admin.Layout.index')
+@extends('admin.layout.index')
 
 @section('content')
     <style>
@@ -191,11 +191,11 @@
                                 <!-- First Column -->
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label for="name" class="form-label">Tên cửa hàng</label>
-                                        <input id="name" class="form-control @error('name') is-invalid @enderror"
-                                            name="name" type="text"
-                                            value="{{ old('name', isset($data) ? $data->user->store_name : '') }}">
-                                        @error('name')
+                                        <label for="store_name" class="form-label">Tên cửa hàng</label>
+                                        <input id="store_name" class="form-control @error('store_name') is-invalid @enderror"
+                                            name="store_name" type="text"
+                                            value="{{ old('store_name', isset($data) ? $data->user->store_name : '') }}">
+                                        @error('store_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

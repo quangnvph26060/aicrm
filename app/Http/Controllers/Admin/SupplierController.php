@@ -24,6 +24,7 @@ class SupplierController extends Controller
     {
         try {
             $suppliers = $this->supplierService->GetAllSuppiler();
+            // dd($suppliers);
             return view('admin.supplier.index', compact('suppliers'));
         } catch (Exception $e) {
             Log::error('Failed to fetch all suppliers: ' . $e->getMessage());
@@ -42,7 +43,7 @@ class SupplierController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('Admin.supplier.index', compact('suppliers'));
+            return view('admin.supplier.index', compact('suppliers'));
         } catch (Exception $e) {
             Log::error('Failed to find supplier: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find supplier'], 500);
@@ -85,6 +86,17 @@ class SupplierController extends Controller
         } catch (Exception $e) {
             Log::error('Failed to update supplier information: ' . $e->getMessage());
             return ApiResponse::error('Failed to update supplier information', 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->supplierService->deleteSupplier($id);
+            return redirect()->route('admin.supplier.index')->with('success', 'Xoá nhà cung cấp thành công');
+        } catch (Exception $e) {
+            Log::error('Failed to delete supplier: ' . $e->getMessage());
+            return ApiResponse::error('Failed to delete supplier', 500);
         }
     }
 }

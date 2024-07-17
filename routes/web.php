@@ -109,7 +109,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('', [BrandController::class, 'index'])->name('store');
         Route::get('add', [BrandController::class, 'addForm'])->name('addForm');
         Route::post('add', [BrandController::class, 'add'])->name('add');
-        Route::get('delete', [BrandController::class, 'delete'])->name('delete');
+        Route::get('delete/{id}', [BrandController::class, 'delete'])->name('delete');
         Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
         Route::get('search/name', [BrandController::class, 'findByName'])->name('findByName');
@@ -128,6 +128,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('/store', [SupplierController::class, 'store'])->name('store');
         Route::get('detail/{id}', [SupplierController::class, 'edit'])->name('detail');
         Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [SupplierController::class, 'delete'])->name('delete');
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
@@ -196,5 +197,8 @@ Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('sup
         Route::get('/index', [StoreController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
+        Route::get('/add', [StoreController::class, 'add'])->name('add');
+        Route::post('/store', [StoreController::class, 'store'])->name('store');
+
     });
 });

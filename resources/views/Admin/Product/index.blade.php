@@ -1,4 +1,4 @@
-@extends('Admin.Layout.index')
+@extends('admin.layout.index')
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -132,7 +132,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.product.store')}}">Sản phẩm</a>
+                    <a href="{{ route('admin.product.store') }}">Sản phẩm</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -154,14 +154,16 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary" href="{{route('admin.product.addForm')}}">Thêm sản phẩm</a>
+                                            <a class="btn btn-primary" href="{{ route('admin.product.addForm') }}">Thêm sản
+                                                phẩm</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <form action="{{route('admin.product.findName')}}" method="GET">
+                                        <form action="{{ route('admin.product.findName') }}" method="GET">
                                             <div id="basic-datatables_filter" class="dataTables_filter">
-                                                <label>Tìm kiếm:<input name="name" type="search" class="form-control form-control-sm"
-                                                        placeholder="" aria-controls="basic-datatables"></label>
+                                                <label>Tìm kiếm:<input name="name" type="search"
+                                                        class="form-control form-control-sm" placeholder=""
+                                                        aria-controls="basic-datatables"></label>
                                             </div>
                                         </form>
                                     </div>
@@ -182,11 +184,12 @@
                                                     <th style="width: 120.2656px;"></th>
                                                 </tr>
                                             </thead>
-                                            @if ($product && $product->count()>0)
+                                            @if ($product && $product->count() > 0)
                                                 <tbody>
                                                     @foreach ($product as $key => $value)
                                                         <tr>
-                                                            <td>{{ intval($key) + 1 }}</td>
+                                                            <td>{{ ($product->currentPage() - 1) * $product->perPage() + $loop->index + 1 }}
+                                                            </td>
                                                             <td>{{ $value->name ?? '' }}</td>
                                                             <td>{{ $value->brands->name ?? '' }}</td>
                                                             <td>{{ $value->quantity ?? '' }}</td>
@@ -213,6 +216,7 @@
                                             @endif
                                         </table>
                                         {{ $product->links('vendor.pagination.custom') }}
+
                                     </div>
                                 </div>
                             </div>
