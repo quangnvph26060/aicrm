@@ -45,11 +45,12 @@ class CheckInventoryController extends Controller
 
     public function add()
     {
+        $title = 'Kiểm kho';
         $config = Config::first();
         $user = Auth::user();
         $category = Categories::all();
         $product = $this->productService->getProductAll_Staff();
-        return view('Themes.pages.Inventory.add', compact('config', 'user', 'product', 'category'));
+        return view('Themes.pages.Inventory.add', compact('config', 'user', 'product', 'category', 'title'));
     }
     public function submitadd(Request $request)
     {
