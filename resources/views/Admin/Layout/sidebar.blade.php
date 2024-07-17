@@ -121,6 +121,29 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#sidebarthuchi">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Quản lý thu chi</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="sidebarthuchi">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="">
+                                    <span class="sub-item">Phiếu thu</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="sub-item">Phiếu chi</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
                         <i class="fas fa-cogs"></i>
@@ -133,6 +156,7 @@
                         <p>Hỗ trợ</p>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarbaocao">
                         <i class="fas fa-chart-line"></i>
@@ -163,14 +187,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            {{-- <li>
-                                <a href="{{ route('admin.brand.store') }}">
-                                    <span class="sub-item">Thương hiệu</span>
-                                </a>
-                            </li> --}}
+
                         </ul>
                     </div>
                 </li>
+
             </ul>
         </div>
     </div>

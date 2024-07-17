@@ -95,7 +95,7 @@ class ClientController extends Controller
                     'user_id' => $user->id,
                     'client_id' => $client->id,
                     'total_money' => $sum,
-                    'status' => 1
+                    'status' => $request->status
                 ]);
                 foreach ($cartItems as $key => $item) {
                     OrderDetail::create([
@@ -110,7 +110,7 @@ class ClientController extends Controller
                     'user_id' => $user->id,
                     'client_id' => $client->id,
                     'total_money' => $sum,
-                    'status' => 1
+                    'status' => $request->status
                 ]);
                 foreach ($cartItems as $key => $item) {
                     OrderDetail::create([
