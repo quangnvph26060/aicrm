@@ -121,7 +121,6 @@
                         </ul>
                     </div>
                 </li>
-                {{-- {{session('authUser')->id}} --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
                         <i class="fas fa-cogs"></i>
@@ -171,13 +170,8 @@
                             </li> --}}
                         </ul>
                     </div>
-
                 </li>
-
             </ul>
         </div>
     </div>
 </div>
-
-
-</script>
