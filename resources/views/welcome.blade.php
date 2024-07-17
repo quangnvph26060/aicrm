@@ -88,15 +88,15 @@
     #myChartLegend .legend-color {
         vertical-align: middle;
     }
+
 </style>
 
 <div class="page-inner">
-    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0" style="justify-content: flex-end">
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0"
+        style="justify-content: flex-end">
         <div>
-            <button style="padding: 5px 10px; border-radius: 10px">
-                <i class="fas fa-cart-plus"></i>
-                <a href="{{ route('staff.index') }}" class="fw-bold mb-3 p-0">Bán hàng </a>
-            </button>
+            <a class="btn btn-primary" target="_blank" href="{{ route('staff.index') }}" class="fw-bold mb-3 p-0">  <i style="padding-right: 10px" class="fas fa-cart-plus"></i>Bán hàng </a>
+
         </div>
     </div>
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">

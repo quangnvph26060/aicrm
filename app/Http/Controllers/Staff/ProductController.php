@@ -24,6 +24,7 @@ class ProductController extends Controller
     }
     public function index()
     {
+        $title = "Quản lý bán hàng";
         $config = Config::first();
         $product = $this->productService->getProductAll();
         $clients = $this->clientService->getAllClientStaff();
@@ -33,7 +34,7 @@ class ProductController extends Controller
         foreach ($cart as $key => $value) {
             $sum += $value->product->priceBuy * $value->amount;
         }
-        return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config'));
+        return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config', 'title'));
     }
 
     public function product(){

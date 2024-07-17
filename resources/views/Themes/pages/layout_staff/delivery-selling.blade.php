@@ -51,11 +51,12 @@
                 </div>
                 <div class="form-group">
                     <label for="paymentMethod">Phương thức thanh toán</label></label>
-                    <select class="form-control" id="paymentMethod">
+                    <select class="form-control" id="paymentMethod" name="status">
                         <option value="">----- Chọn phương thức ----- </option>
-                        <option value="1">Thẻ tín dụng</option>
-                        <option value="2">PayPal</option>
-                        <option value="3">Chuyển khoản bằng tài khoản ngân hàng</option>
+                        <option value="1">Tiền mặt</option>
+                        <option value="2">Mã QR</option>
+                        <option value="3">Chuyển khoản ngân hàng</option>
+                        <option value="4">Công nợ</option>
                     </select>
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderPay_error"></span> </div>
@@ -135,10 +136,10 @@
                         <div class="receipt-footer">
                             <p style='margin: 0px;'>Cảm ơn quý khách!</p>
                             @if (isset($config))
-                            <img style="width: 200px;" src="{{ $config->qr }}"
-                            alt="QR Code">
+                            <img style="width: 200px;" src="{{ $config->qr }}" alt="QR Code">
                             <div>
-                                <p>{{ $config->bank->code }} - {{ $config->receiver }} - {{  $config->user->store_name }}</p>
+                                <p>{{ $config->bank->code }} - {{ $config->receiver }} - {{ $config->user->store_name }}
+                                </p>
                             </div>
                             @else
                             <img style="width: 200px;" src="" alt="QR Code">
@@ -400,6 +401,7 @@
                     <input type="hidden" name="email" value="${email}">
                     <input type="hidden" name="phone" value="${phoneNumber}">
                     <input type="hidden" name="address" value="${address}">
+                    <input type="hidden" name="status" value="${paymentMethod}">
                 `;
 
                 $('.receipt-info').html(modalContent);

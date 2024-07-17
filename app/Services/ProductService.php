@@ -82,12 +82,13 @@ class ProductService
                 'quantity' => $data['quantity'],
                 'product_unit' => @$data['product_unit'],
                 'category_id' => $data['category_id'],
-                'description' => $data['description'],
+                'description' => @$data['description'],
                 'is_featured' => @$data['is_featured'],
                 'is_new_arrival' => @$data['is_new_arrival'],
                 'status' =>  $data['status'],
                 'discount_id' => @$data['discount_id'],
                 'brands_id' => @$data['brand_id'],
+                'supplier_id' => $data['supplier_id'],
             ]);
 
 

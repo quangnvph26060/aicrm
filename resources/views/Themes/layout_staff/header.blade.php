@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layout Staff</title>
+    <title>{{ $title }}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -161,17 +161,17 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <!-- Left side: Search bar -->
-                <div class="col-lg-8">
+                <div class="col-8 col-md-8">
                     <a href="{{ route('staff.index') }}">
-                        @if (isset($config))
-                        <img style="width: 50px; height: auto;" src="{{ asset($config->logo) }}" alt="logo">
-                        @else
+                        {{-- @if (isset($config)) --}}
+                        <img style="width: 100px; height: auto;" src="{{ asset('images/aicrm1.png') }}" alt="logo">
+                        {{-- @else
                         <img style="width: 50px; height: auto;" src="https://png.pngtree.com/template/20191219/ourmid/pngtree-happy-shop-logo-designs-fun-store-logo-template-vector-illustration-image_341573.jpg" alt="">
-                        @endif
+                        @endif --}}
                     </a>
                 </div>
                 <!-- Right side: Icons -->
-                <div class="col-lg-4 text-right">
+                <div class="col-4 col-md-4 text-right">
                     <a href="#" class="home-icon" id="homeIcon" style="font-size: 20px;">
                         <i style="color: white;" class="fas fa-user-tag"></i>
                     </a>
@@ -179,14 +179,14 @@
                         <ul>
                             <li><a href="{{ route('staff.Inventory.get') }}">Kiểm kho</a></li>
                             <li><a style="padding: 0px" class="dropdown-item" href="{{ route('staff.order') }}">Lịch sử mua hàng</a></li>
-                            <li> <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
-                                style="display: none;">
-                                @csrf
-                            </form>
-                            <a style="padding: 0px" class="dropdown-item" href="#"
-                                onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-                                Đăng xuất
-                            </a></li>
+                            <li>
+                                <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                                <a style="padding: 0px" class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                    Đăng xuất
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -194,3 +194,4 @@
             </div>
         </div>
     </header>
+
