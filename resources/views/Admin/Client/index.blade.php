@@ -131,13 +131,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.client.index')}}">Khách hàng</a>
+                    <a href="{{ route('admin.client.index') }}">Khách hàng</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.client.index')}}">Danh sách</a>
+                    <a href="{{ route('admin.client.index') }}">Danh sách</a>
                 </li>
             </ul>
         </div>
@@ -186,7 +186,8 @@
                                                     @foreach ($clients as $key => $value)
                                                         @if (is_object($value))
                                                             <tr>
-                                                                <td>{{ intval($key) + 1 }}</td>
+                                                                <td>{{ ($clients->currentPage() - 1) * $clients->perPage() + $loop->index + 1 }}
+                                                                </td>
                                                                 <td>{{ $value->name ?? '' }}</td>
                                                                 <td>{{ $value->phone ?? '' }}</td>
                                                                 <td>{{ $value->email ?? '' }}</td>
@@ -212,7 +213,7 @@
                                                 @endif
                                             </tbody>
                                         </table>
-                                        @if($clients instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                        @if ($clients instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                             {{ $clients->links('vendor.pagination.custom') }}
                                         @endif
                                     </div>
