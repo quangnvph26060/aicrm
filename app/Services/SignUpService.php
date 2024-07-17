@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Mail\SuperAdmin as MailSuperAdmin;
 use App\Mail\UserRegistered;
 use App\Models\City;
 use App\Models\Config;
 use App\Models\Field;
+use App\Models\SuperAdmin;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Arr;
@@ -19,11 +21,13 @@ class SignUpService
     protected $user;
     protected $city;
     protected $field;
-    public function __construct(User $user, City $city, Field $field)
+    protected $superAdmin;
+    public function __construct(User $user, City $city, Field $field, SuperAdmin $superAdmin)
     {
         $this->user = $user;
         $this->city = $city;
         $this->field = $field;
+        $this->superAdmin = $superAdmin;
     }
 
     public function signup(array $data)
@@ -55,6 +59,8 @@ class SignUpService
             $config->user_id = $user->id;
             $config->save();
             // dd($user);
+            $superadmin = $this->superAdmin->first();
+            Mail::to($superadmin)->send(new MailSuperAdmin($user, $password));
             Mail::to($data['email'])->send(new UserRegistered($user, $password));
             DB::commit();
             return $user;

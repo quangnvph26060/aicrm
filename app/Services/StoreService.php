@@ -53,4 +53,19 @@ class StoreService
             throw new Exception('Failed to find client profile');
         }
     }
+
+    public function deleteStore($id)
+    {
+        try{
+            Log::info("Deleting store");
+            $store = $this->user->find($id);
+            $store->delete();
+            DB::commit();
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to delete store profile: ' . $e->getMessage());
+            throw new Exception('Failed to delete store profile');
+        }
+    }
 }

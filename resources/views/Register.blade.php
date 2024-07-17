@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #620080, #02b4a5);
+            background: linear-gradient(to right, #066896, #eeeeee);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -42,7 +42,7 @@
         }
 
         .register-left {
-            background: url('https://www.baltana.com/files/wallpapers-25/Corsair-Wallpaper-1200x675-65528.jpg') no-repeat center center;
+            background: url('https://img.freepik.com/free-photo/beautiful-island-landscape_23-2150787816.jpg') no-repeat center center;
             background-size: cover;
             color: white;
             text-align: center;
@@ -111,6 +111,24 @@
 
         .btn-success:hover {
             background: #004bb5;
+        }
+
+        @media (max-width: 768px) {
+            .register-left {
+                display: none;
+                /* Hide register-left on smaller screens */
+            }
+
+            .register-right h4 {
+                font-size: 20px;
+                /* Giảm kích thước font chữ để phù hợp với thiết bị di động */
+            }
+
+            .form-select,
+            .form-control {
+                width: 100%;
+                /* Đảm bảo các dropdown menu có độ rộng 100% trên thiết bị di động */
+            }
         }
     </style>
 </head>

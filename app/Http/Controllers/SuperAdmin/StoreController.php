@@ -61,4 +61,17 @@ class StoreController extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        try{
+            $this->storeService->deleteStore($id);
+            session()->flash('success', 'Xóa thông tin khách hàng thànhc công');
+            return redirect()->back();
+        }
+        catch (\Exception $e) {
+            Log::error('Failed to delete store profile: ' . $e->getMessage());
+            return ApiResponse::error('Failed to update store profile ', 500);
+        }
+    }
+
 }
