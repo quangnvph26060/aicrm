@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Responses\ApiResponse;
 use App\Services\BrandService;
+use App\Services\SupplierService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,9 +16,11 @@ class BrandController extends Controller
 {
     //
     protected $brandService;
-    public function __construct(BrandService $brandService)
+    protected $supplierService;
+    public function __construct(BrandService $brandService, SupplierService $supplierService)
     {
         $this->brandService = $brandService;
+        $this->supplierService = $supplierService;
     }
     public function index()
     {
@@ -36,7 +40,7 @@ class BrandController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('admin.brand.index', compact('brand','title'));
+            return view('admin.brand.index', compact('brand', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to find brand: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find brand'], 500);
@@ -44,8 +48,9 @@ class BrandController extends Controller
     }
     public function addForm()
     {
+        $supplier = $this->supplierService->GetAllSuppiler();
         $title = 'Thêm thương hiệu ';
-        return view('admin.brand.add', compact('title'));
+        return view('admin.brand.add', compact('title', 'supplier'));
     }
 
     public function add(Request $request)
@@ -56,7 +61,8 @@ class BrandController extends Controller
             'email' => 'required|email|max:255',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
-            'images' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048', // Adjust max size as needed
+            'images' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'supplier_id' => 'required' // Adjust max size as needed
         ]);
 
         // Map validated data to the required array format
@@ -66,22 +72,36 @@ class BrandController extends Controller
             'address' => $validatedData['address'],
             'phone' => $validatedData['phone'],
             'images' => $validatedData['images'],
+            'supplier_id' => $validatedData['supplier_id']
         ];
-
         $brand = $this->brandService->createBrand($data);
         return redirect()->route('admin.brand.store')->with('success', 'Thêm thành công');
     }
 
     public function edit($id)
     {
+        $supplier = $this->supplierService->GetAllSuppiler();
         $title = 'Sửa thương hiệu';
         $brand = $this->brandService->getBrandById($id);
-        return view('admin.brand.edit', compact('brand', 'title'));
+        return view('admin.brand.edit', compact('brand', 'title', 'supplier'));
     }
 
     public function update($id, Request $request)
     {
         $brand = $this->brandService->updateBrand($id, $request->all());
         return redirect()->route('admin.brand.store')->with('success', 'Sửa thành công');
+    }
+
+    public function delete($id)
+    {
+        try{
+            $this->brandService->deleteBrand($id);
+            return redirect()->route('admin.brand.store')->with('success', 'Xóa thương hiệu thành công');
+        }
+        catch(Exception $e)
+        {
+            Log::error('Failed to delete brand: ' .$e->getMessage());
+            return ApiResponse::error('Failed to delete brand', 500);
+        }
     }
 }

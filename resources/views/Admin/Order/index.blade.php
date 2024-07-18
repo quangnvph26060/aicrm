@@ -234,9 +234,9 @@
                                                         </td>
                                                         <td>
                                                             @if ($order->status == 1)
-                                                                <span class="badge badge-success">Completed</span>
+                                                                <span class="badge badge-success">Đã thanh toán</span>
                                                             @else
-                                                                <span class="badge badge-warning">Pending</span>
+                                                                <span class="badge badge-danger">Công nợ</span>
                                                             @endif
                                                         </td>
                                                         <td>{{ number_format($order->total_money) }} VND</td>

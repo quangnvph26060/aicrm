@@ -52,12 +52,13 @@
                                             aria-describedby="basic-datatables_info">
                                             <thead>
                                                 <tr role="row">
-                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Tên thương hiệu</th>
                                                     <th scope="col">Logo</th>
+                                                    <th scope="col">Nhà cung cấp</th>
                                                     <th scope="col">Email</th>
-                                                    <th scope="col">Phone</th>
-                                                    <th scope="col">Address</th>
-                                                    <th scope="col">Action</th>
+                                                    <th scope="col">Số điện thoại</th>
+                                                    <th scope="col">Địa chỉ</th>
+                                                    <th scope="col"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -68,12 +69,15 @@
                                                             <td><img style="width: 5rem; height: 3.75rem;"
                                                                     src="{{ asset($item->logo) ?? '' }}" alt="">
                                                             </td>
+                                                            <td>{{$item->supplier->name ?? ''}}</td>
                                                             <td>{{ $item->email ?? '' }}</td>
                                                             <td>{{ $item->phone ?? '' }}</td>
                                                             <td>{{ $item->address ?? '' }}</td>
                                                             <td>
-                                                                <a class="btn btn-danger btn-sm"
-                                                                    href="{{ route('admin.brand.edit', ['id' => $item->id]) }}">Edit</a>
+                                                                <a class="btn btn-warning btn-sm"
+                                                                    href="{{ route('admin.brand.edit', ['id' => $item->id]) }}">Sửa</a>
+                                                                <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+                                                                    href="{{ route('admin.brand.delete', ['id' => $item->id]) }}">Xóa</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach
