@@ -191,7 +191,7 @@
                                                             <td>{{ ($product->currentPage() - 1) * $product->perPage() + $loop->index + 1 }}
                                                             </td>
                                                             <td>{{ $value->name ?? '' }}</td>
-                                                            <td>{{ $value->brands->i ?? '' }}</td>
+                                                            <td>{{ $value->brands->name ?? '' }}</td>
                                                             <td>{{ $value->quantity ?? '' }}</td>
                                                             <td>{{ number_format($value->price) ?? '' }} đ</td>
                                                             <td>{{ number_format($value->priceBuy) ?? '' }} đ</td>
