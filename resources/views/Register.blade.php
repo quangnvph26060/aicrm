@@ -8,6 +8,60 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <style>
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
+        }
+
+        .toast {
+            max-width: 350px;
+            width: 100%;
+            background-color: #eeeeee;
+            /* Đổi màu nền của toast */
+            color: #333;
+            /* Đổi màu chữ của toast */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .toast-header {
+            padding: 10px;
+            background-color: #066896;
+            /* Đổi màu nền của phần header */
+            color: #fff;
+            /* Đổi màu chữ của phần header */
+            border-bottom: none;
+        }
+
+        .toast-header .me-auto {
+            font-weight: bold;
+        }
+
+        .toast-body {
+            padding: 10px;
+        }
+
+        .btn-close {
+            color: #fff;
+            opacity: 0.75;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .btn-close:focus {
+            outline: none;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+        }
+
+
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(to right, #066896, #eeeeee);
@@ -254,6 +308,30 @@
             </form>
         </div>
     </div>
+    <!-- Toast -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary text-white">
+                <strong class="me-auto">Thông báo</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-body">
+                <!-- Nội dung toast sẽ được thêm vào đây bằng JavaScript -->
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary text-white">
+                <strong class="me-auto">Thông báo</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-body">
+                <!-- Nội dung toast sẽ được thêm vào đây bằng JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -277,26 +355,30 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{ asset('/validator/validator.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <script>
         function updateDomain() {
             var storeNameInput = document.getElementById('store_name');
             var storeDomainInput1 = document.getElementById('store_domain1');
             var storeDomainInput = document.getElementById('store_domain');
             var storeName = storeNameInput.value.trim();
-            var domainSuffix = '.aicrm.vn'; // Thay đổi tên miền của bạn tại đây
+            var domainSuffix = '.aicrm.vn'; // Adjust domain suffix as needed
 
             if (storeName !== '') {
-                // Loại bỏ dấu và chuyển thành chữ thường
                 var storeDomain = storeName.toLowerCase()
                     .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
                     .replace(/\s+/g, '') + domainSuffix;
                 storeDomainInput.value = storeDomain;
                 storeDomainInput1.textContent = storeDomain;
+                storeDomainInput1.style.visibility = 'visible';
             } else {
                 storeDomainInput.value = '';
-                storeDomainInput.textContent = '';
+                storeDomainInput1.textContent = '';
+                storeDomainInput1.style.visibility = 'hidden';
             }
         }
+
 
         var formRegister = {
             'name': {
@@ -319,6 +401,11 @@
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('R043')
+                }, {
+                    'func' :function(value) {
+                        return checkCharacterPhone(value);
+                    },
+                    'message' : generateErrorMessage('R053')
                 }]
             },
             'email': {
@@ -395,6 +482,60 @@
             @endif
         });
     </script>
+    <script>
+        function showToast(message) {
+            var toastBody = document.getElementById('toast-body');
+            toastBody.textContent = message;
+
+            var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            toast.show();
+        }
+
+        function checkAccountExists(callback) {
+            var phone = document.getElementById('phone').value.trim();
+            var email = document.getElementById('email').value.trim();
+
+            $.ajax({
+                url: '{{ route('check.account') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    phone: phone,
+                    email: email
+                },
+                success: function(response) {
+                    callback(response.phone_exists, response.email_exists);
+                },
+                error: function(xhr) {
+                    console.error('AJAX request failed');
+                    callback(false, false);
+                }
+            });
+        }
+
+        function submitRegisterForm(event) {
+            event.preventDefault();
+
+            if (validateAllFields(formRegister)) {
+                checkAccountExists(function(phoneExists, emailExists) {
+                    if (phoneExists) {
+                        showToast('Số điện thoại này đã tồn tại.');
+                    } else if (emailExists) {
+                        showToast('Email này đã tồn tại.');
+                    } else {
+                        document.getElementById('registerForm').submit();
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function() {
+            @if (session('modal'))
+                showToast('{{ session('modal') }}');
+            @endif
+        });
+    </script>
+
 
 </body>
 
