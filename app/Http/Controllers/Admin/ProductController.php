@@ -9,6 +9,7 @@ use App\Models\Categories;
 use App\Services\BrandService;
 use App\Services\CategoryService;
 use App\Services\ProductService;
+use App\Services\SupplierService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -22,11 +23,13 @@ class ProductController extends Controller
     protected $productService;
     protected $categoryService;
     protected $brandService;
-    public function __construct(ProductService $productService, CategoryService $categoryService, BrandService $brandService)
+    protected $supplierService;
+    public function __construct(ProductService $productService, CategoryService $categoryService, BrandService $brandService, SupplierService $supplierService)
     {
         $this->productService = $productService;
         $this->categoryService = $categoryService;
         $this->brandService = $brandService;
+        $this->supplierService = $supplierService;
     }
     public function index()
     {
@@ -58,7 +61,8 @@ class ProductController extends Controller
 
         return view('admin.product.index', compact('product'));
     }
-    public function addForm(){
+    public function addForm()
+    {
         $title = 'Thêm sản phẩm';
         $brand = $this->brandService->getAllBrand();
         $category = $this->categoryService->getCategoryAll();
@@ -69,6 +73,7 @@ class ProductController extends Controller
     {
 
         try {
+            // dd($request->all());
             $product = $this->productService->createProduct($request->all());
             return redirect()->route('admin.product.store')->with('success', 'Thêm thành công !');
         } catch (ModelNotFoundException $e) {
@@ -80,7 +85,8 @@ class ProductController extends Controller
         }
     }
 
-    public function editForm($id){
+    public function editForm($id)
+    {
         $title = 'Sửa sản phẩm';
         $category = $this->categoryService->getCategoryAll();
         $brand = $this->brandService->getAllBrand();
@@ -88,7 +94,8 @@ class ProductController extends Controller
         return view('admin.product.edit', compact('products', 'brand', 'category', 'title'));
     }
 
-    public function update($id ,Request $request){
+    public function update($id, Request $request)
+    {
         $product = $this->productService->updateProduct($id, $request->all());
         return redirect()->route('admin.product.store')->with('success', 'Cập nhật sản phẩm thành công');
     }
@@ -101,7 +108,7 @@ class ProductController extends Controller
             return redirect()->route('admin.product.store')->with('success', 'Xóa thành công !');
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
-            return ApiResponse::error('Failed to fetch products', 500);
+            return redirect()->back()->with('error', 'Sản phẩm đang tồn tại trong đơn hàng, không thể xóa.');
         }
     }
 }

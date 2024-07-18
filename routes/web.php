@@ -115,6 +115,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
         Route::get('search/name', [BrandController::class, 'findByName'])->name('findByName');
+        Route::get('search/supplier', [BrandController::class, 'findBySupplier'])->name('findBySupplier');
     });
     Route::prefix('client')->name('client.')->group(function () {
         Route::get('/', [ClientController::class, 'index'])->name('index');

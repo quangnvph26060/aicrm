@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductImages;
 use Exception;
@@ -88,9 +90,9 @@ class ProductService
                 'status' =>  $data['status'],
                 'discount_id' => @$data['discount_id'],
                 'brands_id' => @$data['brand_id'],
-                'supplier_id' => $data['supplier_id'],
+                'supplier_id' => $data['suppliers'],
             ]);
-
+            // dd($product);
 
             if ($product) {
                 foreach ($data['images'] as $item) {
@@ -162,8 +164,12 @@ class ProductService
     {
         DB::beginTransaction();
         try {
+
             $product = $this->getProductById($id);
             // dd($product);
+            if (OrderDetail::where('product_id', $id)->exists()) {
+                throw new Exception('Sản phẩm đang tồn tại trong đơn hàng, không thể xóa.');
+            }
             $productimages = ProductImages::where('product_id', $id)->get();
             foreach ($productimages as $image) {
                 $image->delete();

@@ -12,7 +12,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Thương hiệu</a>
+                    <a href="{{ route('admin.brand.store') }}">Thương hiệu</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -32,14 +32,27 @@
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row mb-3">
-                                    <div class="col-sm-12 col-md-6">
-                                        <a class="btn btn-primary" href="{{route('admin.brand.addForm')}}">Thêm thương hiệu</a>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                        <form action="{{ route('admin.brand.findByName') }}" method="GET">
-                                            <div class="dataTables_filter">
-                                                <label>Tìm kiếm</label>
-                                                <input type="text" name="name" class="form-control form-control-sm"
+                                    <div class="col-12 d-flex justify-content-between align-items-center mb-2">
+                                        <a class="btn btn-primary" href="{{ route('admin.brand.addForm') }}">Thêm thương
+                                            hiệu</a>
+                                        <form action="{{ route('admin.brand.findBySupplier') }}" method="GET"
+                                            class="form-inline">
+                                            <div class="form-group mb-2">
+                                                <label for="supplier" class="sr-only">Nhà cung cấp</label>
+                                                <select class="form-control mr-2" id="supplier" name="supplier_id">
+                                                    <option value="">Chọn nhà cung cấp</option>
+                                                    @foreach ($supplier as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary mb-2">Tìm</button>
+                                        </form>
+                                        <form action="{{ route('admin.brand.findByName') }}" method="GET"
+                                            class="form-inline">
+                                            <div class="form-group mb-2">
+                                                <label for="name" class="sr-only">Tên</label>
+                                                <input type="text" class="form-control" id="name" name="name"
                                                     placeholder="Nhập tên" value="{{ old('name') }}">
                                             </div>
                                         </form>
@@ -54,10 +67,6 @@
                                                 <tr role="row">
                                                     <th scope="col">Tên thương hiệu</th>
                                                     <th scope="col">Logo</th>
-                                                    <th scope="col">Nhà cung cấp</th>
-                                                    <th scope="col">Email</th>
-                                                    <th scope="col">Số điện thoại</th>
-                                                    <th scope="col">Địa chỉ</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                             </thead>
@@ -69,24 +78,19 @@
                                                             <td><img style="width: 5rem; height: 3.75rem;"
                                                                     src="{{ asset($item->logo) ?? '' }}" alt="">
                                                             </td>
-                                                            <td>{{$item->supplier->name ?? ''}}</td>
-                                                            <td>{{ $item->email ?? '' }}</td>
-                                                            <td>{{ $item->phone ?? '' }}</td>
-                                                            <td>{{ $item->address ?? '' }}</td>
                                                             <td>
                                                                 <a class="btn btn-warning btn-sm"
                                                                     href="{{ route('admin.brand.edit', ['id' => $item->id]) }}">Sửa</a>
-                                                                <a class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+                                                                <a class="btn btn-danger btn-sm"
+                                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
                                                                     href="{{ route('admin.brand.delete', ['id' => $item->id]) }}">Xóa</a>
                                                             </td>
                                                         </tr>
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td class="text-center" colspan="6">
-                                                            <div class="">
-                                                                Chưa có thương hiệu
-                                                            </div>
+                                                        <td class="text-center" colspan="7">
+                                                            <div class="">Chưa có thương hiệu</div>
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -116,6 +120,24 @@
                     message: '{{ session('success') }}',
                 }, {
                     type: 'secondary',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Thương hiệu',
+                    message: '{{ session('error') }}',
+                }, {
+                    type: 'danger',
                     placement: {
                         from: "bottom",
                         align: "right"
@@ -245,5 +267,19 @@
     .pagination .page-item.active .page-link,
     .pagination .page-item .page-link {
         transition: all 0.3s ease;
+    }
+
+    .dataTables_filter {
+        display: flex;
+        align-items: center;
+    }
+
+    .dataTables_filter label {
+        margin-right: 8px;
+    }
+
+    .form-select,
+    .form-control-sm {
+        margin-right: 8px;
     }
 </style>

@@ -191,7 +191,7 @@
                                                             <td>{{ ($product->currentPage() - 1) * $product->perPage() + $loop->index + 1 }}
                                                             </td>
                                                             <td>{{ $value->name ?? '' }}</td>
-                                                            <td>{{ $value->brands->name ?? '' }}</td>
+                                                            <td>{{ $value->brands->i ?? '' }}</td>
                                                             <td>{{ $value->quantity ?? '' }}</td>
                                                             <td>{{ number_format($value->price) ?? '' }} đ</td>
                                                             <td>{{ number_format($value->priceBuy) ?? '' }} đ</td>
@@ -238,6 +238,24 @@
                     message: '{{ session('success') }}',
                 }, {
                     type: 'secondary',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Sản phẩm',
+                    message: '{{ session('error') }}',
+                }, {
+                    type: 'danger',
                     placement: {
                         from: "bottom",
                         align: "right"
