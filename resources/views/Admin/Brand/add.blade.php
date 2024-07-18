@@ -158,6 +158,15 @@
                                         <label for="new-brand-address">Địa chỉ:</label>
                                         <input type="text" class="form-control" id="new-brand-address" name="address">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="supplier_id">Nhà cung cấp:</label>
+                                        <select class="form-select" id="supplier" name="supplier_id">
+                                            <option value="">Chọn nhà cung cấp</option>
+                                            @foreach ($supplier as $item)
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 

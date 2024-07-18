@@ -23,6 +23,7 @@ class Order extends Model
         'name',
         'phone',
         'zip_code',
+        'notification',
     ];
 
     protected $appends = ['orderdetail'];

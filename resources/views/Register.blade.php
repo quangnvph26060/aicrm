@@ -96,7 +96,7 @@
         }
 
         .register-left {
-            background: url('https://img.freepik.com/free-photo/beautiful-island-landscape_23-2150787816.jpg') no-repeat center center;
+            background: url('{{asset('images/background.jpg')}}') no-repeat center center;
             background-size: cover;
             color: white;
             text-align: center;
