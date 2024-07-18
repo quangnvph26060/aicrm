@@ -237,4 +237,22 @@
             });
         </script>
     @endif
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Sản phẩm',
+                    message: '{{ session('error') }}',
+                }, {
+                    type: 'danger',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+        </script>
+    @endif
 @endsection

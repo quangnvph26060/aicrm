@@ -23,7 +23,7 @@ class SupplierController extends Controller
     public function index()
     {
         try {
-            $suppliers = $this->supplierService->GetAllSuppiler();
+            $suppliers = $this->supplierService->GetAllSupplier();
             // dd($suppliers);
             return view('admin.supplier.index', compact('suppliers'));
         } catch (Exception $e) {

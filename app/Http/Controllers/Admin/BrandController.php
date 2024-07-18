@@ -24,13 +24,15 @@ class BrandController extends Controller
     }
     public function index()
     {
-        $title = 'Thương hiêu ';
+        $supplier = $this->supplierService->GetAllSupplier();
+        $title = 'Thương hiệu ';
         $brand = $this->brandService->getAllBrand();
-        return view('admin.brand.index', compact('brand', 'title'));
+        return view('admin.brand.index', compact('brand', 'title', 'supplier'));
     }
     public function findByName(Request $request)
     {
         try {
+            $supplier = $this->supplierService->GetAllSupplier();
             $title = 'Thương hiêu ';
             $brands = $this->brandService->brandByName($request->input('name'));
             $brand = new LengthAwarePaginator(
@@ -40,7 +42,7 @@ class BrandController extends Controller
                 1,
                 ['path' => Paginator::resolveCurrentPath()]
             );
-            return view('admin.brand.index', compact('brand', 'title'));
+            return view('admin.brand.index', compact('brand', 'title', 'supplier'));
         } catch (Exception $e) {
             Log::error('Failed to find brand: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find brand'], 500);
@@ -48,7 +50,7 @@ class BrandController extends Controller
     }
     public function addForm()
     {
-        $supplier = $this->supplierService->GetAllSuppiler();
+        $supplier = $this->supplierService->GetAllSupplier();
         $title = 'Thêm thương hiệu ';
         return view('admin.brand.add', compact('title', 'supplier'));
     }
@@ -58,21 +60,17 @@ class BrandController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
             'images' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
-            'supplier_id' => 'required' // Adjust max size as needed
         ]);
 
         // Map validated data to the required array format
         $data = [
             'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'address' => $validatedData['address'],
-            'phone' => $validatedData['phone'],
+            // 'email' => $validatedData['email'],
+            // 'address' => $validatedData['address'],
+            // 'phone' => $validatedData['phone'],
             'images' => $validatedData['images'],
-            'supplier_id' => $validatedData['supplier_id']
+            // 'supplier_id' => $validatedData['supplier_id']
         ];
         $brand = $this->brandService->createBrand($data);
         return redirect()->route('admin.brand.store')->with('success', 'Thêm thành công');
@@ -80,7 +78,7 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        $supplier = $this->supplierService->GetAllSuppiler();
+        $supplier = $this->supplierService->GetAllSupplier();
         $title = 'Sửa thương hiệu';
         $brand = $this->brandService->getBrandById($id);
         return view('admin.brand.edit', compact('brand', 'title', 'supplier'));
@@ -94,14 +92,20 @@ class BrandController extends Controller
 
     public function delete($id)
     {
-        try{
+        try {
             $this->brandService->deleteBrand($id);
             return redirect()->route('admin.brand.store')->with('success', 'Xóa thương hiệu thành công');
+        } catch (Exception $e) {
+            Log::error('Failed to delete brand: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Thương hiệu đang có sản phẩm, không thể xóa');
         }
-        catch(Exception $e)
-        {
-            Log::error('Failed to delete brand: ' .$e->getMessage());
-            return ApiResponse::error('Failed to delete brand', 500);
-        }
+    }
+
+    public function findBySupplier(Request $request)
+    {
+        $supplier = $this->supplierService->GetAllSupplier();
+        $title = 'Thương hiệu ';
+        $brand = $this->brandService->findBrandBySupplier($request->input('supplier_id'));
+        return view('admin.brand.index', compact('brand', 'title', 'supplier'));
     }
 }

@@ -62,12 +62,6 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.client.index') }}">
-                        <i class="fas fa-users"></i>
-                        <p>Khách hàng</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarnhacungcap">
                         <i class="fas fa-building"></i>
                         <p>Nhà cung cấp</p>
@@ -166,6 +160,11 @@
                     <div class="collapse" id="sidebarbaocao">
                         <ul class="nav nav-collapse">
                             <li>
+                                <a href="{{ route('admin.client.index') }}">
+                                    <span class="sub-item">Khách hàng</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="">
                                     <span class="sub-item">Thống kê ngày</span>
                                 </a>
@@ -174,7 +173,7 @@
                                 <a href="">
                                     <span class="sub-item">Công nợ</span>
                                 </a>
-                                <ul class="sub-nav">
+                                <ul>
                                     <li>
                                         <a href="">
                                             <span class="sub-item">Khách hàng</span>

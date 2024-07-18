@@ -65,7 +65,7 @@ class CategorieController extends Controller
             return redirect()->back();
         } catch (Exception $e) {
             Log::error('Failed to delete category: ' . $e->getMessage());
-            return ApiResponse::error('Failed to delete category', 500);
+            return redirect()->back()->with('error', 'Danh mục hiện đang có sản phẩm, không thể xóa');
         }
     }
 
