@@ -29,8 +29,10 @@ use App\Http\Middleware\CheckLoginSuperAdmin;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('', [CategorieController::class, 'index']);
-Route::get('/check-phone-exists', [SignUpController::class, 'checkPhoneExists'])->name('check-phone-exists');
-Route::get('/check-email-exists', [SignUpController::class, 'checkEmailExists'])->name('check-email-exists');
+Route::post('/check-account', [SignUpController::class, 'checkAccount'])->name('check.account');
+
+// Route::get('/check-phone-exists', [SignUpController::class, 'checkPhoneExists'])->name('check-phone-exists');
+// Route::get('/check-email-exists', [SignUpController::class, 'checkEmailExists'])->name('check-email-exists');
 Route::get('/dang-ky', [SignUpController::class, 'index'])->name('register.index');
 Route::post('/register_account', [SignUpController::class, 'store'])->name('register.signup');
 Route::get('/', function () {

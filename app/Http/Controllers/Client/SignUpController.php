@@ -43,23 +43,19 @@ class SignUpController extends Controller
         }
     }
 
-    public function checkPhoneExists(Request $request)
+    public function checkAccount(Request $request)
     {
-        $phone = $request->query('phone');
+        $phone = $request->input('phone');
+        $email = $request->input('email');
 
-        // Kiểm tra xem số điện thoại đã tồn tại trong hệ thống hay chưa
-        $exists = User::where('phone', $phone)->exists(); // Sử dụng model User hoặc model tương ứng của bạn
+        $phoneExists = User::where('role_id', 1)
+            ->where('phone', $phone)
+            ->exists();
 
-        return response()->json(['exists' => $exists]);
-    }
+        $emailExists = User::where('role_id', 1)
+            ->where('email', $email)
+            ->exists();
 
-    public function checkEmailExists(Request $request)
-    {
-        $email = $request->query('email');
-
-        // Kiểm tra xem số điện thoại đã tồn tại trong hệ thống hay chưa
-        $exists = User::where('email', $email)->exists(); // Sử dụng model User hoặc model tương ứng của bạn
-
-        return response()->json(['exists' => $exists]);
+        return response()->json(['phone_exists' => $phoneExists, 'email_exists' => $emailExists]);
     }
 }
