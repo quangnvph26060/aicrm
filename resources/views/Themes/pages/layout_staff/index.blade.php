@@ -130,7 +130,7 @@
         <div class="col-lg-8" id="row1">
             <div class="card">
                 <div class="card-header">
-                    <p>Danh sách sản phẩm</p>
+                    <p>Sản phẩm</p>
                     <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}">
                         @csrf
                         <input id="search_product" class="form-control mr-sm-2" name="name" type="search"

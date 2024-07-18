@@ -21,7 +21,6 @@
     /* Container của submenu */
     .submenu {
         display: none;
-        /* Ẩn submenu khi không được hover */
         position: absolute;
         right: 10px;
         top: 50px;
@@ -73,6 +72,35 @@
     .home-icon i {
         color: #333;
     }
+
+    @media (max-width: 768px) {
+        body {
+            margin: 0;
+            padding-top: 20px;
+            overflow-x: hidden;
+            width: 100vw;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 10px 10px;
+        }
+
+        #row1 {
+            margin-top: 20px;
+        }
+    }
+
+    @media (max-width: 100%) {
+        .header {
+            width: 100vw;
+            margin-bottom: 10px;
+        }
+    }
 </style>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -104,7 +132,6 @@
 
 @if (session('action'))
 <script>
-
     $(document).ready(function(){
         Swal.fire({
         icon: 'success',
@@ -135,55 +162,33 @@
 @endif
 @endif
 
-<body style="overflow-x: hidden; padding-top: 0px">
-    {{-- <header class="header">
+<body style="overflow-x: hidden; ">
+    <header class="header" id="header">
         <div class="container-fluid">
             <div class="row align-items-center">
                 <!-- Left side: Search bar -->
-                <div class="col-lg-8">
-                    <form class="form-inline my-2 my-lg-0 search-bar">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search products..."
-                            aria-label="Search">
-                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i
-                                class="fas fa-search"></i></button>
-                    </form>
-                </div>
-                <!-- Right side: Icons -->
-                <div class="col-lg-4 text-right">
-                    <a href="#" class="cart-icon"><i class="fas fa-shopping-cart fa-lg"></i></a>
-                    <a href="#" class="home-icon"><i class="fas fa-home fa-lg"></i></a>
-                </div>
-            </div>
-        </div>
-    </header> --}}
-
-    <header class="header">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <!-- Left side: Search bar -->
-                <div class="col-8 col-md-8">
+                <div class="col-8 col-md-8 left">
                     <a href="{{ route('staff.index') }}">
-                        {{-- @if (isset($config)) --}}
                         <img style="width: 100px; height: auto;" src="{{ asset('images/aicrm1.png') }}" alt="logo">
-                        {{-- @else
-                        <img style="width: 50px; height: auto;" src="https://png.pngtree.com/template/20191219/ourmid/pngtree-happy-shop-logo-designs-fun-store-logo-template-vector-illustration-image_341573.jpg" alt="">
-                        @endif --}}
                     </a>
                 </div>
                 <!-- Right side: Icons -->
-                <div class="col-4 col-md-4 text-right">
+                <div class="col-4 col-md-4 text-right right">
                     <a href="#" class="home-icon" id="homeIcon" style="font-size: 20px;">
                         <i style="color: white;" class="fas fa-user-tag"></i>
                     </a>
                     <div id="submenu" class="submenu">
                         <ul>
                             <li><a href="{{ route('staff.Inventory.get') }}">Kiểm kho</a></li>
-                            <li><a style="padding: 0px" class="dropdown-item" href="{{ route('staff.order') }}">Lịch sử mua hàng</a></li>
+                            <li><a style="padding: 0px" class="dropdown-item" href="{{ route('staff.order') }}">Lịch sử
+                                    mua hàng</a></li>
                             <li>
-                                <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                <form id="logoutForm" action="{{ route('admin.logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
-                                <a style="padding: 0px" class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a style="padding: 0px" class="dropdown-item" href="#"
+                                    onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                     Đăng xuất
                                 </a>
                             </li>
@@ -194,4 +199,3 @@
             </div>
         </div>
     </header>
-
