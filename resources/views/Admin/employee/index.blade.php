@@ -1,4 +1,5 @@
 @extends('admin.layout.index')
+
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -130,6 +131,7 @@
             transition: all 0.3s ease;
         }
     </style>
+
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -152,6 +154,7 @@
                 </li>
             </ul>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -160,75 +163,27 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <div class="col-sm-12 col-md-6">
+                                <form action="{{ route('admin.staff.findByPhone') }}" method="GET">
+                                    <div id="basic-datatables_filter" class="dataTables_filter"><label>Tìm
+                                            kiếm:<input type="text" name="phone" class="form-control form-control-sm"
+                                                placeholder="Nhập số điện thoại" aria-controls="basic-datatables"></label>
+                                    </div>
+                                </form>
+                            </div>
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="basic-datatables_length">
-
+                                    <div class="col-sm-12">
+                                        <div id="staff-table-container">
+                                            <table id="staff-table" class="table table-hover">
+                                                <!-- Table content will be dynamically updated via AJAX -->
+                                                @include('admin.employee.table', ['user' => $user])
+                                            </table>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                        <form action="{{ route('admin.staff.findByPhone') }}" method="GET">
-                                            <div id="basic-datatables_filter" class="dataTables_filter"><label>Tìm
-                                                    kiếm:<input type="text" name="phone"
-                                                        class="form-control form-control-sm"
-                                                        placeholder="Nhập số điện thoại"
-                                                        aria-controls="basic-datatables"></label></div>
-                                        </form>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables"
-                                            class="display table table-striped table-hover dataTable" role="grid"
-                                            aria-describedby="basic-datatables_info">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="" tabindex="0" aria-controls="basic-datatables"
-                                                        rowspan="1" colspan="1" style="width: 127.375px;">Tên </th>
-                                                    <th class="" tabindex="0" aria-controls="basic-datatables"
-                                                        rowspan="1" colspan="1" style="width: 180.125px;">Email </th>
-                                                    <th class="" tabindex="0" aria-controls="basic-datatables"
-                                                        rowspan="1" colspan="1" style="width: 100.1875px;">Số điện
-                                                        thoại </th>
-                                                    <th class="" tabindex="0" aria-controls="basic-datatables"
-                                                        rowspan="1" colspan="1" style="width: 94.1875px;">Địa chỉ</th>
-                                                    <th class="" tabindex="0" aria-controls="basic-datatables"
-                                                        rowspan="1" colspan="1" style="width: 120.2656px;">
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            @if ($user)
-                                                <tbody>
-                                                    @foreach ($user as $key => $item)
-                                                        <tr>
-                                                            <td>{{ $item->name }}</td>
-                                                            <td>{{ $item->email }}</td>
-                                                            <td>{{ $item->phone ?? '' }}</td>
-                                                            <td>{{ $item->address ?? '' }}</td>
-                                                            <td style="display: flex;">
-                                                                <a style="margin-right: 20px" class="btn btn-warning"
-                                                                    href="{{ route('admin.staff.edit', ['id' => $item->id]) }}">Sửa</a>
-
-                                                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                    class="btn btn-danger"
-                                                                    href="{{ route('admin.staff.delete', ['id' => $item->id]) }}">Xóa</a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-
-                                                </tbody>
-                                            @else
-                                                <tr>
-                                                    <td class="text-center" colspan="6">
-                                                        <div class="">
-                                                            Không có nhân viên
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </table>
+                                    <div class="col-sm-12" id="pagination">
                                         {{ $user->links('vendor.pagination.custom') }}
                                     </div>
                                 </div>
@@ -239,11 +194,77 @@
             </div>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
+            // Handle delete button click
+            $(document).on('click', '.btn-delete', function() {
+                if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                    var userId = $(this).data('id');
+                    var deleteUrl = '{{ route('admin.staff.delete', ['id' => ':id']) }}';
+                    deleteUrl = deleteUrl.replace(':id', userId);
+
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Update the table and pagination with the new HTML
+                                $('#staff-table-container').html(response.table);
+                                $('#pagination').html(response.pagination);
+
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Nhân viên',
+                                    message: response.message,
+                                }, {
+                                    type: 'success',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            } else {
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Nhân viên',
+                                    message: response.message,
+                                }, {
+                                    type: 'danger',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Nhân viên',
+                                message: 'Xóa nhân viên thất bại!',
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        }
+                    });
+                }
+            });
+
+            @if (session('success'))
                 $.notify({
                     icon: 'icon-bell',
                     title: 'Nhân viên',
@@ -256,7 +277,7 @@
                     },
                     time: 1000,
                 });
-            });
-        </script>
-    @endif
+            @endif
+        });
+    </script>
 @endsection

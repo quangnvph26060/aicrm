@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\User;
 use App\Services\AdminService;
 use App\Services\UserService;
 use Exception;
@@ -42,6 +43,10 @@ class UserController extends Controller
             $title = "Nhân viên";
             $user = $this->adminService->getStaff();
             // dd($user);
+            if (request()->ajax()) {
+                $view = view('admin.employee.table', compact('user'))->render();
+                return response()->json(['success' => true, 'table' => $view]);
+            }
             return view('admin.employee.index', compact('user', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
@@ -123,11 +128,23 @@ class UserController extends Controller
     public function delete($id)
     {
         try {
-            $user = $this->adminService->deleteStaff($id);
-            return redirect()->route('admin.staff.store')->with('success', 'Xóa thành công');
+            $this->adminService->deleteStaff($id);
+            $user = User::orderByDesc('created_at')->paginate(5); // Adjust this if you have specific filtering
+            $table = view('admin.employee.table', compact('user'))->render();
+            $pagination = $user->links('vendor.pagination.custom')->render();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa nhân viên thành công',
+                'table' => $table,
+                'pagination' => $pagination
+            ]);
         } catch (Exception $e) {
-            Log::error('Failed to add staff: ' . $e->getMessage());
-            return ApiResponse::error('Failed to add staff:', 500);
+            Log::error('Failed to delete staff: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể xóa nhân viên'
+            ]);
         }
     }
 }

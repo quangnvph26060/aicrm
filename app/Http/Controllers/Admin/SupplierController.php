@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\Supplier;
 use App\Services\SupplierService;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,12 +24,17 @@ class SupplierController extends Controller
     public function index()
     {
         try {
+            $title = "Nhà cung cấp";
             $suppliers = $this->supplierService->GetAllSupplier();
-            // dd($suppliers);
-            return view('admin.supplier.index', compact('suppliers'));
+
+            if (request()->ajax()) {
+                $view = view('admin.supplier.table', compact('suppliers'))->render();
+                return response()->json(['success' => true, 'table' => $view]);
+            }
+            return view('admin.supplier.index', compact('suppliers', 'title'));
         } catch (Exception $e) {
-            Log::error('Failed to fetch all suppliers: ' . $e->getMessage());
-            return ApiResponse::error('Failed to fetch all suppliers', 500);
+            Log::error('Failed to fetch supplier: ' . $e->getMessage());
+            return ApiResponse::error('Failed to fetch supplier', 500);
         }
     }
 
@@ -93,10 +99,22 @@ class SupplierController extends Controller
     {
         try {
             $this->supplierService->deleteSupplier($id);
-            return redirect()->route('admin.supplier.index')->with('success', 'Xoá nhà cung cấp thành công');
+            $suppliers = Supplier::orderByDesc('created_at')->paginate(5);
+            $table = view('admin.supplier.table', compact('suppliers'))->render();
+            $pagination = $suppliers->links('vendor.pagination.custom')->render();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Xóa nhà cung cấp thành công!',
+                'table' => $table,
+                'pagination' => $pagination
+            ]);
         } catch (Exception $e) {
             Log::error('Failed to delete supplier: ' . $e->getMessage());
-            return ApiResponse::error('Failed to delete supplier', 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Không thể xóa nhà cung cấp'
+            ]);
         }
     }
 }
