@@ -167,52 +167,11 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables"
-                                            class="display table table-striped table-hover dataTable" role="grid"
-                                            aria-describedby="basic-datatables_info">
-                                            <thead>
-                                                <tr>
-                                                    <th>STT</th>
-                                                    <th>Nhà cung cấp</th>
-                                                    <th>SĐT</th>
-                                                    <th>Email</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th style="text-align: center">Hành động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if ($suppliers && $suppliers->count() > 0)
-                                                    @foreach ($suppliers as $key => $value)
-                                                        @if (is_object($value))
-                                                            <tr>
-                                                                <td>{{ ($suppliers->currentPage() - 1) * $suppliers->perPage() + $loop->index + 1 }}
-                                                                </td>
-                                                                <td>{{ $value->name ?? '' }}</td>
-                                                                <td>{{ $value->phone ?? '' }}</td>
-                                                                <td>{{ $value->email ?? '' }}</td>
-                                                                <td>{{ $value->address ?? '' }}</td>
-                                                                <td style="text-align:center">
-                                                                    <a class="btn btn-warning"
-                                                                        href="{{ route('admin.supplier.detail', ['id' => $value->id]) }}">Sửa</a>
-                                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                        class="btn btn-danger"
-                                                                        href="{{ route('admin.supplier.delete', ['id' => $value->id]) }}">Xóa</a>
-                                                                </td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td class="text-center" colspan="6">
-                                                            <div class="">
-                                                                Chưa có nhà cung cấp
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
+                                    <div class="col-sm-12" id="supplier-table">
+                                        @include('admin.supplier.table', ['suppliers' => $suppliers])
+                                    </div>
+                                    <div class="col-sm-12" id="pagination">
+
                                         @if ($suppliers instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                             {{ $suppliers->links('vendor.pagination.custom') }}
                                         @endif
@@ -227,6 +186,73 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
+    <script>
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                var supplierId = $(this).data('id'); // Ensure this is properly set in your HTML
+                var deleteUrl = '{{ route('admin.supplier.delete', ['id' => ':id']) }}';
+                deleteUrl = deleteUrl.replace(':id', supplierId);
+
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        _method: 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Cập nhật bảng thương hiệu
+                            $('#supplier-table').html(response.table);
+                            $('#pagination').html(response
+                            .pagination); // Ensure you include pagination in the response
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Nhà cung cấp',
+                                message: response.message,
+                            }, {
+                                type: 'success',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        } else {
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Nhà cung cấp',
+                                message: response.message,
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        $.notify({
+                            icon: 'icon-bell',
+                            title: 'Nhà cung cấp',
+                            message: 'Xóa thương hiệu thất bại!',
+                        }, {
+                            type: 'danger',
+                            placement: {
+                                from: "bottom",
+                                align: "right"
+                            },
+                            time: 1000,
+                        });
+                    }
+                });
+            }
+        });
+    </script>
     @if (session('success'))
         <script>
             $(document).ready(function() {

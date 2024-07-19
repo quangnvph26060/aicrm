@@ -163,7 +163,7 @@ class AdminService
     {
         DB::beginTransaction();
         try {
-            $admin = $this->user->where('role_id', 2)->paginate(5);
+            $admin = $this->user->where('role_id', 2)->orderByDesc('created_at')->paginate(5);
             DB::commit();
             return $admin;
         } catch (Exception $e) {

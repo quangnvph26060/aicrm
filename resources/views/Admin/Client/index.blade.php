@@ -169,7 +169,12 @@
                                 <div class="row">
                                     <div class="col-sm-12" id="client-table">
                                     @include('admin.client.table', ['clients' => $clients])
-                                    
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="pagination">
+                                        {{ $clients->links('vendor.pagination.custom') }}
                                     </div>
                                 </div>
                             </div>
@@ -200,5 +205,5 @@
             });
             </script>
     @endif
-    
+
 @endsection
