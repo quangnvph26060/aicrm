@@ -25,9 +25,10 @@ class Product extends Model
         "discount_id",
         "brands_id",
         "code",
+
     ];
 
-    protected $appends = ['category','images','brands', 'supplier'];
+    protected $appends = ['category','images','brands'];
     public function getImagesAttribute(){
         return ProductImages::where('product_id',$this->attributes['id'])->get();
     }
@@ -37,6 +38,7 @@ class Product extends Model
     public function getBrandsAttribute(){
          return Brand::where('id',$this->attributes['brands_id'])->first();
     }
+
     public function brand()
     {
         return $this->belongsTo(Brand::class);
@@ -44,6 +46,7 @@ class Product extends Model
     public function getSupplierAttribute(){
         return Supplier::where('id',$this->attributes['supplier_id'])->first();
    }
+
     public function carts()
     {
         return $this->belongsToMany(Cart::class);

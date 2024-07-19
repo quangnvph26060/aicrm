@@ -58,6 +58,12 @@
                                     <span class="sub-item">Thương hiệu</span>
                                 </a>
                             </li>
+
+                            <li>
+                                <a href="{{ route('admin.importproduct.index') }}">
+                                    <span class="sub-item">Nhập hàng</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

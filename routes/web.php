@@ -15,6 +15,8 @@ use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Admin\importCouponController;
+use App\Http\Controllers\Admin\ImportProductController;
 use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
@@ -151,6 +153,20 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     });
     Route::prefix('support')->name('support.')->group(function () {
         Route::get('/', [SupportController::class, 'contact'])->name('lienhe');
+    });
+
+    Route::prefix('importproduct')->name('importproduct.')->group(function(){
+        Route::get('/', [ImportProductController::class, 'index'])->name('index');
+        Route::get('/add', [ImportProductController::class, 'add'])->name('add');
+        Route::get('/import', [ImportProductController::class, 'listImport'])->name('import');
+        Route::post('/import/add', [ImportProductController::class, 'importadd'])->name('import.add');
+        Route::post('/import/update', [ImportProductController::class, 'importupdate'])->name('import.update');
+        Route::post('/import/update/price', [ImportProductController::class, 'importupdateprice'])->name('import.update.price');
+        Route::get('/import/delete', [ImportProductController::class, 'importdelete'])->name('import.delete');
+        Route::post('/import/addCategory', [ImportProductController::class, 'addCategory'])->name('import.addCategory');
+        // tạo phiếu
+        Route::post('/importCoupon', [importCouponController::class, 'add'])->name('importCoupon.add');
+        Route::get('/detail/{id}', [ImportProductController::class, 'importdetail'])->name('importCoupon.detail');
     });
 })->middleware('checkRole:1');
 

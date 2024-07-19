@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('import_detail', function (Blueprint $table) {
             $table->id();
             $table->foreignId('import_id')->constrained('import_coupon')->onDelete('cascade');
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('price');
