@@ -9,7 +9,7 @@
         }
 
         .breadcrumbs a {
-            color: #007bff;
+            color: #007bff;a
             text-decoration: none;
             font-weight: 500;
         }
