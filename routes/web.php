@@ -123,7 +123,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/', [ClientController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
-        Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
+        Route::delete('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
         Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
     });
     Route::prefix('supplier')->name('supplier.')->group(function () {
