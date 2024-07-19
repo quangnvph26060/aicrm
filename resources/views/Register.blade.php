@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tạo tài khoản dùng thử miễn ph</title>
+    <title>Táº¡o tÃ i khoáº£n dÃ¹ng thá»­ miá»…n ph</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
     <style>
@@ -19,9 +19,9 @@
             max-width: 350px;
             width: 100%;
             background-color: #eeeeee;
-            /* Đổi màu nền của toast */
+            /* Äá»•i mÃ u ná»n cá»§a toast */
             color: #333;
-            /* Đổi màu chữ của toast */
+            /* Äá»•i mÃ u chá»¯ cá»§a toast */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -29,9 +29,9 @@
         .toast-header {
             padding: 10px;
             background-color: #066896;
-            /* Đổi màu nền của phần header */
+            /* Äá»•i mÃ u ná»n cá»§a pháº§n header */
             color: #fff;
-            /* Đổi màu chữ của phần header */
+            /* Äá»•i mÃ u chá»¯ cá»§a pháº§n header */
             border-bottom: none;
         }
 
@@ -175,13 +175,13 @@
 
             .register-right h4 {
                 font-size: 20px;
-                /* Giảm kích thước font chữ để phù hợp với thiết bị di động */
+                /* Giáº£m kÃ­ch thÆ°á»›c font chá»¯ Ä‘á»ƒ phÃ¹ há»£p vá»›i thiáº¿t bá»‹ di Ä‘á»™ng */
             }
 
             .form-select,
             .form-control {
                 width: 100%;
-                /* Đảm bảo các dropdown menu có độ rộng 100% trên thiết bị di động */
+                /* Äáº£m báº£o cÃ¡c dropdown menu cÃ³ Ä‘á»™ rá»™ng 100% trÃªn thiáº¿t bá»‹ di Ä‘á»™ng */
             }
         }
     </style>
@@ -191,39 +191,39 @@
 
     <div class="register-container">
         <div class="register-left">
-            {{-- <h1>Quản lý dễ dàng</h1>
-            <p>Bán hàng đơn giản</p>
-            <p>Hỗ trợ đăng ký 1800 6162</p>
-            <p>Đăng ký tài khoản dùng thử ngay để trải nghiệm những tính năng tuyệt vời của chúng tôi.</p>
-            <p>Liên hệ với chúng tôi để được hỗ trợ tốt nhất.</p> --}}
+            {{-- <h1>Quáº£n lÃ½ dá»… dÃ ng</h1>
+            <p>BÃ¡n hÃ ng Ä‘Æ¡n giáº£n</p>
+            <p>Há»— trá»£ Ä‘Äƒng kÃ½ 1800 6162</p>
+            <p>ÄÄƒng kÃ½ tÃ i khoáº£n dÃ¹ng thá»­ ngay Ä‘á»ƒ tráº£i nghiá»‡m nhá»¯ng tÃ­nh nÄƒng tuyá»‡t vá»i cá»§a chÃºng tÃ´i.</p>
+            <p>LiÃªn há»‡ vá»›i chÃºng tÃ´i Ä‘á»ƒ Ä‘Æ°á»£c há»— trá»£ tá»‘t nháº¥t.</p> --}}
         </div>
         <div class="register-right">
-            <h4 style="text-align: center;">Tạo tài khoản dùng thử miễn phí</h4>
+            <h4 style="text-align: center;">Táº¡o tÃ i khoáº£n dÃ¹ng thá»­ miá»…n phÃ­</h4>
             <form action="{{ route('register.signup') }}" method="POST" id="registerForm">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Họ và tên</label>
+                            <label for="name" class="form-label">Há» vÃ  tÃªn</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Nhập họ và tên">
+                                placeholder="Nháº­p há» vÃ  tÃªn">
                             <div class="invalid-feedback d-block" style="font-weight: 500;" id="name_error"></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="company_name" class="form-label">Tên công ty</label>
+                            <label for="company_name" class="form-label">TÃªn cÃ´ng ty</label>
                             <input type="text" class="form-control" id="company_name" name="company_name"
-                                placeholder="Nhập tên công ty">
+                                placeholder="Nháº­p tÃªn cÃ´ng ty">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <label for="phone" class="form-label">Sá»‘ Ä‘iá»‡n thoáº¡i</label>
                             <input type="text" class="form-control" id="phone" name="phone"
-                                placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
+                                placeholder="Nháº­p sá»‘ Ä‘iá»‡n thoáº¡i" value="{{ old('phone') }}">
                             <div class="invalid-feedback d-block" style="font-weight: 500;" id="phone_error"></div>
                         </div>
                     </div>
@@ -231,7 +231,7 @@
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email"
-                                placeholder="Nhập địa chỉ email" value="{{ old('email') }}">
+                                placeholder="Nháº­p Ä‘á»‹a chá»‰ email" value="{{ old('email') }}">
                             <div class="invalid-feedback d-block" style="font-weight: 500;" id="email_error"></div>
                         </div>
                     </div>
@@ -239,16 +239,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="tax_code" class="form-label">Mã số thuế</label>
+                            <label for="tax_code" class="form-label">MÃ£ sá»‘ thuáº¿</label>
                             <input type="text" class="form-control" id="tax_code" name="tax_code"
-                                placeholder="Nhập mã số thuế">
+                                placeholder="Nháº­p mÃ£ sá»‘ thuáº¿">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="store_name" class="form-label">Tên cửa hàng</label>
+                            <label for="store_name" class="form-label">TÃªn cá»­a hÃ ng</label>
                             <input type="text" class="form-control" id="store_name" name="store_name"
-                                placeholder="Nhập tên cửa hàng" oninput="updateDomain()">
+                                placeholder="Nháº­p tÃªn cá»­a hÃ ng" oninput="updateDomain()">
                             <p id="store_domain1"></p>
                             <div class="invalid-feedback d-block" style="font-weight: 500;" id="store_name_error"></div>
 
@@ -258,9 +258,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="city" class="form-label">Khu vực</label>
+                            <label for="city" class="form-label">Khu vá»±c</label>
                             <select class="form-select" id="city" name="city">
-                                <option value="">Chọn thành phố</option>
+                                <option value="">Chá»n thÃ nh phá»‘</option>
                                 @foreach ($city as $cities)
                                     <option value="{{ $cities->id }}">{{ $cities->name }}</option>
                                 @endforeach
@@ -270,9 +270,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="field_id" class="form-label">Lĩnh vực hoạt động</label>
+                            <label for="field_id" class="form-label">LÄ©nh vá»±c hoáº¡t Ä‘á»™ng</label>
                             <select class="form-select" id="field" name="field">
-                                <option value="">Chọn lĩnh vực</option>
+                                <option value="">Chá»n lÄ©nh vá»±c</option>
                                 @foreach ($field as $fields)
                                     <option value="{{ $fields->id }}">{{ $fields->name }}</option>
                                 @endforeach
@@ -284,9 +284,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label for="address" class="form-label">Địa chỉ</label>
+                            <label for="address" class="form-label">Äá»‹a chá»‰</label>
                             <input type="text" class="form-control" id="address" name="address"
-                                placeholder="Nhập địa chỉ">
+                                placeholder="Nháº­p Ä‘á»‹a chá»‰">
                             <div class="invalid-feedback d-block" style="font-weight: 500;" id="address_error"></div>
                         </div>
                     </div>
@@ -294,16 +294,16 @@
                 <div class="row" style="display: none">
                     <div class="col-md-12">
                         <div class="mb-3">
-                            <label for="store_domain" class="form-label">Tên miền</label>
+                            <label for="store_domain" class="form-label">TÃªn miá»n</label>
                             <input type="text" class="form-control" id="store_domain" name="store_domain"
-                                placeholder="Tên miền của bạn" readonly>
+                                placeholder="TÃªn miá»n cá»§a báº¡n" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="text-center mt-4">
-                    <button onclick="submitRegisterForm(event)" type="button" class="btn btn-success w-100">Đăng
-                        ký</button>
-                    <a href="{{ route('formlogin') }}">Quay lại</a>
+                    <button onclick="submitRegisterForm(event)" type="button" class="btn btn-success w-100">ÄÄƒng
+                        kÃ½</button>
+                    <a href="{{ route('formlogin') }}">Quay láº¡i</a>
                 </div>
             </form>
         </div>
@@ -312,22 +312,22 @@
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-primary text-white">
-                <strong class="me-auto">Thông báo</strong>
+                <strong class="me-auto">ThÃ´ng bÃ¡o</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body" id="toast-body">
-                <!-- Nội dung toast sẽ được thêm vào đây bằng JavaScript -->
+                <!-- Ná»™i dung toast sáº½ Ä‘Æ°á»£c thÃªm vÃ o Ä‘Ã¢y báº±ng JavaScript -->
             </div>
         </div>
     </div>
     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-primary text-white">
-                <strong class="me-auto">Thông báo</strong>
+                <strong class="me-auto">ThÃ´ng bÃ¡o</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body" id="toast-body">
-                <!-- Nội dung toast sẽ được thêm vào đây bằng JavaScript -->
+                <!-- Ná»™i dung toast sáº½ Ä‘Æ°á»£c thÃªm vÃ o Ä‘Ã¢y báº±ng JavaScript -->
             </div>
         </div>
     </div>
@@ -337,7 +337,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Thông báo</h5>
+                    <h5 class="modal-title" id="successModalLabel">ThÃ´ng bÃ¡o</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -346,7 +346,7 @@
                     {{ session('modal') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">ÄÃ³ng</button>
                 </div>
             </div>
         </div>
@@ -519,9 +519,9 @@
             if (validateAllFields(formRegister)) {
                 checkAccountExists(function(phoneExists, emailExists) {
                     if (phoneExists) {
-                        showToast('Số điện thoại này đã tồn tại.');
+                        showToast('Sá»‘ Ä‘iá»‡n thoáº¡i nÃ y Ä‘Ã£ tá»“n táº¡i.');
                     } else if (emailExists) {
-                        showToast('Email này đã tồn tại.');
+                        showToast('Email nÃ y Ä‘Ã£ tá»“n táº¡i.');
                     } else {
                         document.getElementById('registerForm').submit();
                     }

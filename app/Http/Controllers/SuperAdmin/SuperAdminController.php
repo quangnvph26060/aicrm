@@ -36,7 +36,7 @@ class SuperAdminController extends Controller
     public function updateSuperAdminInfo(Request $request, $id)
     {
         try {
-            $sa = $this->adminService->updateUser($id, $request->all());
+            $sa = $this->adminService->updateSuperAdmin($id, $request->all());
             // dd($sa);
             $authUser = session('authSuper');
             $authUser->name = $sa->name;
