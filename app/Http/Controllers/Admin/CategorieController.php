@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Responses\ApiResponse;
+use App\Models\Categories;
 use App\Services\CategoryService;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,6 +25,10 @@ class CategorieController extends Controller
         $title = 'Danh mục';
         try {
             $category = $this->categoryService->getCategoryAll();
+            if (request()->ajax()) {
+                $view = view('admin.category.table', compact('category'))->render(); // Tạo view cho bảng danh mục
+                return response()->json(['success' => true, 'table' => $view]);
+            }
             return view('admin.category.index', compact('category', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch Category: ' . $e->getMessage());
@@ -33,17 +38,16 @@ class CategorieController extends Controller
     public function findByName(Request $request)
     {
         $title = 'Danh mục';
-        try{
+        try {
             $category = $this->categoryService->findCategoryByName($request->input('name'));
             return view('admin.category.index', compact('category', 'title'));
-        }
-        catch(Exception $e)
-        {
-            Log::error('Failed to fin category: ' .$e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Failed to fin category: ' . $e->getMessage());
             return ApiResponse::error('Failed to find category', 500);
         }
     }
-    public function add(){
+    public function add()
+    {
         $title = 'Thêm danh mục';
         return view('admin.category.add', compact('title'));
     }
@@ -59,13 +63,17 @@ class CategorieController extends Controller
     }
     public function delete($id)
     {
-        try {
+        try{
             $this->categoryService->deleteCategory($id);
-            session()->flash('success', 'Xoá danh mục thành công');
-            return redirect()->back();
-        } catch (Exception $e) {
-            Log::error('Failed to delete category: ' . $e->getMessage());
-            return ApiResponse::error('Failed to delete category', 500);
+
+            $category = Categories::orderByDesc('created_at')->paginate(5);
+            $view = view('admin.category.table', compact('category'))->render();
+
+            return response()->json(['success' => true, 'message' => 'Xoá danh mục thành công!', 'table' => $view]);
+        }
+        catch(Exception $e){
+            Log::error('Failed to delete category: ' .$e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Không thể xóa danh mục']);
         }
     }
 

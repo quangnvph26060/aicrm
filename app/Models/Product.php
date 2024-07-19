@@ -39,6 +39,14 @@ class Product extends Model
          return Brand::where('id',$this->attributes['brands_id'])->first();
     }
 
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+    public function getSupplierAttribute(){
+        return Supplier::where('id',$this->attributes['supplier_id'])->first();
+   }
+
     public function carts()
     {
         return $this->belongsToMany(Cart::class);
@@ -53,10 +61,6 @@ class Product extends Model
         return $this->hasMany(ProductImages::class);
     }
 
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
 
     public static function boot()
     {

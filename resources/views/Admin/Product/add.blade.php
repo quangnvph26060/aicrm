@@ -114,7 +114,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="#">Thêm</a> d
+                    <a href="#">Thêm</a>
                 </li>
             </ul>
         </div>
@@ -197,20 +197,31 @@
                                             <div>
                                                 <label for="example-text-input" class="form-label">Trạng thái<span
                                                         class="text text-danger">*</span></label>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <label for="">Nhà cung cấp</label>
-                                            <select class="form-select status trang-thai" id="suppliers"
-                                                    name="suppliers">
-                                                    @foreach ($suppliers as $item )
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
+                                                <select class="form-control" name="status" id="status">
+                                                    <option value="">Chọn trạng thái</option>
+                                                    <option
+                                                        value="published">Được phát hành</option>
+                                                    <option
+                                                        value="inactive">Không hoạt động</option>
+                                                    <option
+                                                        value="scheduled">Lên kế hoạch</option>
                                                 </select>
                                                 <div class="col-lg-9"><span class="invalid-feedback d-block"
                                                         style="font-weight: 500" id="status_error"></span> </div>
+
+                                            </div>
                                         </div>
+                                        {{-- <div class="col-lg-12">
+                                            <label for="">Nhà cung cấp</label>
+                                            <select class="form-select status trang-thai" id="suppliers"
+                                                name="suppliers">
+                                                @foreach ($suppliers as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="status_error"></span> </div>
+                                        </div> --}}
                                         <div class="col-lg-12">
                                             <label for="">Mô tả</label>
                                             <textarea id="description" cols="30" rows="10" name="description"></textarea>

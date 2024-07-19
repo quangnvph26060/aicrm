@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+
+use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductImages;
 use Exception;
@@ -23,8 +25,6 @@ class ProductService
     {
         try {
             Log::info('Fetching all products');
-            // $product= $this->product->paginate(10);
-            // dd($product[0]->images[0]->image_path);
             return $this->product->orderByDesc('created_at')->paginate(5);
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
@@ -32,14 +32,14 @@ class ProductService
         }
     }
 
-    public function getProductAll_Staff() : \Illuminate\Database\Eloquent\Collection
+
+    public function getProductAll_Staff(): \Illuminate\Database\Eloquent\Collection
     {
         try {
             Log::info('Fetching all products');
-             $product= $this->product->all();
+            $product = $this->product->all();
             // dd($product[0]->images[0]->image_path);
             return $product;
-
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             throw new Exception('Failed to fetch products');
@@ -61,7 +61,7 @@ class ProductService
     {
         try {
             Log::info('Fetching all products by published');
-            return $this->product->where('status', 'published')->where('quantity','>', 0)->get();
+            return $this->product->where('status', 'published')->where('quantity', '>', 0)->get();
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             throw new Exception('Failed to fetch products');
@@ -88,14 +88,14 @@ class ProductService
                 'status' =>  $data['status'],
                 'discount_id' => @$data['discount_id'],
                 'brands_id' => @$data['brand_id'],
-                'supplier_id' => $data['supplier_id'],
+                // 'supplier_id' => $data['suppliers'],
             ]);
-
+            // dd($product);
 
             if ($product) {
                 foreach ($data['images'] as $item) {
                     $image = $item;
-                    $filename = 'image_'. $image->getClientOriginalName();
+                    $filename = 'image_' . $image->getClientOriginalName();
                     $filePath = 'storage/product/' . $filename;
                     if (!Storage::exists($filePath)) {
                         $image->storeAs('public/product', $filename);
@@ -137,7 +137,7 @@ class ProductService
                 if (isset($data['images'])) {
                     foreach ($data['images'] as $item) {
                         $image = $item;
-                        $filename = 'image_'. $image->getClientOriginalName();
+                        $filename = 'image_' . $image->getClientOriginalName();
                         $filePath = 'storage/product/' . $filename;
                         if (!in_array($image->getClientOriginalName(), $imageNames)) {
                             Storage::putFileAs('public/product', $image, $filename);
@@ -163,7 +163,9 @@ class ProductService
         DB::beginTransaction();
         try {
             $product = $this->getProductById($id);
-            // dd($product);
+            if (OrderDetail::where('product_id', $id)->exists()) {
+                throw new Exception('Sản phẩm đang tồn tại trong đơn hàng, không thể xóa.');
+            }
             $productimages = ProductImages::where('product_id', $id)->get();
             foreach ($productimages as $image) {
                 $image->delete();
@@ -176,6 +178,7 @@ class ProductService
             throw new Exception('Failed to delete product');
         }
     }
+
 
     public function getProductByCategory($categoryId): \Illuminate\Database\Eloquent\Collection
     {
@@ -199,7 +202,7 @@ class ProductService
         }
     }
 
-    public function productByName($name):LengthAwarePaginator
+    public function productByName($name): LengthAwarePaginator
     {
         try {
             $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->paginate(5);
@@ -211,7 +214,7 @@ class ProductService
         }
     }
 
-    public function productByNameStaff($name):\Illuminate\Database\Eloquent\Collection
+    public function productByNameStaff($name): \Illuminate\Database\Eloquent\Collection
     {
         try {
             $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->get();
@@ -222,6 +225,4 @@ class ProductService
             throw new Exception('Failed to search products');
         }
     }
-
-
 }

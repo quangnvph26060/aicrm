@@ -1,15 +1,8 @@
 @extends('admin.layout.index')
+
 @section('content')
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 0;
-        }
-
+        /* Your existing styles */
         .icon-bell:before {
             content: "\f0f3";
             font-family: FontAwesome;
@@ -122,25 +115,7 @@
 
     <div class="page-inner">
         <div class="page-header">
-            <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                    <a href="{{ route('admin.dashboard') }}">
-                        <i class="icon-home"></i>
-                    </a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.product.store') }}">Sản phẩm</a>
-                </li>
-                <li class="separator">
-                    <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                    <a href="#">Danh sách</a>
-                </li>
-            </ul>
+            <!-- Breadcrumbs here -->
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -169,54 +144,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables"
-                                            class="display table table-striped table-hover dataTable" role="grid"
-                                            aria-describedby="basic-datatables_info">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th style="width: 127.375px;">STT</th>
-                                                    <th style="width: 127.375px;">Tên</th>
-                                                    <th style="width: 180.125px;">Thương hiệu</th>
-                                                    <th style="width: 100.1875px;">Số lượng</th>
-                                                    <th style="width: 94.1875px;">Giá nhập</th>
-                                                    <th style="width: 90.9375px;">Giá bán</th>
-                                                    <th style="width: 120.2656px;"></th>
-                                                </tr>
-                                            </thead>
-                                            @if ($product && $product->count() > 0)
-                                                <tbody>
-                                                    @foreach ($product as $key => $value)
-                                                        <tr>
-                                                            <td>{{ ($product->currentPage() - 1) * $product->perPage() + $loop->index + 1 }}
-                                                            </td>
-                                                            <td>{{ $value->name ?? '' }}</td>
-                                                            <td>{{ $value->brands->name ?? '' }}</td>
-                                                            <td>{{ $value->quantity ?? '' }}</td>
-                                                            <td>{{ number_format($value->price) ?? '' }} đ</td>
-                                                            <td>{{ number_format($value->priceBuy) ?? '' }} đ</td>
-                                                            <td align="center" style="display: flex">
-                                                                <a class="btn btn-warning"
-                                                                    href="{{ route('admin.product.edit', ['id' => $value->id]) }}">Sửa</a>
-                                                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                    class="btn btn-danger"
-                                                                    href="{{ route('admin.product.delete', ['id' => $value->id]) }}">Xóa</a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            @else
-                                                <tr>
-                                                    <td class="text-center" colspan="6">
-                                                        <div class="">
-                                                            Không có sản phẩm
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </table>
+                                    <div class="col-sm-12" id="product-table">
+                                        @include('admin.product.table', ['products' => $product])
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="pagination">
                                         {{ $product->links('vendor.pagination.custom') }}
-
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +161,7 @@
         </div>
     </div>
 
+    <!-- JavaScript code -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
     @if (session('success'))
@@ -234,7 +169,7 @@
             $(document).ready(function() {
                 $.notify({
                     icon: 'icon-bell',
-                    title: 'Sản phẩm',
+                    title: 'Thương hiệu',
                     message: '{{ session('success') }}',
                 }, {
                     type: 'secondary',
@@ -247,4 +182,88 @@
             });
         </script>
     @endif
+    @if (session('error'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Thương hiệu',
+                    message: '{{ session('error') }}',
+                }, {
+                    type: 'danger',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+        </script>
+    @endif
+    <script>
+        $(document).ready(function() {
+            // Xử lý link xóa sản phẩm
+            $('.btn-delete').click(function() {
+                if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                    var productId = $(this).data('id');
+                    var deleteUrl = '{{ route('admin.product.delete', ['id' => ':id']) }}';
+                    deleteUrl = deleteUrl.replace(':id', productId);
+
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#product-table').html(response
+                                    .table); // Cập nhật bảng sản phẩm
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Sản phẩm',
+                                    message: response.message,
+                                }, {
+                                    type: 'success',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            } else {
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Sản phẩm',
+                                    message: response.message,
+                                }, {
+                                    type: 'danger',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Sản phẩm',
+                                message: 'Xóa sản phẩm thất bại!',
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

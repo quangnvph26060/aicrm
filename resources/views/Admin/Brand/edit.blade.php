@@ -172,30 +172,14 @@
                                             value="{{ $brand->name }}">
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="brand-logo">Logo:</label>
-                                        <input type="file" class="form-control" id="brand-logo" name="images">
-                                        <img src="{{ asset($brand->logo) }}" alt="Brand Logo" class="brand-logo">
-                                    </div>
+
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="brand-email">Email:</label>
-                                        <input type="email" class="form-control" id="brand-email" name="email"
-                                            value="{{ $brand->email }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="brand-phone">Số điện thoại:</label>
-                                        <input type="text" class="form-control" id="brand-phone" name="phone"
-                                            value="{{ $brand->phone }}">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="brand-address">Địa chỉ:</label>
-                                        <input type="text" class="form-control" id="brand-address" name="address"
-                                            value="{{ $brand->address }}">
+                                        <label for="brand-logo">Logo:</label>
+                                        <input type="file" class="form-control" id="brand-logo" name="images">
+                                        <img src="{{ asset($brand->logo) }}" alt="Brand Logo" class="brand-logo">
                                     </div>
                                 </div>
                             </div>

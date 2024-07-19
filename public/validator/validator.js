@@ -13,7 +13,7 @@ function checkInteger(value) {
     return false;
 }
 function checkCharacterPhone(value) {
-    if (value.match(/^\d{10}$|^\d{11}$/)) {
+    if (value.match(/^\d{10}$/)) {
         return true;
     }
     return false;
@@ -146,7 +146,8 @@ function generateErrorMessage(code, values = []) {
         R049: ' Vui lòng chọn khu vực hoạt động',
         R050: ' Vui lòng chọn lĩnh vực hoạt động',
         R051: ' Địa chỉ không được để trống',
-        R052: ' Email đã tồn tại trong hệ thống'
+        R052: ' Email đã tồn tại trong hệ thống',
+        R053: ' Số điện thoại không hợp lê',
     };
     const errorMessage = errorMessages[code];
     if (typeof errorMessage === 'function') {

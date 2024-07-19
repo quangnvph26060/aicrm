@@ -56,11 +56,11 @@ class BrandService
             $brand = $this->brand->create([
                 'name' => $data['name'],
                 'logo' => $filePath,
-                'email' => $data['email'],
-                'phone' => @$data['phone'],
-                'address' => $data['address'],
+                // 'email' => $data['email'],
+                // 'phone' => @$data['phone'],
+                // 'address' => $data['address'],
+                // 'supplier_id' => $data['supplier_id'],
             ]);
-
             DB::commit();
             return $brand;
         } catch (Exception $e) {
@@ -99,16 +99,18 @@ class BrandService
                 $update = $brand->update([
                     'name' => $data['name'],
                     'logo' => $filePath,
-                    'email' => $data['email'],
-                    'phone' => @$data['phone'],
-                    'address' => $data['address'],
+                    // 'email' => $data['email'],
+                    // 'phone' => @$data['phone'],
+                    // 'address' => $data['address'],
+                    // 'supplier_id' => $data['supplier_id'],
                 ]);
             }else{
                 $update = $brand->update([
                     'name' => $data['name'],
-                    'email' => $data['email'],
-                    'phone' => @$data['phone'],
-                    'address' => $data['address'],
+                    // 'email' => $data['email'],
+                    // 'phone' => @$data['phone'],
+                    // 'address' => $data['address'],
+                    // 'supplier_id' => $data['supplier_id'],
                 ]);
             }
 
@@ -130,6 +132,34 @@ class BrandService
         } catch (Exception $e) {
             Log::error("Failed to search products: {$e->getMessage()}");
             throw new Exception('Failed to search products');
+        }
+    }
+
+    public function deleteBrand($id)
+    {
+        try{
+            $brand = $this->getBrandById($id);
+            $brand->delete();
+            DB::commit();
+        }
+        catch(Exception $e)
+        {
+            DB::rollBack();
+            Log::error("Failed to delete brand:" .$e->getMessage());
+            throw new Exception("Failed to delete brand");
+        }
+    }
+
+    public function findBrandBySupplier($supplier_id): LengthAwarePaginator
+    {
+        try{
+            $brand = $this->brand->where('supplier_id', $supplier_id)->paginate(5);
+            return $brand;
+        }
+        catch(Exception $e)
+        {
+            Log::error('Failed to find brand: ' .$e->getMessage());
+            throw new Exception('Failed to find brand');
         }
     }
 }

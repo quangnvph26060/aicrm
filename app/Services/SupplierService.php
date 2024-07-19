@@ -17,7 +17,7 @@ class SupplierService
         $this->supplier = $supplier;
     }
 
-    public function GetAllSuppiler()
+    public function GetAllSupplier()
     {
         try {
             return $this->supplier->orderByDesc('created_at')->paginate(5);

@@ -134,33 +134,15 @@
                                         <input type="text" class="form-control" id="new-brand-name" name="name"
                                             required>
                                     </div>
-
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="new-brand-logo">Logo:</label>
                                         <input type="file" class="form-control" id="new-brand-logo" name="images"
                                             required>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="new-brand-email">Email:</label>
-                                        <input type="email" class="form-control" id="new-brand-email" name="email"
-                                            required>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="new-brand-phone">Số điện thoại:</label>
-                                        <input type="text" class="form-control" id="new-brand-phone" name="phone">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="new-brand-address">Địa chỉ:</label>
-                                        <input type="text" class="form-control" id="new-brand-address" name="address">
-                                    </div>
                                 </div>
                             </div>
-
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary">Lưu</button>
                             </div>
