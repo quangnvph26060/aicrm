@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\Brand;
 use App\Services\BrandService;
 use App\Services\SupplierService;
 use Exception;
@@ -22,13 +23,28 @@ class BrandController extends Controller
         $this->brandService = $brandService;
         $this->supplierService = $supplierService;
     }
-    public function index()
+    public function index(Request $request)
     {
-        $supplier = $this->supplierService->GetAllSupplier();
-        $title = 'Thương hiệu ';
-        $brand = $this->brandService->getAllBrand();
-        return view('admin.brand.index', compact('brand', 'title', 'supplier'));
+        try {
+            $supplier = $this->supplierService->GetAllSupplier();
+            $title = 'Thương hiệu';
+
+            $brand = Brand::orderByDesc('created_at')->paginate(5);
+
+            if ($request->ajax()) {
+                $view = view('admin.brand.table', compact('brand'))->render();
+                $pagination = view('vendor.pagination.custom', ['paginator' => $brand])->render();
+                return response()->json(['success' => true, 'table' => $view, 'pagination' => $pagination]);
+            }
+
+            return view('admin.brand.index', compact('brand', 'title', 'supplier'));
+        } catch (Exception $e) {
+            Log::error('Failed to fetch brands: ' . $e->getMessage());
+            return ApiResponse::error('Failed to fetch brands', 500);
+        }
     }
+
+
     public function findByName(Request $request)
     {
         try {
@@ -94,10 +110,12 @@ class BrandController extends Controller
     {
         try {
             $this->brandService->deleteBrand($id);
-            return redirect()->route('admin.brand.store')->with('success', 'Xóa thương hiệu thành công');
+            $brand = Brand::orderByDesc('created_at')->paginate(5);
+            $view = view('admin.brand.table', compact('brand'))->render();
+            return response()->json(['success' => true, 'message' => 'Xoá thương hiệu thành công!', 'table' => $view]);
         } catch (Exception $e) {
             Log::error('Failed to delete brand: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Thương hiệu đang có sản phẩm, không thể xóa');
+            return response()->json(['success' => false, 'message' => 'Không thể xóa thương hiệu']);
         }
     }
 

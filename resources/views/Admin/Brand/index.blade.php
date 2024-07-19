@@ -59,46 +59,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables"
-                                            class="display table table-striped table-hover dataTable" role="grid"
-                                            aria-describedby="basic-datatables_info">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th scope="col">Tên thương hiệu</th>
-                                                    <th scope="col">Logo</th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if (!empty($brand))
-                                                    @foreach ($brand as $item)
-                                                        <tr>
-                                                            <td>{{ $item->name ?? '' }}</td>
-                                                            <td><img style="width: 5rem; height: 3.75rem;"
-                                                                    src="{{ asset($item->logo) ?? '' }}" alt="">
-                                                            </td>
-                                                            <td>
-                                                                <a class="btn btn-warning btn-sm"
-                                                                    href="{{ route('admin.brand.edit', ['id' => $item->id]) }}">Sửa</a>
-                                                                <a class="btn btn-danger btn-sm"
-                                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                    href="{{ route('admin.brand.delete', ['id' => $item->id]) }}">Xóa</a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td class="text-center" colspan="7">
-                                                            <div class="">Chưa có thương hiệu</div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                        {{ $brand->links('vendor.pagination.custom') }}
+                                    <div class="col-sm-12" id="brand-table">
+                                        @include('admin.brand.table', ['brand' => $brand])
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="pagination">
+                                        {{ $brand->links('vendor.pagination.custom') }}
+                                    </div>
+                                </div>s
                             </div>
                         </div>
                     </div>
@@ -110,6 +79,73 @@
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
+    <script>
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                var brandId = $(this).data('id'); // Ensure this is properly set in your HTML
+                var deleteUrl = '{{ route('admin.brand.delete', ['id' => ':id']) }}';
+                deleteUrl = deleteUrl.replace(':id', brandId);
+
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        _method: 'DELETE'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Cập nhật bảng thương hiệu
+                            $('#brand-table').html(response.table);
+                            $('#pagination').html(response
+                            .pagination); // Ensure you include pagination in the response
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Thương hiệu',
+                                message: response.message,
+                            }, {
+                                type: 'success',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        } else {
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Thương hiệu',
+                                message: response.message,
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        $.notify({
+                            icon: 'icon-bell',
+                            title: 'Thương hiệu',
+                            message: 'Xóa thương hiệu thất bại!',
+                        }, {
+                            type: 'danger',
+                            placement: {
+                                from: "bottom",
+                                align: "right"
+                            },
+                            time: 1000,
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 
     @if (session('success'))
         <script>
