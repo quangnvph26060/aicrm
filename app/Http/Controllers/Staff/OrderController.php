@@ -11,8 +11,9 @@ class OrderController extends Controller
 {
     //
     public function index(){
+        $title = 'Lịch sử mua hàng';
         $config = Config::first();
-        return view("Themes.pages.order.index", compact('config'));
+        return view("Themes.pages.order.index", compact('config', 'title'));
     }
 
     public function orderFetch(Request $request)
