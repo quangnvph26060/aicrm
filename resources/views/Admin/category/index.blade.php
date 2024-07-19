@@ -154,58 +154,29 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary" href="{{route('admin.category.add')}}">Thêm danh mục</a>
+                                            <a class="btn btn-primary" href="{{ route('admin.category.add') }}">Thêm danh
+                                                mục</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <form action="{{route('admin.category.findName')}}" method="GET">
+                                        <form action="{{ route('admin.category.findName') }}" method="GET">
                                             <div id="basic-datatables_filter" class="dataTables_filter">
-                                                <label>Tìm kiếm:<input name="name" type="search"
+                                                <label>Tìm kiếm:
+                                                    <input name="name" type="search"
                                                         class="form-control form-control-sm" placeholder=""
-                                                        aria-controls="basic-datatables"></label>
+                                                        aria-controls="basic-datatables">
+                                                </label>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables" class="display table table-striped table-hover"
-                                            role="grid">
-                                            <thead>
-                                                <tr>
-                                                    <th>Mã danh mục</th>
-                                                    <th>Tên danh mục</th>
-                                                    <th>Mô tả</th>
-                                                    <th>Hàng động</th>
-                                                </tr>
-                                            </thead>
-                                            @if ($category)
-                                                <tbody>
-                                                    @foreach ($category as $key => $value)
-                                                        <tr>
-                                                            <td>{{ $value->id }}</td>
-                                                            <td>{{ $value->name ?? '' }}</td>
-                                                            <td>{!! $value->description !!}</td>
-                                                            <td style="text-align:center">
-                                                                <a class="btn btn-warning"
-                                                                    href="{{ route('admin.category.detail', ['id' => $value->id]) }}">Sửa</a>
-                                                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                    class="btn btn-danger"
-                                                                    href="{{ route('admin.category.delete', ['id' => $value->id]) }}">Xóa</a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            @else
-                                                <tr>
-                                                    <td class="text-center" colspan="6">
-                                                        <div class="">
-                                                            Không có danh mục
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </table>
+                                    <div class="col-sm-12" id="category-table">
+                                        @include('admin.category.table', ['category' => $category])
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="pagination">
                                         {{ $category->links('vendor.pagination.custom') }}
                                     </div>
                                 </div>
@@ -219,40 +190,71 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
-                $.notify({
-                    icon: 'icon-bell',
-                    title: 'Danh mục',
-                    message: '{{ session('success') }}',
-                }, {
-                    type: 'secondary',
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    time: 1000,
-                });
+    <script>
+        $(document).ready(function() {
+            // Xử lý link xóa danh mục
+            $(document).on('click', '.btn-delete', function() {
+                if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                    var categoryId = $(this).data('id');
+                    var deleteUrl = '{{ route('admin.category.delete', ['id' => ':id']) }}';
+                    deleteUrl = deleteUrl.replace(':id', categoryId);
+
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Cập nhật bảng danh mục
+                                $('#category-table').html(response.table);
+                                $('#pagination').html(response.pagination);
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Danh mục',
+                                    message: response.message,
+                                }, {
+                                    type: 'success',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            } else {
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Danh mục',
+                                    message: response.message,
+                                }, {
+                                    type: 'danger',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Danh mục',
+                                message: 'Xóa danh mục thất bại!',
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        }
+                    });
+                }
             });
-        </script>
-    @endif
-    @if (session('error'))
-        <script>
-            $(document).ready(function() {
-                $.notify({
-                    icon: 'icon-bell',
-                    title: 'Sản phẩm',
-                    message: '{{ session('error') }}',
-                }, {
-                    type: 'danger',
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    time: 1000,
-                });
-            });
-        </script>
-    @endif
+        });
+    </script>
 @endsection

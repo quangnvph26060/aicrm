@@ -80,7 +80,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
         Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
         Route::post('{id}', [ProductController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
         Route::get('product-images/{id}', [ProductController::class, 'deleteImagesProduct'])->name('deleteImagesProduct');
         Route::post('product-category', [ProductController::class, 'Changecategory'])->name('changecategory');
         Route::post('product-status', [ProductController::class, 'Changestatus'])->name('changestatus');
@@ -90,7 +90,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/',  [CategorieController::class, 'index'])->name('index');
         Route::get('/create', [CategorieController::class, 'add'])->name('add');
         Route::post('/create', [CategorieController::class, 'store'])->name('store');
-        Route::get('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
+        Route::delete('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
         Route::get('/detail/{id}', [CategorieController::class, 'edit'])->name('detail');
         Route::post('/update/{id}', [CategorieController::class, 'update'])->name('update');
         Route::get('search/name', [CategorieController::class, 'findByName'])->name('findName');
@@ -111,7 +111,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('', [BrandController::class, 'index'])->name('store');
         Route::get('add', [BrandController::class, 'addForm'])->name('addForm');
         Route::post('add', [BrandController::class, 'add'])->name('add');
-        Route::get('delete/{id}', [BrandController::class, 'delete'])->name('delete');
+        Route::delete('delete/{id}', [BrandController::class, 'delete'])->name('delete');
         Route::get('update/{id}', [BrandController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [BrandController::class, 'update'])->name('update');
         Route::get('search/name', [BrandController::class, 'findByName'])->name('findByName');
@@ -149,12 +149,12 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/filter', [CheckInventoryController::class, 'filterCheck'])->name('filter');
         Route::get('/detail/{id}', [CheckInventoryController::class, 'detail'])->name('detail');
     });
-    Route::prefix('support')->name('support.')->group(function(){
+    Route::prefix('support')->name('support.')->group(function () {
         Route::get('/', [SupportController::class, 'contact'])->name('lienhe');
     });
 })->middleware('checkRole:1');
 
-Route::middleware([ CheckLogin::class])->prefix('ban-hang')->name('staff.')->group(function () {
+Route::middleware([CheckLogin::class])->prefix('ban-hang')->name('staff.')->group(function () {
     Route::get('', [StaffProductController::class, 'index'])->name('index');
     Route::post('/cart/add', [StaffProductController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update', [StaffProductController::class, 'updateCart'])->name('cart.update');
