@@ -43,10 +43,6 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
-    public function getSupplierAttribute(){
-        return Supplier::where('id',$this->attributes['supplier_id'])->first();
-   }
-
     public function carts()
     {
         return $this->belongsToMany(Cart::class);

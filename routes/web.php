@@ -108,7 +108,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('update/{id}', [UserController::class, 'update'])->name('update');
         Route::get('add', [UserController::class, 'addForm'])->name('addForm');
         Route::post('add', [UserController::class, 'add'])->name('add');
-        Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete');
+        Route::delete('delete/{id}', [UserController::class, 'delete'])->name('delete');
         Route::post('updateAdmin/{id}', [UserController::class, 'updateadmin'])->name('updateAdmin');
         Route::get('search/phone', [UserController::class, 'findByPhone'])->name('findByPhone');
     });
@@ -127,7 +127,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/', [ClientController::class, 'index'])->name('index');
         Route::get('/detail/{id}', [ClientController::class, 'edit'])->name('detail');
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
-        Route::get('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
+        Route::delete('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
         Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
     });
     Route::prefix('supplier')->name('supplier.')->group(function () {
@@ -137,7 +137,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('/store', [SupplierController::class, 'store'])->name('store');
         Route::get('detail/{id}', [SupplierController::class, 'edit'])->name('detail');
         Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [SupplierController::class, 'delete'])->name('delete');
+        Route::delete('delete/{id}', [SupplierController::class, 'delete'])->name('delete');
     });
     Route::prefix('order')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');

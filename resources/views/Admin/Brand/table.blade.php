@@ -1,32 +1,28 @@
-<table id="basic-datatables" class="display table table-striped table-hover dataTable" role="grid"
-    aria-describedby="basic-datatables_info">
+<table class="table table-hover">
     <thead>
-        <tr role="row">
-            <th scope="col">Tên thương hiệu</th>
-            <th scope="col">Logo</th>
-            <th scope="col"></th>
+        <tr>
+            <th>ID</th>
+            <th>Tên thương hiệu</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
-        @if (!empty($brand))
-            @foreach ($brand as $item)
-                <tr>
-                    <td>{{ $item->name ?? '' }}</td>
-                    <td><img style="width: 5rem; height: 3.75rem;" src="{{ asset($item->logo) ?? '' }}" alt="">
-                    </td>
-                    <td>
-                        <a class="btn btn-warning"
-                            href="{{ route('admin.brand.edit', ['id' => $item->id]) }}">Sửa</a>
-                        <button class="btn btn-danger btn-delete" data-id="{{ $item->id }}">Xóa</button>
-                    </td>
-                </tr>
-            @endforeach
-        @else
+        @forelse ($brand as $item)
             <tr>
-                <td class="text-center" colspan="7">
-                    <div class="">Chưa có thương hiệu</div>
+                <td>{{ $item->id }}</td>
+                <td>{{ $item->name }}</td>
+                <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ route('admin.brand.edit', $item->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <button type="button" data-id="{{ $item->id }}"
+                        class="btn btn-danger btn-sm btn-delete">Xóa</button>
                 </td>
             </tr>
-        @endif
+        @empty
+            <tr>
+                <td colspan="4" class="text-center">Không có dữ liệu</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>

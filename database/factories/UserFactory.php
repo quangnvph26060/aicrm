@@ -22,16 +22,16 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'password' => '$2y$10$iU7kdoao42V91SFYllnby.zUlEfMKSwYYVKCW3SMvb5vry4kopEFi', // password
-            'store_name' => $this->faker->randomElement([
-                'TechStore', 'GadgetShop', 'BookBarn', 'ToyTown', 'FashionHub', 'SportsGear', 'HomeEssentials', 'PetPalace'
-            ]),
-            'domain' => $this->faker->domainName(),
-            'company_name' => $this->faker->company(),
-            'tax_code' => $this->faker->regexify('[A-Z0-9]{10}'),
+            // 'store_name' => $this->faker->randomElement([
+            //     'TechStore', 'GadgetShop', 'BookBarn', 'ToyTown', 'FashionHub', 'SportsGear', 'HomeEssentials', 'PetPalace'
+            // ]),
+            // 'domain' => $this->faker->domainName(),
+            // 'company_name' => $this->faker->company(),
+            // 'tax_code' => $this->faker->regexify('[A-Z0-9]{10}'),
             'address' => $this->faker->address(),
-            'role_id' => 1,
-            'city_id' => $this->faker->numberBetween(1, 63),
-            'field_id' => $this->faker->numberBetween(1, 12),
+            'role_id' => 2,
+            // 'city_id' => $this->faker->numberBetween(1, 63),
+            // 'field_id' => $this->faker->numberBetween(1, 12),
         ];
     }
 

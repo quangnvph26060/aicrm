@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\Client;
 use App\Services\ClientService;
 use Exception;
 use Illuminate\Http\Request;
@@ -78,11 +79,12 @@ class ClientController extends Controller
     {
         try {
             $this->clientService->deleteClient($id);
-            session()->flash('success', 'Xóa thông tin khách hàng thành công');
-            return redirect()->back();
-        } catch (\Exception $e) {
-            Log::error('Failed to delete client profile: ' . $e->getMessage());
-            return ApiResponse::error('Failed to update client profile ', 500);
+            $clients = Client::orderByDesc('created_at')->paginate(5); 
+            $view = view('admin.client.table', compact('clients'))->render();
+            return response()->json(['success' => true, 'message' => 'Xóa thành công!', 'table' => $view]);
+        } catch (Exception $e) {
+            Log::error('Failed to delete client: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Khách hàng không thể xóa.']);
         }
     }
 }

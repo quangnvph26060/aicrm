@@ -167,55 +167,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="basic-datatables"
-                                            class="display table table-striped table-hover dataTable" role="grid"
-                                            aria-describedby="basic-datatables_info">
-                                            <thead>
-                                                <tr>
-                                                    <th>STT</th>
-                                                    <th>Tên khách hàng</th>
-                                                    <th>SĐT</th>
-                                                    <th>Email</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th style="text-align: center">Hành động</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @if ($clients && $clients->count() > 0)
-                                                    @foreach ($clients as $key => $value)
-                                                        @if (is_object($value))
-                                                            <tr>
-                                                                <td>{{ ($clients->currentPage() - 1) * $clients->perPage() + $loop->index + 1 }}
-                                                                </td>
-                                                                <td>{{ $value->name ?? '' }}</td>
-                                                                <td>{{ $value->phone ?? '' }}</td>
-                                                                <td>{{ $value->email ?? '' }}</td>
-                                                                <td>{{ $value->address ?? '' }}</td>
-                                                                <td style="text-align:center">
-                                                                    <a class="btn btn-warning"
-                                                                        href="{{ route('admin.client.detail', ['id' => $value->id]) }}">Sửa</a>
-                                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                                                                        class="btn btn-danger"
-                                                                        href="{{ route('admin.client.delete', ['id' => $value->id]) }}">Xóa</a>
-                                                                </td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    <tr>
-                                                        <td class="text-center" colspan="6">
-                                                            <div class="">
-                                                                Chưa có khách hàng
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                        @if ($clients instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                                            {{ $clients->links('vendor.pagination.custom') }}
-                                        @endif
+                                    <div class="col-sm-12" id="client-table">
+                                    @include('admin.client.table', ['clients' => $clients])
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" id="pagination">
+                                        {{ $clients->links('vendor.pagination.custom') }}
                                     </div>
                                 </div>
                             </div>
@@ -225,6 +184,7 @@
             </div>
         </div>
     </div>
+     <!-- JavaScript code -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
     @if (session('success'))
@@ -243,6 +203,7 @@
                     time: 1000,
                 });
             });
-        </script>
+            </script>
     @endif
+
 @endsection

@@ -164,46 +164,10 @@
     <!-- JavaScript code -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
-                $.notify({
-                    icon: 'icon-bell',
-                    title: 'Thương hiệu',
-                    message: '{{ session('success') }}',
-                }, {
-                    type: 'secondary',
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    time: 1000,
-                });
-            });
-        </script>
-    @endif
-    @if (session('error'))
-        <script>
-            $(document).ready(function() {
-                $.notify({
-                    icon: 'icon-bell',
-                    title: 'Thương hiệu',
-                    message: '{{ session('error') }}',
-                }, {
-                    type: 'danger',
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    time: 1000,
-                });
-            });
-        </script>
-    @endif
     <script>
         $(document).ready(function() {
-            // Xử lý link xóa sản phẩm
-            $('.btn-delete').click(function() {
+            // Handle delete button click
+            $(document).on('click', '.btn-delete', function() {
                 if (confirm('Bạn có chắc chắn muốn xóa?')) {
                     var productId = $(this).data('id');
                     var deleteUrl = '{{ route('admin.product.delete', ['id' => ':id']) }}';
@@ -218,8 +182,10 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                $('#product-table').html(response
-                                    .table); // Cập nhật bảng sản phẩm
+                                // Update the table and pagination with the new HTML
+                                $('#product-table').html(response.table);
+                                $('#pagination').html(response.pagination);
+
                                 $.notify({
                                     icon: 'icon-bell',
                                     title: 'Sản phẩm',
@@ -264,6 +230,21 @@
                     });
                 }
             });
+
+            @if (session('success'))
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Sản phẩm',
+                    message: '{{ session('success') }}',
+                }, {
+                    type: 'secondary',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            @endif
         });
     </script>
 @endsection
