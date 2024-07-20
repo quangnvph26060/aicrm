@@ -9,8 +9,11 @@ use App\Models\Config;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Services\ClientService;
+use App\Services\DebtKHService;
 use App\Services\ProductService;
+use App\Services\ReceiptsService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,10 +33,14 @@ class ClientController extends Controller
     //
     protected $clientService;
     protected $productService;
-    public function __construct(ClientService $clientService, ProductService $productService)
+    protected $receiptsService;
+    protected $debtKHService;
+    public function __construct(ClientService $clientService, ProductService $productService, ReceiptsService $receiptsService, DebtKHService $debtKHService)
     {
         $this->clientService = $clientService;
         $this->productService = $productService;
+        $this->receiptsService = $receiptsService;
+        $this->debtKHService = $debtKHService;
     }
 
     public function addClient(Request $request)
@@ -85,6 +92,7 @@ class ClientController extends Controller
             $cartItems = Cart::where('user_id', $user->id)->get();
             $sum = 0;
             $client= array();
+            $trangthai = $request->status;
             foreach ($cartItems as $key => $item) {
                 $sum += $item->product->priceBuy * $item->amount;
                 $this->productService->updateProduct($item->product_id, ['quantity' => $item->product->quantity - $item->amount]);
@@ -110,7 +118,7 @@ class ClientController extends Controller
                     'user_id' => $user->id,
                     'client_id' => $client->id,
                     'total_money' => $sum,
-                    'status' => $request->status
+                    'status' => $trangthai
                 ]);
                 foreach ($cartItems as $key => $item) {
                     OrderDetail::create([
@@ -120,6 +128,31 @@ class ClientController extends Controller
                     ]);
                 }
 
+            }
+
+            if($trangthai != 4){
+                $data1 = [
+                    'content' => 'Thu từ khách hàng có số điện thoại '. $request->phone,
+                    'amount_spent' => $sum,
+                    'date_spent' => Carbon::now()->toDateString()
+                ];
+                $this->receiptsService->addReceipts($data1);
+            }else{
+                $ClientDebt = $this->debtKHService->getAllClientDebt()->pluck('client_id');
+                if($ClientDebt->contains($client->id)){
+                    $clientdebt = $this->debtKHService->findClientDebtByClient($client->id);
+                    $data2 = [
+                        'amount' => $client->amount + $sum,
+                    ];
+                    $this->debtKHService->updateClientDebt($data2, $client->id);
+                }else{
+                    $data = [
+                        'client_id' => $client->id,
+                        'amount' => $sum,
+                        'description' => 'Khách có số điện thoại '.$request->phone
+                    ];
+                    $this->debtKHService->addClientDebt($data);
+                }
             }
             Cart::where('user_id', $user->id)->delete();
             $config = Config::first();

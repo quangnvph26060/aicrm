@@ -131,12 +131,12 @@
                     <div class="collapse" id="sidebarthuchi">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.quanlythuchi.receipts.index') }}">
                                     <span class="sub-item">Phiếu thu</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.quanlythuchi.expense.index') }}">
                                     <span class="sub-item">Phiếu chi</span>
                                 </a>
                             </li>
@@ -175,22 +175,26 @@
                                     <span class="sub-item">Thống kê ngày</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="">
-                                    <span class="sub-item">Công nợ</span>
+                            <li class="nav-item">
+                                <a data-bs-toggle="collapse" href="#sidebarcongno">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>Cộng nợ</p>
+                                    <span class="caret"></span>
                                 </a>
-                                <ul>
-                                    <li>
-                                        <a href="">
-                                            <span class="sub-item">Khách hàng</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="">
-                                            <span class="sub-item">Nhà cung cấp</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <div class="collapse" id="sidebarcongno">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="{{ route('admin.debts.client') }}">
+                                                <span class="sub-item">Khách hàng</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('admin.debts.supplier') }}">
+                                                <span class="sub-item">Nhà cung cấp</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
 
                         </ul>

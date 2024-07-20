@@ -92,13 +92,13 @@
 </style>
 
 <div class="page-inner">
-    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0"
+    {{-- <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0"
         style="justify-content: flex-end">
         <div>
             <a class="btn btn-primary" target="_blank" href="{{ route('staff.index') }}" class="fw-bold mb-3 p-0">  <i style="padding-right: 10px" class="fas fa-cart-plus"></i>Bán hàng </a>
 
         </div>
-    </div>
+    </div> --}}
     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
         <div>
             <h3 class="fw-bold mb-3">Thống kê </h3>
