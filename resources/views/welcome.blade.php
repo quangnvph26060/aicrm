@@ -1,108 +1,108 @@
 @extends('admin.layout.index')
 
 @section('content')
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 
-    <style>
-        .slider-container {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            margin: auto;
-            max-height: 180px;
-        }
+<style>
+    .slider-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        margin: auto;
+        max-height: 180px;
+    }
 
-        .slider {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
+    .slider {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
 
-        .slide {
-            flex: 0 0 100%;
-            /* Đảm bảo mỗi slide chiếm full width */
-        }
+    .slide {
+        flex: 0 0 100%;
+        /* Đảm bảo mỗi slide chiếm full width */
+    }
 
-        .prev-btn,
-        .next-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            font-size: 20px;
-            z-index: 1;
-        }
+    .prev-btn,
+    .next-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        font-size: 20px;
+        z-index: 1;
+    }
 
-        .prev-btn {
-            left: 0;
-        }
+    .prev-btn {
+        left: 0;
+    }
 
-        .next-btn {
-            right: 0;
-        }
+    .next-btn {
+        right: 0;
+    }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            min-height: 375px;
-        }
+    .chart-container {
+        position: relative;
+        width: 100%;
+        min-height: 375px;
+    }
 
-        #statisticsChart {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
+    #statisticsChart {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
 
-        #myChartLegend {
-            margin-top: 10px;
-        }
+    #myChartLegend {
+        margin-top: 10px;
+    }
 
-        .chart-legend {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
+    .chart-legend {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
 
-        .chart-legend li {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
+    .chart-legend li {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+    }
 
-        .legend-color {
-            display: inline-block;
-            width: 20px;
-            height: 10px;
-            margin-right: 5px;
-            border-radius: 2px;
-        }
+    .legend-color {
+        display: inline-block;
+        width: 20px;
+        height: 10px;
+        margin-right: 5px;
+        border-radius: 2px;
+    }
 
-        #myChartLegend .legend-color {
-            vertical-align: middle;
-        }
-    </style>
+    #myChartLegend .legend-color {
+        vertical-align: middle;
+    }
 
-    <div class="page-inner">
-        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0"
-            style="justify-content: flex-end">
-            <div>
-                <a class="btn btn-primary" target="_blank" href="{{ route('staff.index') }}" class="fw-bold mb-3 p-0"> <i
-                        style="padding-right: 10px" class="fas fa-cart-plus"></i>Bán hàng </a>
+</style>
+
+<div class="page-inner">
+    {{-- <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-0 pb-0"
+        style="justify-content: flex-end">
+        <div>
+            <a class="btn btn-primary" target="_blank" href="{{ route('staff.index') }}" class="fw-bold mb-3 p-0">  <i style="padding-right: 10px" class="fas fa-cart-plus"></i>Bán hàng </a>
 
             </div>
         </div>
-        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
-            <div>
-                <h3 class="fw-bold mb-3">Thống kê </h3>
-            </div>
+    </div> --}}
+    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+        <div>
+            <h3 class="fw-bold mb-3">Thống kê </h3>
         </div>
 
         <div class="row">

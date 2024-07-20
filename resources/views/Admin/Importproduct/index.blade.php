@@ -77,7 +77,7 @@
     .btn-warning,
     .btn-danger,
     .btn-primary {
-        border-radius: 20px;
+        /* border-radius: 20px; */
         padding: 5px 15px;
         font-size: 14px;
         font-weight: bold;

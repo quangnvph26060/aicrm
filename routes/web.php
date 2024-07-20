@@ -15,8 +15,12 @@ use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Admin\DebtClientController;
+use App\Http\Controllers\Admin\DebtNccController;
+use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\importCouponController;
 use App\Http\Controllers\Admin\ImportProductController;
+use App\Http\Controllers\Admin\ReceiptController;
 use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
@@ -167,6 +171,22 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         // tạo phiếu
         Route::post('/importCoupon', [importCouponController::class, 'add'])->name('importCoupon.add');
         Route::get('/detail/{id}', [ImportProductController::class, 'importdetail'])->name('importCoupon.detail');
+    });
+
+    Route::prefix('debts')->name('debts.')->group(function(){
+         Route::get('/client', [DebtClientController::class, 'index'])->name('client');
+         Route::get('/supplier', [DebtNccController::class, 'index'])->name('supplier');
+    });
+
+    Route::prefix('quanlythuchi')->name('quanlythuchi.')->group(function(){
+        Route::prefix('receipts')->name('receipts.')->group(function(){ // phiếu thu
+             Route::get('/', [ReceiptController::class, 'index'])->name('index');
+        });
+        Route::prefix('expense')->name('expense.')->group(function(){ // phiếu chi
+            Route::get('/', [ExpenseController::class, 'index'])->name('index');
+            Route::get('/add', [ExpenseController::class, 'add'])->name('add');
+            Route::post('/add', [ExpenseController::class, 'addSubmit'])->name('addSubmit');
+       });
     });
 })->middleware('checkRole:1');
 
