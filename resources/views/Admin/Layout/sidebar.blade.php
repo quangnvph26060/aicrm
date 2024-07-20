@@ -143,13 +143,6 @@
                         </ul>
                     </div>
                 </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
-                        <i class="fas fa-cogs"></i>
-                        <p>Cấu hình</p>
-                    </a>
-                </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.support.lienhe') }}">
                         <i class="fas fa-medkit"></i>
@@ -196,7 +189,12 @@
                         </ul>
                     </div>
                 </li>
-
+                <li class="nav-item">
+                    <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
+                        <i class="fas fa-cogs"></i>
+                        <p>Cấu hình</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

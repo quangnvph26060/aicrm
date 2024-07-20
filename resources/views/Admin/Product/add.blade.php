@@ -195,6 +195,14 @@
                                                         style="font-weight: 500" id="image_error"></span> </div>
                                             </div>
                                             <div>
+                                                <label for="example-search-input" class="form-label">Đơn vị<span
+                                                        class="text text-danger">*</span></label>
+                                                <input value="" min='1' required class="form-control"
+                                                    name="product_unit" type="text" id="product_unit">
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                        style="font-weight: 500" id="product_unit_error"></span> </div>
+                                            </div>
+                                            {{-- <div>
                                                 <label for="example-text-input" class="form-label">Trạng thái<span
                                                         class="text text-danger">*</span></label>
                                                 <select class="form-control" name="status" id="status">
@@ -209,7 +217,7 @@
                                                 <div class="col-lg-9"><span class="invalid-feedback d-block"
                                                         style="font-weight: 500" id="status_error"></span> </div>
 
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         {{-- <div class="col-lg-12">
                                             <label for="">Nhà cung cấp</label>
@@ -317,14 +325,24 @@
                     'message': generateErrorMessage('E011')
                 }, ]
             },
-            'status': {
-                'element': document.getElementById('status'),
-                'error': document.getElementById('status_error'),
+            // 'status': {
+            //     'element': document.getElementById('status'),
+            //     'error': document.getElementById('status_error'),
+            //     'validations': [{
+            //         'func': function(value) {
+            //             return checkRequired(value);
+            //         },
+            //         'message': generateErrorMessage('E017')
+            //     }, ]
+            // },
+            'product_unit': {
+                'element': document.getElementById('product_unit'),
+                'error': document.getElementById('product_unit_error'),
                 'validations': [{
                     'func': function(value) {
                         return checkRequired(value);
                     },
-                    'message': generateErrorMessage('E017')
+                    'message': generateErrorMessage('E045')
                 }, ]
             },
             // 'description': {

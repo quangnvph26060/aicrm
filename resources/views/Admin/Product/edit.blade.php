@@ -1,7 +1,7 @@
 @extends('admin.layout.index')
 @section('content')
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
@@ -158,22 +158,23 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Chỉnh sửa thông tin sản phẩm số {{ $products->id }}</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Chỉnh sửa thông tin sản phẩm số
+                            {{ $products->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form action="{{ route('admin.product.update', ['id' => $products->id]) }}" id="editproduct" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('admin.product.update', ['id' => $products->id]) }}" id="editproduct"
+                                method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="example-text-input" class="form-label">Tên sản phẩm <span
                                                     class="text text-danger">*</span></label>
-                                            <input class="form-control" name="name" type="text"
-                                                id="name" value="{{ $products->name }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                    id="name_error"></span> </div>
+                                            <input class="form-control" name="name" type="text" id="name"
+                                                value="{{ $products->name }}" required>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="name_error"></span> </div>
                                         </div>
 
                                         <div class="mb-3">
@@ -186,8 +187,8 @@
                                                         value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                id="brand_error"></span> </div>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="brand_error"></span> </div>
                                         </div>
 
                                         <div class="mb-3">
@@ -195,17 +196,17 @@
                                                     class="text text-danger">*</span></label>
                                             <input required class="form-control" name="price" type="number"
                                                 id="price" value="{{ $products->price }}">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                    id="price_error"></span> </div>
-                                            </div>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="price_error"></span> </div>
+                                        </div>
 
                                         <div class="mb-3">
                                             <label for="example-search-input" class="form-label">Giá bán <span
                                                     class="text text-danger">*</span></label>
                                             <input required class="form-control" name="priceBuy" type="number"
                                                 id="priceBuy" value="{{ $products->priceBuy }}">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                    id="priceBuy_error"></span> </div>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="priceBuy_error"></span> </div>
                                         </div>
                                     </div>
 
@@ -215,8 +216,8 @@
                                                     class="text text-danger">*</span></label>
                                             <input required class="form-control" name="quantity" type="number"
                                                 id="quantity" value="{{ $products->quantity }}">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                    id="quantity_error"></span> </div>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="quantity_error"></span> </div>
                                         </div>
 
                                         <div class="mb-3">
@@ -229,24 +230,16 @@
                                                         value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                id="category_id_error"></span> </div>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="category_id_error"></span> </div>
                                         </div>
-
                                         <div class="mb-3">
-                                            <label for="example-text-input" class="form-label">Trạng thái<span
+                                            <label for="example-url-input" class="form-label">Đơn vị <span
                                                     class="text text-danger">*</span></label>
-                                            <select class="form-control" name="status" id="status">
-                                                <option value="">Chọn trạng thái</option>
-                                                <option {{ $products->status == 'published' ? 'selected' : '' }}
-                                                    value="published">Được phát hành</option>
-                                                <option {{ $products->status == 'inactive' ? 'selected' : '' }}
-                                                    value="inactive">Không hoạt động</option>
-                                                <option {{ $products->status == 'scheduled' ? 'selected' : '' }}
-                                                    value="scheduled">Lên kế hoạch</option>
-                                            </select>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                                id="status_error"></span> </div>
+                                            <input required class="form-control" name="product_unit" type="text"
+                                                id="product_unit" value="{{ $products->product_unit }}">
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="product_unit_error"></span> </div>
                                         </div>
                                     </div>
 
@@ -254,7 +247,7 @@
                                         <div class="mb-3">
                                             <label for="example-text-input" class="form-label">Ảnh sản phẩm <span
                                                     class="text text-danger"></span></label>
-                                            <input  class="form-control" id="images" type="file" name="images[]"
+                                            <input class="form-control" id="images" type="file" name="images[]"
                                                 multiple accept="image/*">
                                             <div style="display: flex">
                                                 @foreach ($products->images as $key => $item)
@@ -277,13 +270,14 @@
                                                     class="text text-danger">*</span></label>
                                             <textarea class="form-control" id="description" name="description" rows="2">{{ $products->description }}</textarea>
                                         </div>
-                                        <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                            id="description_error"></span> </div>
+                                        <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                style="font-weight: 500" id="description_error"></span> </div>
                                     </div>
 
                                     <div class="text-center mt-4">
                                         <div>
-                                            <button type="button" onclick="submiteditProduct(event)" class="btn btn-primary w-md">
+                                            <button type="button" onclick="submiteditProduct(event)"
+                                                class="btn btn-primary w-md">
                                                 Xác nhận
                                             </button>
                                         </div>
@@ -298,80 +292,79 @@
     </div>
 
     <script>
-     CKEDITOR.replace('description');
-    var validateorder = {
+        CKEDITOR.replace('description');
+        var validateorder = {
             'name': {
                 'element': document.getElementById('name'),
                 'error': document.getElementById('name_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E010')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E010')
+                }, ]
             },
             'brand_id': {
                 'element': document.getElementById('brand_id'),
                 'error': document.getElementById('brand_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E027')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E027')
+                }, ]
             },
             'category_id': {
                 'element': document.getElementById('category_id'),
                 'error': document.getElementById('category_id_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E015')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E015')
+                }, ]
             },
             'quantity': {
                 'element': document.getElementById('quantity'),
                 'error': document.getElementById('quantity_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E013')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E013')
+                }, ]
             },
             'price': {
                 'element': document.getElementById('price'),
                 'error': document.getElementById('price_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E012')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E012')
+                }, ]
             },
             'priceBuy': {
                 'element': document.getElementById('priceBuy'),
                 'error': document.getElementById('priceBuy_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E012')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E012')
+                }, ]
             },
+            'product_unit': {
+                'element': document.getElementById('product_unit'),
+                'error': document.getElementById('product_unit_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E045')
+                }, ]
+            },
+
             // 'images': {
             //     'element': document.getElementById('images'),
             //     'error': document.getElementById('image_error'),
@@ -384,38 +377,35 @@
             //         },
             //     ]
             // },
-            'status': {
-                'element': document.getElementById('status'),
-                'error': document.getElementById('status_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E017')
-                    },
-                ]
-            },
+            // 'status': {
+            //     'element': document.getElementById('status'),
+            //     'error': document.getElementById('status_error'),
+            //     'validations': [{
+            //         'func': function(value) {
+            //             return checkRequired(value);
+            //         },
+            //         'message': generateErrorMessage('E017')
+            //     }, ]
+            // },
             'description': {
                 'element': document.getElementById('description'),
                 'error': document.getElementById('description_error'),
-                'validations': [
-                    {
-                        'func': function(value){
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('E016')
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                ]
+                    'message': generateErrorMessage('E016')
+                }, ]
             },
 
         }
-        function submiteditProduct(event){
+
+        function submiteditProduct(event) {
             event.preventDefault();
-          console.log(validateorder);
-            if(validateAllFields(validateorder)){
+            console.log(validateorder);
+            if (validateAllFields(validateorder)) {
                 document.getElementById('editproduct').submit();
             }
         }
-</script>
+    </script>
 @endsection
