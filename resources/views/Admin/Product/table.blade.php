@@ -6,7 +6,7 @@
             <th>STT</th>
             <th>Tên</th>
             <th>Thương hiệu</th>
-            <th>Số lượng</th>
+            <th>Số lượng(đơn vị)</th>
             <th>Giá nhập</th>
             <th>Giá bán</th>
             <th>Hành động</th>
@@ -18,7 +18,7 @@
                 <td>{{ ($product->currentPage() - 1) * $product->perPage() + $loop->index + 1 }}</td>
                 <td>{{ $value->name ?? '' }}</td>
                 <td>{{ $value->brands->name ?? '' }}</td>
-                <td>{{ $value->quantity ?? '' }}</td>
+                <td>{{ $value->quantity ?? '' }} {{ $value->product_unit ?? '' }}</td>
                 <td>{{ number_format($value->price) ?? '' }} đ</td>
                 <td>{{ number_format($value->priceBuy) ?? '' }} đ</td>
                 <td align="center">

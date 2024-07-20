@@ -114,6 +114,7 @@ function generateErrorMessage(code, values = []) {
         E024: 'Điện thoại không để trống',
         E025: 'Email không được để trống',
         E026: 'Tài khoản không để trống',
+        E045: 'Đơn vị không được để trống',
         // thuong hieu
         E027: ' Thương hiệu không để trống',
         E028: ' Logo không để trống',

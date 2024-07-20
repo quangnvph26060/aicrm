@@ -31,6 +31,7 @@ class DashboardController extends Controller
             $daily = $this->dashboardService->getDailySale();
             $newClient = $this->dashboardService->getNewestClient();
             $newOrder = $this->dashboardService->getNewestOrder();
+            // dd($newOrder->client->name);0
             $newStaff = $this->dashboardService->getNewestStaff();
             return view('welcome', compact('clientnumber', 'ordernumber', 'amount', 'daily', 'newClient', 'newOrder', 'newStaff', 'getMonthlyRevenue', 'totalAnnualRevenue', 'title'));
         } catch (Exception $e) {
