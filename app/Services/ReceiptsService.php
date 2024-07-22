@@ -56,4 +56,16 @@ class ReceiptsService
         }
     }
 
+    public function updateReceipt($data, $client){
+        try {
+            Log::info('Fetching update receipts');
+            $receipts = $this->receipts->where('client_id', $client)->first();
+            $update = $receipts->update($data);
+            return $update;
+        } catch (Exception $e) {
+            Log::error('Failed to get update receipts: ' . $e->getMessage());
+            throw new Exception('Failed to get update receipts');
+        }
+    }
+
 }
