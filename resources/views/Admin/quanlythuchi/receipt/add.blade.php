@@ -107,7 +107,7 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="{{ route('admin.quanlythuchi.expense.index') }}">Quản lý chi</a>
+                <a href="{{ route('admin.quanlythuchi.expense.index') }}">Quản lý thu</a>
             </li>
             <li class="separator">
                 <i class="icon-arrow-right"></i>
@@ -122,30 +122,30 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title" style="text-align: center; color:#fff">Thêm phiếu chi</h4>
+                    <h4 class="card-title" style="text-align: center; color:#fff">Thêm phiếu thu</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.quanlythuchi.expense.addSubmit') }}" method="post" id="addexpense" enctype="multipart/form-data">
+                    <form action="{{ route('admin.quanlythuchi.receipts.addSubmit') }}" method="post" id="addreceipt" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="content">Nhà cung cấp:</label>
-                                    <select class="form-control" name="supplier" id="supplier">
-                                        <option value="">--- Chọn nhà cung cấp ---</option>
-                                        @foreach ($debtNcc as $item)
-                                        <option value="{{ $item->supplier_id }}">{{ $item->supplier->name }}</option>
+                                    <label for="content">Khách hàng:</label>
+                                    <select class="form-control" name="client" id="client">
+                                        <option value="">--- Chọn khách hàng---</option>
+                                        @foreach ($debtClient as $item)
+                                        <option value="{{ $item->client_id }}">{{ $item->client->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                        id="supplier_error"></span> </div>
+                                        id="client_error"></span> </div>
                                 </div>
 
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="amount_spent">Số tiền :</label>
-                                    <input type="number" class="form-control" min="1000" value="1000" id="amount_spent" name="amount_spent" required>
+                                    <input type="number" class="form-control" min="1000" max="" value="" id="amount_spent" name="amount_spent" required>
                                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                                         id="amount_spent_error"></span> </div>
                                 </div>
@@ -157,14 +157,14 @@
                                 <div class="form-group">
                                     <label for="content">Nội dung:</label>
                                     <input type="text" class="form-control" id="content" name="content" >
+                                    <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                        id="content_error"></span> </div>
                                 </div>
-                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
-                                    id="content_error"></span> </div>
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary" onclick="addexpense(event)">Lưu</button>
+                            <button type="button" class="btn btn-primary" onclick="addreceipts(event)">Lưu</button>
                         </div>
                     </form>
                 </div>
@@ -172,18 +172,17 @@
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function(){
-        $("#supplier").change(function(){
-            var supplier = $(this).val();
-            if(supplier > 0){
+        $("#client").change(function(){
+            var client = $(this).val();
+            if(client > 0){
                 $.ajax({
-                    url: '{{ route('admin.quanlythuchi.expense.debt') }}',
+                    url: '{{ route('admin.quanlythuchi.receipts.debt') }}',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        supplier: supplier,
+                        client: client,
                     },
                     success: function(data) {
                         $('#amount_spent').val(parseInt(data.replace(",", ""), 10));
@@ -191,7 +190,7 @@
                     },
                 });
             }else{
-                $('#amount_spent').val();
+                $('#amount_spent').val('');
             }
 
         })
@@ -199,15 +198,15 @@
 </script>
 <script>
     var validateorder = {
-        'supplier': {
-            'element': document.getElementById('supplier'),
-            'error': document.getElementById('supplier_error'),
+        'client': {
+            'element': document.getElementById('client'),
+            'error': document.getElementById('client_error'),
             'validations': [
                 {
                     'func': function(value){
                         return checkRequired(value);
                     },
-                    'message': generateErrorMessage('TC001')
+                    'message': generateErrorMessage('TC003')
                 },
             ]
         },
@@ -236,10 +235,10 @@
             ]
         },
     }
-    function addexpense(event){
+    function addreceipts(event){
         event.preventDefault();
         if(validateAllFields(validateorder)){
-            document.getElementById('addexpense').submit();
+            document.getElementById('addreceipt').submit();
         }
     }
 </script>

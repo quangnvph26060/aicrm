@@ -27,6 +27,16 @@ class SupplierService
         }
     }
 
+    public function GetSuppliersAll()
+    {
+        try {
+            return $this->supplier->get();
+        } catch (Exception $e) {
+            Log::error('Failed to fetch Supplier : ' . $e->getMessage());
+            throw new Exception('Failed to fetch Supplier');
+        }
+    }
+
     public function findSupplierByPhone($phone)
     {
         try {

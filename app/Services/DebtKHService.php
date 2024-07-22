@@ -58,4 +58,15 @@ class DebtKHService
         }
     }
 
+    public function delete($client_id){
+        try {
+            Log::info('Fetching delete clientDebt');
+            $receipt = $this->clientDebt->where('client_id', $client_id)->first();
+            return $receipt->delete();
+        } catch (Exception $e) {
+            Log::error('Failed to  delete clientDebt: ' . $e->getMessage());
+            throw new Exception('Failed to delete clientDebt');
+        }
+    }
+
 }

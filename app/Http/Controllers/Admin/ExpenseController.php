@@ -3,36 +3,78 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExpenseDetail;
+use App\Models\Supplier;
+use App\Services\DebtNccService;
 use App\Services\ExpenseService;
+use App\Services\SupplierService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {
     protected $expenseService;
-    public function __construct(ExpenseService $expenseService){
+    protected $supplierService;
+    protected $debtNccService;
+    public function __construct(ExpenseService $expenseService, SupplierService $supplierService, DebtNccService $debtNccService){
         $this->expenseService = $expenseService;
+        $this->supplierService = $supplierService;
+        $this->debtNccService = $debtNccService;
     }
 
     public function index(){
         $title = 'Quản lý chi';
+        $debtncc = $this->debtNccService->getAllSupplierDebt();
         $expenses = $this->expenseService->getAllExpense();
-        return view('admin.quanlythuchi.expense.index', compact('expenses', 'title'));
+        return view('admin.quanlythuchi.expense.index', compact('expenses', 'title', 'debtncc'));
     }
 
     public function add(){
         $title = 'Quản lý chi';
-        return view('admin.quanlythuchi.expense.add', compact( 'title'));
+        $debtNcc = $this->debtNccService->getAllSupplierDebt();
+        return view('admin.quanlythuchi.expense.add', compact('title', 'debtNcc'));
     }
 
     public function addSubmit(Request $request){
         $currentDate = Carbon::now()->format('Y-m-d');
-        $data = [
-            'content' => $request->content,
-            'amount_spent' => $request->amount_spent,
-            'date_spent' => $currentDate
+        $supplier = Supplier::find($request->supplier);
+        $expenses = $this->expenseService->getAllExpense()->pluck('supplier_id');
+        if($expenses->contains($request->supplier)){
+            $expense = $this->expenseService->findExpenseBysupplier($request->supplier);
+            $expensedata = [
+                'amount_spent' => $request->amount_spent + $expense->amount_spent,
+            ];
+            $this->expenseService->updateExpense($expensedata, $request->supplier);
+            ExpenseDetail::create([
+                'expense_id' => $expense->id,
+                'content' => $request->content,
+                'amount' => $request->amount_spent,
+                'date' => Carbon::now()->toDateString(),
+            ]);
+        }else{
+            $add = [
+                'supplier_id' => $request->supplier,
+                'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
+                'amount_spent' => $request->amount_spent,
+                'date_spent' => Carbon::now()->toDateString(),
+            ];
+            $expense = $this->expenseService->addExpense($add);
+            ExpenseDetail::create([
+                'expense_id' => $expense->id,
+                'content' => $request->content,
+                'amount' => $request->amount_spent,
+                'date' => Carbon::now()->toDateString(),
+            ]);
+        }
+        $debtClient = $this->debtNccService->findSupplierDebtBySupplier($request->supplier);
+        $updatedebt = [
+            'amount' => $debtClient->amount -  $request->amount_spent,
         ];
-        $this->expenseService->addExpense($data);
+        $this->debtNccService->updateSupplierDebt($updatedebt,$request->supplier );
+        $debtnew = $this->debtNccService->findSupplierDebtBySupplier($request->supplier );
+        if($debtnew->amount == 0){
+            $this->debtNccService->delete($request->supplier);
+        }
         return redirect()->route('admin.quanlythuchi.expense.index')->with('success', 'Tạo phiếu thành công !');
     }
 
@@ -40,5 +82,11 @@ class ExpenseController extends Controller
         $title = 'Quản lý chi';
         $expenses = $this->expenseService->findExpenseById($id);
         return view('admin.quanlythuchi.expense.detail', compact('expenses', 'title'));
+    }
+
+    public function debt(Request $request){
+        $supplier = $request->supplier;
+        $debt = $this->debtNccService->findSupplierDebtBySupplier($supplier);
+        return  response()->json(explode(',', $debt->amount)[0]);
     }
 }

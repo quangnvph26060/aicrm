@@ -149,6 +149,11 @@ function generateErrorMessage(code, values = []) {
         R051: ' Địa chỉ không được để trống',
         R052: ' Email đã tồn tại trong hệ thống',
         R053: ' Số điện thoại không hợp lê',
+        // thu chi
+        TC001: 'Không  để trống nhà cung cấp',
+        TC002: 'Không để trống tiền ',
+        TC003: 'Không để trống khách hàng',
+        TC004: 'Nội dung không được để trống'
     };
     const errorMessage = errorMessages[code];
     if (typeof errorMessage === 'function') {

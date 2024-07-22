@@ -150,7 +150,18 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                <div class="row">
+                                    @if(count($debtClient) >0)
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="dataTables_length" id="basic-datatables_length">
+                                                <a class="btn btn-primary" href="{{ route('admin.quanlythuchi.receipts.add') }}">
+                                                    <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chi
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
 
+                                </div>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <table id="basic-datatables"
