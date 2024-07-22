@@ -131,6 +131,9 @@
                                         <div class="dataTables_length" id="basic-datatables_length">
                                             <a class="btn btn-primary" href="{{ route('admin.product.addForm') }}">Thêm sản
                                                 phẩm</a>
+
+                                                <a class="btn btn-primary" href="{{ route('admin.product.formimport') }}">Thêm sản
+                                                    phẩm bằng excel</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">

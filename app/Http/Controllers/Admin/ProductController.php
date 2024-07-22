@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\ProductNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\Brand;
 use App\Models\Categories;
 use App\Models\Product;
 use App\Services\BrandService;
@@ -17,6 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
+use PHPExcel_IOFactory;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ProductController extends Controller
 {
@@ -130,5 +133,45 @@ class ProductController extends Controller
             Log::error('Failed to delete product: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Sản phẩm không thể xóa.']);
         }
+    }
+
+    public function formimport(){
+        return view('admin.product.importexcel');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        $file = $request->file('file')->getRealPath();
+        $spreadsheet = IOFactory::load($file);
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray();
+        //  dd(array_slice($rows, 1));
+        foreach (array_slice($rows, 1) as $row) {
+
+            if (isset($row[0]) && !empty($row[0])) {
+                $brand = Brand::where('name',$row[4] )->first();
+                $category = Categories::where('name',$row[5] )->first();
+                $data = [
+                    'name' => $row[0],
+                    'price' => $row[1],
+                    'priceBuy' => $row[2],
+                    'quantity' => $row[3],
+                    'brand_id' =>$brand->id,
+                    'category_id' => $category->id,
+                    'product_unit' => $row[6],
+                    'status' => 'published',
+                    'description' => $row[7],
+                    'images' => [],
+                ];
+                $this->productService->createProduct($data);
+            }
+        }
+
+        return redirect()->route('admin.product.store')->with('success', 'Thêm sản phẩm thành công');
+
     }
 }
