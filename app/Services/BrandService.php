@@ -33,6 +33,18 @@ class BrandService
         }
     }
 
+    public function getBrandAll()
+    {
+        try {
+            Log::info('Fetching all categories');
+            $categories = $this->brand->get();
+            return $categories;
+        } catch (Exception $e) {
+            Log::error('Failed to fetch brand: ' . $e->getMessage());
+            throw new Exception('Failed to fetch brand');
+        }
+    }
+
     /**
      * Summary of createBrand
      * @param array $data
