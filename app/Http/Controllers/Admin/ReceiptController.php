@@ -20,5 +20,11 @@ class ReceiptController extends Controller
         return view('admin.quanlythuchi.receipt.index', compact('receipts', 'title'));
     }
 
+    public function detail($id){
+        $title = 'Quản lý thu';
+        $receipts = $this->receiptsService->findReceiptById($id);
+        return view('admin.quanlythuchi.receipt.detail', compact('receipts', 'title'));
+    }
+
 
 }

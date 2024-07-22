@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ExpenseDetail;
 use App\Models\Import;
 use App\Models\ImportCoupon;
 use App\Models\Supplier;
@@ -62,16 +63,39 @@ class importCouponController extends Controller
             }
 
         }
-        
+
 
         if($totalncc > 0){
             $supplier = Supplier::find($supplier_id);
-            $expense = [
-                'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
-                'amount_spent' => $totalncc,
-                'date_spent' => Carbon::now()->toDateString(),
-            ];
-            $this->expenseService->addExpense($expense);
+            $expenses = $this->expenseService->getAllExpense()->pluck('supplier_id');
+            if($expenses->contains($supplier_id)){
+                $expense = $this->expenseService->findExpenseBysupplier($supplier_id);
+                $expensedata = [
+                    'amount_spent' => $totalncc + $expense->amount_spent,
+                ];
+                $this->expenseService->updateExpense($expensedata, $supplier_id);
+                ExpenseDetail::create([
+                    'expense_id' => $expense->id,
+                    'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
+                    'amount' => $totalncc,
+                    'date' => Carbon::now()->toDateString(),
+                ]);
+            }else{
+                $add = [
+                    'supplier_id' => $supplier_id,
+                    'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
+                    'amount_spent' => $totalncc,
+                    'date_spent' => Carbon::now()->toDateString(),
+                ];
+                $expense = $this->expenseService->addExpense($add);
+                ExpenseDetail::create([
+                    'expense_id' => $expense->id,
+                    'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
+                    'amount' => $totalncc,
+                    'date' => Carbon::now()->toDateString(),
+                ]);
+            }
+
         }
 
         $importCoupon = $this->ImportProductService->addImportCoupon($data);

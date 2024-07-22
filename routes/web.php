@@ -181,9 +181,11 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::prefix('quanlythuchi')->name('quanlythuchi.')->group(function(){
         Route::prefix('receipts')->name('receipts.')->group(function(){ // phiếu thu
              Route::get('/', [ReceiptController::class, 'index'])->name('index');
+             Route::get('/detail/{id}', [ReceiptController::class, 'detail'])->name('detail');
         });
         Route::prefix('expense')->name('expense.')->group(function(){ // phiếu chi
             Route::get('/', [ExpenseController::class, 'index'])->name('index');
+            Route::get('/detail/{id}', [ExpenseController::class, 'detail'])->name('detail');
             Route::get('/add', [ExpenseController::class, 'add'])->name('add');
             Route::post('/add', [ExpenseController::class, 'addSubmit'])->name('addSubmit');
        });

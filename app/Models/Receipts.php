@@ -13,10 +13,20 @@ class Receipts extends Model
 
     protected $fillable = [
         'content',
+        'client_id',
         'amount_spent',
         'date_spent',
-        'receipt_code '
+        'receipt_code'
     ];
+
+    protected $appends  = ['client', 'detail'];
+
+    public function getClientAttribute(){
+        return Client::where('id',$this->attributes['client_id'])->first();
+    }
+    public function getDetailAttribute(){
+        return ReceiptDetail::where('receipt_id',$this->attributes['id'])->get();
+    }
 
     public static function boot()
     {

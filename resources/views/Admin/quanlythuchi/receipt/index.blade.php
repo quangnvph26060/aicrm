@@ -131,7 +131,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="">Khách hàng</a>
+                    <a href="">Phiếu thu</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -160,6 +160,7 @@
                                                 <tr>
                                                     <th>STT</th>
                                                     <th>Mã phiếu</th>
+                                                    <th>Khách hàng</th>
                                                     <th>Nội dung</th>
                                                     <th>Tiền thu</th>
                                                     <th>Ngày tạo</th>
@@ -171,7 +172,8 @@
                                                         @if (is_object($value))
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
-                                                                <td>{{ $value->receipt_code ?? '' }}</td>
+                                                                <td><a href="{{ route('admin.quanlythuchi.receipts.detail', ['id' => $value->id]) }}">{{ $value->receipt_code ?? '' }}</a></td>
+                                                                <td>{{ $value->client->name ?? '' }}</td>
                                                                 <td>{{ $value->content ?? '' }}</td>
                                                                 <td>{{ number_format($value->amount_spent) ?? '' }}</td>
                                                                 <td>{{ $value->date_spent ?? '' }}</td>
