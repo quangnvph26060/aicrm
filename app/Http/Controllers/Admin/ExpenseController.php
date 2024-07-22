@@ -35,4 +35,10 @@ class ExpenseController extends Controller
         $this->expenseService->addExpense($data);
         return redirect()->route('admin.quanlythuchi.expense.index')->with('success', 'Tạo phiếu thành công !');
     }
+
+    public function detail($id){
+        $title = 'Quản lý chi';
+        $expenses = $this->expenseService->findExpenseById($id);
+        return view('admin.quanlythuchi.expense.detail', compact('expenses', 'title'));
+    }
 }

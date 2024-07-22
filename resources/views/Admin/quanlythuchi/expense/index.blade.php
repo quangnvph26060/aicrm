@@ -131,7 +131,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="">Khách hàng</a>
+                    <a href="">Phiếu chi</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -168,9 +168,10 @@
                                                 <tr>
                                                     <th>STT</th>
                                                     <th>Mã phiếu</th>
+                                                    <th>Nhà cung cấp</th>
                                                     <th>Nội dung</th>
                                                     <th>Tiền chi</th>
-                                                    <th>Ngày tạo</th>
+                                                    <th>Ngày cập nhật</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -179,10 +180,12 @@
                                                         @if (is_object($value))
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
-                                                                <td>{{ $value->expense_code ?? '' }}</td>
+
+                                                                <td><a href="{{ route('admin.quanlythuchi.expense.detail', ['id' => $value->id]) }}">{{ $value->expense_code ?? '' }}</a></td>
+                                                                <td>{{ $value->supplier->name ?? '' }}</td>
                                                                 <td>{{ $value->content ?? '' }}</td>
                                                                 <td>{{ number_format($value->amount_spent) ?? '' }}</td>
-                                                                <td>{{ $value->date_spent ?? '' }}</td>
+                                                                <td>{{ $value->updated_at ?? '' }}</td>
                                                             </tr>
                                                         @endif
                                                     @endforeach
@@ -190,7 +193,7 @@
                                                     <tr>
                                                         <td class="text-center" colspan="6">
                                                             <div class="">
-                                                                Chưa có khách hàng
+
                                                             </div>
                                                         </td>
                                                     </tr>

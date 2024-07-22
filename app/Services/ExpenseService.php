@@ -34,6 +34,38 @@ class ExpenseService
         }
     }
 
+    public function updateExpense($data, $supplier){
+        try {
+            Log::info('Fetching update Expense');
+            $expense = $this->expense->where('supplier_id', $supplier)->first();
+            $update = $expense->update($data);
+            return $update;
+        } catch (Exception $e) {
+            Log::error('Failed to get update expense: ' . $e->getMessage());
+            throw new Exception('Failed to get update expense');
+        }
+    }
+
+    public function findExpenseBysupplier( $supplier){
+        try {
+            Log::info('Fetching find Expense');
+            $expenses = $this->expense->where('supplier_id', $supplier)->first();
+            return $expenses;
+        } catch (Exception $e) {
+            Log::error('Failed to get find expense: ' . $e->getMessage());
+            throw new Exception('Failed to get find expense');
+        }
+    }
+    public function findExpenseById($id){
+        try {
+            Log::info('Fetching find expense ');
+            $receipt = $this->expense->find($id);
+            return $receipt;
+        } catch (Exception $e) {
+            Log::error('Failed to  find expense: ' . $e->getMessage());
+            throw new Exception('Failed to find expense ');
+        }
+    }
 
 
 }

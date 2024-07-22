@@ -34,4 +34,26 @@ class ReceiptsService
         }
     }
 
+    public function findRecieptByClient($client){
+        try {
+            Log::info('Fetching find receipts by client');
+            $receipt = $this->receipts->where('client_id', $client)->first();
+            return $receipt;
+        } catch (Exception $e) {
+            Log::error('Failed to  add receipts: ' . $e->getMessage());
+            throw new Exception('Failed to find receipts by client');
+        }
+    }
+
+    public function findReceiptById($id){
+        try {
+            Log::info('Fetching find receipts ');
+            $receipt = $this->receipts->find($id);
+            return $receipt;
+        } catch (Exception $e) {
+            Log::error('Failed to  add receipts: ' . $e->getMessage());
+            throw new Exception('Failed to find receipts');
+        }
+    }
+
 }
