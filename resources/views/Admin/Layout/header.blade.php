@@ -25,73 +25,49 @@
             <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px">
                 <marquee id="demoMarquee" scrollamount="7" style="color: red">
                     <span>Thông báo: Đây là phiên bản demo của phần mềm quản lý bán hàng AICRM. Quý khách hàng có nhu
-                        cầu trải nghiệm phần mềm đăng ký
-                        <a href="http://aicrm.vn/dang-ky" id="marqueeLink">tại đây</a>
-                    </span>
+                        cầu trải nghiệm phần mềm đăng ký <a href="http://aicrm.vn/dang-ky" id="marqueeLink">tại
+                            đây</a></span>
                 </marquee>
             </div>
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-
+                <!-- Notifications -->
                 <li class="nav-item topbar-icon dropdown hidden-caret">
-                    <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-envelope"></i>
+                        <i class="fa fa-bell"></i>
+                        <span class="notification">{{ $notifications->count() ?? '0' }}</span>
                     </a>
-                    <ul class="dropdown-menu messages-notif-box animated fadeIn" aria-labelledby="messageDropdown">
+                    <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                         <li>
-                            <div class="dropdown-title d-flex justify-content-between align-items-center">
-                                Messages
-                                <a href="#" class="small">Mark all as read</a>
+                            <div class="dropdown-title">
+                                You have {{ $notifications->count() }} new notification
                             </div>
                         </li>
                         <li>
-                            <div class="scroll-wrapper message-notif-scroll scrollbar-outer"
-                                style="position: relative;">
-                                <div class="message-notif-scroll scrollbar-outer scroll-content"
+                            <div class="scroll-wrapper notif-scroll scrollbar-outer" style="position: relative;">
+                                <div class="notif-scroll scrollbar-outer scroll-content"
                                     style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 0px;">
                                     <div class="notif-center">
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="../assets/img/jm_denis.jpg" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Jimmy Denis</span>
-                                                <span class="block"> How are you ? </span>
-                                                <span class="time">5 minutes ago</span>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="../assets/img/chadengle.jpg" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Chad</span>
-                                                <span class="block"> Ok, Thanks ! </span>
-                                                <span class="time">12 minutes ago</span>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="../assets/img/mlane.jpg" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Jhon Doe</span>
-                                                <span class="block">
-                                                    Ready for the meeting today...
-                                                </span>
-                                                <span class="time">12 minutes ago</span>
-                                            </div>
-                                        </a>
-                                        <a href="#">
-                                            <div class="notif-img">
-                                                <img src="{{ asset('assets/img/talha.jpg') }}" alt="Img Profile">
-                                            </div>
-                                            <div class="notif-content">
-                                                <span class="subject">Talha</span>
-                                                <span class="block"> Hi, Apa Kabar ? </span>
-                                                <span class="time">17 minutes ago</span>
-                                            </div>
-                                        </a>
+                                        @foreach ($notifications as $item)
+                                            @php
+                                                $createdAt = $item->created_at;
+                                                $timeElapsed = Carbon\Carbon::parse($createdAt)
+                                                    ->locale('vi')
+                                                    ->diffForHumans();
+                                            @endphp
+                                            <a href="{{ route('admin.order.detail', ['id' => $item->id]) }}"
+                                                class="notification-item mark-as-read" data-id="{{ $item->id }}">
+                                                <div class="notif-icon notif-primary">
+                                                    <i class="fas fa-shopping-cart"></i>
+                                                </div>
+                                                <div class="notif-content">
+                                                    <span class="block"><b>{{ $item->client->name }} </b>vừa mua
+                                                        hàng</span>
+                                                    <span class="time">{{ $timeElapsed }}</span>
+                                                </div>
+                                            </a>
+                                        @endforeach
+
                                     </div>
                                 </div>
                                 <div class="scroll-element scroll-x">
@@ -111,102 +87,20 @@
                             </div>
                         </li>
                         <li>
-                            <a class="see-all" href="javascript:void(0);">See all messages<i
-                                    class="fa fa-angle-right"></i>
-                            </a>
+                            <a class="see-all" href="javascript:void(0);">See all notifications<i
+                                    class="fa fa-angle-right"></i></a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a class="dropdown-toggle profile-pic"  target="_blank" href="{{ route('staff.index') }}"
+                    <a class="dropdown-toggle profile-pic" target="_blank" href="{{ route('staff.index') }}"
                         aria-expanded="false">
-                        <i style="font-size: 16px; padding: 0px 5px; color: rgb(138, 135, 135)" class="fas fa-cart-plus"></i>
+                        <i style="font-size: 16px; padding: 0px 5px; color: rgb(138, 135, 135)"
+                            class="fas fa-cart-plus"></i>
                     </a>
 
                 </li>
-                {{-- <li class="nav-item topbar-icon dropdown hidden-caret">
-                    <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fas fa-layer-group"></i>
-                    </a>
-                    <div class="dropdown-menu quick-actions animated fadeIn">
-                        <div class="quick-actions-header">
-                            <span class="title mb-1">Quick Actions</span>
-                            <span class="subtitle op-7">Shortcuts</span>
-                        </div>
-                        <div class="scroll-wrapper quick-actions-scroll scrollbar-outer" style="position: relative;">
-                            <div class="quick-actions-scroll scrollbar-outer scroll-content"
-                                style="height: auto; margin-bottom: 0px; margin-right: 0px; max-height: 0px;">
-                                <div class="quick-actions-items">
-                                    <div class="row m-0">
-                                        <a class="col-6 col-md-4 p-0" href="#">
-                                            <div class="quick-actions-item">
-                                                <div class="avatar-item bg-danger rounded-circle">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </div>
-                                                <span class="text">Calendar</span>
-                                            </div>
-                                        </a>
-                                        <a class="col-6 col-md-4 p-0" href="#">
-                                            <div class="quick-actions-item">
-                                                <div class="avatar-item bg-warning rounded-circle">
-                                                    <i class="fas fa-map"></i>
-                                                </div>
-                                                <span class="text">Maps</span>
-                                            </div>
-                                        </a>
-                                        <a class="col-6 col-md-4 p-0" href="#">
-                                            <div class="quick-actions-item">
-                                                <div class="avatar-item bg-info rounded-circle">
-                                                    <i class="fas fa-file-excel"></i>
-                                                </div>
-                                                <span class="text">Reports</span>
-                                            </div>
-                                        </a>
-                                        <a class="col-6 col-md-4 p-0" href="#">
-                                            <div class="quick-actions-item">
-                                                <div class="avatar-item bg-success rounded-circle">
-                                                    <i class="fas fa-envelope"></i>
-                                                </div>
-                                                <span class="text">Emails</span>
-                                            </div>
-                                        </a>
-                                        <a class="col-6 col-md-4 p-0" href="#">
-                                            <div class="quick-actions-item">
-                                                <div class="avatar-item bg-primary rounded-circle">
-                                                    <i class="fas fa-file-invoice-dollar"></i>
-                                                </div>
-                                                <span class="text">Invoice</span>
-                                            </div>
-                                        </a>
-                                        <a class="col-6 col-md-4 p-0" href="#">
-                                            <div class="quick-actions-item">
-                                                <div class="avatar-item bg-secondary rounded-circle">
-                                                    <i class="fas fa-credit-card"></i>
-                                                </div>
-                                                <span class="text">Payments</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="scroll-element scroll-x">
-                                <div class="scroll-element_outer">
-                                    <div class="scroll-element_size"></div>
-                                    <div class="scroll-element_track"></div>
-                                    <div class="scroll-bar"></div>
-                                </div>
-                            </div>
-                            <div class="scroll-element scroll-y">
-                                <div class="scroll-element_outer">
-                                    <div class="scroll-element_size"></div>
-                                    <div class="scroll-element_track"></div>
-                                    <div class="scroll-bar"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li> --}}
-
+                <!-- User Profile -->
                 <li class="nav-item topbar-user dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">
@@ -235,7 +129,7 @@
                                             <div style="display: flex">
                                                 <a href="{{ route('admin.detail', ['id' => session('authUser')->id]) }}"
                                                     class="btn btn-xs btn-secondary btn-sm p-1">Trang cá nhân</a>
-                                                <a href="#" class="btn btn-xs  btn-sm p-1"
+                                                <a href="#" class="btn btn-xs btn-sm p-1"
                                                     style="background: red; color: #ffff; margin-left: 10px"
                                                     onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">Đăng
                                                     xuất</a>
@@ -247,7 +141,6 @@
                                         </div>
                                     </div>
                                 </li>
-
                             </div>
                             <div class="scroll-element scroll-x">
                                 <div class="scroll-element_outer">
@@ -271,16 +164,18 @@
     </nav>
     <!-- End Navbar -->
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Marquee control
         var marquee = document.getElementById('demoMarquee');
-
-        marquee.addEventListener('mouseenter', function() {
-            marquee.stop();
-        });
-
-        marquee.addEventListener('mouseleave', function() {
-            marquee.start();
-        });
+        if (marquee) {
+            marquee.addEventListener('mouseenter', function() {
+                marquee.stop();
+            });
+            marquee.addEventListener('mouseleave', function() {
+                marquee.start();
+            });
+        }
     });
 </script>

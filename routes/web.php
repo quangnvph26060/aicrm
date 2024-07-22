@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\DebtNccController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\importCouponController;
 use App\Http\Controllers\Admin\ImportProductController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ReceiptController;
 use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
@@ -159,7 +160,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/', [SupportController::class, 'contact'])->name('lienhe');
     });
 
-    Route::prefix('importproduct')->name('importproduct.')->group(function(){
+    Route::prefix('importproduct')->name('importproduct.')->group(function () {
         Route::get('/', [ImportProductController::class, 'index'])->name('index');
         Route::get('/add', [ImportProductController::class, 'add'])->name('add');
         Route::get('/import', [ImportProductController::class, 'listImport'])->name('import');
@@ -173,26 +174,29 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/detail/{id}', [ImportProductController::class, 'importdetail'])->name('importCoupon.detail');
     });
 
-    Route::prefix('debts')->name('debts.')->group(function(){
-         Route::get('/client', [DebtClientController::class, 'index'])->name('client');
-         Route::get('/supplier', [DebtNccController::class, 'index'])->name('supplier');
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::post('/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('markAsRead');
     });
 
-    Route::prefix('quanlythuchi')->name('quanlythuchi.')->group(function(){
-        Route::prefix('receipts')->name('receipts.')->group(function(){ // phiếu thu
-             Route::get('/', [ReceiptController::class, 'index'])->name('index');
-             Route::get('/detail/{id}', [ReceiptController::class, 'detail'])->name('detail');
-             Route::get('/add', [ReceiptController::class, 'add'])->name('add');
-             Route::post('/add', [ReceiptController::class, 'addSubmit'])->name('addSubmit');
-             Route::post('/debt', [ReceiptController::class, 'debt'])->name('debt');
+    Route::prefix('debts')->name('debts.')->group(function () {
+        Route::get('/client', [DebtClientController::class, 'index'])->name('client');
+        Route::get('/supplier', [DebtNccController::class, 'index'])->name('supplier');
+    });
+    Route::prefix('quanlythuchi')->name('quanlythuchi.')->group(function () {
+        Route::prefix('receipts')->name('receipts.')->group(function () { // phiếu thu
+            Route::get('/', [ReceiptController::class, 'index'])->name('index');
+            Route::get('/detail/{id}', [ReceiptController::class, 'detail'])->name('detail');
+            Route::get('/add', [ReceiptController::class, 'add'])->name('add');
+            Route::post('/add', [ReceiptController::class, 'addSubmit'])->name('addSubmit');
+            Route::post('/debt', [ReceiptController::class, 'debt'])->name('debt');
         });
-        Route::prefix('expense')->name('expense.')->group(function(){ // phiếu chi
+        Route::prefix('expense')->name('expense.')->group(function () { // phiếu chi
             Route::get('/', [ExpenseController::class, 'index'])->name('index');
             Route::get('/detail/{id}', [ExpenseController::class, 'detail'])->name('detail');
             Route::get('/add', [ExpenseController::class, 'add'])->name('add');
             Route::post('/add', [ExpenseController::class, 'addSubmit'])->name('addSubmit');
             Route::post('/debt', [ExpenseController::class, 'debt'])->name('debt');
-       });
+        });
     });
 })->middleware('checkRole:1');
 

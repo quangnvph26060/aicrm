@@ -8,7 +8,6 @@ use App\Models\Cart;
 use App\Models\Config;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\ReceiptDetail;
 use App\Services\ClientService;
 use App\Services\DebtKHService;
 use App\Services\ProductService;
@@ -132,39 +131,12 @@ class ClientController extends Controller
             }
 
             if($trangthai != 4){
-                $listreceipt = $this->receiptsService->getAllReceipts()->pluck('client_id');
-                if($listreceipt->contains($client->id)){
-                    $receipt = $this->receiptsService->findRecieptByClient($client->id);
-                    $data1 = [
-                        'amount_spent' => $sum + $receipt->amount_spent,
-                        'date_spent' => Carbon::now()->toDateString()
-                    ];
-                    $receipt->updateClientDebt($data1);
-                    $detail = [
-                        'receipt_id'=> $receipt->id,
-                        'content' => 'Thu từ khách hàng có số điện thoại '. $request->phone,
-                        'amount' => $sum,
-                        'date' => Carbon::now()->toDateString()
-                    ];
-                    ReceiptDetail::create($detail);
-
-                }else{
-                    $data1 = [
-                        'client_id' => $client->id,
-                        'content' => 'Thu từ khách hàng có số điện thoại '. $request->phone,
-                        'amount_spent' => $sum,
-                        'date_spent' => Carbon::now()->toDateString()
-                    ];
-                    $receipt = $this->receiptsService->addReceipts($data1);
-                    $detail = [
-                        'receipt_id'=> $receipt->id,
-                        'content' => 'Thu từ khách hàng có số điện thoại '. $request->phone,
-                        'amount' => $sum,
-                        'date' => Carbon::now()->toDateString()
-                    ];
-                    ReceiptDetail::create($detail);
-                }
-
+                $data1 = [
+                    'content' => 'Thu từ khách hàng có số điện thoại '. $request->phone,
+                    'amount_spent' => $sum,
+                    'date_spent' => Carbon::now()->toDateString()
+                ];
+                $this->receiptsService->addReceipts($data1);
             }else{
                 $ClientDebt = $this->debtKHService->getAllClientDebt()->pluck('client_id');
                 if($ClientDebt->contains($client->id)){
@@ -182,7 +154,6 @@ class ClientController extends Controller
                     $this->debtKHService->addClientDebt($data);
                 }
             }
-
             Cart::where('user_id', $user->id)->delete();
             $config = Config::first();
             $html = view('Themes.pages.bill.index', compact('cartItems','sum', 'client', 'user', 'config'))->render();
