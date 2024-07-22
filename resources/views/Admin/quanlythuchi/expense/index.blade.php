@@ -150,16 +150,17 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                                @if (count($debtncc) >0)
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary" href="{{ route('admin.quanlythuchi.expense.add') }}">
-                                                <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chi
-                                            </a>
+                                @if (count($debtncc) > 0)
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="dataTables_length" id="basic-datatables_length">
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('admin.quanlythuchi.expense.add') }}">
+                                                    <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chi
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endif
 
                                 <div class="row">
@@ -184,7 +185,9 @@
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
 
-                                                                <td><a href="{{ route('admin.quanlythuchi.expense.detail', ['id' => $value->id]) }}">{{ $value->expense_code ?? '' }}</a></td>
+                                                                <td><a style="color: black; font-weight:bold"
+                                                                        href="{{ route('admin.quanlythuchi.expense.detail', ['id' => $value->id]) }}">{{ $value->expense_code ?? '' }}</a>
+                                                                </td>
                                                                 <td>{{ $value->supplier->name ?? '' }}</td>
                                                                 <td>{{ $value->content ?? '' }}</td>
                                                                 <td>{{ number_format($value->amount_spent) ?? '' }}</td>
@@ -194,11 +197,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td class="text-center" colspan="6">
-                                                            <div class="">
-
-                                                            </div>
-                                                        </td>
+                                                        <td class="text-center" colspan="6">Chưa có phiếu chi nào</td>
                                                     </tr>
                                                 @endif
                                             </tbody>

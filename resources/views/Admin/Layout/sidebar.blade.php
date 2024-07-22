@@ -24,7 +24,7 @@
             <ul class="nav nav-secondary">
                 <li class="nav-item active">
                     <a href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-tachometer-alt"></i>
+                        <i class="fas fa-chart-bar"></i>
                         <p>Tổng quan</p>
                     </a>
                 </li>
@@ -37,7 +37,7 @@
 
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarsanpham">
-                        <i class="fas fa-box-open"></i>
+                        <i class="fas fa-boxes"></i>
                         <p>Sản phẩm</p>
                         <span class="caret"></span>
                     </a>
@@ -124,7 +124,7 @@
 
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarthuchi">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-coins"></i>
                         <p>Quản lý thu chi</p>
                         <span class="caret"></span>
                     </a>
@@ -145,7 +145,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.support.lienhe') }}">
-                        <i class="fas fa-medkit"></i>
+                        <i class="fas fa-headset"></i>
                         <p>Hỗ trợ</p>
                     </a>
                 </li>
@@ -170,8 +170,8 @@
                             </li>
                             <li class="nav-item">
                                 <a data-bs-toggle="collapse" href="#sidebarcongno">
-                                    <i class="fas fa-chart-line"></i>
-                                    <p>Cộng nợ</p>
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                    <p>Công nợ</p>
                                     <span class="caret"></span>
                                 </a>
                                 <div class="collapse" id="sidebarcongno">
