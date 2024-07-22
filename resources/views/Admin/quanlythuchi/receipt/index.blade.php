@@ -151,10 +151,11 @@
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    @if(count($debtClient) >0)
+                                    @if (count($debtClient) > 0)
                                         <div class="col-sm-12 col-md-6">
                                             <div class="dataTables_length" id="basic-datatables_length">
-                                                <a class="btn btn-primary" href="{{ route('admin.quanlythuchi.receipts.add') }}">
+                                                <a class="btn btn-primary"
+                                                    href="{{ route('admin.quanlythuchi.receipts.add') }}">
                                                     <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chi
                                                 </a>
                                             </div>
@@ -183,7 +184,9 @@
                                                         @if (is_object($value))
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
-                                                                <td><a href="{{ route('admin.quanlythuchi.receipts.detail', ['id' => $value->id]) }}">{{ $value->receipt_code ?? '' }}</a></td>
+                                                                <td><a style="color: black; font-weight:bold"
+                                                                        href="{{ route('admin.quanlythuchi.receipts.detail', ['id' => $value->id]) }}">{{ $value->receipt_code ?? '' }}</a>
+                                                                </td>
                                                                 <td>{{ $value->client->name ?? '' }}</td>
                                                                 <td>{{ $value->content ?? '' }}</td>
                                                                 <td>{{ number_format($value->amount_spent) ?? '' }}</td>
@@ -193,11 +196,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td class="text-center" colspan="6">
-                                                            <div class="">
-
-                                                            </div>
-                                                        </td>
+                                                        <td class="text-center" colspan="6">Chưa có phiếu thu nào</td>
                                                     </tr>
                                                 @endif
                                             </tbody>

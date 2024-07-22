@@ -201,7 +201,7 @@
                                                     <tr>
                                                         <td class="text-center" colspan="6">
                                                             <div class="">
-                                                                Chưa có khách hàng
+                                                                Chưa có công nợ nhà cung cấp
                                                             </div>
                                                         </td>
                                                     </tr>
