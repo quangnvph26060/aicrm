@@ -155,19 +155,46 @@ class ProductController extends Controller
             if (isset($row[0]) && !empty($row[0])) {
                 $brand = Brand::where('name',$row[4] )->first();
                 $category = Categories::where('name',$row[5] )->first();
-                $data = [
-                    'name' => $row[0],
-                    'price' => $row[1],
-                    'priceBuy' => $row[2],
-                    'quantity' => $row[3],
-                    'brand_id' =>$brand->id,
-                    'category_id' => $category->id,
-                    'product_unit' => $row[6],
-                    'status' => 'published',
-                    'description' => $row[7],
-                    'images' => [],
-                ];
-                $this->productService->createProduct($data);
+                $products = $this->productService->getProductAll_Staff()->pluck('name');
+                if($products->contains($row[0])){
+                    $product = Product::where('name' ,$row[0])->first();
+                    if($product->brands_id == $brand->id && $product->category_id ==$category->id && $product->product_unit == $row[6] ){
+                        $data = [
+                            'price' => $row[1],
+                            'priceBuy' => $row[2],
+                            'quantity' => $product->quantity +  $row[3],
+                        ];
+                        $this->productService->updateProduct($product->id, $data);
+                    }else{
+                        $data = [
+                            'name' => $row[0],
+                            'price' => $row[1],
+                            'priceBuy' => $row[2],
+                            'quantity' => $row[3],
+                            'brand_id' =>$brand->id,
+                            'category_id' => $category->id,
+                            'product_unit' => $row[6],
+                            'status' => 'published',
+                            'description' => $row[7],
+                            'images' => [],
+                        ];
+                        $this->productService->createProduct($data);
+                    }
+                }else{
+                    $data = [
+                        'name' => $row[0],
+                        'price' => $row[1],
+                        'priceBuy' => $row[2],
+                        'quantity' => $row[3],
+                        'brand_id' =>$brand->id,
+                        'category_id' => $category->id,
+                        'product_unit' => $row[6],
+                        'status' => 'published',
+                        'description' => $row[7],
+                        'images' => [],
+                    ];
+                    $this->productService->createProduct($data);
+                }
             }
         }
 

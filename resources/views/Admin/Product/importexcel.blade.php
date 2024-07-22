@@ -163,7 +163,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <form action="{{ route('admin.product.import') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.product.import') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateFile()">
                                 @csrf
                                 <input type="file" name="file" required>
                                 <button type="submit">Thêm</button>
@@ -175,5 +175,17 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function validateFile() {
+            const fileInput = document.querySelector('input[type="file"]');
+            const filePath = fileInput.value;
+            const allowedExtensions = /(\.xlsx|\.xls)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Vui lòng chọn một file Excel (các file có đuôi .xlsx hoặc .xls).');
+                fileInput.value = '';
+                return false;
+            }
+            return true;
+        }
+    </script>
 @endsection
