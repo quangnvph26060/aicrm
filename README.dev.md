@@ -11,3 +11,8 @@ php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
 composer require barryvdh/laravel-dompdf
 
 php artisan vendor:publish --tag=laravel-pagination
+
+22/7
+composer require phpoffice/phpspreadsheet
+
+

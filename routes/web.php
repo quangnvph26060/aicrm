@@ -83,6 +83,8 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::post('/changePassword', [AdminController::class, 'changePassword'])->name('changePassword');
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
+        Route::get('import', [ProductController::class, 'formimport'])->name('formimport');
+        Route::post('import', [ProductController::class, 'import'])->name('import');
         Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
         Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
         Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
