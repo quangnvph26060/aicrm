@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
     protected $orderService;
-    public function __construct(OrderService $orderService)
+    protected $order;
+    public function __construct(OrderService $orderService, Order $order)
     {
         $this->orderService = $orderService;
+        $this->order = $order;
     }
     public function index()
     {
@@ -50,6 +52,10 @@ class OrderController extends Controller
         $title = 'Chi tiết đơn hàng';
         try {
             $order = $this->orderService->getOrderbyID($id);
+            if ($order->notification == 1) {
+                $order->notification = 0;
+                $order->save();
+            }
             return view('admin.order.detail', compact('order', 'title'));
         } catch (\Exception $e) {
             Log::error('Failed to find order');
