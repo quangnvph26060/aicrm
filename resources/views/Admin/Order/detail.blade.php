@@ -30,19 +30,27 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><i class="fas fa-user"></i> Tên khách hàng</th>
-                                            <td><div class="nowrap">{{ $order->client->name }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->client->name }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-phone"></i> Số điện thoại</th>
-                                            <td><div class="nowrap">{{ $order->client->phone }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->client->phone }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-envelope"></i> Email</th>
-                                            <td><div class="nowrap">{{ $order->client->email }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->client->email }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-map-marker-alt"></i> Địa chỉ nhận</th>
-                                            <td><div class="nowrap">{{ $order->receive_address }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->receive_address }}</div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -53,11 +61,15 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><i class="fas fa-receipt"></i> Mã đơn hàng</th>
-                                            <td><div class="nowrap">{{ $order->id }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->id }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-user-tie"></i> Tên nhân viên</th>
-                                            <td><div class="nowrap">{{ $order->user->name }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->user->name }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-box-open"></i> Sản phẩm</th>
@@ -65,18 +77,35 @@
                                                 @foreach ($order->orderDetails as $item)
                                                     <div class="d-flex justify-content-between nowrap">
                                                         <span>{{ $item->product->name }} x{{ $item->quantity }}</span>
-                                                        <span>{{ number_format($item->product->price * $item->quantity) }} VND</span>
+                                                        <span>{{ number_format($item->product->price * $item->quantity) }}
+                                                            VND</span>
                                                     </div>
                                                 @endforeach
                                             </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-money-bill-wave"></i> Tổng tiền</th>
-                                            <td><div class="nowrap">{{ number_format($order->total_money) }} VND</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ number_format($order->total_money) }} VND</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><i class="fas fa-hand-holding-usd"></i> Trạng thái</th>
+                                            @if ($order->status == 4)
+                                                <td>
+                                                    <div class="nowrap">Công nợ</div>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <div class="nowrap">Đã thanh toán</div>
+                                                </td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-barcode"></i> Mã bưu điện</th>
-                                            <td><div class="nowrap">{{ $order->client->zip_code }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $order->client->zip_code }}</div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

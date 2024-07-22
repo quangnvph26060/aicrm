@@ -35,7 +35,9 @@
                     <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell"></i>
-                        <span class="notification">{{ $notifications->count() ?? '0' }}</span>
+                        @if ($notifications->count() > 0)
+                            <span class="notification">{{ $notifications->count() ?? '0' }}</span>
+                        @endif
                     </a>
                     <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                         <li>
