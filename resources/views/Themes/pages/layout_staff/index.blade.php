@@ -232,15 +232,17 @@ $j(document).ready(function() {
             url: '{{ route('staff.product.get') }}',
             type: 'GET',
             success: function(data) {
+                console.log(data);
                 var productContainer = $j('#productContainer');
                 productContainer.empty();
                 // list = data.data;
                 data.forEach(function(item) {
+                var images = item.images && item.images.length > 0 ? item.images[0].image_path : '';
                 var productHtml = `
                     <div class="col-md-2 mb-3" style="cursor: pointer;">
                         <div class="product-item1" title="${item.name}">
                             <div class="card-body listproduct" data-id="${item.id}">
-                            <img src="${item.images[0].image_path}" alt="" style="width: 145px; height: 60px;">
+                            <img src="${images}" alt="" style="width: 145px; height: 60px;">
                             <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
                             <div style="display: flex; justify-content: space-between;">
                                 <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>

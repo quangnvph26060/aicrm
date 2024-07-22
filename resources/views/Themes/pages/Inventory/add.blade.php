@@ -240,8 +240,9 @@
                                 <li data-id="{{ $item->id }}" class="product_inventory">
                                     <div style="display: flex; ">
                                         <div class="mr-4">
-                                            <img style="width: 80px ; height: 70px;"
-                                                src="{{ asset($item->images[0]->image_path) }}" alt="">
+
+                                                <img style="width: 80px ; height: 70px;" src="{{ !empty($item->images) && isset($item->images[0]->image_path) ? asset($item->images[0]->image_path) : '' }}" alt="">
+
                                         </div>
                                         <div class="ovh">
                                             <p class="txtB ng-binding">{{ $item->name }} <span
