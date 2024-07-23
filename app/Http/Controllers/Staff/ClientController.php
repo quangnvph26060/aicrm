@@ -140,7 +140,7 @@ class ClientController extends Controller
                         'amount_spent' => $sum + $receipt->amount_spent,
                         'date_spent' => Carbon::now()->toDateString()
                     ];
-                    $receipt->updateClientDebt($data1);
+                    $this->receiptsService->updateReceipt($data1,$client->id);
                     $detail = [
                         'receipt_id' => $receipt->id,
                         'content' => 'Thu từ khách hàng có số điện thoại ' . $request->phone,
@@ -165,12 +165,12 @@ class ClientController extends Controller
                     ReceiptDetail::create($detail);
                 }
 
-                $data1 = [
-                    'content' => 'Thu từ khách hàng có số điện thoại ' . $request->phone,
-                    'amount_spent' => $sum,
-                    'date_spent' => Carbon::now()->toDateString()
-                ];
-                $this->receiptsService->addReceipts($data1);
+                // $data1 = [
+                //     'content' => 'Thu từ khách hàng có số điện thoại ' . $request->phone,
+                //     'amount_spent' => $sum,
+                //     'date_spent' => Carbon::now()->toDateString()
+                // ];
+                // $this->receiptsService->addReceipts($data1);
             } else {
                 $ClientDebt = $this->debtKHService->getAllClientDebt()->pluck('client_id');
                 if ($ClientDebt->contains($client->id)) {

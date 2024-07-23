@@ -156,7 +156,7 @@
                                             <div class="dataTables_length" id="basic-datatables_length">
                                                 <a class="btn btn-primary"
                                                     href="{{ route('admin.quanlythuchi.receipts.add') }}">
-                                                    <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chi
+                                                    <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chu
                                                 </a>
                                             </div>
                                         </div>
