@@ -77,11 +77,11 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <h5 class="text-center text-primary"><b>Thông tin đơn hàng</b></h5>
+                                <h5 class="text-center text-primary"><b>Thông tin phiếu chi</b></h5>
                                 <table class="table table-bordered table-hover detail_import">
                                     <tbody>
                                         <tr>
-                                            <th scope="row"><i class="fas fa-receipt"></i> Mã đơn hàng</th>
+                                            <th scope="row"><i class="fas fa-receipt"></i> Mã phiếu chi</th>
                                             <td><div class="nowrap">{{ $expenses->expense_code }}</div></td>
                                         </tr>
                                         <tr>
