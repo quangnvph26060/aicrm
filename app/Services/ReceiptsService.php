@@ -16,7 +16,7 @@ class ReceiptsService
     public function getAllReceipts(){
         try {
             Log::info('Fetching all receipts');
-            return $this->receipts->orderByDesc('created_at')->get();
+            return $this->receipts->orderByDesc('updated_at')->get();
         } catch (Exception $e) {
             Log::error('Failed to fetch receipts: ' . $e->getMessage());
             throw new Exception('Failed to fetch receipts');

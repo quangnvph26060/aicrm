@@ -168,7 +168,7 @@
             <div class="card card-round">
                 <div class="card-header">
                     <div class="card-head-row">
-                        <div class="card-title">User Statistics</div>
+                        <div class="card-title">Thống kê doanh thu</div>
                         <div class="card-tools">
                             <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
                                 <span class="btn-label">
@@ -396,7 +396,7 @@
                                     </td>
                                     @else
                                     <td class="text-center">
-                                        <span class="badge badge-success">Công nợ</span>
+                                        <span style="background-color: red" class="badge badge-success">Công nợ</span>
                                     </td>
                                     @endif
                                 </tr>
