@@ -134,7 +134,7 @@
                                     <select class="form-control" name="client" id="client">
                                         <option value="">--- Chọn khách hàng---</option>
                                         @foreach ($debtClient as $item)
-                                        <option value="{{ $item->client_id }}">{{ $item->client->name }}</option>
+                                        <option value="{{ $item->client_id }}">{{ $item->client->name .' ( '. $item->client->phone .' ) ' }}</option>
                                         @endforeach
                                     </select>
                                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
