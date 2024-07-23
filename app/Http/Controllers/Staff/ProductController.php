@@ -26,10 +26,13 @@ class ProductController extends Controller
     {
         $title = "Quản lý bán hàng";
         $config = Config::first();
-        $product = $this->productService->getProductAll();
+        $product = $this->productService->getProductAll_Staff();
         $clients = $this->clientService->getAllClientStaff();
         $user = Auth::user();
         $cart =  Cart::where('user_id', $user->id)->get();
+        foreach ($cart as $key => $item) {
+                $item->delete();
+        }
         $sum = 0;
         foreach ($cart as $key => $value) {
             $sum += $value->product->priceBuy * $value->amount;
@@ -56,8 +59,6 @@ class ProductController extends Controller
             ->where('user_id', $user->id)
             ->first();
         $amount = $request->input('amount');
-
-
         if ($existingCartItem) {
             // Giảm số lượng xuống 0 hoặc loại bỏ sản phẩm khỏi giỏ hàng nếu giảm xuống dưới 1
                 $existingCartItem->update(['amount' => $existingCartItem->amount + 1]);
@@ -71,7 +72,10 @@ class ProductController extends Controller
             ]);
         }
 
-        $cartItems = Cart::where('user_id', $user->id)->get();
+
+        $cartItems = Cart::where('user_id', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
@@ -108,7 +112,10 @@ class ProductController extends Controller
 
         $existingCartItem->update(['amount' => $amount]);
 
-        $cartItems = Cart::where('user_id', $user->id)->get();
+        $cartItems = Cart::where('user_id', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
@@ -133,7 +140,10 @@ class ProductController extends Controller
 
         $cart = $request->input('cart');
         Cart::find($cart)->delete();
-        $cartItems = Cart::where('user_id', $user->id)->get();
+        $cartItems = Cart::where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {

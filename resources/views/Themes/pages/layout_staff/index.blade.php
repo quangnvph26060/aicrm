@@ -172,7 +172,7 @@
             <div class="row mt-4 main_note" style="margin: 0px;">
                 <div class="col-lg-8 mt-4 mb-4">
                     <div class="product-item">
-                        @if($cart)
+                        {{-- @if($cart)
                         @foreach ($cart as $item)
                         <div class="col-12 alert d-flex"
                             style="justify-content: space-between; margin: 0px; padding-bottom: 0px">
@@ -190,15 +190,16 @@
                             </div>
                         </div>
                         @endforeach
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
                 <div class="col-lg-4 mt-4 mb-4">
                     <ul class="list-unstyled">
                         <li class="d-flex justify-content-between align-items-center">
                             Tổng tiền hàng
-                            <span class="badge badge-primary badge-pill" id="total-amount">{{ number_format($sum)
-                                }}</span>
+                            <span class="badge badge-primary badge-pill" id="total-amount">
+                                0 {{-- {{ number_format($sum)}} --}}
+                            </span>
                         </li>
                         <li class="d-flex justify-content-between align-items-center mt-2">
                             Giảm giá
@@ -206,8 +207,9 @@
                         </li>
                         <li class="d-flex justify-content-between align-items-center mt-2">
                             Khách cần trả
-                            <span class="badge badge-primary badge-pill" id="total-to-pay">{{ number_format($sum)
-                                }}</span>
+                            <span class="badge badge-primary badge-pill" id="total-to-pay">
+                                0 {{-- {{ number_format($sum)}} --}}
+                            </span>
                         </li>
                     </ul>
                 </div>
@@ -237,12 +239,13 @@ $j(document).ready(function() {
                 productContainer.empty();
                 // list = data.data;
                 data.forEach(function(item) {
-                var images = item.images && item.images.length > 0 ? item.images[0].image_path : '';
+                var images = item.images && item.images.length > 0 ? item.images[0].image_path : 'public/images/1.jpg';
+                var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
                 var productHtml = `
                     <div class="col-md-2 mb-3" style="cursor: pointer;">
                         <div class="product-item1" title="${item.name}">
                             <div class="card-body listproduct" data-id="${item.id}">
-                            <img src="${images}" alt="" style="width: 145px; height: 60px;">
+                            <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
                             <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
                             <div style="display: flex; justify-content: space-between;">
                                 <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
@@ -282,18 +285,20 @@ $j(document).ready(function() {
 
                     if (data.length > 0) {
                         data.forEach(function(item) {
+                            var images = item.images && item.images.length > 0 ? item.images[0].image_path : 'public/images/1.jpg';
+                            var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
                             var productHtml = `
                                 <div class="col-md-2 mb-3" style="cursor: pointer;">
                                     <div class="product-item1" title="${item.name}">
                                         <div class="card-body listproduct" data-id="${item.id}">
-                                            <img src="${item.images[0].image_path}" alt="" style="width: 145px; height: 60px;">
-                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
-                                            <div style="display: flex; justify-content: space-between;">
-                                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
-                                                <p style="margin: 0px; cursor: pointer;">
-                                                    <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                                                </p>
-                                            </div>
+                                        <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
+                                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
+                                            <p style="margin: 0px; cursor: pointer;">
+                                            <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                                            </p>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -366,9 +371,11 @@ $j(document).ready(function() {
             var totalBill = $j('.totalBill');
             var totalPay = $j('.totalPay');
             var totalDue = $j('.totalDue');
-            totalBill.text(response.sum+ "VND"  );
-            totalPay.text(response.sum + "VND" );
-            totalDue.text(response.sum+ "VND" );
+            var dangchu = $j('#dangchu');
+            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+            totalBill.text(response.sum+ " VND"  );
+            totalPay.text(response.sum + " VND" );
+            totalDue.text(response.sum+ " VND" );
             total_amount.text(response.sum );
             var total_amount_to_pay = $j('#total-to-pay');
             total_amount_to_pay.text(response.sum );
@@ -405,9 +412,11 @@ $j(document).on('input', '.custom-input', function(e) {
             var totalBill = $j('.totalBill');
             var totalPay = $j('.totalPay');
             var totalDue = $j('.totalDue');
-            totalBill.text(response.sum + "VND" );
-            totalPay.text(response.sum + "VND" );
-            totalDue.text(response.sum+ "VND"  );
+            var dangchu = $j('#dangchu');
+            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+            totalBill.text(response.sum + " VND" );
+            totalPay.text(response.sum + " VND" );
+            totalDue.text(response.sum+ " VND"  );
             total_amount.text(response.sum );
             var total_amount_to_pay = $j('#total-to-pay');
             total_amount_to_pay.text(response.sum );
@@ -442,9 +451,11 @@ $j(document).on('click', '.closebtn', function(e) {
             var totalBill = $j('.totalBill');
             var totalPay = $j('.totalPay');
             var totalDue = $j('.totalDue');
-            totalBill.text(response.sum + "VND" );
-            totalPay.text(response.sum + "VND" );
-            totalDue.text(response.sum+ "VND"  );
+            var dangchu = $j('#dangchu');
+            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+            totalBill.text(response.sum + " VND" );
+            totalPay.text(response.sum + " VND" );
+            totalDue.text(response.sum+ " VND"  );
             total_amount.text(response.sum );
             var total_amount_to_pay = $j('#total-to-pay');
             total_amount_to_pay.text(response.sum );
@@ -541,6 +552,68 @@ function updateCartBill(cart) {
 
     }
 });
+
+function convertNumberToWords(num) {
+    const units = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+    const teens = ["mười", "mười một", "mười hai", "mười ba", "mười bốn", "mười lăm", "mười sáu", "mười bảy", "mười tám", "mười chín"];
+    const tens = ["", "", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+    const scales = ["", "nghìn", "triệu", "tỷ"];
+
+    if (num === 0) return "không đồng";
+
+    let words = [];
+
+    function convertChunk(num) {
+        let chunk = [];
+
+        if (num >= 100) {
+            chunk.push(units[Math.floor(num / 100)] + " trăm");
+            num %= 100;
+        }
+
+        if (num >= 20) {
+            chunk.push(tens[Math.floor(num / 10)]);
+            num %= 10;
+        } else if (num >= 10) {
+            chunk.push(teens[num - 10]);
+            num = 0;
+        }
+
+        if (num > 0) {
+            chunk.push(units[num]);
+        }
+
+        return chunk.join(" ");
+    }
+
+    let scaleIndex = 0;
+    while (num > 0) {
+        let chunk = num % 1000;
+        if (chunk > 0) {
+            words.unshift(convertChunk(chunk) + " " + scales[scaleIndex]);
+        }
+        num = Math.floor(num / 1000);
+        scaleIndex++;
+    }
+
+    return words.join(" ").trim() + " đồng";
+}
+
+function convertTextToNumber(text) {
+    // Xóa các dấu phẩy và khoảng trắng
+    const cleanedText = text.replace(/,/g, '').replace(/\s/g, '');
+
+    // Chuyển đổi từ chuỗi sang số
+    const number = parseInt(cleanedText, 10);
+
+    // Kiểm tra xem kết quả có phải là số hợp lệ không
+    if (isNaN(number)) {
+        throw new Error("Input không phải là số hợp lệ.");
+    }
+
+    return number;
+}
+
 
 </script>
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\Cart;
+use App\Models\ClientDebtsDetail;
 use App\Models\Config;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -178,6 +179,11 @@ class ClientController extends Controller
                     $data2 = [
                         'amount' => $client->amount + $sum,
                     ];
+                    ClientDebtsDetail::create([
+                        'customer_debts_id' => $ClientDebt->id,
+                        'content' => 'Khách có số điện thoại ' . $request->phone,
+                        'amount' => $sum,
+                    ]);
                     $this->debtKHService->updateClientDebt($data2, $client->id);
                 } else {
                     $data = [
@@ -185,7 +191,12 @@ class ClientController extends Controller
                         'amount' => $sum,
                         'description' => 'Khách có số điện thoại ' . $request->phone
                     ];
-                    $this->debtKHService->addClientDebt($data);
+                    $ClientDebt = $this->debtKHService->addClientDebt($data);
+                    ClientDebtsDetail::create([
+                        'customer_debts_id' => $ClientDebt->id,
+                        'content' => 'Khách có số điện thoại ' . $request->phone,
+                        'amount' => $sum,
+                    ]);
                 }
             }
             Cart::where('user_id', $user->id)->delete();

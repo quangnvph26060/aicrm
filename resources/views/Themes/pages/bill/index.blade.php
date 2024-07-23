@@ -127,12 +127,33 @@
         <div class="content">
             <div class="receipt">
                 <div class="receipt-title">
-                    <h3>Phiếu Thanh Toán</h3>
+                    <h2 style="margin: 0px">HÓA ĐƠN THANH TOÁN</h2>
                 </div>
                 <div class="receipt-header">
-                    <h2>{{ isset($config) ? $config->user->store_name : '' }}</h2>
-                    <p>Địa chỉ: {{ isset($config) ? $config->user->address : '' }}</p>
-                    <p>Điện thoại: {{ isset($config) ? $config->user->phone : '' }}</p>
+                    <h3 style="font-size: 20px ; margin: 0px; padding: 10px 0px">{{ isset($config) ? $config->user->store_name : '' }}</h3>
+                    <table style="width: 60%; margin: 0px auto" id="thongtinnhahang">
+                        <tr>
+                            <td style="
+                            display: flex;
+                            justify-content: start;
+                        "><strong>Địa chỉ:</strong></td>
+                            <td style="text-align: left;">{{ isset($config) ? $config->user->address : '' }}</td>
+                        </tr>
+                        <tr>
+                            <td style="
+                            display: flex;
+                            justify-content: start;
+                        "><strong>Điện thoại:</strong></td>
+                            <td style="text-align: left;">{{ isset($config) ? $config->user->phone : '' }}</td>
+                        </tr>
+                        <tr>
+                            <td style="
+                            display: flex;
+                            justify-content: start;
+                        "><strong>Email:</strong></td>
+                            <td style="text-align: left;">{{ isset($config) ? $config->user->email : '' }}</td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="receipt-info">
                     <p>Ngày tạo: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</p>
@@ -155,8 +176,8 @@
                             <tr>
                                 <td>{{ $item->product->name }}</td>
                                 <td>{{ $item->amount }}</td>
-                                <td>{{ number_format($item->product->priceBuy) }} VND</td>
-                                <td>{{ number_format($item->product->priceBuy * $item->amount) }} VND</td>
+                                <td>{{ number_format($item->product->priceBuy) }}  VND</td>
+                                <td>{{ number_format($item->product->priceBuy * $item->amount) }}  VND</td>
                             </tr>
                             @endforeach
 
@@ -167,18 +188,18 @@
                 <div class="receipt-totals">
                     <div class="total">
                         <span style="float: left;">Tổng cộng</span>
-                        <span>{{ number_format($sum) }} VND</span>
+                        <span>{{ number_format($sum) }}  VND</span>
                     </div>
                     <hr>
                     <div class="total">
                         <span style="float: left;">Tổng tiền phải trả  </span>
-                        <span>{{ number_format($sum) }} VND</span>
+                        <span>{{ number_format($sum) }}  VND</span>
                     </div>
-                    <hr>
+                    {{-- <hr>
                     <div class="total">
                         <span style="float: left;">Còn phải trả  </span>
                         <span>{{ number_format($sum) }} VND</span>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="receipt-footer">
                     <p style='margin: 0px;'>Cảm ơn quý khách!</p>

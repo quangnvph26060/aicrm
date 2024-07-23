@@ -93,6 +93,12 @@
         #row1 {
             margin-top: 20px;
         }
+        .product-item1 img{
+            display: none;
+        }
+        .product-item1 .product-name{
+            display: contents;
+        }
     }
 
     @media (max-width: 100%) {
