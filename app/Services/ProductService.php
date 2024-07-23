@@ -37,7 +37,7 @@ class ProductService
     {
         try {
             Log::info('Fetching all products');
-            $product = $this->product->all();
+            $product = $this->product->orderBy('created_at', 'desc')->get();
             // dd($product[0]->images[0]->image_path);
             return $product;
         } catch (Exception $e) {

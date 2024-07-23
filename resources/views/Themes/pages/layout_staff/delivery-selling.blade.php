@@ -1,3 +1,4 @@
+
 <div class="col-lg-4" id="delivery-selling-content" style="display: none;">
     <div class="card">
         <div class="card-header">Thông tin khách hàng</div>
@@ -82,12 +83,34 @@
                 <div class="modal-body" id="modalContent" style="padding: 0px;">
                     <div class="receipt">
                         <div class="receipt-title">
-                            <h3>Phiếu Thanh Toán</h3>
+                            <h2>HÓA ĐƠN THANH TOÁN</h2>
                         </div>
                         <div class="receipt-header">
-                            <h2>{{ isset($config) ? $config->user->store_name : '' }}</h2>
-                            <p>Địa chỉ: {{ isset($config) ? $config->user->address : '' }} </p>
-                            <p>Điện thoại: {{ isset($config) ? $config->user->phone : '' }}</p>
+                            <h3 style="font-size: 20px">{{ isset($config) ? $config->user->store_name : '' }}</h3>
+                            <table style="width: 40%; margin: 0px auto" id="thongtinnhahang">
+                                <tr>
+                                    <td style="
+                                    display: flex;
+                                    justify-content: start;
+                                "><strong>Địa chỉ:</strong></td>
+                                    <td style="text-align: left;">{{ isset($config) ? $config->user->address : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="
+                                    display: flex;
+                                    justify-content: start;
+                                "><strong>Điện thoại:</strong></td>
+                                    <td style="text-align: left;">{{ isset($config) ? $config->user->phone : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="
+                                    display: flex;
+                                    justify-content: start;
+                                "><strong>Email:</strong></td>
+                                    <td style="text-align: left;">{{ isset($config) ? $config->user->email : '' }}</td>
+                                </tr>
+                            </table>
+
                         </div>
                         <div class="receipt-info">
                             <p>Ngày tạo: ${getCurrentDate()}</p>
@@ -120,26 +143,27 @@
                         <div class="receipt-totals">
                             <div class="total">
                                 <span>Tổng cộng</span>
-                                <span class='totalBill'>{{ number_format($sum) }} VND</span>
+                                <span class='totalBill'>{{ number_format($sum) }}  VND</span>
                             </div>
+                            <div id="dangchu" class="dangchu" ></div>
                             <hr>
                             <div class="total">
                                 <span>Tổng tiền phải trả</span>
-                                <span class='totalPay'>{{number_format( $sum )}} VND</span>
+                                <span class='totalPay'>{{number_format( $sum ) }}  VND</span>
                             </div>
-                            <hr>
+                            {{-- <hr>
                             <div class="total">
                                 <span>Còn phải trả</span>
                                 <span class='totalDue'>{{number_format( $sum) }} VND</span>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="receipt-footer">
                             <p style='margin: 0px;'>Cảm ơn quý khách!</p>
                             @if (isset($config))
                             <img style="width: 200px;" src="{{ $config->qr }}" alt="QR Code">
                             <div>
-                                <p>{{ $config->bank->code }} - {{ $config->receiver }} - {{ $config->user->store_name }}
-                                </p>
+                                <p style="margin: 0; padding-bottom: 5px ">{{ $config->bank->name }} :{{ $config->bank_account }} </p>
+                                <p>{{ $config->receiver }}</p>
                             </div>
                             @else
                             <img style="width: 200px;" src="" alt="QR Code">
@@ -304,6 +328,11 @@
         width: 250px;
         height: auto;
     }
+    .dangchu{
+        text-align: end;
+        font-size: 13px;
+        color: gray;
+    }
 </style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -321,18 +350,18 @@
                 },
             ]
         },
-        'email': {
-            'element': document.getElementById('email'),
-            'error': document.getElementById('orderEmail_error'),
-            'validations': [
-                {
-                    'func': function(value){
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E033')
-                },
-            ]
-        },
+        // 'email': {
+        //     'element': document.getElementById('email'),
+        //     'error': document.getElementById('orderEmail_error'),
+        //     'validations': [
+        //         {
+        //             'func': function(value){
+        //                 return checkRequired(value);
+        //             },
+        //             'message': generateErrorMessage('E033')
+        //         },
+        //     ]
+        // },
         'phoneNumber': {
             'element': document.getElementById('phoneNumber'),
             'error': document.getElementById('orderPhone_error'),

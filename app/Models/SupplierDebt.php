@@ -17,9 +17,12 @@ class SupplierDebt extends Model
         'description',
     ];
 
-    protected $appends = ['supplier'];
+    protected $appends = ['supplier', 'detail'];
     public function getSupplierAttribute(){
         return Supplier::where('id',$this->attributes['supplier_id'])->first();
+    }
+    public function getDetailAttribute(){
+        return SupplierDebtsDetail::where('supplier_debts_id', $this->attributes['id'])->get();
     }
 
 }
