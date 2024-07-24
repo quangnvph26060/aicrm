@@ -200,3 +200,42 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navItems = document.querySelectorAll('.nav-item > a[data-bs-toggle="collapse"]');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            const targetCollapse = new bootstrap.Collapse(document.querySelector(targetId), {
+                toggle: false
+            });
+
+            if (targetCollapse._element.classList.contains('show')) {
+                targetCollapse.hide();
+            } else {
+                document.querySelectorAll('.collapse.show').forEach(collapse => {
+                    new bootstrap.Collapse(collapse, { toggle: false }).hide();
+                });
+                targetCollapse.hide();
+            }
+        });
+    });
+});
+
+</script>
+
+
+
+
+{{-- <style>
+   .collapse {
+    display: none;
+}
+
+</style> --}}
