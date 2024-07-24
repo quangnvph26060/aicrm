@@ -134,7 +134,7 @@
                                     <select class="form-control" name="supplier" id="supplier">
                                         <option value="">--- Chọn nhà cung cấp ---</option>
                                         @foreach ($debtNcc as $item)
-                                        <option value="{{ $item->supplier_id }}">{{ $item->supplier->name }}</option>
+                                        <option value="{{ $item->companies_id }}">{{ $item->company->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"

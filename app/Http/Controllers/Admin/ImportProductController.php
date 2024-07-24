@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Import;
 use App\Models\Supplier;
 use App\Services\CategoryService;
+use App\Services\CompanyService;
 use App\Services\ImportProductService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -16,11 +17,13 @@ class ImportProductController extends Controller
     protected $productService;
     protected $categoryService;
     protected $importProductService;
-    public function __construct(ProductService $productService, CategoryService $categoryService, ImportProductService $importProductService)
+    protected $companyService;
+    public function __construct(ProductService $productService, CategoryService $categoryService, ImportProductService $importProductService, CompanyService $companyService)
     {
         $this->productService = $productService;
         $this->categoryService = $categoryService;
         $this->importProductService = $importProductService;
+        $this->companyService = $companyService;
     }
     public function index()
     {
@@ -40,7 +43,7 @@ class ImportProductController extends Controller
          $title = 'Nhập hàng';
         $products = $this->productService->getProductAll_Staff();
         $category = $this->categoryService->getCategoryAllStaff();
-        $supplier = Supplier::get();
+        $supplier = $this->companyService->getCompany();
         $user = Auth::user();
         return view('admin.Importproduct.add', compact('products', 'user', 'supplier','category', 'title'));
     }

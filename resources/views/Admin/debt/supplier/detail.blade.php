@@ -59,19 +59,19 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><i class="fas fa-user"></i> Tên nhà cung cấp</th>
-                                            <td><div class="nowrap">{{ $debtdetail->supplier->name }}</div></td>
+                                            <td><div class="nowrap">{{ $debtdetail->company->name }}</div></td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-phone"></i> Số điện thoại</th>
-                                            <td><div class="nowrap">{{ $debtdetail->supplier->phone }}</div></td>
+                                            <td><div class="nowrap">{{ $debtdetail->company->phone }}</div></td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-envelope"></i> Email</th>
-                                            <td><div class="nowrap">{{ $debtdetail->supplier->email ?? '' }}</div></td>
+                                            <td><div class="nowrap">{{ $debtdetail->company->email ?? '' }}</div></td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-map-marker-alt"></i> Địa chỉ </th>
-                                            <td><div class="nowrap">{{ $debtdetail->supplier->address }}</div></td>
+                                            <td><div class="nowrap">{{ $debtdetail->company->address }}</div></td>
                                         </tr>
                                     </tbody>
                                 </table>
