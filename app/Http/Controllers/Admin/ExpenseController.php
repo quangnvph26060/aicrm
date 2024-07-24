@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ExpenseDetail;
 use App\Models\Supplier;
+use App\Models\SupplierDebtsDetail;
 use App\Services\DebtNccService;
 use App\Services\ExpenseService;
 use App\Services\SupplierService;
@@ -66,13 +67,19 @@ class ExpenseController extends Controller
                 'date' => Carbon::now()->toDateString(),
             ]);
         }
-        $debtClient = $this->debtNccService->findSupplierDebtBySupplier($request->supplier);
+        $debtSupplier = $this->debtNccService->findSupplierDebtBySupplier($request->supplier);
         $updatedebt = [
-            'amount' => $debtClient->amount -  $request->amount_spent,
+            'amount' => $debtSupplier->amount -  $request->amount_spent,
         ];
+        SupplierDebtsDetail::create([
+            'supplier_debts_id' => $debtSupplier->id,
+            'content' => 'Tạo phiếu chi',
+            'amount' => 0 - $request->amount_spent
+        ]);
         $this->debtNccService->updateSupplierDebt($updatedebt,$request->supplier );
         $debtnew = $this->debtNccService->findSupplierDebtBySupplier($request->supplier );
         if($debtnew->amount == 0){
+            SupplierDebtsDetail::truncate();
             $this->debtNccService->delete($request->supplier);
         }
         return redirect()->route('admin.quanlythuchi.expense.index')->with('success', 'Tạo phiếu thành công !');

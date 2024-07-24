@@ -16,8 +16,13 @@ class DebtClientController extends Controller
     public function index(){
         $title = 'Công nợ khách hàng';
         $debtclients = $this->debtKHService->getAllClientDebt();
-        dd($debtclients);
         return view('admin.debt.client.index', compact('debtclients', 'title'));
 
+    }
+
+    public function detail($id){
+        $title = 'Công nợ khách hàng';
+        $debtdetail = $this->debtKHService->findClientDebtById($id);
+        return view('admin.debt.client.detail', compact('debtdetail', 'title'));
     }
 }

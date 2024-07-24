@@ -7,6 +7,7 @@ use App\Models\ExpenseDetail;
 use App\Models\Import;
 use App\Models\ImportCoupon;
 use App\Models\Supplier;
+use App\Models\SupplierDebtsDetail;
 use App\Services\DebtNccService;
 use App\Services\ExpenseService;
 use App\Services\ImportProductService;
@@ -52,6 +53,11 @@ class importCouponController extends Controller
                     'amount' => $supplier->amount + $congno
                 ];
                 $this->debtNccService->updateSupplierDebt($update, $supplier_id);
+                SupplierDebtsDetail::create([
+                    'supplier_debts_id' => $supplier->id ,
+                    'content' =>  'Thanh toán thành công',
+                    'amount' => $congno,
+                ]);
             }else{
                 $supplier = $this->supplierService->findSupplierById($supplier_id);
                 $add = [
@@ -59,7 +65,12 @@ class importCouponController extends Controller
                     'amount' => $congno,
                     'description' => 'Nợ nhà cung cấp '.$supplier->name.'('.$supplier->phone.')',
                 ];
-                $this->debtNccService->addSupplierDebt($add);
+                $debt = $this->debtNccService->addSupplierDebt($add);
+                SupplierDebtsDetail::create([
+                    'supplier_debts_id' => $debt->id ,
+                    'content' =>  'Thanh toán thành công',
+                    'amount' => $congno,
+                ]);
             }
 
         }
