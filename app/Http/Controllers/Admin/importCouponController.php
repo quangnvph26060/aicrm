@@ -51,7 +51,7 @@ class importCouponController extends Controller
         if($congno > 0){
             $debtncc = $this->debtNccService->getAllSupplierDebt()->pluck('companies_id');
             if($debtncc->contains($supplier_id)){
-                $supplier = $this->debtNccService->findSupplierDebtByCompany($supplier_id);
+                $supplier = $this->debtNccService->findCompanyDebtBySupplier($supplier_id);
                 $update = [
                     'amount' => $supplier->amount + $congno
                 ];
