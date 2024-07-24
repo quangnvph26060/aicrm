@@ -12,7 +12,7 @@
             <tr>
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->name }}</td>
-                <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                <td>{{ $item->created_at->format('d/m/Y') ?? '' }}</td>
                 <td>
                     <a href="{{ route('admin.brand.edit', $item->id) }}" class="btn btn-warning btn-sm">Sửa</a>
                     <button type="button" data-id="{{ $item->id }}"

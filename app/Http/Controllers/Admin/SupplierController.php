@@ -21,44 +21,62 @@ class SupplierController extends Controller
         $this->supplierService = $supplierService;
     }
 
-    public function index()
+    public function index($id)
     {
         try {
-            $title = "Nhà cung cấp";
-            $suppliers = $this->supplierService->GetAllSupplier();
+            $title = "Người đại diện";
+            $suppliers = $this->supplierService->getSuppliersByCompanyId($id);
 
-            if (request()->ajax()) {
-                $view = view('admin.supplier.table', compact('suppliers'))->render();
-                return response()->json(['success' => true, 'table' => $view]);
-            }
-            return view('admin.supplier.index', compact('suppliers', 'title'));
-        } catch (Exception $e) {
-            Log::error('Failed to fetch supplier: ' . $e->getMessage());
-            return ApiResponse::error('Failed to fetch supplier', 500);
+            // Pass the company ID to the view
+            return view('admin.supplier.index', [
+                'suppliers' => $suppliers,
+                'title' => $title,
+                'company_id' => $id
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch suppliers: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Failed to fetch suppliers'], 500);
         }
     }
+
 
     public function findByPhone(Request $request)
     {
         try {
+            // Tìm nhà cung cấp theo số điện thoại
             $supplier = $this->supplierService->findSupplierByPhone($request->input('phone'));
-            $suppliers = new LengthAwarePaginator(
-                $supplier ? [$supplier] : [],
-                $supplier ? 1 : 0,
-                10,
-                1,
-                ['path' => Paginator::resolveCurrentPath()]
-            );
-            return view('admin.supplier.index', compact('suppliers'));
+
+            // Kiểm tra nếu nhà cung cấp không tồn tại
+            if (!$supplier) {
+                return redirect()->route('admin.supplier.index')->withErrors('Nhà cung cấp không tồn tại');
+            }
+
+            // Lấy danh sách người đại diện của công ty
+            $companyId = $supplier->company_id;
+            $suppliers = Supplier::where('company_id', $companyId)
+                ->orderByDesc('created_at')
+                ->paginate(5);
+
+            // Render lại danh sách và phân trang
+            $table = view('admin.supplier.table', compact('suppliers'))->render();
+            $pagination = $suppliers->links('vendor.pagination.custom')->render();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Tìm kiếm thành công',
+                'table' => $table,
+                'pagination' => $pagination
+            ]);
         } catch (Exception $e) {
             Log::error('Failed to find supplier: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to find supplier'], 500);
         }
     }
 
-    public function add()
+
+    public function add($company_id)
     {
-        return view('admin.supplier.add');
+        return view('admin.supplier.add', compact('company_id'));
     }
 
     public function store(Request $request)
@@ -66,12 +84,14 @@ class SupplierController extends Controller
         // dd($request->all());
         try {
             $supplier = $this->supplierService->addSupplier($request->all());
-            session()->flash('success', 'Thêm nhà cung cấp thành công');
-            return redirect()->route('admin.supplier.index');
+            session()->flash('success', 'Thêm người đại diện thành công');
+            return redirect()->route('admin.supplier.index', ['company_id' => $request->company_id]);
         } catch (Exception $e) {
             Log::error('Failed to create supplier: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Failed to create supplier']);
         }
     }
+
 
     public function edit($id)
     {
@@ -87,8 +107,11 @@ class SupplierController extends Controller
     {
         try {
             $supplier = $this->supplierService->updateSupplier($request->all(), $id);
-            session()->flash('success', 'Cập nhật thông tin nhà cung cấp thành công');
-            return redirect()->route('admin.supplier.index');
+            session()->flash('success', 'Cập nhật thông tin người đại diện thành công');
+            $companyId = $request->input('company_id');
+
+            // Redirect to the index route with company_id
+            return redirect()->route('admin.supplier.index', ['company_id' => $companyId]);
         } catch (Exception $e) {
             Log::error('Failed to update supplier information: ' . $e->getMessage());
             return ApiResponse::error('Failed to update supplier information', 500);
@@ -98,14 +121,21 @@ class SupplierController extends Controller
     public function delete($id)
     {
         try {
-            $this->supplierService->deleteSupplier($id);
-            $suppliers = Supplier::orderByDesc('created_at')->paginate(5);
+            // Xóa người đại diện và lấy ID công ty
+            $companyId = $this->supplierService->deleteSupplier($id);
+
+            // Lấy lại danh sách người đại diện của công ty
+            $suppliers = Supplier::where('company_id', $companyId)
+                ->orderByDesc('created_at')
+                ->paginate(5);
+
+            // Render lại phần danh sách và phân trang
             $table = view('admin.supplier.table', compact('suppliers'))->render();
             $pagination = $suppliers->links('vendor.pagination.custom')->render();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Xóa nhà cung cấp thành công!',
+                'message' => 'Xóa người đại diện thành công!',
                 'table' => $table,
                 'pagination' => $pagination
             ]);
@@ -113,7 +143,7 @@ class SupplierController extends Controller
             Log::error('Failed to delete supplier: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Không thể xóa nhà cung cấp'
+                'message' => 'Không thể xóa người đại diện'
             ]);
         }
     }

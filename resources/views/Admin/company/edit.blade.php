@@ -142,7 +142,7 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="">Người đại diện</a>
+                    <a href="{{ route('admin.company.index') }}">Nhà cung cấp</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
@@ -156,23 +156,21 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center;color:white">Thông tin người đại diện số
-                            {{ $suppliers->id }}</h4>
+                        <h4 class="card-title" style="text-align: center;color:white">Thông tin nhà cung cấp số
+                            {{ $companies->id }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
 
-                                <form id="editclient"
-                                    action="{{ route('admin.supplier.update', ['id' => $suppliers->id]) }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form id="editclient" action="{{ route('admin.company.update', ['id' => $companies->id]) }}"
+                                    method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
-                                        <input name="company_id" value="{{$suppliers->company_id}}" hidden>
                                         <div class="col-lg-6 mb-3">
                                             <label for="name" class="form-label">Tên nhà cung cấp</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ $suppliers->name }}" required>
+                                                value="{{ $companies->name }}" required>
                                             <div class="col-lg-9"><span class="invalid-feedback d-block"
                                                     style="font-weight: 500" id="name_error"></span> </div>
 
@@ -180,22 +178,68 @@
                                         <div class="col-lg-6 mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
                                             <input type="text" class="form-control" id="phone" name="phone"
-                                                value="{{ $suppliers->phone }}" required>
+                                                value="{{ $companies->phone }}" required>
                                             <div class="col-lg-9"><span class="invalid-feedback d-block"
                                                     style="font-weight: 500" id="phone_error"></span> </div>
 
                                         </div>
-                                        <div class="col-lg-12 mb-3">
+                                        <div class="col-lg-6 mb-3">
+                                            <label for="phone" class="form-label">Số tài khoản</label>
+                                            <input type="text" class="form-control" id="bank_account" name="bank_account"
+                                                value="{{ $companies->bank_account }}" required>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="bank_error"></span> </div>
+
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
                                             <label for="email" class="form-label">Email</label>
                                             <input type="email" class="form-control" id="email" name="email"
-                                                value="{{ $suppliers->email }}" required>
+                                                value="{{ $companies->email }}" required>
                                             <div class="col-lg-9"><span class="invalid-feedback d-block"
                                                     style="font-weight: 500" id="email_error"></span> </div>
 
                                         </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <label for="tax_number" class="form-label">Mã số thuế</label>
+                                            <input type="email" class="form-control" id="tax_number" name="tax_number"
+                                                value="{{ $companies->tax_number }}" required>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="tax_number_error"></span> </div>
+
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <label for="bank_name" class="form-label">Ngân hàng</label>
+                                            <select name="bank_id" id="bank_id" class="form-control">
+                                                <option value="">-------- Chọn ngân hàng --------</option>
+                                                @foreach ($bank as $item)
+                                                    <option @if (isset($data) && isset($data->bank_id) && $data->bank_id == $item->id) selected @endif
+                                                        value="{{ $item->id }}">
+                                                        {{ $item->shortName . ' - ' . $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="address" class="form-label">Địa chỉ</label>
+                                            <input type="text" class="form-control" id="address" name="address"
+                                                value="{{ $companies->address }}" required>
+                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
+                                                    style="font-weight: 500" id="address_error"></span> </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="note" class="form-label">Ghi chú</label>
+                                            <textarea class="form-control" id="note" name="note" required>{{ $companies->note }}</textarea>
+                                            <div class="col-lg-9">
+                                                <span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="note_error"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="text-center">
-                                        <button type="button" onclick="editclient(event)" class="btn btn-primary w-md">Xác
+                                        <button type="button" onclick="editclient(event)"
+                                            class="btn btn-primary w-md">Xác
                                             nhận</button>
                                     </div>
                                 </form>
@@ -245,16 +289,16 @@
                 }, ]
             },
 
-            // 'address': {
-            //     'element': document.getElementById('address'),
-            //     'error': document.getElementById('address_error'),
-            //     'validations': [{
-            //         'func': function(value) {
-            //             return checkRequired(value);
-            //         },
-            //         'message': generateErrorMessage('E040')
-            //     }, ]
-            // },
+            'address': {
+                'element': document.getElementById('address'),
+                'error': document.getElementById('address_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E040')
+                }, ]
+            },
 
         }
 

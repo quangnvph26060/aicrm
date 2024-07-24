@@ -58,7 +58,11 @@
                                     <span class="sub-item">Thương hiệu</span>
                                 </a>
                             </li>
-
+                            <li>
+                                <a href="{{ route('admin.check.index') }}">
+                                    <span class="sub-item">Phiếu kiểm kho</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('admin.importproduct.index') }}">
                                     <span class="sub-item">Nhập hàng</span>
@@ -76,12 +80,12 @@
                     <div class="collapse" id="sidebarnhacungcap">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="{{ route('admin.supplier.index') }}">
+                                <a href="{{ route('admin.company.index') }}">
                                     <span class="sub-item">Danh sách</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.supplier.add') }}">
+                                <a href="{{ route('admin.company.add') }}">
                                     <span class="sub-item">Nhà cung cấp mới</span>
                                 </a>
                             </li>
@@ -92,12 +96,6 @@
                     <a href="{{ route('admin.order.index') }}">
                         <i class="fas fa-shopping-cart"></i>
                         <p>Đơn hàng</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.check.index') }}">
-                        <i class="fas fa-clipboard-check"></i>
-                        <p>Phiếu kiểm kho</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -168,10 +166,9 @@
                                     <span class="sub-item">Thống kê ngày</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li>
                                 <a data-bs-toggle="collapse" href="#sidebarcongno">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <p>Công nợ</p>
+                                    <span class="sub-item">Công nợ</span>
                                     <span class="caret"></span>
                                 </a>
                                 <div class="collapse" id="sidebarcongno">
@@ -189,10 +186,10 @@
                                     </ul>
                                 </div>
                             </li>
-
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
                     <a href="{{ route('admin.config.detail', ['id' => session('authUser')->id]) }}">
                         <i class="fas fa-cogs"></i>
