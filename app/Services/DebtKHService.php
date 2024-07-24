@@ -69,4 +69,15 @@ class DebtKHService
         }
     }
 
+    public function findClientDebtById($id){
+        try {
+            Log::info('Fetching find clientDebt');
+            $receipt = $this->clientDebt->find($id);
+            return $receipt;
+        } catch (Exception $e) {
+            Log::error('Failed to  find clientDebt: ' . $e->getMessage());
+            throw new Exception('Failed to find clientDebt');
+        }
+    }
+
 }

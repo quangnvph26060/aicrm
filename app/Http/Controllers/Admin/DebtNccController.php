@@ -19,4 +19,10 @@ class DebtNccController extends Controller
         return view('admin.debt.supplier.index', compact('debtsupplier', 'title'));
 
     }
+
+    public function detail($id){
+        $title = 'Công nợ nhà cung cấp';
+        $debtdetail = $this->debtNccService->findSupplierDebtById($id);
+        return view('admin.debt.supplier.detail', compact('debtdetail', 'title'));
+    }
 }

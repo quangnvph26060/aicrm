@@ -25,7 +25,7 @@ class Receipts extends Model
         return Client::where('id',$this->attributes['client_id'])->first();
     }
     public function getDetailAttribute(){
-        return ReceiptDetail::where('receipt_id',$this->attributes['id'])->get();
+        return ReceiptDetail::where('receipt_id',$this->attributes['id'])->orderBy('created_at', 'desc')->get();
     }
 
     public static function boot()

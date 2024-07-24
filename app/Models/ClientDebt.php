@@ -14,6 +14,7 @@ class ClientDebt extends Model
         'client_id',
         'amount',
         'description',
+        'code'
     ];
 
     protected $appends = ['client', 'detail'];
@@ -22,7 +23,18 @@ class ClientDebt extends Model
     }
 
     public function getDetailAttribute(){
-        return ClientDebtsDetail::where('customer_debts_id', $this->attributes['id'])->get();
+        return ClientDebtsDetail::where('customer_debts_id', $this->attributes['id'])->orderBy('created_at', 'desc')->get();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $latastcode = self::orderBy('id', 'desc')->first();
+            $nextNumber = $latastcode ? ((int)substr($latastcode->code, 2)) + 1 : 1;
+            $model->code = 'CN' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+        });
     }
 
 

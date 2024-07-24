@@ -25,7 +25,7 @@ class Expense extends Model
         return Supplier::where('id',$this->attributes['supplier_id'])->first();
     }
     public function getDetailAttribute(){
-        return ExpenseDetail::where('expense_id',$this->attributes['id'])->get();
+        return ExpenseDetail::where('expense_id',$this->attributes['id'])->orderBy('created_at', 'desc')->get();
     }
     public static function boot()
     {

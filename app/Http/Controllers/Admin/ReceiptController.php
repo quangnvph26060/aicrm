@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Models\ClientDebtsDetail;
 use App\Models\ReceiptDetail;
 use App\Models\Supplier;
 use App\Services\ClientService;
@@ -72,9 +73,15 @@ class ReceiptController extends Controller
         $update = [
             'amount' => $debtclient->amount - $request->amount_spent,
         ];
+        ClientDebtsDetail::create([
+            'customer_debts_id' => $debtclient->id,
+            'content' => 'Tạo phiếu thu',
+            'amount' => 0 - $request->amount_spent,
+        ]);
         $this->debtKHService->updateClientDebt($update, $request->client);
         $debtnew = $this->debtKHService->findClientDebtByClient($request->client);
         if($debtnew->amount == 0){
+            ClientDebtsDetail::truncate();
             $this->debtKHService->delete($request->client);
         }
         return redirect()->route('admin.quanlythuchi.receipts.index')->with('success', 'Tạo phiếu thành công !');

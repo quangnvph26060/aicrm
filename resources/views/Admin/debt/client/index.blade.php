@@ -174,6 +174,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>STT</th>
+                                                    <th>Mã công nợ</th>
                                                     <th>Tên khách hàng</th>
                                                     <th>Điện thoại</th>
                                                     <th>Tiền nợ</th>
@@ -188,6 +189,7 @@
                                                         @if (is_object($value))
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
+                                                                <td><a href="{{ route('admin.debts.client.detail', ['id' => $value->id]) }}">{{ $value->code?? '' }}</a></td>
                                                                 <td>{{ $value->client->name ?? '' }}</td>
                                                                 <td>{{ $value->client->phone ?? '' }}</td>
                                                                 <td>{{ number_format($value->amount) ?? '' }}</td>
@@ -199,7 +201,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td class="text-center" colspan="6">
+                                                        <td class="text-center" colspan="7">
                                                             <div class="">
                                                                 Chưa có công nợ khách hàng
                                                             </div>

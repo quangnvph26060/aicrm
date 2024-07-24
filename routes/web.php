@@ -194,7 +194,9 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
 
     Route::prefix('debts')->name('debts.')->group(function () {
         Route::get('/client', [DebtClientController::class, 'index'])->name('client');
+        Route::get('/client/detail/{id}', [DebtClientController::class, 'detail'])->name('client.detail');
         Route::get('/supplier', [DebtNccController::class, 'index'])->name('supplier');
+        Route::get('/supplier/detail/{id}', [DebtNccController::class, 'detail'])->name('supplier.detail');
     });
     Route::prefix('quanlythuchi')->name('quanlythuchi.')->group(function () {
         Route::prefix('receipts')->name('receipts.')->group(function () { // phiếu thu

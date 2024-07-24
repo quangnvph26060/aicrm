@@ -181,7 +181,7 @@ class ClientController extends Controller
                     ];
                     ClientDebtsDetail::create([
                         'customer_debts_id' => $ClientDebt->id,
-                        'content' => 'Khách có số điện thoại ' . $request->phone,
+                        'content' => 'Giao dịch thành công ' ,
                         'amount' => $sum,
                     ]);
                     $this->debtKHService->updateClientDebt($data2, $client->id);
@@ -189,12 +189,12 @@ class ClientController extends Controller
                     $data = [
                         'client_id' => $client->id,
                         'amount' => $sum,
-                        'description' => 'Khách có số điện thoại ' . $request->phone
+                        'description' => 'Khách hàng có số điện thoại '.$request->phone,
                     ];
                     $ClientDebt = $this->debtKHService->addClientDebt($data);
                     ClientDebtsDetail::create([
                         'customer_debts_id' => $ClientDebt->id,
-                        'content' => 'Khách có số điện thoại ' . $request->phone,
+                        'content' => 'Giao dịch thành công ' ,
                         'amount' => $sum,
                     ]);
                 }
