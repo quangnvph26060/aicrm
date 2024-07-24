@@ -77,7 +77,7 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <h5 class="text-center text-primary"><b>Thông tin phiếu chi</b></h5>
+                                <h5 class="text-center text-primary"><b>Thông tin phiếu</b></h5>
                                 <table class="table table-bordered table-hover detail_import">
                                     <tbody>
                                         <tr>

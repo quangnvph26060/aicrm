@@ -86,6 +86,8 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('', [ProductController::class, 'index'])->name('store');
         Route::get('import', [ProductController::class, 'formimport'])->name('formimport');
         Route::post('import', [ProductController::class, 'import'])->name('import');
+        Route::get('export', [ProductController::class, 'export'])->name('export');
+        Route::get('export1', [ProductController::class, 'export1'])->name('export1');
         Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
         Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
         Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
