@@ -16,4 +16,9 @@ class Bank extends Model
     {
         return $this->hasOne(Config::class);
     }
+
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
 }

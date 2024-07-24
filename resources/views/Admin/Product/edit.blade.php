@@ -387,16 +387,16 @@
             //         'message': generateErrorMessage('E017')
             //     }, ]
             // },
-            'description': {
-                'element': document.getElementById('description'),
-                'error': document.getElementById('description_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E016')
-                }, ]
-            },
+            // 'description': {
+            //     'element': document.getElementById('description'),
+            //     'error': document.getElementById('description_error'),
+            //     'validations': [{
+            //         'func': function(value) {
+            //             return checkRequired(value);
+            //         },
+            //         'message': generateErrorMessage('E016')
+            //     }, ]
+            // },
 
         }
 

@@ -13,7 +13,11 @@ class Supplier extends Model
         'name',
         'email',
         'phone',
-        'address',
-        'company_table',
+        'company_id',
     ];
+
+    protected function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

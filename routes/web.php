@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategorieController;
 use App\Http\Controllers\Admin\CheckInventoryController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -133,10 +134,21 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::delete('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
         Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
     });
+
+    Route::prefix('company')->name('company.')->group(function(){
+        Route::get("/", [CompanyController::class, 'index'])->name('index');
+        Route::get('findByName', [CompanyController::class, 'findByName'])->name('findByName');
+        Route::get('/add', [CompanyController::class, 'add'])->name('add');
+        Route::post('/store', [CompanyController::class, 'store'])->name('store');
+        Route::get('detail/{id}', [CompanyController::class, 'edit'])->name('detail');
+        Route::post('update{id}', [CompanyController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [CompanyController::class, 'delete'])->name('delete');
+    });
+
     Route::prefix('supplier')->name('supplier.')->group(function () {
-        Route::get("/", [SupplierController::class, 'index'])->name('index');
+        Route::get("/{company_id}", [SupplierController::class, 'index'])->name('index');
         Route::get('/findByPhone', [SupplierController::class, 'findByPhone'])->name('findByPhone');
-        Route::get('/add', [SupplierController::class, 'add'])->name('add');
+        Route::get('/add/{company_id}', [SupplierController::class, 'add'])->name('add');
         Route::post('/store', [SupplierController::class, 'store'])->name('store');
         Route::get('detail/{id}', [SupplierController::class, 'edit'])->name('detail');
         Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');

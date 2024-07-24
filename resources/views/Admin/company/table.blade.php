@@ -6,23 +6,36 @@
             <th>Nhà cung cấp</th>
             <th>SĐT</th>
             <th>Email</th>
+            <th>Địa chỉ</th>
             <th style="text-align: center">Hành động</th>
         </tr>
     </thead>
     <tbody>
-        @if ($suppliers && $suppliers->count() > 0)
-            @foreach ($suppliers as $key => $value)
+        @if ($companies && $companies->count() > 0)
+            @foreach ($companies as $key => $value)
                 @if (is_object($value))
                     <tr>
-                        <td>{{ ($suppliers->currentPage() - 1) * $suppliers->perPage() + $loop->index + 1 }}
+                        <td>{{ ($companies->currentPage() - 1) * $companies->perPage() + $loop->index + 1 }}
                         </td>
                         <td>{{ $value->name ?? '' }}</td>
                         <td>{{ $value->phone ?? '' }}</td>
                         <td>{{ $value->email ?? '' }}</td>
+                        <td>{{ $value->address ?? '' }}</td>
                         <td style="text-align:center">
                             <a class="btn btn-warning"
-                                href="{{ route('admin.supplier.detail', ['id' => $value->id]) }}">Sửa</a>
+                                href="{{ route('admin.company.detail', ['id' => $value->id]) }}">Sửa</a>
                             <button class="btn btn-danger btn-delete" data-id="{{ $value->id }}">Xóa</button>
+                            @if ($value->hasRepresentative())
+                                <a class="btn btn-primary"
+                                    href="{{ route('admin.supplier.index', ['company_id' => $value->id]) }}">
+                                    Người đại diện
+                                </a>
+                            @else
+                                <a class="btn btn-primary"
+                                    href="{{ route('admin.supplier.add', ['company_id' => $value->id]) }}">
+                                    Thêm người đại diện
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endif

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Supplier;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,18 @@ class SupplierService
             throw new Exception('Failed to fetch Supplier');
         }
     }
-
+    public function getSuppliersByCompanyId($companyId)
+    {
+        try {
+            return $this->supplier
+                ->where('company_id', $companyId)
+                ->orderBy('created_at', 'desc')
+                ->paginate(5);
+        } catch (\Exception $e) {
+            Log::error('Failed to get suppliers by company ID: ' . $e->getMessage());
+            throw new \Exception('Failed to fetch suppliers');
+        }
+    }
     public function GetSuppliersAll()
     {
         try {
@@ -56,7 +68,7 @@ class SupplierService
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone' => $data['phone'],
-                'address' => $data['address']
+                'company_id' => $data['company_id'] // Thêm công ty ID
             ]);
             DB::commit();
             return $supplier;
@@ -67,16 +79,15 @@ class SupplierService
         }
     }
 
+
     public function findSupplierById($id)
     {
-        try{
+        try {
             return $this->supplier->find($id);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to find suppler: ' . $e->getMessage());
             throw new Exception('Failed to find supplier');
         }
-
     }
 
     public function updateSupplier(array $data, $id)
@@ -88,7 +99,6 @@ class SupplierService
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone' => $data['phone'],
-                'address' => $data['address']
             ]);
             DB::commit();
             return $supplier;
@@ -103,13 +113,15 @@ class SupplierService
     {
         DB::beginTransaction();
         try {
-            $supplier = $this->supplier->find($id);
-            $supplier->delete();
+            $supplier = Supplier::findOrFail($id); // Tìm người đại diện
+            $companyId = $supplier->company_id; // Lưu ID công ty trước khi xóa
+            $supplier->delete(); // Xóa người đại diện
             DB::commit();
+            return $companyId; // Trả về ID công ty
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error("Failed update Supplier : " . $e->getMessage());
-            throw new Exception("Failed update Supplier");
+            Log::error('Failed to delete supplier: ' . $e->getMessage());
+            throw new Exception('Failed to delete supplier');
         }
     }
 }

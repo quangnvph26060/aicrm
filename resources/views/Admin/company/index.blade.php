@@ -35,6 +35,7 @@
             font-size: 1.75rem;
             font-weight: 700;
             margin: 0;
+            text-align: center;
         }
 
         .breadcrumbs {
@@ -42,6 +43,7 @@
             padding: 0.75rem;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
         }
 
         .breadcrumbs a {
@@ -66,6 +68,8 @@
         .table td {
             padding: 1rem;
             vertical-align: middle;
+            text-align: center;
+            /* Center align the text in the cells */
         }
 
         .table th {
@@ -73,26 +77,30 @@
             border-bottom: 2px solid #dee2e6;
         }
 
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
         .btn-warning,
-        .btn-danger {
+        .btn-danger,
+        .btn-primary {
             border-radius: 20px;
             padding: 5px 15px;
             font-size: 14px;
             font-weight: bold;
             transition: background 0.3s ease, transform 0.3s ease;
+            margin: 0 2px;
+            /* Add margin between buttons */
         }
 
         .btn-warning:hover,
-        .btn-danger:hover {
+        .btn-danger:hover,
+        .btn-primary:hover {
             transform: scale(1.05);
         }
 
         .page-header {
             margin-bottom: 2rem;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: #e9ecef;
         }
 
         .dataTables_info,
@@ -118,6 +126,19 @@
         .pagination .page-item .page-link {
             transition: all 0.3s ease;
         }
+
+        table th,
+        table td {
+            padding: 1rem;
+            vertical-align: middle;
+            text-align: center;
+            /* Center align the text in the cells */
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
     </style>
     <div class="page-inner">
         <div class="page-header">
@@ -131,13 +152,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.supplier.index', ['company_id' => $company_id]) }}">Nguời đại diện</a>
+                    <a href="{{ route('admin.company.index') }}">Nhà cung cấp</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="">Danh sách</a>
+                    <a href="{{ route('admin.company.index') }}">Danh sách</a>
                 </li>
             </ul>
         </div>
@@ -145,8 +166,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách Người đại diện nhà cung cấp
-                            {{ $suppliers->first()->company->name }}</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Danh sách nhà cung cấp</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -154,29 +174,27 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary"
-                                                href="{{ route('admin.supplier.add', ['company_id' => $company_id]) }}">Thêm
-                                                người đại diện</a>
+
                                         </div>
                                     </div>
-                                    {{-- <div class="col-sm-12 col-md-6">
-                                        <form action="{{ route('admin.supplier.findByPhone') }}" method="GET">
+                                    <div class="col-sm-12 col-md-6">
+                                        <form action="{{ route('admin.company.findByName') }}" method="GET">
                                             <div class="dataTables_filter">
                                                 <label>Tìm kiếm</label>
-                                                <input type="text" name="phone" clabss="form-control form-control-sm"
-                                                    placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
+                                                <input type="text" name="name" clabss="form-control form-control-sm"
+                                                    placeholder="Nhập tên nhà cung cấp" value="{{ old('name') }}">
                                             </div>
                                         </form>
-                                    </div> --}}
+                                    </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12" id="supplier-table">
-                                        @include('admin.supplier.table', ['suppliers' => $suppliers])
+                                    <div class="col-sm-12" id="company-table">
+                                        @include('admin.company.table', ['companies' => $companies])
                                     </div>
                                     <div class="col-sm-12" id="pagination">
 
-                                        @if ($suppliers instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                                            {{ $suppliers->links('vendor.pagination.custom') }}
+                                        @if ($companies instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                            {{ $companies->links('vendor.pagination.custom') }}
                                         @endif
                                     </div>
                                 </div>
@@ -194,9 +212,9 @@
             e.preventDefault(); // Prevent the default link behavior
 
             if (confirm('Bạn có chắc chắn muốn xóa?')) {
-                var supplierId = $(this).data('id'); // Ensure this is properly set in your HTML
-                var deleteUrl = '{{ route('admin.supplier.delete', ['id' => ':id']) }}';
-                deleteUrl = deleteUrl.replace(':id', supplierId);
+                var companyID = $(this).data('id'); // Ensure this is properly set in your HTML
+                var deleteUrl = '{{ route('admin.company.delete', ['id' => ':id']) }}';
+                deleteUrl = deleteUrl.replace(':id', companyID);
 
                 $.ajax({
                     url: deleteUrl,
@@ -208,7 +226,7 @@
                     success: function(response) {
                         if (response.success) {
                             // Cập nhật bảng thương hiệu
-                            $('#supplier-table').html(response.table);
+                            $('#company-table').html(response.table);
                             $('#pagination').html(response
                                 .pagination); // Ensure you include pagination in the response
                             $.notify({
