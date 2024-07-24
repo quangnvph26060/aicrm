@@ -18,8 +18,11 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use PHPExcel_IOFactory;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ProductController extends Controller
 {
@@ -39,9 +42,8 @@ class ProductController extends Controller
     {
         try {
             $title = 'Sản phẩm';
-            $category = $this->categoryService->getCategoryAll();
+            $category = $this->categoryService->getCategoryAllStaff();
             $brand = $this->brandService->getAllBrand();
-
             if ($request->ajax()) {
                 $product = $this->productService->getProductAll();
                 $html = view('admin.product.table', compact('product'))->render();
@@ -66,7 +68,9 @@ class ProductController extends Controller
 
     public function findByName(Request $request)
     {
-
+        $title = 'Sản phẩm';
+        $category = $this->categoryService->getCategoryAllStaff();
+        $brand = $this->brandService->getAllBrand();
         $product = $this->productService->productByName($request->input('name'));
         // $product = new LengthAwarePaginator(
         //     $products ? [$products] : [],
@@ -76,7 +80,7 @@ class ProductController extends Controller
         //     ['path' =>Paginator::resolveCurrentPath()]
         // );
 
-        return view('admin.product.index', compact('product'));
+        return view('admin.product.index', compact('product', 'category', 'brand', 'title'));
     }
     public function addForm()
     {
@@ -200,5 +204,124 @@ class ProductController extends Controller
 
         return redirect()->route('admin.product.store')->with('success', 'Thêm sản phẩm thành công');
 
+    }
+
+    public function export(){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $products = Product::all();
+        // Đặt tiêu đề cột
+        $sheet->setCellValue('A1', 'Mã sản phẩm');
+        $sheet->setCellValue('B1', 'tên sản phẩm');
+        $sheet->setCellValue('C1', 'Số lương');
+        $sheet->setCellValue('D1', 'Giá nhập');
+        $sheet->setCellValue('E1', 'Giá bán');
+        $sheet->setCellValue('F1', 'Danh mục');
+        $sheet->setCellValue('G1', 'Thương hiệu');
+        $sheet->setCellValue('H1', 'Đơn vị');
+
+        // Lấy danh sách sản phẩm
+
+
+        // Điền dữ liệu vào sheet
+        $row = 2;
+        foreach ($products as $product) {
+            $sheet->setCellValue('A' . $row, $product->code);
+            $sheet->setCellValue('B' . $row, $product->name);
+            $sheet->setCellValue('C' . $row, $product->quantity);
+            $sheet->setCellValue('D' . $row, $product->price);
+            $sheet->setCellValue('E' . $row, $product->priceBuy);
+            $sheet->setCellValue('F' . $row, $product->category->name);
+            $sheet->setCellValue('G' . $row, $product->brands->name);
+            $sheet->setCellValue('H' . $row, $product->product_unit);
+            $row++;
+        }
+
+        $sheet->getColumnDimension('A')->setWidth(20);
+        $sheet->getColumnDimension('B')->setWidth(30);
+        $sheet->getColumnDimension('C')->setWidth(10);
+        $sheet->getColumnDimension('D')->setWidth(20);
+        $sheet->getColumnDimension('E')->setWidth(20);
+        $sheet->getColumnDimension('F')->setWidth(20);
+        $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(20);
+
+        // Tạo file Excel và lưu vào output stream
+        $writer = new Xlsx($spreadsheet);
+
+        // Đặt tên file
+        $fileName = 'products.xlsx';
+
+        // Trả về file dưới dạng download response
+        $response = response()->stream(
+            function() use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            ]
+        );
+
+        return $response;
+    }
+
+    public function export1(Request $request)
+    {
+        $selectedCategories = json_decode($request->query('categories', '[]'), true);
+
+        // Lọc sản phẩm dựa trên các loại hàng được chọn
+        $products = Product::whereIn('category_id', $selectedCategories)->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Đặt tiêu đề cột
+        $sheet->setCellValue('A1', 'Mã sản phẩm');
+        $sheet->setCellValue('B1', 'tên sản phẩm');
+        $sheet->setCellValue('C1', 'Số lương');
+        $sheet->setCellValue('D1', 'Giá nhập');
+        $sheet->setCellValue('E1', 'Giá bán');
+        $sheet->setCellValue('F1', 'Danh mục');
+        $sheet->setCellValue('G1', 'Thương hiệu');
+        $sheet->setCellValue('H1', 'Đơn vị');
+
+        $row = 2;
+        foreach ($products as $product) {
+            $sheet->setCellValue('A' . $row, $product->code);
+            $sheet->setCellValue('B' . $row, $product->name);
+            $sheet->setCellValue('C' . $row, $product->quantity);
+            $sheet->setCellValue('D' . $row, $product->price);
+            $sheet->setCellValue('E' . $row, $product->priceBuy);
+            $sheet->setCellValue('F' . $row, $product->category->name);
+            $sheet->setCellValue('G' . $row, $product->brands->name);
+            $sheet->setCellValue('H' . $row, $product->product_unit);
+            $row++;
+        }
+
+        $sheet->getColumnDimension('A')->setWidth(20);
+        $sheet->getColumnDimension('B')->setWidth(30);
+        $sheet->getColumnDimension('C')->setWidth(10);
+        $sheet->getColumnDimension('D')->setWidth(20);
+        $sheet->getColumnDimension('E')->setWidth(20);
+        $sheet->getColumnDimension('F')->setWidth(20);
+        $sheet->getColumnDimension('G')->setWidth(20);
+        $sheet->getColumnDimension('H')->setWidth(20);
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response = response()->stream(
+            function() use ($writer) {
+                $writer->save('php://output');
+            },
+            200,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="products.xlsx"',
+            ]
+        );
+
+        return $response;
     }
 }
