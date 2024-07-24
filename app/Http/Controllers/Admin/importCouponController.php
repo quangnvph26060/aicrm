@@ -8,6 +8,7 @@ use App\Models\Import;
 use App\Models\ImportCoupon;
 use App\Models\Supplier;
 use App\Models\SupplierDebtsDetail;
+use App\Services\CompanyService;
 use App\Services\DebtNccService;
 use App\Services\ExpenseService;
 use App\Services\ImportProductService;
@@ -25,13 +26,15 @@ class importCouponController extends Controller
     protected $expenseService;
     protected $debtNccService;
     protected $supplierService;
+    protected $companyService;
 
-    public function __construct(ImportProductService $ImportProductService, ProductService $productService, ExpenseService $expenseService, DebtNccService $debtNccService, SupplierService $supplierService){
+    public function __construct(ImportProductService $ImportProductService, ProductService $productService, ExpenseService $expenseService, DebtNccService $debtNccService, SupplierService $supplierService, CompanyService $companyService){
         $this->ImportProductService = $ImportProductService;
         $this->productService = $productService;
         $this->expenseService = $expenseService;
         $this->debtNccService = $debtNccService;
         $this->supplierService = $supplierService;
+        $this->companyService = $companyService;
     }
     public function add(Request $request){
         $user = Auth::user();
@@ -39,16 +42,16 @@ class importCouponController extends Controller
         $total = $request->total;
         $data = [
             'user_id' => $user->id,
-            'supplier_id' => $supplier_id,
+            'companies_id' => $supplier_id,
             'total' => $total,
             'payment_ncc' => $request->totalncc,
         ];
         $totalncc = $request->totalncc ?  $request->totalncc : 0;
         $congno = $total - $totalncc;
         if($congno > 0){
-            $debtncc = $this->debtNccService->getAllSupplierDebt()->pluck('supplier_id');
+            $debtncc = $this->debtNccService->getAllSupplierDebt()->pluck('companies_id');
             if($debtncc->contains($supplier_id)){
-                $supplier = $this->debtNccService->findSupplierDebtBySupplier($supplier_id);
+                $supplier = $this->debtNccService->findSupplierDebtByCompany($supplier_id);
                 $update = [
                     'amount' => $supplier->amount + $congno
                 ];
@@ -59,9 +62,9 @@ class importCouponController extends Controller
                     'amount' => $congno,
                 ]);
             }else{
-                $supplier = $this->supplierService->findSupplierById($supplier_id);
+                $supplier = $this->companyService->findCompanyById($supplier_id);
                 $add = [
-                    'supplier_id' => $supplier_id,
+                    'companies_id' => $supplier_id,
                     'amount' => $congno,
                     'description' => 'Nợ nhà cung cấp '.$supplier->name.'('.$supplier->phone.')',
                 ];
@@ -93,7 +96,7 @@ class importCouponController extends Controller
                 ]);
             }else{
                 $add = [
-                    'supplier_id' => $supplier_id,
+                    'companies_id' => $supplier_id,
                     'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
                     'amount_spent' => $totalncc,
                     'date_spent' => Carbon::now()->toDateString(),

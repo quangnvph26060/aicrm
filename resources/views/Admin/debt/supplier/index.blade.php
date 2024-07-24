@@ -190,8 +190,8 @@
                                                             <tr>
                                                                 <td>{{ $key + 1 }}</td>
                                                                 <td><a href="{{ route('admin.debts.supplier.detail', ['id'=>$value->id]) }}">{{ $value->code ?? '' }}</a></td>
-                                                                <td>{{ $value->supplier->name ?? '' }}</td>
-                                                                <td>{{ $value->supplier->phone ?? '' }}</td>
+                                                                <td>{{ $value->company->name ?? '' }}</td>
+                                                                <td>{{ $value->company->phone ?? '' }}</td>
                                                                 <td>{{ number_format($value->amount) ?? '' }}</td>
                                                                 <td>{{ $value->description ?? '' }}</td>
 

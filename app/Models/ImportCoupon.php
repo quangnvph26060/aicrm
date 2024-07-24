@@ -13,13 +13,14 @@ class ImportCoupon extends Model
     protected $fillable = [
         'user_id',
         'supplier_id',
+        'companies_id',
         'total',
         'status',
         'coupon_code',
         'payment_ncc'
     ];
 
-    protected $appends = ['detail', 'user', 'supplier'];
+    protected $appends = ['detail', 'user', 'supplier', 'company'];
     public function getDetailAttribute(){
         return ImportDetail::where('import_id',$this->attributes['id'])->get();
     }
@@ -28,6 +29,10 @@ class ImportCoupon extends Model
     }
     public function getSupplierAttribute(){
         return Supplier::where('id',$this->attributes['supplier_id'])->first();
+    }
+
+    public function getCompanyAttribute(){
+        return Company::where('id',$this->attributes['companies_id'])->first();
     }
     public function user()
     {

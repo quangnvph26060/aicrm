@@ -14,18 +14,23 @@ class Expense extends Model
     protected $fillable = [
         'content',
         'supplier_id',
+        'companies_id',
         'amount_spent',
         'date_spent',
         'expense_code'
     ];
 
-    protected $appends  = ['supplier', 'detail'];
+    protected $appends  = ['supplier', 'detail', 'company'];
 
     public function getSupplierAttribute(){
         return Supplier::where('id',$this->attributes['supplier_id'])->first();
     }
     public function getDetailAttribute(){
         return ExpenseDetail::where('expense_id',$this->attributes['id'])->orderBy('created_at', 'desc')->get();
+    }
+
+    public function getCompanyAttribute(){
+        return Company::where('id',$this->attributes['companies_id'])->first();
     }
     public static function boot()
     {

@@ -37,7 +37,7 @@ class ExpenseService
     public function updateExpense($data, $supplier){
         try {
             Log::info('Fetching update Expense');
-            $expense = $this->expense->where('supplier_id', $supplier)->first();
+            $expense = $this->expense->where('companies_id', $supplier)->first();
             $update = $expense->update($data);
             return $update;
         } catch (Exception $e) {
@@ -50,6 +50,17 @@ class ExpenseService
         try {
             Log::info('Fetching find Expense');
             $expenses = $this->expense->where('supplier_id', $supplier)->first();
+            return $expenses;
+        } catch (Exception $e) {
+            Log::error('Failed to get find expense: ' . $e->getMessage());
+            throw new Exception('Failed to get find expense');
+        }
+    }
+
+    public function findExpenseByCompany( $supplier){
+        try {
+            Log::info('Fetching find Expense');
+            $expenses = $this->expense->where('companies_id', $supplier)->first();
             return $expenses;
         } catch (Exception $e) {
             Log::error('Failed to get find expense: ' . $e->getMessage());

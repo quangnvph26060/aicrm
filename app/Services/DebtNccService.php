@@ -39,7 +39,7 @@ class DebtNccService
     public function updateSupplierDebt($data, $supplier_id ){
         try {
             Log::info('Fetching update supplierDebt');
-            $receipt = $this->supplierDebt->where('supplier_id', $supplier_id )->first();
+            $receipt = $this->supplierDebt->where('companies_id', $supplier_id )->first();
             $update = $receipt->update($data);
             return $update;
         } catch (Exception $e) {
@@ -56,6 +56,17 @@ class DebtNccService
         } catch (Exception $e) {
             Log::error('Failed to  find supplierDebt: ' . $e->getMessage());
             throw new Exception('Failed to find supplierDebt');
+        }
+    }
+
+    public function findCompanyDebtBySupplier($supplier_id ){
+        try {
+            Log::info('Fetching find companies');
+            $receipt = $this->supplierDebt->where('companies_id', $supplier_id )->first();
+            return $receipt;
+        } catch (Exception $e) {
+            Log::error('Failed to  find companies: ' . $e->getMessage());
+            throw new Exception('Failed to find companies');
         }
     }
 

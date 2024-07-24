@@ -188,7 +188,7 @@
                                                     <td><a style="font-weight: 900; color: black" href="{{ route('admin.importproduct.importCoupon.detail', ['id'=> $item->id]) }}">{{ $item->coupon_code }}</a></td>
                                                     <td>{{ $item->user->name }}</td>
                                                     <td>{{ $item->created_at }}</td>
-                                                    <td>{{ $item->supplier->name }}</td>
+                                                    <td>{{ $item->company->name ?? '' }}</td>
                                                     <td>{{ $item->total }}</td>
                                                     <td>{{ $item->payment_ncc ? $item->payment_ncc : 0  }}</td>
                                                 </tr>

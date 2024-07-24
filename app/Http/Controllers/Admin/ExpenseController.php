@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\ExpenseDetail;
 use App\Models\Supplier;
 use App\Models\SupplierDebtsDetail;
@@ -33,15 +34,16 @@ class ExpenseController extends Controller
     public function add(){
         $title = 'Quản lý chi';
         $debtNcc = $this->debtNccService->getAllSupplierDebt();
+
         return view('admin.quanlythuchi.expense.add', compact('title', 'debtNcc'));
     }
 
     public function addSubmit(Request $request){
         $currentDate = Carbon::now()->format('Y-m-d');
-        $supplier = Supplier::find($request->supplier);
-        $expenses = $this->expenseService->getAllExpense()->pluck('supplier_id');
+        $supplier = Company::find($request->supplier);
+        $expenses = $this->expenseService->getAllExpense()->pluck('companies_id');
         if($expenses->contains($request->supplier)){
-            $expense = $this->expenseService->findExpenseBysupplier($request->supplier);
+            $expense = $this->expenseService->findExpenseByCompany($request->supplier);
             $expensedata = [
                 'amount_spent' => $request->amount_spent + $expense->amount_spent,
             ];
@@ -54,7 +56,7 @@ class ExpenseController extends Controller
             ]);
         }else{
             $add = [
-                'supplier_id' => $request->supplier,
+                'companies_id' => $request->supplier,
                 'content' => 'Thanh toán cho nhà cung cấp '.$supplier->name,
                 'amount_spent' => $request->amount_spent,
                 'date_spent' => Carbon::now()->toDateString(),
@@ -67,7 +69,7 @@ class ExpenseController extends Controller
                 'date' => Carbon::now()->toDateString(),
             ]);
         }
-        $debtSupplier = $this->debtNccService->findSupplierDebtBySupplier($request->supplier);
+        $debtSupplier = $this->debtNccService->findCompanyDebtBySupplier($request->supplier);
         $updatedebt = [
             'amount' => $debtSupplier->amount -  $request->amount_spent,
         ];
@@ -76,8 +78,8 @@ class ExpenseController extends Controller
             'content' => 'Tạo phiếu chi',
             'amount' => 0 - $request->amount_spent
         ]);
-        $this->debtNccService->updateSupplierDebt($updatedebt,$request->supplier );
-        $debtnew = $this->debtNccService->findSupplierDebtBySupplier($request->supplier );
+        $this->debtNccService->updateSupplierDebt($updatedebt, $request->supplier );
+        $debtnew = $this->debtNccService->findCompanyDebtBySupplier($request->supplier );
         if($debtnew->amount == 0){
             SupplierDebtsDetail::truncate();
             $this->debtNccService->delete($request->supplier);
@@ -93,7 +95,7 @@ class ExpenseController extends Controller
 
     public function debt(Request $request){
         $supplier = $request->supplier;
-        $debt = $this->debtNccService->findSupplierDebtBySupplier($supplier);
+        $debt = $this->debtNccService->findCompanyDebtBySupplier($supplier);
         return  response()->json(explode(',', $debt->amount)[0]);
     }
 }

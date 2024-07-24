@@ -26,6 +26,16 @@ class CompanyService
         }
     }
 
+    public function getCompany()
+    {
+        try {
+            return $this->company->get();
+        } catch (Exception $e) {
+            Log::error('Failed to fetch companies: ' . $e->getMessage());
+            throw new Exception('Failed to fetch companies');
+        }
+    }
+
     public function getCompanyByName($name)
     {
         try {
