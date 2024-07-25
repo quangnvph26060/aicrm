@@ -19,5 +19,11 @@ class Client extends Model
         'gender',
         'clientgroup_id'
     ];
-    
+
+    protected $appends = ['clientgroup'];
+
+    public function getClientgroupAttribute(){
+        return ClientGroup::where('id',$this->attributes['clientgroup_id'])->first();
+    }
+
 }

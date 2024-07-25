@@ -175,6 +175,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     });
     Route::prefix('support')->name('support.')->group(function () {
         Route::get('/', [SupportController::class, 'contact'])->name('lienhe');
+        Route::post('/', [SupportController::class, 'feedback'])->name('feedback');
     });
 
     Route::prefix('importproduct')->name('importproduct.')->group(function () {

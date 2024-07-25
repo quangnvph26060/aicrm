@@ -20,7 +20,7 @@
     header {
         text-align: center;
         padding: 20px 0;
-        background-color: #4CAF50;
+        background-color: #2f0ee9;
         color: #fff;
     }
 
@@ -80,12 +80,41 @@
         </div>
         <div class="contact-item">
             <h2>Zalo</h2>
-            <p><a href="https://zalo.me/tentkhoan" class="zalo-link">Zalo của tôi</a></p>
+            <p><a class="btn btn-primary" href="https://zalo.me/tentkhoan" class="zalo-link">Zalo của tôi</a></p>
         </div>
+    </div>
+    <div style="margin: 10px 10px;">
+        <form action="{{ route('admin.support.feedback') }}" method="post">
+            @csrf
+            <div class="message">
+                <h2>Góp ý</h2>
+                <textarea style="width: 100%; padding: 10px 20px; " name="message" id="message" rows="5"></textarea>
+            </div>
+            <input class="btn btn-primary" style="padding: 5px 20px; margin-top: 10px" type="submit" value="Gửi">
+        </form>
     </div>
 
 
-
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    icon: 'icon-bell',
+                    title: 'Đánh giá',
+                    message: '{{ session('success') }}',
+                }, {
+                    type: 'secondary',
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
+                    time: 1000,
+                });
+            });
+            </script>
+    @endif
 
 @endsection

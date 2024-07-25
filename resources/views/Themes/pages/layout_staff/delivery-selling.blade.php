@@ -51,6 +51,16 @@
                             id="orderAddress_error"></span> </div>
                 </div>
                 <div class="form-group">
+                    <label for="clientgroup">Nhóm khách hàng</label></label>
+                    <select class="form-control" id="clientgroup_id" name="clientgroup_id">
+                        <option value="">----- Nhóm khách hàng ----- </option>
+                        @foreach ($clientgroup as $item )
+                        <option value="{{ $item->id }}"> {{ $item->name }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+                <div class="form-group">
                     <label for="paymentMethod">Phương thức thanh toán</label></label>
                     <select class="form-control" id="paymentMethod" name="status">
                         <option value="">----- Chọn phương thức ----- </option>
@@ -417,6 +427,7 @@
                 var phoneNumber = $('#phoneNumber').val();
                 var address = $('#address').val();
                 var paymentMethod = $('#paymentMethod').val();
+                var clientgroup = $('#clientgroup_id').val();
 
                 var modalContent = `
                         <p>Ngày tạo: ${getCurrentDate()}</p>
@@ -431,6 +442,7 @@
                     <input type="hidden" name="phone" value="${phoneNumber}">
                     <input type="hidden" name="address" value="${address}">
                     <input type="hidden" name="status" value="${paymentMethod}">
+                    <input type="hidden" name="clientgroup_id" value="${clientgroup}">
                 `;
 
                 $('.receipt-info').html(modalContent);

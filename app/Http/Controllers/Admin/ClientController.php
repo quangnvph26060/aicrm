@@ -61,9 +61,10 @@ class ClientController extends Controller
     {
         $title = 'Sửa thông tin khách hàng';
         try {
+            $clientgroups = $this->clientGroupService->getAllClientGroup();
             $client =  $this->clientService->getClientByID($id);
-            return view('admin.client.edit', compact('client', 'title'));
-        } catch (\Exception $e) {
+            return view('admin.client.edit', compact('client', 'title', 'clientgroups'));
+        } catch (Exception $e) {
             Log::error('Failed to find client profile');
         }
     }
@@ -95,10 +96,10 @@ class ClientController extends Controller
 
     public function clientgroup(){
         try{
-
+            $title = 'Nhóm khách hàng';
             $clientgroup = $this->clientGroupService->getAllClientGroup();
             // dd($clientgroup);
-            return view('admin.client.group.index', compact('clientgroup'));
+            return view('admin.client.group.index', compact('clientgroup', 'title'));
         }catch(Exception $e){
             Log::error('Failed to list clientgroup: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'không có loại khách hàng.']);

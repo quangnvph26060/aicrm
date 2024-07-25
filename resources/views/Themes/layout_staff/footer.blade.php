@@ -66,6 +66,16 @@ aria-hidden="true">
                                     style="font-weight: 500" id="clientPhone_error"></span> </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="clientgroup">Nhóm khách hàng</label></label>
+                            <select class="form-control" id="clientgroup" name="clientgroup">
+                                <option value="">----- Nhóm khách hàng ----- </option>
+                                @foreach ($clientgroup as $item )
+                                <option value="{{ $item->id }}"> {{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <button type="buttom" onclick="submitclient(event)"  class="btn btn-primary btn-block mt-4">Lưu</button>
                     </form>
                 </div>

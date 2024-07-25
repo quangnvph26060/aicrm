@@ -8,6 +8,7 @@ use App\Services\DashboardService;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
@@ -22,6 +23,14 @@ class DashboardController extends Controller
     {
         try {
             $title = "Dashboard";
+            $topProducts = DB::table('order_details')
+            ->select('order_details.product_id', 'products.name', 'products.price', 'products.code', 'products.priceBuy', DB::raw('SUM(order_details.quantity) as total_quantity'))
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->groupBy('order_details.product_id', 'products.name', 'products.price', 'products.code', 'products.priceBuy')
+            ->orderByDesc('total_quantity')
+            ->limit(5)
+            ->get();
+            // sdd($topProducts);
             $getMonth = $this->orderService->getMonthlyRevenue();
             $getMonthlyRevenue = $getMonth['monthlyRevenue'];
             $totalAnnualRevenue = $getMonth['totalAnnualRevenue'];
@@ -33,28 +42,31 @@ class DashboardController extends Controller
             $newOrder = $this->dashboardService->getNewestOrder();
             // dd($newOrder->client->name);0
             $newStaff = $this->dashboardService->getNewestStaff();
-            return view('welcome', compact('clientnumber', 'ordernumber', 'amount', 'daily', 'newClient', 'newOrder', 'newStaff', 'getMonthlyRevenue', 'totalAnnualRevenue', 'title'));
+            return view('welcome', compact('clientnumber', 'ordernumber', 'amount', 'daily', 'newClient', 'newOrder', 'newStaff', 'getMonthlyRevenue', 'totalAnnualRevenue', 'title', 'topProducts'));
         } catch (Exception $e) {
             Log::error('Failed to get statistic this year: ' . $e->getMessage());
             return ApiResponse::error('Failed to get statistic this year', 500);
         }
     }
 
-    public function StatisticsByDay(){
+    public function StatisticsByDay()
+    {
         $daily = $this->dashboardService->getDailySale();
         return response()->json([
             'daily' => $daily
         ]);
     }
 
-    public function StatisticsByMonth(){
+    public function StatisticsByMonth()
+    {
         $daily = $this->dashboardService->StatisticsByMonth();
         return response()->json([
             'daily' => $daily
         ]);
     }
 
-    public function StatisticsByYear(){
+    public function StatisticsByYear()
+    {
         $daily = $this->dashboardService->StatisticsByYear();
         return response()->json([
             'daily' => $daily
