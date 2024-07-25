@@ -122,7 +122,7 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarclient">
                         <i class="fas fa-users"></i>
-                        <p>khách hàng</p>
+                        <p>Khách hàng</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="sidebarclient">

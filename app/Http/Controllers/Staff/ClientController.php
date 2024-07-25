@@ -50,12 +50,19 @@ class ClientController extends Controller
     public function addClient(Request $request)
     {
         try {
-
+            // dd($request->all());
             $listphone = $this->clientService->getAllClientStaff()->pluck('phone');
             if ($listphone->contains($request->phone)) {
                 return redirect()->back()->with('fail', 'Khách hàng đã tồn tại');
             } else {
-                $client = $this->clientService->addClient($request->all());
+                $data = [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                    'phone' => $request->phone,
+                    'clientgroup_id' => $request->clientgroup ?? 3
+                ];
+                $client = $this->clientService->addClient($data);
                 return redirect()->back()->with('action', 'Thêm khách hàng thành công');
             }
         } catch (Exception $e) {
@@ -119,6 +126,13 @@ class ClientController extends Controller
                     ]);
                 }
             } else {
+                $data = [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                    'phone' => $request->phone,
+                    'clientgroup_id' => $request->clientgroup_id ?? 3
+                ];
                 $client = $this->clientService->addClient($request->all());
                 $order = Order::create([
                     'user_id' => $user->id,
@@ -170,12 +184,6 @@ class ClientController extends Controller
                     ReceiptDetail::create($detail);
                 }
 
-                // $data1 = [
-                //     'content' => 'Thu từ khách hàng có số điện thoại ' . $request->phone,
-                //     'amount_spent' => $sum,
-                //     'date_spent' => Carbon::now()->toDateString()
-                // ];
-                // $this->receiptsService->addReceipts($data1);
             } else {
                 $ClientDebt = $this->debtKHService->getAllClientDebt()->pluck('client_id');
                 if ($ClientDebt->contains($client->id)) {
@@ -213,7 +221,6 @@ class ClientController extends Controller
             $response = $this->bill($pdfFileName);
             Session::flash('action', 'Thanh toán thành công');
 
-            // return $response;
             return response()->json([
                 'pdf_url' => asset($pdfFileName),
                 'message' => 'Thanh toán thành công'

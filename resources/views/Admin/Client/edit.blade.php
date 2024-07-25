@@ -227,6 +227,19 @@
                                                     id="zip_code_error"></span> </div>
 
                                         </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <label for="clientgroup_id" class="form-label">Nhóm khách hàng</label>
+                                            <select class="form-control" name="clientgroup_id" id="clientgroup_id" required>
+                                                <option value="">Chọn nhóm khách hàng</option>
+                                                @foreach ($clientgroups as $item)
+                                                <option {{ $client->clientgroup_id == $item->id ? 'selected' : '' }}
+                                                    value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                                <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="clientgroup_id_error"></span> </div>
+
+                                        </div>
                                     </div>
                                     <div class="text-center">
                                         <button type="button" onclick="editclient(event)" class="btn btn-primary w-md">Xác nhận</button>
@@ -332,6 +345,17 @@
                         return checkRequired(value);
                     },
                     'message': generateErrorMessage('E043')
+                },
+            ]
+        },'clientgroup_id': {
+            'element': document.getElementById('clientgroup_id'),
+            'error': document.getElementById('clientgroup_id_error'),
+            'validations': [
+                {
+                    'func': function(value){
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('KH001')
                 },
             ]
         },

@@ -4,6 +4,7 @@
         <tr>
             <th>STT</th>
             <th>Tên khách hàng</th>
+            <th>Nhóm khách hàng</th>
             <th>SĐT</th>
             <th>Email</th>
             <th>Địa chỉ</th>
@@ -18,6 +19,7 @@
                         <td>{{ ($clients->currentPage() - 1) * $clients->perPage() + $loop->index + 1 }}
                         </td>
                         <td>{{ $value->name ?? '' }}</td>
+                        <td>{{ $value->clientgroup->name ?? '' }}</td>
                         <td>{{ $value->phone ?? '' }}</td>
                         <td>{{ $value->email ?? '' }}</td>
                         <td>{{ $value->address ?? '' }}</td>

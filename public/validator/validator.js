@@ -153,7 +153,10 @@ function generateErrorMessage(code, values = []) {
         TC001: 'Không  để trống nhà cung cấp',
         TC002: 'Không để trống tiền ',
         TC003: 'Không để trống khách hàng',
-        TC004: 'Nội dung không được để trống'
+        TC004: 'Nội dung không được để trống',
+        // khách hàng
+        KH001 : 'Nhóm khách hàng không được để trống',
+
     };
     const errorMessage = errorMessages[code];
     if (typeof errorMessage === 'function') {

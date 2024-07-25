@@ -142,28 +142,7 @@
                 <div class="card-body" style="overflow-x: hidden;">
                     <!-- Product items go here -->
                     <div class="row" id="productContainer">
-                        {{-- @if ($product)
-                        @foreach ($product as $item)
-                        <div class="col-md-2 mb-3" style="cursor: pointer;">
-                            <div class="product-item1" title="{{ $item->name }}">
-                                <div class="card-body listproduct" data-id="{{ $item->id }}">
-                                    <img src="{{ asset($item->images[0]->image_path) }}" alt=""
-                                        style="width: 145px; height: 60px;">
-                                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
-                                        class="card-title product-name">
-                                        {{ $item->name }}</p>
-                                    <div style="display: flex; justify-content: space-between;">
-                                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px"
-                                            class="card-title">{{ number_format($item->priceBuy) }}đ</p>
-                                        <p style="margin: 0px; cursor: pointer;"><i
-                                                style="font-size: 15px; color: rgb(105, 97, 223)"
-                                                class="fas fa-shopping-cart fa-lg"></i></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                        @endif --}}
+
                     </div>
                 </div>
             </div>
@@ -172,25 +151,7 @@
             <div class="row mt-4 main_note" style="margin: 0px;">
                 <div class="col-lg-8 mt-4 mb-4">
                     <div class="product-item">
-                        {{-- @if($cart)
-                        @foreach ($cart as $item)
-                        <div class="col-12 alert d-flex"
-                            style="justify-content: space-between; margin: 0px; padding-bottom: 0px">
-                            <div class="closebtn" data-id="{{ $item->id }}">&times;</div>
-                            <div class="d-flex"
-                                style="margin-right: 109px; width: 100%; justify-content: space-between;">
-                                <strong style="width: 130px;">{{ $item->product->name }}
-                                    <p style="margin: 0; font-size: 13px; color: #888">{{
-                                        number_format($item->product->priceBuy) }}đ</p>
-                                </strong>
-                                <span><input type="number" min="1" class="custom-input"
-                                        data-id="{{ $item->product->id }}" value="{{ $item->amount }}"></span>
-                                <span style="width: 80px;">{{ number_format($item->product->priceBuy * $item->amount)
-                                    }}đ</span>
-                            </div>
-                        </div>
-                        @endforeach
-                        @endif --}}
+
                     </div>
                 </div>
                 <div class="col-lg-4 mt-4 mb-4">
@@ -229,432 +190,432 @@
 <script>
     var $j = jQuery.noConflict();
 
-$j(document).ready(function() {
-        $j.ajax({
-            url: '{{ route('staff.product.get') }}',
-            type: 'GET',
-            success: function(data) {
-                var productContainer = $j('#productContainer');
-                productContainer.empty();
-                // list = data.data;
-                data.forEach(function(item) {
-                var images = item.images && item.images.length > 0 ? item.images[0].image_path : 'public/images/1.jpg';
-                var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
-                var productHtml = `
-                    <div class="col-md-2 mb-3" style="cursor: pointer;">
-                        <div class="product-item1" title="${item.name}">
-                            <div class="card-body listproduct" data-id="${item.id}">
-                            <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
-                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
-                            <div style="display: flex; justify-content: space-between;">
-                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
-                                <p style="margin: 0px; cursor: pointer;">
-                                <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                                </p>
-                            </div>
-                            </div>
-                        </div>
-                    </div>`;
-                productContainer.append(productHtml);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.log('AJAX Error: ' + status + error);
-            }
-        });
-
-        function numberFormat(number) {
-            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
-        }
-
-
-    $j("#search_product").on("keyup", function() {
-
-        var name = $j(this).val();
-        // alert(name);
+    $j(document).ready(function() {
             $j.ajax({
-                url: '{{ route('staff.product.search') }}',
+                url: '{{ route('staff.product.get') }}',
                 type: 'GET',
-                data: {
-                    name: name
-                },
                 success: function(data) {
                     var productContainer = $j('#productContainer');
-                    productContainer.empty(); // Clear previous products
-
-                    if (data.length > 0) {
-                        data.forEach(function(item) {
-                            var images = item.images && item.images.length > 0 ? item.images[0].image_path : 'public/images/1.jpg';
-                            var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
-                            var productHtml = `
-                                <div class="col-md-2 mb-3" style="cursor: pointer;">
-                                    <div class="product-item1" title="${item.name}">
-                                        <div class="card-body listproduct" data-id="${item.id}">
-                                        <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
-                                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
-                                        <div style="display: flex; justify-content: space-between;">
-                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
-                                            <p style="margin: 0px; cursor: pointer;">
-                                            <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                                            </p>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-                            productContainer.append(productHtml);
-                        });
-                    } else {
-                        productContainer.append('<p style="padding : 30px;">Không tìm thấy sản phẩm.</p>');
-                    }
+                    productContainer.empty();
+                    // list = data.data;
+                    data.forEach(function(item) {
+                    var images = item.images && item.images.length > 0 ? item.images[0].image_path : 'public/images/1.jpg';
+                    var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
+                    var productHtml = `
+                        <div class="col-md-2 mb-3" style="cursor: pointer;">
+                            <div class="product-item1" title="${item.name}">
+                                <div class="card-body listproduct" data-id="${item.id}">
+                                <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
+                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
+                                    <p style="margin: 0px; cursor: pointer;">
+                                    <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    productContainer.append(productHtml);
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.log('AJAX Error: ' + status + error);
                 }
             });
+
             function numberFormat(number) {
-            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
-        }
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
+            }
 
-    });
 
-    $j("#search").on("keyup", function() {
-        var query = $j(this).val().toLowerCase();
-        var hasResults = false;
+        $j("#search_product").on("keyup", function() {
 
-        if (query.length > 0) {
-            $j("#results").show();
-            $j("#results li").each(function() {
-                var name = $j(this).text().toLowerCase();
-                if (name.includes(query)) {
-                    $j(this).show();
-                    hasResults = true;
-                } else if (!$j(this).hasClass("no-results")) {
-                    $j(this).hide();
+            var name = $j(this).val();
+            // alert(name);
+                $j.ajax({
+                    url: '{{ route('staff.product.search') }}',
+                    type: 'GET',
+                    data: {
+                        name: name
+                    },
+                    success: function(data) {
+                        var productContainer = $j('#productContainer');
+                        productContainer.empty(); // Clear previous products
+
+                        if (data.length > 0) {
+                            data.forEach(function(item) {
+                                var images = item.images && item.images.length > 0 ? item.images[0].image_path : 'public/images/1.jpg';
+                                var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
+                                var productHtml = `
+                                    <div class="col-md-2 mb-3" style="cursor: pointer;">
+                                        <div class="product-item1" title="${item.name}">
+                                            <div class="card-body listproduct" data-id="${item.id}">
+                                            <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
+                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
+                                            <div style="display: flex; justify-content: space-between;">
+                                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
+                                                <p style="margin: 0px; cursor: pointer;">
+                                                <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                                                </p>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                productContainer.append(productHtml);
+                            });
+                        } else {
+                            productContainer.append('<p style="padding : 30px;">Không tìm thấy sản phẩm.</p>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('AJAX Error: ' + status + error);
+                    }
+                });
+                function numberFormat(number) {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number).replace('₫', '');
+            }
+
+        });
+
+        $j("#search").on("keyup", function() {
+            var query = $j(this).val().toLowerCase();
+            var hasResults = false;
+
+            if (query.length > 0) {
+                $j("#results").show();
+                $j("#results li").each(function() {
+                    var name = $j(this).text().toLowerCase();
+                    if (name.includes(query)) {
+                        $j(this).show();
+                        hasResults = true;
+                    } else if (!$j(this).hasClass("no-results")) {
+                        $j(this).hide();
+                    }
+                });
+
+                if (hasResults) {
+                    $j(".no-results").hide();
+                } else {
+                    $j(".no-results").show();
                 }
-            });
-
-            if (hasResults) {
-                $j(".no-results").hide();
             } else {
-                $j(".no-results").show();
-            }
-        } else {
-            $j("#results").hide();
-        }
-    });
-
-
-
-   $j(document).on('click', '.listproduct', function(e) {
-    e.preventDefault();
-    var productId = $j(this).data('id');
-    $j.ajax({
-        url: '{{ route('staff.cart.add') }}',
-        method: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            product_id: productId,
-            amount: 1
-        },
-        success: function(response) {
-            updateCart(response.cart);
-            updateCartBill(response.cart);
-            var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (response.cart.length <= 0) {
-                submitBuyOrderBill.setAttribute('disabled', 'disabled');
-            } else {
-                submitBuyOrderBill.removeAttribute('disabled');
-            }
-
-            var total_amount = $j('#total-amount');
-            var totalBill = $j('.totalBill');
-            var totalPay = $j('.totalPay');
-            var totalDue = $j('.totalDue');
-            var dangchu = $j('#dangchu');
-            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
-            totalBill.text(response.sum+ " VND"  );
-            totalPay.text(response.sum + " VND" );
-            totalDue.text(response.sum+ " VND" );
-            total_amount.text(response.sum );
-            var total_amount_to_pay = $j('#total-to-pay');
-            total_amount_to_pay.text(response.sum );
-        },
-        error: function(xhr) {
-            alert(xhr.responseJSON.error);
-        }
-    });
-});
-
-$j(document).on('input', '.custom-input', function(e) {
-    e.preventDefault();
-    var productId = $j(this).data('id');
-    var amount = $j(this).val();
-
-    $j.ajax({
-        url: '{{ route('staff.cart.update') }}',
-        method: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            product_id: productId,
-            amount: amount
-        },
-        success: function(response) {
-            updateCart(response.cart);
-            updateCartBill(response.cart);
-            var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (response.cart.length <= 0) {
-                submitBuyOrderBill.setAttribute('disabled', 'disabled');
-            } else {
-                submitBuyOrderBill.removeAttribute('disabled');
-            }
-            var total_amount = $j('#total-amount');
-            var totalBill = $j('.totalBill');
-            var totalPay = $j('.totalPay');
-            var totalDue = $j('.totalDue');
-            var dangchu = $j('#dangchu');
-            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
-            totalBill.text(response.sum + " VND" );
-            totalPay.text(response.sum + " VND" );
-            totalDue.text(response.sum+ " VND"  );
-            total_amount.text(response.sum );
-            var total_amount_to_pay = $j('#total-to-pay');
-            total_amount_to_pay.text(response.sum );
-        },
-        error: function(xhr) {
-            alert(xhr.responseJSON.error);
-        }
-    });
-});
-
-$j(document).on('click', '.closebtn', function(e) {
-    e.preventDefault();
-    var cart = $j(this).data('id');
-    $j.ajax({
-        url: '{{ route('staff.cart.remove') }}',
-        method: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            cart: cart,
-        },
-        success: function(response) {
-            updateCart(response.cart);
-            updateCartBill(response.cart);
-            var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (response.cart.length <= 0) {
-                submitBuyOrderBill.setAttribute('disabled', 'disabled');
-            } else {
-                submitBuyOrderBill.removeAttribute('disabled');
-            }
-
-            var total_amount = $j('#total-amount');
-            var totalBill = $j('.totalBill');
-            var totalPay = $j('.totalPay');
-            var totalDue = $j('.totalDue');
-            var dangchu = $j('#dangchu');
-            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
-            totalBill.text(response.sum + " VND" );
-            totalPay.text(response.sum + " VND" );
-            totalDue.text(response.sum+ " VND"  );
-            total_amount.text(response.sum );
-            var total_amount_to_pay = $j('#total-to-pay');
-            total_amount_to_pay.text(response.sum );
-        },
-        error: function(xhr) {
-            alert(xhr.responseJSON.error);
-        }
-    });
-});
-
-$j('#paymentbill').submit(function(event) {
-        event.preventDefault();
-
-        var actionUrl = $(this).attr('action');
-        var method = $(this).attr('method');
-
-        $j.ajax({
-            url: actionUrl,
-            method: method,
-            dataType: 'json',
-            data: $(this).serialize(),
-            success: function(response) {
-
-                var downloadLink = document.createElement('a');
-                downloadLink.href = response.pdf_url;
-                downloadLink.download = 'order.pdf';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1000);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-                alert('Đã xảy ra lỗi khi xử lý thanh toán và tải xuống.');
+                $j("#results").hide();
             }
         });
-});
 
 
-$j(document).on('input', '.change_price', function() {
-    var price = parseInt($(this).text(),10);
-    var cart = $j(this).data('id');
 
-    $j.ajax({
-        url: '{{ route('staff.cart.update.price') }}',
-        method: 'POST',
-        data: {
-            _token: '{{ csrf_token() }}',
-            price: price,
-            cart: cart
-        },
-        success: function(response) {
-            updateCart(response.cart);
-            updateCartBill(response.cart);
-            var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
-            if (response.cart.length <= 0) {
-                submitBuyOrderBill.setAttribute('disabled', 'disabled');
-            } else {
-                submitBuyOrderBill.removeAttribute('disabled');
+    $j(document).on('click', '.listproduct', function(e) {
+        e.preventDefault();
+        var productId = $j(this).data('id');
+        $j.ajax({
+            url: '{{ route('staff.cart.add') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                product_id: productId,
+                amount: 1
+            },
+            success: function(response) {
+                updateCart(response.cart);
+                updateCartBill(response.cart);
+                var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
+                if (response.cart.length <= 0) {
+                    submitBuyOrderBill.setAttribute('disabled', 'disabled');
+                } else {
+                    submitBuyOrderBill.removeAttribute('disabled');
+                }
+
+                var total_amount = $j('#total-amount');
+                var totalBill = $j('.totalBill');
+                var totalPay = $j('.totalPay');
+                var totalDue = $j('.totalDue');
+                var dangchu = $j('#dangchu');
+                dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+                totalBill.text(response.sum+ " VND"  );
+                totalPay.text(response.sum + " VND" );
+                totalDue.text(response.sum+ " VND" );
+                total_amount.text(response.sum );
+                var total_amount_to_pay = $j('#total-to-pay');
+                total_amount_to_pay.text(response.sum );
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.error);
             }
-            var total_amount = $j('#total-amount');
-            var totalBill = $j('.totalBill');
-            var totalPay = $j('.totalPay');
-            var totalDue = $j('.totalDue');
-            var dangchu = $j('#dangchu');
-            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
-            totalBill.text(response.sum + " VND" );
-            totalPay.text(response.sum + " VND" );
-            totalDue.text(response.sum+ " VND"  );
-            total_amount.text(response.sum );
-            var total_amount_to_pay = $j('#total-to-pay');
-            total_amount_to_pay.text(response.sum );
-        },
-        error: function(xhr) {
-            alert(xhr.responseJSON.error);
+        });
+    });
+
+    $j(document).on('input', '.custom-input', function(e) {
+        e.preventDefault();
+        var productId = $j(this).data('id');
+        var amount = $j(this).val();
+
+        $j.ajax({
+            url: '{{ route('staff.cart.update') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                product_id: productId,
+                amount: amount
+            },
+            success: function(response) {
+                updateCart(response.cart);
+                updateCartBill(response.cart);
+                var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
+                if (response.cart.length <= 0) {
+                    submitBuyOrderBill.setAttribute('disabled', 'disabled');
+                } else {
+                    submitBuyOrderBill.removeAttribute('disabled');
+                }
+                var total_amount = $j('#total-amount');
+                var totalBill = $j('.totalBill');
+                var totalPay = $j('.totalPay');
+                var totalDue = $j('.totalDue');
+                var dangchu = $j('#dangchu');
+                dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+                totalBill.text(response.sum + " VND" );
+                totalPay.text(response.sum + " VND" );
+                totalDue.text(response.sum+ " VND"  );
+                total_amount.text(response.sum );
+                var total_amount_to_pay = $j('#total-to-pay');
+                total_amount_to_pay.text(response.sum );
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    });
+
+    $j(document).on('click', '.closebtn', function(e) {
+        e.preventDefault();
+        var cart = $j(this).data('id');
+        $j.ajax({
+            url: '{{ route('staff.cart.remove') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                cart: cart,
+            },
+            success: function(response) {
+                updateCart(response.cart);
+                updateCartBill(response.cart);
+                var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
+                if (response.cart.length <= 0) {
+                    submitBuyOrderBill.setAttribute('disabled', 'disabled');
+                } else {
+                    submitBuyOrderBill.removeAttribute('disabled');
+                }
+
+                var total_amount = $j('#total-amount');
+                var totalBill = $j('.totalBill');
+                var totalPay = $j('.totalPay');
+                var totalDue = $j('.totalDue');
+                var dangchu = $j('#dangchu');
+                dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+                totalBill.text(response.sum + " VND" );
+                totalPay.text(response.sum + " VND" );
+                totalDue.text(response.sum+ " VND"  );
+                total_amount.text(response.sum );
+                var total_amount_to_pay = $j('#total-to-pay');
+                total_amount_to_pay.text(response.sum );
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+    });
+
+    $j('#paymentbill').submit(function(event) {
+            event.preventDefault();
+
+            var actionUrl = $(this).attr('action');
+            var method = $(this).attr('method');
+
+            $j.ajax({
+                url: actionUrl,
+                method: method,
+                dataType: 'json',
+                data: $(this).serialize(),
+                success: function(response) {
+
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = response.pdf_url;
+                    downloadLink.download = 'order.pdf';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('Đã xảy ra lỗi khi xử lý thanh toán và tải xuống.');
+                }
+            });
+    });
+
+
+    $j(document).on('input', '.change_price', function() {
+        var price = parseInt($(this).text(),10);
+        var cart = $j(this).data('id');
+
+        $j.ajax({
+            url: '{{ route('staff.cart.update.price') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                price: price,
+                cart: cart
+            },
+            success: function(response) {
+                updateCart(response.cart);
+                updateCartBill(response.cart);
+                var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
+                if (response.cart.length <= 0) {
+                    submitBuyOrderBill.setAttribute('disabled', 'disabled');
+                } else {
+                    submitBuyOrderBill.removeAttribute('disabled');
+                }
+                var total_amount = $j('#total-amount');
+                var totalBill = $j('.totalBill');
+                var totalPay = $j('.totalPay');
+                var totalDue = $j('.totalDue');
+                var dangchu = $j('#dangchu');
+                dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+                totalBill.text(response.sum + " VND" );
+                totalPay.text(response.sum + " VND" );
+                totalDue.text(response.sum+ " VND"  );
+                total_amount.text(response.sum );
+                var total_amount_to_pay = $j('#total-to-pay');
+                total_amount_to_pay.text(response.sum );
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON.error);
+            }
+        });
+
+    })
+
+    function updateCartBill(cart) {
+        // Cập nhật nội dung giỏ hàng trong HTML
+        var orderBill = $j('#orderBill');
+        orderBill.empty();
+
+        cart.forEach(function(item) {
+            var itemTotal = item.amount * item.priceBuy;
+            var orderItem = `
+                <tr>
+                    <td>${item.product_name}</td>
+                    <td>${item.amount}</td>
+                    <td>${(Math.ceil(item.priceBuy / 500) * 500).toLocaleString('en-US')}</td>
+                    <td>${(Math.ceil(itemTotal / 500) * 500).toLocaleString('en-US')}</td>
+                </tr>
+            `;
+            orderBill.append(orderItem);
+        });
+    }
+
+    $j("#results").on("click", "li", function() {
+            if (!$j(this).hasClass("no-results")) {
+                var fullName = $j(this).data("fullname");
+                var email = $j(this).data("email");
+                var phone = $j(this).data("phone");
+                var address = $j(this).data("address");
+                $j("#name").val(fullName);
+                $j("#email").val(email);
+                $j("#phoneNumber").val(phone);
+                $j("#address").val(address);
+                $j("#results").hide();
+            }
+        });
+
+    function updateCart(cart) {
+            var cartItems = $j('.product-item');
+            cartItems.empty();
+                if(cart.length === 0) {
+                    cartItems.append('<p>Your cart is empty.</p>');
+                } else {
+                    $.each(cart, function(id, details) {
+                        var cartItem = '<div class="col-12 alert d-flex" style="justify-content: space-between; margin: 0px; padding-bottom: 0px;">' +
+                        '<div '+ 'data-id = "' + details.id + '"'  + ' class="closebtn">&times;</div>' +
+                        '<div class="d-flex" style="margin-right: 109px; width: 100%; justify-content: space-between;">' +
+                            '<strong style="width: 130px;">' + details.product_name +
+                                '<div style="margin: 0; font-size: 13px; color: #888;"  contenteditable="true" class="change_price" ' + 'data-id = "' + details.id + '"'  + ' >' + details.priceBuy + '</div>' +
+                            '</strong>' +
+                            '<span><input type="number"' + 'data-id = "' + details.product_id + '"'  + '  min="1" class="custom-input" value="' + details.amount + '"></span>' +
+                            '<span style="width: 80px;">' + (details.priceBuy * details.amount) + 'đ</span>' +
+                        '</div>' +
+                    '</div>';
+                        cartItems.append(cartItem);
+                    });
+                }
+
+
         }
     });
 
-})
+    function convertNumberToWords(num) {
+        const units = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+        const teens = ["mười", "mười một", "mười hai", "mười ba", "mười bốn", "mười lăm", "mười sáu", "mười bảy", "mười tám", "mười chín"];
+        const tens = ["", "", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+        const scales = ["", "nghìn", "triệu", "tỷ"];
 
-function updateCartBill(cart) {
-    // Cập nhật nội dung giỏ hàng trong HTML
-    var orderBill = $j('#orderBill');
-    orderBill.empty();
+        if (num === 0) return "không đồng";
 
-    cart.forEach(function(item) {
-        var itemTotal = item.amount * item.priceBuy;
-        var orderItem = `
-            <tr>
-                <td>${item.product_name}</td>
-                <td>${item.amount}</td>
-                <td>${(Math.ceil(item.priceBuy / 500) * 500).toLocaleString('en-US')}</td>
-                <td>${(Math.ceil(itemTotal / 500) * 500).toLocaleString('en-US')}</td>
-            </tr>
-        `;
-        orderBill.append(orderItem);
-    });
-}
+        let words = [];
 
-$j("#results").on("click", "li", function() {
-        if (!$j(this).hasClass("no-results")) {
-            var fullName = $j(this).data("fullname");
-            var email = $j(this).data("email");
-            var phone = $j(this).data("phone");
-            var address = $j(this).data("address");
-            $j("#name").val(fullName);
-            $j("#email").val(email);
-            $j("#phoneNumber").val(phone);
-            $j("#address").val(address);
-            $j("#results").hide();
-        }
-    });
+        function convertChunk(num) {
+            let chunk = [];
 
-function updateCart(cart) {
-        var cartItems = $j('.product-item');
-        cartItems.empty();
-            if(cart.length === 0) {
-                cartItems.append('<p>Your cart is empty.</p>');
-            } else {
-                $.each(cart, function(id, details) {
-                    var cartItem = '<div class="col-12 alert d-flex" style="justify-content: space-between; margin: 0px; padding-bottom: 0px;">' +
-                    '<div '+ 'data-id = "' + details.id + '"'  + ' class="closebtn">&times;</div>' +
-                    '<div class="d-flex" style="margin-right: 109px; width: 100%; justify-content: space-between;">' +
-                        '<strong style="width: 130px;">' + details.product_name +
-                            '<div style="margin: 0; font-size: 13px; color: #888;"  contenteditable="true" class="change_price" ' + 'data-id = "' + details.id + '"'  + ' >' + details.priceBuy + '</div>' +
-                        '</strong>' +
-                        '<span><input type="number"' + 'data-id = "' + details.product_id + '"'  + '  min="1" class="custom-input" value="' + details.amount + '"></span>' +
-                        '<span style="width: 80px;">' + (details.priceBuy * details.amount) + 'đ</span>' +
-                    '</div>' +
-                '</div>';
-                    cartItems.append(cartItem);
-                });
+            if (num >= 100) {
+                chunk.push(units[Math.floor(num / 100)] + " trăm");
+                num %= 100;
             }
 
+            if (num >= 20) {
+                chunk.push(tens[Math.floor(num / 10)]);
+                num %= 10;
+            } else if (num >= 10) {
+                chunk.push(teens[num - 10]);
+                num = 0;
+            }
 
-    }
-});
+            if (num > 0) {
+                chunk.push(units[num]);
+            }
 
-function convertNumberToWords(num) {
-    const units = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-    const teens = ["mười", "mười một", "mười hai", "mười ba", "mười bốn", "mười lăm", "mười sáu", "mười bảy", "mười tám", "mười chín"];
-    const tens = ["", "", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
-    const scales = ["", "nghìn", "triệu", "tỷ"];
-
-    if (num === 0) return "không đồng";
-
-    let words = [];
-
-    function convertChunk(num) {
-        let chunk = [];
-
-        if (num >= 100) {
-            chunk.push(units[Math.floor(num / 100)] + " trăm");
-            num %= 100;
+            return chunk.join(" ");
         }
 
-        if (num >= 20) {
-            chunk.push(tens[Math.floor(num / 10)]);
-            num %= 10;
-        } else if (num >= 10) {
-            chunk.push(teens[num - 10]);
-            num = 0;
+        let scaleIndex = 0;
+        while (num > 0) {
+            let chunk = num % 1000;
+            if (chunk > 0) {
+                words.unshift(convertChunk(chunk) + " " + scales[scaleIndex]);
+            }
+            num = Math.floor(num / 1000);
+            scaleIndex++;
         }
 
-        if (num > 0) {
-            chunk.push(units[num]);
+        return words.join(" ").trim() + " đồng";
+    }
+
+    function convertTextToNumber(text) {
+        // Xóa các dấu phẩy và khoảng trắng
+        const cleanedText = text.replace(/,/g, '').replace(/\s/g, '');
+
+        // Chuyển đổi từ chuỗi sang số
+        const number = parseInt(cleanedText, 10);
+
+        // Kiểm tra xem kết quả có phải là số hợp lệ không
+        if (isNaN(number)) {
+            throw new Error("Input không phải là số hợp lệ.");
         }
 
-        return chunk.join(" ");
+        return number;
     }
-
-    let scaleIndex = 0;
-    while (num > 0) {
-        let chunk = num % 1000;
-        if (chunk > 0) {
-            words.unshift(convertChunk(chunk) + " " + scales[scaleIndex]);
-        }
-        num = Math.floor(num / 1000);
-        scaleIndex++;
-    }
-
-    return words.join(" ").trim() + " đồng";
-}
-
-function convertTextToNumber(text) {
-    // Xóa các dấu phẩy và khoảng trắng
-    const cleanedText = text.replace(/,/g, '').replace(/\s/g, '');
-
-    // Chuyển đổi từ chuỗi sang số
-    const number = parseInt(cleanedText, 10);
-
-    // Kiểm tra xem kết quả có phải là số hợp lệ không
-    if (isNaN(number)) {
-        throw new Error("Input không phải là số hợp lệ.");
-    }
-
-    return number;
-}
 
 
 </script>

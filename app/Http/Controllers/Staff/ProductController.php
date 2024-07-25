@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
+use App\Models\ClientGroup;
 use App\Models\Config;
 use App\Models\Product;
+use App\Services\ClientGroupService;
 use App\Services\ClientService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -17,10 +19,12 @@ class ProductController extends Controller
     //
     protected $productService;
     protected $clientService;
-    public function __construct(ProductService $productService, ClientService $clientService)
+    protected $clientGroupService;
+    public function __construct(ProductService $productService, ClientService $clientService, ClientGroupService $clientGroupService)
     {
         $this->productService = $productService;
         $this->clientService = $clientService;
+        $this->clientGroupService = $clientGroupService;
     }
     public function index()
     {
@@ -28,6 +32,7 @@ class ProductController extends Controller
         $config = Config::first();
         $product = $this->productService->getProductAll_Staff();
         $clients = $this->clientService->getAllClientStaff();
+        $clientgroup = $this->clientGroupService->getAllClientGroup();
         $user = Auth::user();
         $cart =  Cart::where('user_id', $user->id)->get();
         foreach ($cart as $key => $item) {
@@ -37,7 +42,7 @@ class ProductController extends Controller
         foreach ($cart as $key => $value) {
             $sum += $value->product->priceBuy * $value->amount;
         }
-        return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config', 'title'));
+        return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config', 'title', 'clientgroup'));
     }
 
     public function product(){
