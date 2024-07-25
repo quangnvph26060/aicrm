@@ -457,7 +457,7 @@
     });
 
 
-    $j(document).on('input', '.change_price', function() {
+    $j(document).on('blur', '.change_price', function() {
         var price = parseInt($(this).text(),10);
         var cart = $j(this).data('id');
 
@@ -603,19 +603,32 @@
     }
 
     function convertTextToNumber(text) {
-        // Xóa các dấu phẩy và khoảng trắng
+
         const cleanedText = text.replace(/,/g, '').replace(/\s/g, '');
 
-        // Chuyển đổi từ chuỗi sang số
         const number = parseInt(cleanedText, 10);
 
-        // Kiểm tra xem kết quả có phải là số hợp lệ không
         if (isNaN(number)) {
             throw new Error("Input không phải là số hợp lệ.");
         }
 
         return number;
     }
+
+    document.querySelectorAll('.change_price').forEach(function(element) {
+    element.addEventListener('input', function(e) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        let caretPos = selection.getRangeAt(0).startOffset;
+
+        this.innerText = this.innerText.replace(/[^0-9]/g, '');
+
+        range.setStart(this.firstChild, Math.min(caretPos, this.innerText.length));
+        range.setEnd(this.firstChild, Math.min(caretPos, this.innerText.length));
+        selection.removeAllRanges();
+        selection.addRange(range);
+    });
+});
 
 
 </script>
