@@ -214,10 +214,10 @@ class ProductService
         }
     }
 
-    public function productByNameStaff($name): \Illuminate\Database\Eloquent\Collection
+    public function productByNameStaff($name)
     {
         try {
-            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->get();
+            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->orderByDesc('created_at')->get();
             // dd($products);
             return $products;
         } catch (Exception $e) {

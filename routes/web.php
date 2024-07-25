@@ -135,6 +135,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::put('/update/{id}', [ClientController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
         Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
+        Route::get('/clientgroup', [ClientController::class, 'clientgroup'])->name('clientgroup.index');
     });
 
     Route::prefix('company')->name('company.')->group(function(){
@@ -222,6 +223,7 @@ Route::middleware([CheckLogin::class])->prefix('ban-hang')->name('staff.')->grou
     Route::get('', [StaffProductController::class, 'index'])->name('index');
     Route::post('/cart/add', [StaffProductController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update', [StaffProductController::class, 'updateCart'])->name('cart.update');
+    Route::post('/cart/update_price', [StaffProductController::class, 'updatePriceCart'])->name('cart.update.price');
     Route::post('/cart/remove', [StaffProductController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('/client/add', [StaffClientController::class, 'addClient'])->name('client.add');
     Route::post('pay', [StaffClientController::class, 'pay'])->name('pay');

@@ -15,6 +15,7 @@ class Cart extends Model
         "product_id",
         "user_id",
         "amount",
+        'price'
     ];
 
     protected $appends = ['product'];

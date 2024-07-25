@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Staff;
 
+use App\Helpers\NumberToWords;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\Cart;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
+use Kavenegar;
 
 
 // Import the PDF facade
@@ -96,7 +98,7 @@ class ClientController extends Controller
             $client = array();
             $trangthai = $request->status;
             foreach ($cartItems as $key => $item) {
-                $sum += $item->product->priceBuy * $item->amount;
+                $sum += $item->price * $item->amount;
                 $this->productService->updateProduct($item->product_id, ['quantity' => $item->product->quantity - $item->amount]);
             }
             if ($listphone->contains($request->phone)) {
@@ -112,7 +114,8 @@ class ClientController extends Controller
                     OrderDetail::create([
                         'order_id' => $order->id,
                         'quantity' => $item->amount,
-                        'product_id' => $item->product_id
+                        'product_id' => $item->product_id,
+                        'price' => $item->price
                     ]);
                 }
             } else {
@@ -128,7 +131,8 @@ class ClientController extends Controller
                     OrderDetail::create([
                         'order_id' => $order->id,
                         'quantity' => $item->amount,
-                        'product_id' => $item->product_id
+                        'product_id' => $item->product_id,
+                        'price' => $item->price
                     ]);
                 }
             }
@@ -177,10 +181,10 @@ class ClientController extends Controller
                 if ($ClientDebt->contains($client->id)) {
                     $clientdebt = $this->debtKHService->findClientDebtByClient($client->id);
                     $data2 = [
-                        'amount' => $client->amount + $sum,
+                        'amount' => $clientdebt->amount + $sum,
                     ];
                     ClientDebtsDetail::create([
-                        'customer_debts_id' => $ClientDebt->id,
+                        'customer_debts_id' => $clientdebt->id,
                         'content' => 'Giao dịch thành công ' ,
                         'amount' => $sum,
                     ]);
@@ -201,7 +205,8 @@ class ClientController extends Controller
             }
             Cart::where('user_id', $user->id)->delete();
             $config = Config::first();
-            $html = view('Themes.pages.bill.index', compact('cartItems', 'sum', 'client', 'user', 'config'))->render();
+            $text = NumberToWords::convert($sum);
+            $html = view('Themes.pages.bill.index', compact('cartItems', 'sum', 'client', 'user', 'config', 'text'))->render();
             $pdf = Pdf::loadHTML($html);
             $pdfFileName = 'order.pdf';
             $pdf->save(public_path($pdfFileName));

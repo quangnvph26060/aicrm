@@ -89,7 +89,7 @@
             justify-content: space-between;
             font-weight: bold;
             margin: 5px 0;
-            font-size:  14px;
+            font-size: 14px;
         }
 
 
@@ -119,6 +119,12 @@
                 border-bottom: none;
             }
         }
+
+        .dangchu {
+            text-align: end;
+            font-size: 13px;
+            color: gray;
+        }
     </style>
 </head>
 
@@ -130,7 +136,8 @@
                     <h2 style="margin: 0px">HÓA ĐƠN THANH TOÁN</h2>
                 </div>
                 <div class="receipt-header">
-                    <h3 style="font-size: 20px ; margin: 0px; padding: 10px 0px">{{ isset($config) ? $config->user->store_name : '' }}</h3>
+                    <h3 style="font-size: 20px ; margin: 0px; padding: 10px 0px">{{ isset($config) ?
+                        $config->user->store_name : '' }}</h3>
                     <table style="width: 60%; margin: 0px auto" id="thongtinnhahang">
                         <tr>
                             <td style="
@@ -176,8 +183,8 @@
                             <tr>
                                 <td>{{ $item->product->name }}</td>
                                 <td>{{ $item->amount }}</td>
-                                <td>{{ number_format($item->product->priceBuy) }}  VND</td>
-                                <td>{{ number_format($item->product->priceBuy * $item->amount) }}  VND</td>
+                                <td>{{ number_format($item->price) }} VND</td>
+                                <td>{{ number_format($item->price * $item->amount) }} VND</td>
                             </tr>
                             @endforeach
 
@@ -188,26 +195,27 @@
                 <div class="receipt-totals">
                     <div class="total">
                         <span style="float: left;">Tổng cộng</span>
-                        <span>{{ number_format($sum) }}  VND</span>
+                        <span id="number" data-value="{{ number_format($sum) }}">{{ number_format($sum) }} VND</span>
                     </div>
+                    <div id="dangchu" class="dangchu">{{ $text }} đồng</div>
                     <hr>
                     <div class="total">
-                        <span style="float: left;">Tổng tiền phải trả  </span>
-                        <span>{{ number_format($sum) }}  VND</span>
+                        <span style="float: left;">Tổng tiền phải trả </span>
+                        <span>{{ number_format($sum) }} VND</span>
                     </div>
-                    {{-- <hr>
+                    {{--
+                    <hr>
                     <div class="total">
-                        <span style="float: left;">Còn phải trả  </span>
+                        <span style="float: left;">Còn phải trả </span>
                         <span>{{ number_format($sum) }} VND</span>
                     </div> --}}
                 </div>
                 <div class="receipt-footer">
                     <p style='margin: 0px;'>Cảm ơn quý khách!</p>
                     @if (isset($config))
-                    <img style="width: 200px;" src="{{ $config->qr }}"
-                    alt="QR Code">
+                    <img style="width: 200px;" src="{{ $config->qr }}" alt="QR Code">
                     <div>
-                        <p>{{ $config->bank->code }} - {{ $config->receiver }} - {{  $config->user->store_name }}</p>
+                        <p>{{ $config->bank->code }} - {{ $config->receiver }} - {{ $config->user->store_name }}</p>
                     </div>
                     @else
                     <img style="width: 200px;" src="" alt="QR Code">
@@ -217,5 +225,7 @@
         </div>
     </div>
 </body>
+
+
 
 </html>

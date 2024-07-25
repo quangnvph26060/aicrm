@@ -77,7 +77,7 @@
                                                 @foreach ($order->orderDetails as $item)
                                                     <div class="d-flex justify-content-between nowrap">
                                                         <span>{{ $item->product->name }} x{{ $item->quantity }}</span>
-                                                        <span>{{ number_format($item->product->price * $item->quantity) }}
+                                                        <span>{{ number_format($item->price * $item->quantity) }}
                                                             VND</span>
                                                     </div>
                                                 @endforeach

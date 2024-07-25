@@ -234,7 +234,6 @@ $j(document).ready(function() {
             url: '{{ route('staff.product.get') }}',
             type: 'GET',
             success: function(data) {
-                console.log(data);
                 var productContainer = $j('#productContainer');
                 productContainer.empty();
                 // list = data.data;
@@ -494,7 +493,49 @@ $j('#paymentbill').submit(function(event) {
                 alert('Đã xảy ra lỗi khi xử lý thanh toán và tải xuống.');
             }
         });
+});
+
+
+$j(document).on('input', '.change_price', function() {
+    var price = parseInt($(this).text(),10);
+    var cart = $j(this).data('id');
+
+    $j.ajax({
+        url: '{{ route('staff.cart.update.price') }}',
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            price: price,
+            cart: cart
+        },
+        success: function(response) {
+            updateCart(response.cart);
+            updateCartBill(response.cart);
+            var submitBuyOrderBill = document.getElementById('submitBuyOrderBill');
+            if (response.cart.length <= 0) {
+                submitBuyOrderBill.setAttribute('disabled', 'disabled');
+            } else {
+                submitBuyOrderBill.removeAttribute('disabled');
+            }
+            var total_amount = $j('#total-amount');
+            var totalBill = $j('.totalBill');
+            var totalPay = $j('.totalPay');
+            var totalDue = $j('.totalDue');
+            var dangchu = $j('#dangchu');
+            dangchu.text( convertNumberToWords(convertTextToNumber(response.sum)));
+            totalBill.text(response.sum + " VND" );
+            totalPay.text(response.sum + " VND" );
+            totalDue.text(response.sum+ " VND"  );
+            total_amount.text(response.sum );
+            var total_amount_to_pay = $j('#total-to-pay');
+            total_amount_to_pay.text(response.sum );
+        },
+        error: function(xhr) {
+            alert(xhr.responseJSON.error);
+        }
     });
+
+})
 
 function updateCartBill(cart) {
     // Cập nhật nội dung giỏ hàng trong HTML
@@ -514,7 +555,8 @@ function updateCartBill(cart) {
         orderBill.append(orderItem);
     });
 }
-    $j("#results").on("click", "li", function() {
+
+$j("#results").on("click", "li", function() {
         if (!$j(this).hasClass("no-results")) {
             var fullName = $j(this).data("fullname");
             var email = $j(this).data("email");
@@ -528,7 +570,7 @@ function updateCartBill(cart) {
         }
     });
 
-    function updateCart(cart) {
+function updateCart(cart) {
         var cartItems = $j('.product-item');
         cartItems.empty();
             if(cart.length === 0) {
@@ -539,10 +581,10 @@ function updateCartBill(cart) {
                     '<div '+ 'data-id = "' + details.id + '"'  + ' class="closebtn">&times;</div>' +
                     '<div class="d-flex" style="margin-right: 109px; width: 100%; justify-content: space-between;">' +
                         '<strong style="width: 130px;">' + details.product_name +
-                            '<p style="margin: 0; font-size: 13px; color: #888;">' + details.priceBuy.toLocaleString('en-US') + 'đ</p>' +
+                            '<div style="margin: 0; font-size: 13px; color: #888;"  contenteditable="true" class="change_price" ' + 'data-id = "' + details.id + '"'  + ' >' + details.priceBuy + '</div>' +
                         '</strong>' +
                         '<span><input type="number"' + 'data-id = "' + details.product_id + '"'  + '  min="1" class="custom-input" value="' + details.amount + '"></span>' +
-                        '<span style="width: 80px;">' + (details.priceBuy * details.amount).toLocaleString('en-US') + 'đ</span>' +
+                        '<span style="width: 80px;">' + (details.priceBuy * details.amount) + 'đ</span>' +
                     '</div>' +
                 '</div>';
                     cartItems.append(cartItem);

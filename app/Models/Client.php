@@ -17,5 +17,7 @@ class Client extends Model
         'dob',
         'email',
         'gender',
+        'clientgroup_id'
     ];
+    
 }

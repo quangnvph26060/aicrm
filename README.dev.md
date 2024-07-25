@@ -15,4 +15,7 @@ php artisan vendor:publish --tag=laravel-pagination
 22/7
 composer require phpoffice/phpspreadsheet
 
+composer require kavenegar/laravel
+
+
 

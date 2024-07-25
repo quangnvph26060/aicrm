@@ -1,4 +1,5 @@
 @extends('admin.layout.index')
+
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -74,7 +75,8 @@
         }
 
         .btn-warning,
-        .btn-danger {
+        .btn-danger,
+        .btn-primary {
             border-radius: 20px;
             padding: 5px 15px;
             font-size: 14px;
@@ -83,7 +85,8 @@
         }
 
         .btn-warning:hover,
-        .btn-danger:hover {
+        .btn-danger:hover,
+        .btn-primary:hover {
             transform: scale(1.05);
         }
 
@@ -119,6 +122,7 @@
             transition: all 0.3s ease;
         }
     </style>
+
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -131,107 +135,80 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="">Phiếu chi</a>
+                    <a href="#">Nhóm khách hàng</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="">Danh sách</a>
+                    <a href="#">Danh sách</a>
                 </li>
             </ul>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách đã chi</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Nhóm khách hàng</h4>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-                                @if (count($debtncc) > 0)
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-6">
-                                            <div class="dataTables_length" id="basic-datatables_length">
-                                                <a class="btn btn-primary"
-                                                    href="{{ route('admin.quanlythuchi.expense.add') }}">
-                                                    <i style="padding: 0px 5px;" class="fas fa-plus"></i> Thêm phiếu chi
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
 
+                    <div class="card-body">
+                        <div class="">
+                            <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <table id="basic-datatables"
                                             class="display table table-striped table-hover dataTable" role="grid"
                                             aria-describedby="basic-datatables_info">
                                             <thead>
-                                                <tr>
-                                                    <th>STT</th>
-                                                    <th>Mã phiếu</th>
-                                                    <th>Nhà cung cấp</th>
-                                                    <th>Nội dung</th>
-                                                    <th>Tiền chi</th>
-                                                    <th>Ngày cập nhật</th>
+                                                <tr role="row">
+                                                    <th>Tên nhóm</th>
+                                                    <th>Mã nhóm</th>
+                                                    <th>Mô tả</th>
+                                                    <th>Số lượng khách hàng</th>
+                                                    <th>Ngày tạo</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if ($expenses && $expenses->count() > 0)
-                                                    @foreach ($expenses as $key => $value)
-                                                        @if (is_object($value))
-                                                            <tr>
-                                                                <td>{{ $key + 1 }}</td>
-
-                                                                <td><a style="color: black; font-weight:bold"
-                                                                        href="{{ route('admin.quanlythuchi.expense.detail', ['id' => $value->id]) }}">{{ $value->expense_code ?? '' }}</a>
-                                                                </td>
-                                                                <td>{{ $value->company->name ?? '' }}</td>
-                                                                <td>{{ $value->content ?? '' }}</td>
-                                                                <td>{{ number_format($value->amount_spent) ?? '' }}</td>
-                                                                <td>{{ $value->updated_at ?? '' }}</td>
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                @else
+                                                @forelse ($clientgroup as $item)
                                                     <tr>
-                                                        <td class="text-center" colspan="6">Chưa có phiếu chi nào</td>
+                                                        <td>
+                                                            <a style="color: black; font-weight:bold"
+                                                                href="">{{ $item->name ?? "" }}</a>
+                                                        </td>
+                                                        <td>
+                                                            <a style="color:black"
+                                                                href="">
+                                                                {{ $item->code ?? '' }}
+                                                            </a>
+                                                        </td>
+                                                        <td>{{ $item->description }}</td>
+                                                        <td>
+                                                            {{ count($item->client) ?? 0 }}
+                                                        </td>
+
+                                                        <td>{{ $item->created_at }} </td>
                                                     </tr>
-                                                @endif
+                                                @empty
+                                                    <tr>
+                                                        <td class="text-center" colspan="5">Chưa có nhóm khách hàng nào</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
-                                        {{-- @if ($clients instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                                            {{ $clients->links('vendor.pagination.custom') }}
-                                        @endif --}}
+
+                                        <!-- Pagination -->
+
                                     </div>
                                 </div>
                             </div>
+                            <!-- End Table -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
-                $.notify({
-                    icon: 'icon-bell',
-                    title: 'Khách hàng',
-                    message: '{{ session('success') }}',
-                }, {
-                    type: 'secondary',
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    time: 1000,
-                });
-            });
-        </script>
-    @endif
 @endsection

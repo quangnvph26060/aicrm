@@ -67,6 +67,7 @@ class ProductController extends Controller
 
             Cart::create([
                 'product_id' => $productId,
+                'price' => $product->priceBuy,
                 'user_id' => $user->id,
                 'amount' => $amount
             ]);
@@ -79,14 +80,14 @@ class ProductController extends Controller
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
-            $sum += $item->amount * $item->product->priceBuy;
+            $sum += $item->amount * $item->price;
             $product = Product::find($item->product_id);
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
-                    'priceBuy' => $product->priceBuy,
+                    'priceBuy' => $item->price,
                     'product_name' => $product->name,
                 ];
             }
@@ -119,14 +120,14 @@ class ProductController extends Controller
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
-            $sum += $item->amount * $item->product->priceBuy;
+            $sum += $item->amount * $item->price;
             $product = Product::find($item->product_id);
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
-                    'priceBuy' => $product->priceBuy,
+                    'priceBuy' => $item->price,
                     'product_name' => $product->name,
                 ];
             }
@@ -143,18 +144,17 @@ class ProductController extends Controller
         $cartItems = Cart::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
-
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
-            $sum += $item->amount * $item->product->priceBuy;
+            $sum += $item->amount * $item->price;
             $product = Product::find($item->product_id);
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
-                    'priceBuy' => $product->priceBuy,
+                    'priceBuy' => $item->price,
                     'product_name' => $product->name,
                 ];
             }
@@ -169,4 +169,36 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+
+    public function updatePriceCart(Request $request)
+    {
+
+        $user = Auth::user();
+        $existingCartItem = Cart::find($request->cart);
+        $price = $request->price;
+
+        $existingCartItem->update(['price' => $price]);
+
+        $cartItems = Cart::where('user_id', $user->id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        $products = [];
+        $sum = 0;
+        foreach ($cartItems as $item) {
+            $sum += $item->amount * $item->price;
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $products[] = [
+                    'id' => $item->id,
+                    'product_id' => $item->product_id,
+                    'amount' => $item->amount,
+                    'priceBuy' => $item->price,
+                    'product_name' => $product->name,
+                ];
+            }
+        }
+        return response()->json(['success' => 'Product added to cart!', 'cart' => $products, 'sum' => number_format($sum)]);
+    }
+
 }
