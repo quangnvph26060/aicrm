@@ -50,7 +50,7 @@
                     <div class="col-lg-9"><span class="invalid-feedback d-block" style="font-weight: 500"
                             id="orderAddress_error"></span> </div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="clientgroup">Nhóm khách hàng</label></label>
                     <select class="form-control" id="clientgroup_id" name="clientgroup_id">
                         <option value="">----- Nhóm khách hàng ----- </option>
@@ -59,7 +59,7 @@
                         @endforeach
                     </select>
 
-                </div>
+                </div> --}}
                 <div class="form-group">
                     <label for="paymentMethod">Phương thức thanh toán</label></label>
                     <select class="form-control" id="paymentMethod" name="status">
