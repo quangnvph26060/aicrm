@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\importCouponController;
 use App\Http\Controllers\Admin\ImportProductController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ReceiptController;
+use App\Http\Controllers\Admin\ReportdebtController;
 use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
@@ -216,6 +217,13 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
             Route::get('/add', [ExpenseController::class, 'add'])->name('add');
             Route::post('/add', [ExpenseController::class, 'addSubmit'])->name('addSubmit');
             Route::post('/debt', [ExpenseController::class, 'debt'])->name('debt');
+        });
+    });
+
+    Route::prefix('report')->name('report.')->group(function(){
+        Route::prefix('debt')->name('debt.')->group(function(){
+            Route::get('/',[ReportdebtController::class, 'index'])->name('index');
+            Route::get('/print',[ReportdebtController::class, 'print'])->name('print');
         });
     });
 })->middleware('checkRole:1');
