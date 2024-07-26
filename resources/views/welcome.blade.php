@@ -166,7 +166,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card card-round">
-                <div class="card-header">
+                <div class="card-header" style="padding: 10px">
                     <div class="card-head-row">
                         <div class="card-title">Thống kê doanh thu</div>
                         <div class="card-tools">
@@ -185,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="padding: 0px">
                     <div class="chart-container">
                         <canvas id="columnChart"></canvas>
                     </div>
@@ -195,9 +195,9 @@
 
         <div class="col-md-4">
             <div class="card card-primary card-round" style="margin-bottom: 10px">
-                <div class="card-header">
+                <div class="card-header" style="padding-bottom: 0px">
                     <div class="card-head-row">
-                        <div class="card-title" id="daily">Thu nhập ngày</div>
+                        <div class="card-title" id="daily" style="margin: 0px">Thu nhập ngày</div>
                         <div class="card-tools">
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-label-light dropdown-toggle" type="button"
@@ -215,7 +215,7 @@
                     </div>
                     <div class="card-category" id="day_month_year">{{ date('d/m/Y') }}</div>
                 </div>
-                <div class="card-body pb-0">
+                <div class="card-body pb-0" style="padding-top: 5px">
                     <div class="m2-4 mt-1" style="padding-top: 0 !improtant;">
                         <p id="income">{{ $daily['income'] }} </p>
                         <p><u id="amount">{{ $daily['amount'] }} Đơn</u></p>
@@ -347,45 +347,6 @@
                 </div>
             </div>
         </div> --}}
-
-        <div class="col-md-12">
-            <div class="card card-round">
-                <div class="card-header">
-                    <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Sản phẩm bán chạy nhất</div>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table align-items-center mb-0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center" scope="col">Mã sản phẩm</th>
-                                    <th class="text-center" scope="col">Tên sản phẩm</th>
-                                    <th class="text-center" scope="col">Giá nhập </th>
-                                    <th class="text-center" scope="col">Giá bán</th>
-                                    <th class="text-center" scope="col">Số lượng đã bán</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($topProducts as $item)
-                                <tr>
-                                    <td class="text-center"><a
-                                            href="{{ route('admin.product.edit', ['id' => $item->product_id]) }}">
-                                            {{ $item->code}}</a>
-                                    </td>
-                                    <td class="text-center">{{ $item->name }}</td>
-                                    <td class="text-center">{{ $item->price}}</td>
-                                    <td class="text-center">{{ $item->priceBuy }}</td>
-                                    <td class="text-center">{{ $item->total_quantity }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="col-md-12">
             <div class="card card-round">
