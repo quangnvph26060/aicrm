@@ -213,7 +213,7 @@ class ClientController extends Controller
             }
             Cart::where('user_id', $user->id)->delete();
             $config = Config::first();
-            $text = NumberToWords::convert($sum);
+            $text = convert($sum);
             $html = view('Themes.pages.bill.index', compact('cartItems', 'sum', 'client', 'user', 'config', 'text'))->render();
             $pdf = Pdf::loadHTML($html);
             $pdfFileName = 'order.pdf';

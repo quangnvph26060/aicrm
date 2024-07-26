@@ -22,14 +22,24 @@
     <!-- Navbar Header -->
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div class="container-fluid">
-            <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px">
+            {{-- <div style="flex: 2; align-items: baseline; display: flex; margin-right: 20px">
                 <marquee id="demoMarquee" scrollamount="7" style="color: red">
                     <span>Thông báo: Đây là phiên bản demo của phần mềm quản lý bán hàng AICRM. Quý khách hàng có nhu
                         cầu trải nghiệm phần mềm đăng ký <a href="http://aicrm.vn/dang-ky" id="marqueeLink">tại
                             đây</a></span>
                 </marquee>
-            </div>
+            </div> --}}
+
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                    <a style="background: #c2c0c0" class="dropdown-toggle profile-pic" target="_blank" href="{{ route('admin.product.addForm') }}"
+                        aria-expanded="false">
+                        <i style="font-size: 18px; padding: 0px 5px; color: rgb(138, 135, 135)"
+                            class="fa-solid fa-plus"></i> Thên sản phẩm
+
+                    </a>
+
+                </li>
                 <!-- Notifications -->
                 <li class="nav-item topbar-icon dropdown hidden-caret">
                     <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
