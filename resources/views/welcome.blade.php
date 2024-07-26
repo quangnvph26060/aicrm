@@ -8,11 +8,11 @@
 
 
 <style>
-
-    #dropdownMenuButton:hover{
+    #dropdownMenuButton:hover {
         color: black !important;
         background: rgb(170, 169, 169);
     }
+
     .slider-container {
         position: relative;
         overflow: hidden;
@@ -347,67 +347,106 @@
                 </div>
             </div>
         </div> --}}
-
-        <div class="col-md-12">
-            <div class="card card-round">
-                <div class="card-header">
-                    <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Đơn hàng gần đây</div>
-                        <div class="card-tools">
-                            <div class="dropdown">
-                                <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
+        <div class="card card-round">
+            <div class="card-header">
+                <div class="card-head-row card-tools-still-right">
+                    <div class="card-title">Sản phẩm bán chạy nhất</div>
+                    <div class="card-tools">
                     </div>
                 </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table align-items-center mb-0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center" scope="col">Mã đơn hàng</th>
-                                    <th class="text-center" scope="col">Ngày tạo</th>
-                                    <th class="text-center" scope="col">Khách hàng</th>
-                                    <th class="text-center" scope="col">Tổng tiền (VND)</th>
-                                    <th class="text-center" scope="col">Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($newOrder as $item)
-                                <tr>
-                                    <td class="text-center"><a
-                                            href="{{ route('admin.order.detail', ['id' => $item->id]) }}">{{ $item->id
-                                            }}</a>
-                                    </td>
-                                    <td class="text-center">{{ $item->created_at->format('H:i d/m/Y') }}</td>
-                                    <td class="text-center">{{ $item->client->name }}</td>
-                                    <td class="text-center">{{ number_format($item->total_money) }}</td>
-                                    @if ($item->status !== 4)
-                                    <td class="text-center">
-                                        <span class="badge badge-success">Hoàn thành</span>
-                                    </td>
-                                    @else
-                                    <td class="text-center">
-                                        <span style="background-color: red" class="badge badge-success">Công nợ</span>
-                                    </td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table align-items-center mb-0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" scope="col">Mã sản phẩm</th>
+                                <th class="text-center" scope="col">Tên sản phẩm</th>
+                                <th class="text-center" scope="col">Giá nhập</th>
+                                <th class="text-center" scope="col">Giá bán</th>
+                                <th class="text-center" scope="col">Số lượng đã bán</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($topProducts as $item)
+                            <tr>
+                                <td class="text-center"><a
+                                        href="{{ route('admin.product.edit', ['id' => $item->product_id]) }}">{{ $item->code
+                                        }}</a>
+                                </td>
+                                <td class="text-center">{{ $item->name ?? ''}}</td>
+                                <td class="text-center">{{ number_format($item->price ?? '') }}</td>
+                                <td class="text-center">{{ number_format($item->priceBuy ?? '') }}</td>
+                                <td class="text-center">{{ $item->total_quantity ?? '' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card card-round">
+        <div class="card-header">
+            <div class="card-head-row card-tools-still-right">
+                <div class="card-title">Đơn hàng gần đây</div>
+                <div class="card-tools">
+                    <div class="dropdown">
+                        <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center" scope="col">Mã đơn hàng</th>
+                            <th class="text-center" scope="col">Ngày tạo</th>
+                            <th class="text-center" scope="col">Khách hàng</th>
+                            <th class="text-center" scope="col">Tổng tiền (VND)</th>
+                            <th class="text-center" scope="col">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($newOrder as $item)
+                        <tr>
+                            <td class="text-center"><a href="{{ route('admin.order.detail', ['id' => $item->id]) }}">{{
+                                    $item->id
+                                    }}</a>
+                            </td>
+                            <td class="text-center">{{ $item->created_at->format('H:i d/m/Y') }}</td>
+                            <td class="text-center">{{ $item->client->name }}</td>
+                            <td class="text-center">{{ number_format($item->total_money) }}</td>
+                            @if ($item->status !== 4)
+                            <td class="text-center">
+                                <span class="badge badge-success">Hoàn thành</span>
+                            </td>
+                            @else
+                            <td class="text-center">
+                                <span style="background-color: red" class="badge badge-success">Công nợ</span>
+                            </td>
+                            @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
+</div>
 
 </div>
 
