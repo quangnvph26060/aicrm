@@ -30,7 +30,6 @@ class DashboardController extends Controller
             ->orderByDesc('total_quantity')
             ->limit(5)
             ->get();
-            // sdd($topProducts);
             $getMonth = $this->orderService->getMonthlyRevenue();
             $getMonthlyRevenue = $getMonth['monthlyRevenue'];
             $totalAnnualRevenue = $getMonth['totalAnnualRevenue'];
