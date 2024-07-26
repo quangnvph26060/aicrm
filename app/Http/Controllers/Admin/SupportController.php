@@ -23,7 +23,7 @@ class SupportController extends Controller
             'message' => $request->input('message'),
         ];
 
-        Mail::to('thangngo130802@gmail.com')->send(new CustomerEmail($details));
+        Mail::to('khacthuat.it@gmail.com')->send(new CustomerEmail($details));
         return redirect()->back()->with('success', 'Gửi đánh giá thành công !');
     }
 }
