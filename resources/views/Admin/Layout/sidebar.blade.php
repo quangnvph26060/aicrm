@@ -1,4 +1,4 @@
-<div class="sidebar" data-background-color="dark">
+<div class="sidebar no-print" data-background-color="dark">
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
@@ -180,6 +180,11 @@
                             <li>
                                 <a href="">
                                     <span class="sub-item">Thống kê ngày</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.report.debt.index') }}">
+                                    <span class="sub-item">Tồn kho</span>
                                 </a>
                             </li>
                             <li>
