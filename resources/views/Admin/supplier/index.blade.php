@@ -180,6 +180,10 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <a class="btn btn-primary rounded" href="{{ route('admin.company.index') }}">Danh sách
+                                        công ty</a>
+                                </div>
                             </div>
                         </div>
                     </div>
