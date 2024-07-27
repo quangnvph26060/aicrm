@@ -93,32 +93,29 @@ class DailyReportController extends Controller
             return view('admin.report.import', $reportData);
         } catch (Exception $e) {
             Log::error("Failed to get today's Importation: " . $e->getMessage());
-            return response()->json(['error' => 'Failed to get today\'s Importation'], 500);
+            return response()->json(['error' => "Failed to get today's Importation"], 500);
         }
     }
 
     public function getDailyImportData()
     {
         try {
+            // Lấy dữ liệu báo cáo từ service
             $reportData = $this->dailyReport->getDailyImport();
 
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
+            // Tạo đối tượng Spreadsheet mới
+            $excel = new Spreadsheet();
+            $sheet = $excel->getActiveSheet();
 
-            // Tiêu đề bảng đơn nhập hàng
-            $headers = [
-                'A1' => 'Mã đơn hàng',
-                'B1' => 'Nhân viên',
-                'C1' => 'Ngày tạo',
-                'D1' => 'Nhà cung cấp',
-                'E1' => 'Trạng thái',
-                'F1' => 'Tổng tiền'
-            ];
-            foreach ($headers as $cell => $header) {
-                $sheet->setCellValue($cell, $header);
-            }
+            // Đặt tiêu đề cho bảng đơn nhập hàng
+            $sheet->setCellValue('A1', 'Mã đơn hàng');
+            $sheet->setCellValue('B1', 'Nhân viên');
+            $sheet->setCellValue('C1', 'Ngày tạo');
+            $sheet->setCellValue('D1', 'Nhà cung cấp');
+            $sheet->setCellValue('E1', 'Trạng thái');
+            $sheet->setCellValue('F1', 'Tổng tiền');
 
-            // Dữ liệu đơn nhập hàng
+            // Điền dữ liệu đơn nhập hàng
             $row = 2;
             foreach ($reportData['imports'] as $import) {
                 $sheet->setCellValue('A' . $row, $import->coupon_code);
@@ -130,40 +127,47 @@ class DailyReportController extends Controller
                 $row++;
             }
 
-            // Tiêu đề bảng sản phẩm nhập hàng
-            $headers = [
-                'H1' => 'Tên sản phẩm',
-                'I1' => 'Số lượng',
-                'J1' => 'Giá nhập cũ',
-                'K1' => 'Giá nhập mới',
-                'L1' => 'Tổng tiền'
-            ];
-            foreach ($headers as $cell => $header) {
-                $sheet->setCellValue($cell, $header);
-            }
+            // Đặt tiêu đề cho bảng sản phẩm nhập hàng
+            $sheet->setCellValue('H1', 'Tên sản phẩm');
+            $sheet->setCellValue('I1', 'Số lượng');
+            $sheet->setCellValue('J1', 'Giá nhập cũ');
+            $sheet->setCellValue('K1', 'Giá nhập mới');
+            $sheet->setCellValue('L1', 'Tổng tiền');
 
-            // Dữ liệu sản phẩm nhập hàng
+            // Điền dữ liệu sản phẩm nhập hàng
             $row = 2;
+            // Trong phương thức getDailyImportData của Controller
             foreach ($reportData['productImports'] as $productId => $imports) {
                 $product = $reportData['products']->get($productId);
                 if ($product) {
+                    // Log dữ liệu để kiểm tra
+                    Log::info('Product ID:', ['product_id' => $productId]);
+                    Log::info('Product Data:', $imports);
+
+                    // Kiểm tra và lấy giá nhập cũ và mới
+                    $oldPrice = isset($imports['old_price']) ? number_format($imports['old_price']) : 'N/A';
+                    $newPrice = isset($imports['price']) ? number_format($imports['price']) : 'N/A';
+
                     $sheet->setCellValue('H' . $row, $product->name);
-                    $sheet->setCellValue('I' . $row, $imports['quantity'] ?? ''); // Kiểm tra tồn tại của khóa
-                    $sheet->setCellValue('J' . $row, number_format($imports['old_price'] ?? 0)); // Sử dụng giá trị mặc định nếu không có khóa
-                    $sheet->setCellValue('K' . $row, number_format($imports['price'] ?? 0)); // Sử dụng giá trị mặc định nếu không có khóa
-                    $sheet->setCellValue('L' . $row, number_format($imports['total'] ?? 0)); // Sử dụng giá trị mặc định nếu không có khóa
+                    $sheet->setCellValue('I' . $row, $imports['quantity']);
+                    $sheet->setCellValue('J' . $row, $oldPrice);
+                    $sheet->setCellValue('K' . $row, $newPrice);
+                    $sheet->setCellValue('L' . $row, number_format($imports['total']));
                     $row++;
                 }
             }
 
-            // Ghi và trả file
-            $writer = new Xlsx($spreadsheet);
+
+            // Ghi Spreadsheet vào file tạm
+            $writer = new Xlsx($excel);
             $filename = 'daily_importation.xlsx';
             $tempFile = tempnam(sys_get_temp_dir(), $filename);
             $writer->save($tempFile);
 
+            // Trả file như một phản hồi tải về và xóa sau khi gửi
             return response()->download($tempFile, $filename)->deleteFileAfterSend(true);
         } catch (Exception $e) {
+            // Ghi log lỗi và trả phản hồi JSON với mã lỗi 500
             Log::error("Failed to export daily importation: " . $e->getMessage());
             return response()->json(['error' => 'Failed to export daily importation'], 500);
         }
