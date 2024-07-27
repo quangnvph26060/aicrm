@@ -119,27 +119,6 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#sidebarclient">
-                        <i class="fas fa-users"></i>
-                        <p>Khách hàng</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="sidebarclient">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ route('admin.client.index') }}">
-                                    <span class="sub-item">Danh sách khách hàng</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.client.clientgroup.index') }}">
-                                    <span class="sub-item">Nhóm khách hàng</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
 
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarthuchi">
@@ -178,14 +157,32 @@
                     <div class="collapse" id="sidebarbaocao">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="">
-                                    <span class="sub-item">Thống kê ngày</span>
+                                <a href="{{ route('admin.client.index') }}">
+                                    <span class="sub-item">Khách hàng</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('admin.report.debt.index') }}">
                                     <span class="sub-item">Tồn kho</span>
                                 </a>
+                                <a data-bs-toggle="collapse" href="#sidebarthongke">
+                                    <span class="sub-item">Thống kê ngày</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="sidebarthongke">
+                                    <ul class="nav nav-collapse">
+                                        <li>
+                                            <a href="{{ route('admin.report.orders.getDailyOrder') }}">
+                                                <span class="sub-item">Bán hàng</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('admin.report.imports.getDailyImport') }}">
+                                                <span class="sub-item">Nhập hàng</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
                                 <a data-bs-toggle="collapse" href="#sidebarcongno">
@@ -193,7 +190,7 @@
                                     <span class="caret"></span>
                                 </a>
                                 <div class="collapse" id="sidebarcongno">
-                                    <ul class="nav nav-collapse" style="padding: 0px 20px">
+                                    <ul class="nav nav-collapse">
                                         <li>
                                             <a href="{{ route('admin.debts.client') }}">
                                                 <span class="sub-item">Khách hàng</span>
@@ -221,42 +218,3 @@
         </div>
     </div>
 </div>
-
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const navItems = document.querySelectorAll('.nav-item > a[data-bs-toggle="collapse"]');
-
-    navItems.forEach(item => {
-        item.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            const targetId = this.getAttribute('href');
-            const targetCollapse = new bootstrap.Collapse(document.querySelector(targetId), {
-                toggle: false
-            });
-
-            if (targetCollapse._element.classList.contains('show')) {
-                targetCollapse.hide();
-            } else {
-                document.querySelectorAll('.collapse.show').forEach(collapse => {
-                    new bootstrap.Collapse(collapse, { toggle: false }).hide();
-                });
-                targetCollapse.hide();
-            }
-        });
-    });
-});
-
-</script>
-
-
-
-
-{{-- <style>
-   .collapse {
-    display: none;
-}
-
-</style> --}}

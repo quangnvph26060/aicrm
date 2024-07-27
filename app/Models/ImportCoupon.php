@@ -21,19 +21,27 @@ class ImportCoupon extends Model
     ];
 
     protected $appends = ['detail', 'user', 'supplier', 'company'];
-    public function getDetailAttribute(){
-        return ImportDetail::where('import_id',$this->attributes['id'])->get();
-    }
-    public function getUserAttribute(){
-        return User::where('id',$this->attributes['user_id'])->first();
-    }
-    public function getSupplierAttribute(){
-        return Supplier::where('id',$this->attributes['supplier_id'])->first();
+
+    public function getDetailAttribute()
+    {
+        return ImportDetail::where('import_id', $this->attributes['id'])->get();
     }
 
-    public function getCompanyAttribute(){
-        return Company::where('id',$this->attributes['companies_id'])->first();
+    public function getUserAttribute()
+    {
+        return User::where('id', $this->attributes['user_id'])->first();
     }
+
+    public function getSupplierAttribute()
+    {
+        return Supplier::where('id', $this->attributes['supplier_id'])->first();
+    }
+
+    public function getCompanyAttribute()
+    {
+        return Company::where('id', $this->attributes['companies_id'])->first();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -44,7 +52,7 @@ class ImportCoupon extends Model
      */
     public function details()
     {
-        return $this->hasMany(b::class, 'phieu_nhap_id');
+        return $this->hasMany(ImportDetail::class, 'import_id');
     }
 
     protected static function boot()

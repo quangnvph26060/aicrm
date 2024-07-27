@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\Brand;
 use App\Services\BrandService;
+use App\Services\CompanyService;
 use App\Services\SupplierService;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,10 +19,12 @@ class BrandController extends Controller
     //
     protected $brandService;
     protected $supplierService;
-    public function __construct(BrandService $brandService, SupplierService $supplierService)
+    protected $companyService;
+    public function __construct(BrandService $brandService, SupplierService $supplierService, CompanyService $companyService)
     {
         $this->brandService = $brandService;
         $this->supplierService = $supplierService;
+        $this->companyService = $companyService;
     }
     public function index(Request $request)
     {
@@ -121,7 +124,7 @@ class BrandController extends Controller
 
     public function findBySupplier(Request $request)
     {
-        $supplier = $this->supplierService->GetAllSupplier();
+        $supplier = $this->companyService->getCompany();
         $title = 'Thương hiệu ';
         $brand = $this->brandService->findBrandBySupplier($request->input('supplier_id'));
         return view('admin.brand.index', compact('brand', 'title', 'supplier'));

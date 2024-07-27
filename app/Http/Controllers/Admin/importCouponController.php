@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\ExpenseDetail;
 use App\Models\Import;
 use App\Models\ImportCoupon;
@@ -80,7 +81,7 @@ class importCouponController extends Controller
 
 
         if($totalncc > 0){
-            $supplier = Supplier::find($supplier_id);
+            $supplier = Company::find($supplier_id);
             $expenses = $this->expenseService->getAllExpense()->pluck('supplier_id');
             if($expenses->contains($supplier_id)){
                 $expense = $this->expenseService->findExpenseBysupplier($supplier_id);

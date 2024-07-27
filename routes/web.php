@@ -16,6 +16,7 @@ use App\Http\Controllers\Staff\ClientController as StaffClientController;
 use App\Http\Controllers\Staff\OrderController as StaffOrderController;
 use App\Http\Controllers\Staff\ProductController as StaffProductController;
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Admin\DailyReportController;
 use App\Http\Controllers\Admin\DebtClientController;
 use App\Http\Controllers\Admin\DebtNccController;
 use App\Http\Controllers\Admin\ExpenseController;
@@ -139,7 +140,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::get('/clientgroup', [ClientController::class, 'clientgroup'])->name('clientgroup.index');
     });
 
-    Route::prefix('company')->name('company.')->group(function(){
+    Route::prefix('company')->name('company.')->group(function () {
         Route::get("/", [CompanyController::class, 'index'])->name('index');
         Route::get('findByName', [CompanyController::class, 'findByName'])->name('findByName');
         Route::get('/add', [CompanyController::class, 'add'])->name('add');
@@ -220,10 +221,18 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         });
     });
 
-    Route::prefix('report')->name('report.')->group(function(){
-        Route::prefix('debt')->name('debt.')->group(function(){
-            Route::get('/',[ReportdebtController::class, 'index'])->name('index');
-            Route::get('/print',[ReportdebtController::class, 'print'])->name('print');
+    Route::prefix('report')->name('report.')->group(function () {
+        Route::prefix('debt')->name('debt.')->group(function () {
+            Route::get('/', [ReportdebtController::class, 'index'])->name('index');
+            Route::get('/print', [ReportdebtController::class, 'print'])->name('print');
+        });
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('', [DailyReportController::class, 'getDailyOrder'])->name('getDailyOrder');
+            Route::get('get-daily-order-data', [DailyReportController::class, 'getDailyOrderData'])->name('getDailyOrderData');
+        });
+        Route::prefix('imports')->name('imports.')->group(function () {
+            Route::get('', [DailyReportController::class, 'getDailyImport'])->name('getDailyImport');
+            Route::get('get-daily-import-data', [DailyReportController::class, 'getDailyImportData'])->name('getDailyImportData');
         });
     });
 })->middleware('checkRole:1');
