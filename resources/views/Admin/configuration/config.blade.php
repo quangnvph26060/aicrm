@@ -226,7 +226,7 @@
 
                                     <div class="form-group">
                                         <label for="logo" class="form-label">Logo cửa hàng</label>
-                                        <label class="custom-file-label" for="logo">Chọn ảnh</label>
+                                        <label class="custom-file-label" for="logo">Chọn logo</label>
                                         <input id="logo" class="custom-file-input @error('logo') is-invalid @enderror"
                                             type="file" name="logo" accept="image/*">
                                         @error('logo')

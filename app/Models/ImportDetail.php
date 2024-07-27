@@ -19,15 +19,18 @@ class ImportDetail extends Model
         'old_price'
     ];
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function import(){
-        return $this->belongsTo(ImportCoupon::class);
+    public function import()
+    {
+        return $this->belongsTo(ImportCoupon::class, 'import_id');
     }
 
-    public function supplier(){
+    public function supplier()
+    {
         return $this->belongsTo(Supplier::class);
     }
 }
