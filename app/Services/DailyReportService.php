@@ -105,11 +105,15 @@ class DailyReportService
                     $productImports[$productId] = [
                         'quantity' => 0,
                         'total' => 0,
+                        'price' => 0,
+                        'old_price' => 0,
                     ];
                 }
 
                 $productImports[$productId]['quantity'] += $quantity;
                 $productImports[$productId]['total'] += $total;
+                $productImports[$productId]['price'] = $price; // Gán giá mới cho sản phẩm
+                $productImports[$productId]['old_price'] = $oldPrice; // Gán giá cũ cho sản phẩm
             }
 
             // Get the products and paginate product imports
