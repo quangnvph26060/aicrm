@@ -157,6 +157,10 @@ function generateErrorMessage(code, values = []) {
         // khách hàng
         KH001 : 'Nhóm khách hàng không được để trống',
 
+        //Kho hàng
+        S001: 'Tên kho hàng không được để trống',
+        S002: 'Địa điểm kho hàng không được để trống'
+
     };
     const errorMessage = errorMessages[code];
     if (typeof errorMessage === 'function') {

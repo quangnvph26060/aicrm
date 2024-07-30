@@ -9,6 +9,7 @@ use App\Services\CategoryService;
 use App\Services\CompanyService;
 use App\Services\ImportProductService;
 use App\Services\ProductService;
+use App\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,12 +19,14 @@ class ImportProductController extends Controller
     protected $categoryService;
     protected $importProductService;
     protected $companyService;
-    public function __construct(ProductService $productService, CategoryService $categoryService, ImportProductService $importProductService, CompanyService $companyService)
+    protected $storageService;
+    public function __construct(ProductService $productService, CategoryService $categoryService, ImportProductService $importProductService, CompanyService $companyService, StorageService $storageService)
     {
         $this->productService = $productService;
         $this->categoryService = $categoryService;
         $this->importProductService = $importProductService;
         $this->companyService = $companyService;
+        $this->storageService = $storageService;
     }
     public function index()
     {
@@ -44,8 +47,9 @@ class ImportProductController extends Controller
         $products = $this->productService->getProductAll_Staff();
         $category = $this->categoryService->getCategoryAllStaff();
         $supplier = $this->companyService->getCompany();
+        $storage = $this->storageService->getAllStorage();
         $user = Auth::user();
-        return view('admin.Importproduct.add', compact('products', 'user', 'supplier','category', 'title'));
+        return view('admin.Importproduct.add', compact('products', 'user', 'supplier','category', 'storage' , 'title'));
     }
 
     public function importadd(Request $request)

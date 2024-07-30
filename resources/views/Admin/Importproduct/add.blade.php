@@ -498,6 +498,23 @@
 
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <div class="pull-left user-created control-label ng-binding">
+                                                        <span><i class="fa fa-user-circle-o"
+                                                                title="Người tạo"></i></span>
+                                                        Kho hàng
+                                                    </div>
+                                                    <div class="pull-right">
+                                                        <select name="storage" id="storage" style="width: 195px;">
+                                                            <option value="">--- Chọn nhà kho hàng ---</option>
+                                                            @foreach($storage as $key => $value)
+                                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                                            @endforeach
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
                                                 <div class="form-group" style="margin: 0px; padding: 0;">
                                                     <div class="col-lg-12"><span
                                                             class="invalid-feedback d-block pull-right"

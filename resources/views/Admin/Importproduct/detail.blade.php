@@ -85,6 +85,10 @@
                                             <td><div class="nowrap">{{ $importdetail->coupon_code }}</div></td>
                                         </tr>
                                         <tr>
+                                            <th scope="row"><i class="fas fa-warehouse"></i> Kho nhập</th>
+                                            <td><div class="nowrap">{{ $importdetail->storage->name }}</div></td>
+                                        </tr>
+                                        <tr>
                                             <th scope="row"><i class="fas fa-user-tie"></i> Tên nhân viên</th>
                                             <td><div class="nowrap">{{ $importdetail->user->name }}</div></td>
                                         </tr>

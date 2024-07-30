@@ -32,11 +32,18 @@
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a style="background: #c2c0c0" class="dropdown-toggle profile-pic" target="_blank" href="{{ route('admin.product.addForm') }}"
-                        aria-expanded="false">
+                    <a class="dropdown-toggle profile-pic" target="_blank"
+                        href="{{ route('admin.product.addForm') }}" aria-expanded="false">
                         <i style="font-size: 18px; padding: 0px 5px; color: rgb(138, 135, 135)"
                             class="fa-solid fa-plus"></i> Thên sản phẩm
 
+                    </a>
+                </li>
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                    <a class="dropdown-toggle profile-pic" target="_blank" href="{{ route('staff.index') }}"
+                        aria-expanded="false">
+                        <i style="font-size: 16px; padding: 0px 5px; color: rgb(138, 135, 135)"
+                            class="fas fa-cart-plus"></i> Trang bán hàng
                     </a>
 
                 </li>
@@ -100,14 +107,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item topbar-user dropdown hidden-caret">
-                    <a class="dropdown-toggle profile-pic" target="_blank" href="{{ route('staff.index') }}"
-                        aria-expanded="false">
-                        <i style="font-size: 16px; padding: 0px 5px; color: rgb(138, 135, 135)"
-                            class="fas fa-cart-plus"></i>
-                    </a>
 
-                </li>
                 <!-- User Profile -->
                 <li class="nav-item topbar-user dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"

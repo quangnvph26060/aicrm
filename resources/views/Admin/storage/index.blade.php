@@ -35,7 +35,6 @@
             font-size: 1.75rem;
             font-weight: 700;
             margin: 0;
-            text-align: center;
         }
 
         .breadcrumbs {
@@ -43,7 +42,6 @@
             padding: 0.75rem;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
         }
 
         .breadcrumbs a {
@@ -68,8 +66,6 @@
         .table td {
             padding: 1rem;
             vertical-align: middle;
-            text-align: center;
-            /* Center align the text in the cells */
         }
 
         .table th {
@@ -77,30 +73,26 @@
             border-bottom: 2px solid #dee2e6;
         }
 
-        .table-hover tbody tr:hover {
-            background-color: #e9ecef;
-        }
-
         .btn-warning,
-        .btn-danger,
-        .btn-primary {
+        .btn-danger {
             border-radius: 20px;
             padding: 5px 15px;
             font-size: 14px;
             font-weight: bold;
             transition: background 0.3s ease, transform 0.3s ease;
-            margin: 0 2px;
-            /* Add margin between buttons */
         }
 
         .btn-warning:hover,
-        .btn-danger:hover,
-        .btn-primary:hover {
+        .btn-danger:hover {
             transform: scale(1.05);
         }
 
         .page-header {
             margin-bottom: 2rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
         }
 
         .dataTables_info,
@@ -126,20 +118,8 @@
         .pagination .page-item .page-link {
             transition: all 0.3s ease;
         }
-
-        table th,
-        table td {
-            padding: 1rem;
-            vertical-align: middle;
-            text-align: center;
-            /* Center align the text in the cells */
-        }
-
-        table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-        }
     </style>
+
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -152,13 +132,13 @@
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.company.index') }}">Nhà cung cấp</a>
+                    <a href="{{ route('admin.storage.index') }}">Kho hàng</a>
                 </li>
                 <li class="separator">
                     <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.company.index') }}">Danh sách</a>
+                    <a href="#">Danh sách</a>
                 </li>
             </ul>
         </div>
@@ -166,7 +146,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách nhà cung cấp</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Danh sách kho hàng</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -174,30 +154,30 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary" href="{{route('admin.company.add')}}">
-                                                Thêm công ty cung cấp mới
-                                            </a>
+                                            <a class="btn btn-primary" href="{{ route('admin.storage.add') }}">Thêm kho
+                                                hàng</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <form action="{{ route('admin.company.findByName') }}" method="GET">
-                                            <div class="dataTables_filter">
-                                                <label>Tìm kiếm</label>
-                                                <input type="text" name="name" clabss="form-control form-control-sm"
-                                                    placeholder="Nhập tên nhà cung cấp" value="{{ old('name') }}">
+                                        <form id="search-form">
+                                            <div id="basic-datatables_filter" class="dataTables_filter">
+                                                <label>Tìm kiếm:
+                                                    <input name="name" type="search"
+                                                        class="form-control form-control-sm" placeholder="Nhập tên kho hàng"
+                                                        aria-controls="basic-datatables">
+                                                </label>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12" id="company-table">
-                                        @include('admin.company.table', ['companies' => $companies])
+                                    <div class="col-sm-12" id="storage-table">
+                                        @include('admin.storage.table', ['storages' => $storages])
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-12" id="pagination">
-
-                                        @if ($companies instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                                            {{ $companies->links('vendor.pagination.custom') }}
-                                        @endif
+                                        {{ $storages->links('vendor.pagination.custom') }}
                                     </div>
                                 </div>
                             </div>
@@ -207,62 +187,28 @@
             </div>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
     <script>
-        $(document).on('click', '.btn-delete', function(e) {
-            e.preventDefault(); // Prevent the default link behavior
-
-            if (confirm('Bạn có chắc chắn muốn xóa?')) {
-                var companyID = $(this).data('id'); // Ensure this is properly set in your HTML
-                var deleteUrl = '{{ route('admin.company.delete', ['id' => ':id']) }}';
-                deleteUrl = deleteUrl.replace(':id', companyID);
+        $(document).ready(function() {
+            // Xử lý tìm kiếm không tải lại trang
+            $('#search-form').on('submit', function(e) {
+                e.preventDefault();
 
                 $.ajax({
-                    url: deleteUrl,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        _method: 'DELETE'
-                    },
+                    url: '{{ route('admin.storage.findByName') }}',
+                    type: 'GET',
+                    data: $(this).serialize(),
                     success: function(response) {
-                        if (response.success) {
-                            // Cập nhật bảng thương hiệu
-                            $('#company-table').html(response.table);
-                            $('#pagination').html(response
-                                .pagination); // Ensure you include pagination in the response
-                            $.notify({
-                                icon: 'icon-bell',
-                                title: 'Nhà cung cấp',
-                                message: response.message,
-                            }, {
-                                type: 'success',
-                                placement: {
-                                    from: "bottom",
-                                    align: "right"
-                                },
-                                time: 1000,
-                            });
-                        } else {
-                            $.notify({
-                                icon: 'icon-bell',
-                                title: 'Nhà cung cấp',
-                                message: response.message,
-                            }, {
-                                type: 'danger',
-                                placement: {
-                                    from: "bottom",
-                                    align: "right"
-                                },
-                                time: 1000,
-                            });
-                        }
+                        $('#storage-table').html(response.table);
+                        $('#pagination').html(response.pagination);
                     },
                     error: function(xhr) {
                         $.notify({
                             icon: 'icon-bell',
-                            title: 'Nhà cung cấp',
-                            message: 'Xóa thương hiệu thất bại!',
+                            title: 'Kho hàng',
+                            message: 'Tìm kiếm không thành công!',
                         }, {
                             type: 'danger',
                             placement: {
@@ -273,7 +219,70 @@
                         });
                     }
                 });
-            }
+            });
+
+            // Xử lý xóa không tải lại trang
+            $(document).on('click', '.btn-delete', function() {
+                if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                    var storageId = $(this).data('id');
+                    var deleteUrl = '{{ route('admin.storage.delete', ['id' => ':id']) }}';
+                    deleteUrl = deleteUrl.replace(':id', storageId);
+
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#storage-table').html(response.table);
+                                $('#pagination').html(response.pagination);
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Kho hàng',
+                                    message: response.message,
+                                }, {
+                                    type: 'success',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            } else {
+                                $.notify({
+                                    icon: 'icon-bell',
+                                    title: 'Kho hàng',
+                                    message: response.message,
+                                }, {
+                                    type: 'danger',
+                                    placement: {
+                                        from: "bottom",
+                                        align: "right"
+                                    },
+                                    time: 1000,
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $.notify({
+                                icon: 'icon-bell',
+                                title: 'Kho hàng',
+                                message: 'Xóa kho hàng thất bại!',
+                            }, {
+                                type: 'danger',
+                                placement: {
+                                    from: "bottom",
+                                    align: "right"
+                                },
+                                time: 1000,
+                            });
+                        }
+                    });
+                }
+            });
         });
     </script>
     @if (session('success'))
@@ -281,7 +290,7 @@
             $(document).ready(function() {
                 $.notify({
                     icon: 'icon-bell',
-                    title: 'Nhà cung cấp',
+                    title: 'Kho hàng',
                     message: '{{ session('success') }}',
                 }, {
                     type: 'secondary',
