@@ -46,6 +46,7 @@ class importCouponController extends Controller
             'companies_id' => $supplier_id,
             'total' => $total,
             'payment_ncc' => $request->totalncc,
+            'storage_id' => $request->storage,
         ];
         $totalncc = $request->totalncc ?  $request->totalncc : 0;
         $congno = $total - $totalncc;

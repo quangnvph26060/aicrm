@@ -17,7 +17,8 @@ class ImportCoupon extends Model
         'total',
         'status',
         'coupon_code',
-        'payment_ncc'
+        'payment_ncc',
+        'storage_id',
     ];
 
     protected $appends = ['detail', 'user', 'supplier', 'company'];
@@ -46,7 +47,10 @@ class ImportCoupon extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function storage()
+    {
+        return $this->belongsTo(Storage::class);
+    }
     /**
      * Get the import coupon's details.
      */

@@ -28,12 +28,12 @@
                         <p>Tổng quan</p>
                     </a>
                 </li>
-                <li class="nav-section">
+                {{-- <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
                     <h4 class="text-section">Hệ thống quản lý</h4>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarsanpham">
@@ -64,6 +64,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="{{ route('admin.storage.index') }}">
+                                    <span class="sub-item">Kho hàng</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('admin.importproduct.index') }}">
                                     <span class="sub-item">Nhập hàng</span>
                                 </a>
@@ -85,18 +90,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.company.add') }}">
-                                    <span class="sub-item">Nhà cung cấp mới</span>
+                                <a href="">
+                                    <span class="sub-item">Nhóm nhà cung cấp</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.order.index') }}">
-                        <i class="fas fa-shopping-cart"></i>
-                        <p>Đơn hàng</p>
-                    </a>
                 </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarnhanvien">
@@ -156,6 +155,11 @@
                     </a>
                     <div class="collapse" id="sidebarbaocao">
                         <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('admin.order.index') }}">
+                                    <span class="sub-item">Đơn hàng</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('admin.client.index') }}">
                                     <span class="sub-item">Khách hàng</span>

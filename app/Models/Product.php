@@ -28,15 +28,18 @@ class Product extends Model
 
     ];
 
-    protected $appends = ['category','images','brands'];
-    public function getImagesAttribute(){
-        return ProductImages::where('product_id',$this->attributes['id'])->get();
+    protected $appends = ['category', 'images', 'brands'];
+    public function getImagesAttribute()
+    {
+        return ProductImages::where('product_id', $this->attributes['id'])->get();
     }
-    public function getCategoryAttribute(){
-        return Categories::where('id',$this->attributes['category_id'])->first();
+    public function getCategoryAttribute()
+    {
+        return Categories::where('id', $this->attributes['category_id'])->first();
     }
-    public function getBrandsAttribute(){
-         return Brand::where('id',$this->attributes['brands_id'])->first();
+    public function getBrandsAttribute()
+    {
+        return Brand::where('id', $this->attributes['brands_id'])->first();
     }
 
     public function brand()
@@ -57,6 +60,12 @@ class Product extends Model
         return $this->hasMany(ProductImages::class);
     }
 
+    public function storages()
+    {
+        return $this->belongsToMany(Storage::class, 'product_storage')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
 
     public static function boot()
     {
@@ -68,5 +77,4 @@ class Product extends Model
             $model->code = 'KH' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
         });
     }
-
 }

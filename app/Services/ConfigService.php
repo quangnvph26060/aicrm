@@ -47,6 +47,7 @@ class ConfigService
             $user->phone = $data['phone'];
             $user->email = $data['email'];
             $user->address =$data['address'];
+            $user->company_name = $data['company_name'];
             $user->save();
 
             // Thiết lập các cột khác

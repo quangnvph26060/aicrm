@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\ImportProductController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ReceiptController;
 use App\Http\Controllers\Admin\ReportdebtController;
+use App\Http\Controllers\Admin\StorageController;
 use App\Http\Controllers\Client\SignUpController;
 use App\Http\Controllers\Staff\CheckInventoryController as staffcheckController;
 use App\Http\Controllers\Staff\WareHomeController;
@@ -220,7 +221,15 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
             Route::post('/debt', [ExpenseController::class, 'debt'])->name('debt');
         });
     });
-
+    Route::prefix('storage')->name('storage.')->group(function () {
+        Route::get('', [StorageController::class, 'index'])->name('index');
+        Route::get('detail/{id}', [StorageController::class, 'edit'])->name('detail');
+        Route::post('update/{id}', [StorageController::class, 'update'])->name('update');
+        Route::get('add', [StorageController::class, 'add'])->name('add');
+        Route::post('create', [StorageController::class, 'create'])->name('create');
+        Route::get('findByName', [StorageController::class, 'findStorageByName'])->name('findByName');
+        Route::delete('delete/{id}', [StorageController::class, 'delete'])->name('delete');
+    });
     Route::prefix('report')->name('report.')->group(function () {
         Route::prefix('debt')->name('debt.')->group(function () {
             Route::get('/', [ReportdebtController::class, 'index'])->name('index');

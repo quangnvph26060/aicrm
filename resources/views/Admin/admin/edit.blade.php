@@ -232,10 +232,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="img_url" class="form-label">Ảnh đại diện</label>
-                                        <label class="custom-file-label" for="img_url">Chọn ảnh</label>
-                                        <input id="img_url"
-                                            class="custom-file-input @error('img_url') is-invalid @enderror" type="file"
-                                            name="img_url" accept="image/*">
+                                        <div class="custom-file">
+                                            <input id="img_url"
+                                                class="custom-file-input @error('img_url') is-invalid @enderror"
+                                                type="file" name="img_url" accept="image/*">
+                                            <label class="custom-file-label" for="img_url">Chọn ảnh</label>
+                                        </div>
                                         @error('img_url')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -243,12 +245,9 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        {{-- @if ($admin->user_info && $admin->user_info->img_url) --}}
-                                        <img src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
+                                        <img id="profileImage"
+                                            src="{{ isset(session('authUser')->user_info->img_url) && !empty(session('authUser')->user_info->img_url) ? asset(session('authUser')->user_info->img_url) : asset('images/avatar2.jpg') }}"
                                             alt="image profile" class="avatar">
-                                        {{-- @else
-                                            <span>No image found</span>
-                                        @endif --}}
                                     </div>
                                 </div>
                                 <!-- Buttons Row -->
@@ -394,4 +393,18 @@
             });
         </script>
     @endif
+    <script>
+        document.getElementById('img_url').addEventListener('change', function(event) {
+            const input = event.target;
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('profileImage').src = e.target.result;
+            };
+
+            if (input.files && input.files[0]) {
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    </script>
 @endsection
