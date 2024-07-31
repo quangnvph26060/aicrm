@@ -427,7 +427,7 @@
                 var phoneNumber = $('#phoneNumber').val();
                 var address = $('#address').val();
                 var paymentMethod = $('#paymentMethod').val();
-                var clientgroup = $('#clientgroup_id').val();
+
 
                 var modalContent = `
                         <p>Ngày tạo: ${getCurrentDate()}</p>
@@ -442,7 +442,7 @@
                     <input type="hidden" name="phone" value="${phoneNumber}">
                     <input type="hidden" name="address" value="${address}">
                     <input type="hidden" name="status" value="${paymentMethod}">
-                    <input type="hidden" name="clientgroup_id" value="${clientgroup}">
+
                 `;
 
                 $('.receipt-info').html(modalContent);
