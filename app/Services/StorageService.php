@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ProductStorage;
 use App\Models\Storage;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,9 +12,11 @@ use Illuminate\Support\Facades\Log;
 class StorageService
 {
     protected $storage;
-    public function __construct(Storage $storage)
+    protected $productStorage;
+    public function __construct(Storage $storage, ProductStorage $productStorage)
     {
         $this->storage = $storage;
+        $this->productStorage = $productStorage;
     }
     public function getStorageById($id)
     {
@@ -112,5 +115,15 @@ class StorageService
         }
     }
 
-
+    public function getProductInStorage($id)
+    {
+        try{
+            return $this->productStorage->where('storage_id', $id)->orderByDesc('created_at')->paginate(5);
+        }
+        catch(Exception $e)
+        {
+            Log::error("Failed to find storage's detail: " .$e->getMessage());
+            throw new Exception("Failed to find storage's detail");
+        }
+    }
 }

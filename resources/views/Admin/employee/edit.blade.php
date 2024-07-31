@@ -203,6 +203,28 @@
                                                         style="font-weight: 500" id="phone_error"></span> </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <label for="storage">Nơi làm việc:</label>
+                                            <select class="form-control" name="storage_id" id="storage" required>
+                                                <!-- Initial option displaying current user's storage location -->
+                                                <option value="{{ $user->storage_id ?? '' }}">
+                                                    {{ $user->storage->name ?? 'Chọn nơi làm việc' }}
+                                                </option>
+                                                <!-- Loop through storage locations to populate options -->
+                                                @foreach ($storage as $item)
+                                                    <option value="{{ $item->id }}"
+                                                        {{ isset($user->storage_id) && $user->storage_id == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <!-- Display error message if any -->
+                                            <div class="col-lg-9">
+                                                <span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="storage_error"></span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="text-center mt-4">
                                         <div>
@@ -267,6 +289,17 @@
                     'message': generateErrorMessage('E040')
                 }, ]
             },
+
+            'storage': {
+                'element': document.getElementById('storage'),
+                'error': document.getElementById('storage_error'),
+                'validations': [{
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('E046')
+                }, ]
+            }
         }
 
         function editemployee(event) {

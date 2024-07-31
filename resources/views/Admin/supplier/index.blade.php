@@ -181,7 +181,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <a class="btn btn-primary rounded" href="{{ route('admin.company.index') }}">Danh sách
+                                    <a class="btn btn-primary rounded-5" href="{{ route('admin.company.index') }}">Danh sách
                                         công ty</a>
                                 </div>
                             </div>
