@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductImages;
+use App\Models\ProductStorage;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Storage;
 class ProductService
 {
     protected $product;
-    public function __construct(Product $product)
+    protected $productStorage;
+    public function __construct(Product $product, ProductStorage $productStorage)
     {
         $this->product = $product;
+        $this->productStorage = $productStorage;
     }
 
     public function getProductAll(): LengthAwarePaginator
@@ -46,6 +49,17 @@ class ProductService
         }
     }
 
+    public function getPRoductInStorage_Staff($id)
+    {
+        try{
+            return $this->productStorage->orderByDesc('created_at')->where('storage_id', $id)->get();
+        }
+        catch(Exception $e)
+        {
+            Log::error('Failed to fetch product in storage: ' .$e->getMessage());
+            throw new Exception('Failed to fetch product in storage');
+        }
+    }
     public function getProductById($id): Product
     {
         try {

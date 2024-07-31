@@ -1,28 +1,30 @@
 @extends('admin.layout.index')
 @section('content')
-<style>
-    .breadcrumbs {
-    background: #fff;
-    padding: 0.75rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.breadcrumbs{
-    list-style: none;
-    display: inline;
-    width: auto;
-    border-left: 1px solid #efefef;
+    <style>
+        .breadcrumbs {
+            background: #fff;
+            padding: 0.75rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    margin-bottom: 0;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    height: 100%;
-}
-.detail_import i{
-    display: inline-block;
-    padding-right: 10px;
-}
-</style>
+        .breadcrumbs {
+            list-style: none;
+            display: inline;
+            width: auto;
+            border-left: 1px solid #efefef;
+
+            margin-bottom: 0;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            height: 100%;
+        }
+
+        .detail_import i {
+            display: inline-block;
+            padding-right: 10px;
+        }
+    </style>
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -59,19 +61,27 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><i class="fas fa-user"></i> Tên khách hàng</th>
-                                            <td><div class="nowrap">{{ $importdetail->company->name }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->company->name }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-phone"></i> Số điện thoại</th>
-                                            <td><div class="nowrap">{{ $importdetail->company->phone }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->company->phone }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-envelope"></i> Email</th>
-                                            <td><div class="nowrap">{{ $importdetail->company->email }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->company->email }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-map-marker-alt"></i> Địa chỉ </th>
-                                            <td><div class="nowrap">{{ $importdetail->company->address }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->company->address }}</div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -82,23 +92,33 @@
                                     <tbody>
                                         <tr>
                                             <th scope="row"><i class="fas fa-receipt"></i> Mã đơn hàng</th>
-                                            <td><div class="nowrap">{{ $importdetail->coupon_code }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->coupon_code }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-warehouse"></i> Kho nhập</th>
-                                            <td><div class="nowrap">{{ $importdetail->storage->name }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->storage->name ?? '' }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-user-tie"></i> Tên nhân viên</th>
-                                            <td><div class="nowrap">{{ $importdetail->user->name }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ $importdetail->user->name }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-dollar-sign"></i> Tổng tiền</th>
-                                            <td><div class="nowrap">{{ number_format($importdetail->total) }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ number_format($importdetail->total) }}</div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th scope="row"><i class="fas fa-dollar-sign"></i> Đã trả</th>
-                                            <td><div class="nowrap">{{ number_format($importdetail->payment_ncc) }}</div></td>
+                                            <td>
+                                                <div class="nowrap">{{ number_format($importdetail->payment_ncc) }}</div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -107,34 +127,34 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <table id="basic-datatables" class="display table table-striped table-hover dataTable"
-                                role="grid" aria-describedby="basic-datatables_info">
-                                <thead>
-                                    <tr role="row">
-                                        <th>Mã hàng hóa </th>
-                                        <th>Tên hàng hóa</th>
-                                        <th>Số lượng nhập</th>
-                                        <th>Đơn giá cũ</th>
-                                        <th>Đơn giá mới</th>
-                                        <th>Tổng tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($importdetail->detail as $detail)
-                                        <tr>
-                                            <td>{{ $detail->product->code }}</td>
-                                            <td>{{ $detail->product->name }}</td>
-                                            <td>{{ $detail->quantity }}</td>
-                                            <td>{{ number_format($detail->old_price) }}</td>
-                                            <td>{{ number_format($detail->price) }}</td>
-                                            <td>{{ number_format($detail->price * $detail->quantity) }}</td>
-
+                                    role="grid" aria-describedby="basic-datatables_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th>Mã hàng hóa </th>
+                                            <th>Tên hàng hóa</th>
+                                            <th>Số lượng nhập</th>
+                                            <th>Đơn giá cũ</th>
+                                            <th>Đơn giá mới</th>
+                                            <th>Tổng tiền</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($importdetail->detail as $detail)
+                                            <tr>
+                                                <td>{{ $detail->product->code }}</td>
+                                                <td>{{ $detail->product->name }}</td>
+                                                <td>{{ $detail->quantity }}</td>
+                                                <td>{{ number_format($detail->old_price) }}</td>
+                                                <td>{{ number_format($detail->price) }}</td>
+                                                <td>{{ number_format($detail->price * $detail->quantity) }}</td>
+
+                                            </tr>
+                                        @endforeach
 
 
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="text-center mt-4">

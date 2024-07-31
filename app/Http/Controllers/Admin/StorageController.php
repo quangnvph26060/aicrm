@@ -31,7 +31,9 @@ class StorageController extends Controller
             return response()->json(['error' => 'Failed to fetch Storages'], 500);
         }
     }
-
+    public function getProductInStorage()
+    {
+    }
     public function findStorageByName(Request $request)
     {
         try {
@@ -100,6 +102,18 @@ class StorageController extends Controller
         } catch (Exception $e) {
             Log::error('Failed to delete Storage: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Không thể xóa kho hàng']);
+        }
+    }
+
+    public function detail($id)
+    {
+        try {
+            $storage = $this->storageService->getStorageById($id);
+            $product = $this->storageService->getProductInStorage($id);
+            return view('admin.storage.detail', compact('product', 'storage'));
+        } catch (Exception $e) {
+            Log::error('Failed to find Storage info: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to fetch Storage info'], 500);
         }
     }
 }

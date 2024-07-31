@@ -28,15 +28,17 @@ class ProductController extends Controller
     }
     public function index()
     {
+        $storage_id = session('authUser')->storage_id;
+        $product = $this->productService->getPRoductInStorage_Staff($storage_id);
         $title = "Quản lý bán hàng";
         $config = Config::first();
-        $product = $this->productService->getProductAll_Staff();
+        // $product = $this->productService->getProductAll_Staff();
         $clients = $this->clientService->getAllClientStaff();
         $clientgroup = $this->clientGroupService->getAllClientGroup();
         $user = Auth::user();
         $cart =  Cart::where('user_id', $user->id)->get();
         foreach ($cart as $key => $item) {
-                $item->delete();
+            $item->delete();
         }
         $sum = 0;
         foreach ($cart as $key => $value) {
@@ -45,8 +47,10 @@ class ProductController extends Controller
         return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config', 'title', 'clientgroup'));
     }
 
-    public function product(){
-        $products = $this->productService->getProductAll_Staff();
+    public function product()
+    {
+        $storage_id = session('authUser')->storage_id;
+        $products = $this->productService->getPRoductInStorage_Staff($storage_id);
         return response()->json($products);
     }
 
@@ -66,8 +70,7 @@ class ProductController extends Controller
         $amount = $request->input('amount');
         if ($existingCartItem) {
             // Giảm số lượng xuống 0 hoặc loại bỏ sản phẩm khỏi giỏ hàng nếu giảm xuống dưới 1
-                $existingCartItem->update(['amount' => $existingCartItem->amount + 1]);
-
+            $existingCartItem->update(['amount' => $existingCartItem->amount + 1]);
         } else {
 
             Cart::create([
@@ -80,8 +83,8 @@ class ProductController extends Controller
 
 
         $cartItems = Cart::where('user_id', $user->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
@@ -119,8 +122,8 @@ class ProductController extends Controller
         $existingCartItem->update(['amount' => $amount]);
 
         $cartItems = Cart::where('user_id', $user->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $products = [];
         $sum = 0;
@@ -147,8 +150,8 @@ class ProductController extends Controller
         $cart = $request->input('cart');
         Cart::find($cart)->delete();
         $cartItems = Cart::where('user_id', $user->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
         $products = [];
         $sum = 0;
         foreach ($cartItems as $item) {
@@ -167,7 +170,8 @@ class ProductController extends Controller
         return response()->json(['success' => 'Product added to cart!', 'cart' => $products, 'sum' => number_format($sum)]);
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $searchTerm = $request->input('name');
 
         $products = $this->productService->productByNameStaff($searchTerm);
@@ -185,8 +189,8 @@ class ProductController extends Controller
         $existingCartItem->update(['price' => $price]);
 
         $cartItems = Cart::where('user_id', $user->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $products = [];
         $sum = 0;
@@ -205,5 +209,4 @@ class ProductController extends Controller
         }
         return response()->json(['success' => 'Product added to cart!', 'cart' => $products, 'sum' => number_format($sum)]);
     }
-
 }
