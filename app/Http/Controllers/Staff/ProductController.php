@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\ClientGroup;
 use App\Models\Config;
 use App\Models\Product;
+use App\Models\ProductStorage;
 use App\Services\ClientGroupService;
 use App\Services\ClientService;
 use App\Services\ProductService;
@@ -50,8 +51,15 @@ class ProductController extends Controller
     public function product()
     {
         $storage_id = session('authUser')->storage_id;
-        $products = $this->productService->getPRoductInStorage_Staff($storage_id);
-        return response()->json($products);
+
+        // Lấy tất cả các bản ghi từ ProductStorage kèm theo thông tin sản phẩm
+        $productStorages = ProductStorage::with('product') // Eager load thông tin sản phẩm
+            ->where('storage_id', $storage_id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        // Trả về dữ liệu dưới dạng JSON
+        return response()->json($productStorages);
     }
 
     public function addToCart(Request $request)

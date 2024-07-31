@@ -197,26 +197,27 @@
                 success: function(data) {
                     var productContainer = $j('#productContainer');
                     productContainer.empty();
-                    // list = data.data;
                     data.forEach(function(item) {
-                        var images = item.images && item.images.length > 0 ? item.images[0]
-                            .image_path : 'public/images/1.jpg';
+                        var product = item.product; // Thông tin sản phẩm từ quan hệ Eloquent
+                        var images = product.images && product.images.length > 0 ? product
+                            .images[0].image_path : 'public/images/1.jpg';
                         var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
+
                         var productHtml = `
-                        <div class="col-md-2 mb-3" style="cursor: pointer;">
-                            <div class="product-item1" title="${item.name}">
-                                <div class="card-body listproduct" data-id="${item.id}">
-                                <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
-                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
-                                    <p style="margin: 0px; cursor: pointer;">
-                                    <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                                    </p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>`;
+            <div class="col-md-2 mb-3" style="cursor: pointer;">
+                <div class="product-item1" title="${product.name}">
+                    <div class="card-body listproduct" data-id="${product.id}">
+                    <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
+                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${product.name}</p>
+                    <div style="display: flex; justify-content: space-between;">
+                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(product.priceBuy)}đ</p>
+                        <p style="margin: 0px; cursor: pointer;">
+                        <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            </div>`;
                         productContainer.append(productHtml);
                     });
                 },
@@ -224,6 +225,7 @@
                     console.log('AJAX Error: ' + status + error);
                 }
             });
+
 
             function numberFormat(number) {
                 return new Intl.NumberFormat('vi-VN', {
