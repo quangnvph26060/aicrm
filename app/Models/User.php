@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\UserInfo;
+use App\Models\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,35 +13,23 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $table = 'users';
     protected $fillable = [
-        'name', 'phone', 'email', 'company_name', 'password', 'status', 'role_id', 'city_id', 'tax_code', 'store_name', 'field_id', 'domain', 'address',
+        'name', 'phone', 'email', 'company_name', 'password', 'status', 'role_id', 'city_id', 'tax_code', 'store_name', 'field_id', 'domain', 'address', 'storage_id',
     ];
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
     protected $appends = ['user_info'];
+
     public function getUserInfoAttribute()
     {
         return UserInfo::where('user_id', $this->attributes['id'])->first();
@@ -54,10 +42,17 @@ class User extends Authenticatable
 
     public function field()
     {
-        return $this->belongsTo((Field::class));
+        return $this->belongsTo(Field::class);
     }
+
     public function config()
     {
         return $this->hasOne(Config::class);
+    }
+
+    // New relationship with Storage
+    public function storage()
+    {
+        return $this->belongsTo(Storage::class);
     }
 }

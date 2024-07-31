@@ -136,6 +136,7 @@ function generateErrorMessage(code, values = []) {
         E039 : ' Nhập số điện thoại nhân viên ',
         E040 : ' Nhập địa chỉ nhân viên ',
         E041 : ' Xác nhận mật khẩu mới ',
+        E046 : 'Chọn nơi làm việc',
         // dang ky
         R042: ' Họ tên không được để trống',
         R043: ' Số điện thoại không được để trống',

@@ -229,6 +229,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('create', [StorageController::class, 'create'])->name('create');
         Route::get('findByName', [StorageController::class, 'findStorageByName'])->name('findByName');
         Route::delete('delete/{id}', [StorageController::class, 'delete'])->name('delete');
+        Route::get('/products/{id}', [StorageController::class, 'detail'])->name('products');
     });
     Route::prefix('report')->name('report.')->group(function () {
         Route::prefix('debt')->name('debt.')->group(function () {

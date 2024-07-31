@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\StorageService;
 use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,10 +21,12 @@ class UserController extends Controller
 {
     protected $userService;
     protected $adminService;
-    public function __construct(UserService $userService, AdminService $adminService)
+    protected $storageService;
+    public function __construct(UserService $userService, AdminService $adminService, StorageService $storageService)
     {
         $this->userService = $userService;
         $this->adminService = $adminService;
+        $this->storageService = $storageService;
     }
 
     public function getUserByRole($role)
@@ -75,8 +78,9 @@ class UserController extends Controller
     {
         $title = "Sửa nhân viên";
         try {
+            $storage = $this->storageService->getAllStorage();
             $user = $this->adminService->getUserById($id);
-            return view('admin.employee.edit', compact('user', 'title'));
+            return view('admin.employee.edit', compact('user', 'title', 'storage'));
         } catch (Exception $e) {
             Log::error('Failed to find user: ' . $e->getMessage());
             return ApiResponse::error('Failed to find user', 500);
@@ -112,7 +116,8 @@ class UserController extends Controller
     public function addForm()
     {
         $title = 'Thêm nhân viên';
-        return view('admin.employee.add', compact('title'));
+        $storage = $this->storageService->getAllStorage();
+        return view('admin.employee.add', compact('title', 'storage'));
     }
     public function add(Request $request)
     {

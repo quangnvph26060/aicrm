@@ -199,6 +199,7 @@ class AdminService
                 'phone' => $data['phone'],
                 'address' => $data['address'],
                 'role_id' => 2,
+                'storage_id' => $data['storage'],
                 'status' => 'active'
             ]);
             DB::commit();

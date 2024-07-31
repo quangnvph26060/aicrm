@@ -11,7 +11,9 @@
         <tbody>
             @foreach ($storages as $key => $value)
                 <tr id="category-{{ $value->id }}">
-                    <td>{{ $value->id }}</td>
+                    <td><a style="color: black; font-weight: bold"
+                            href="{{ route('admin.storage.products', ['id' => $value->id]) }}">
+                            {{ $value->id }}</a></td>
                     <td>{{ $value->name ?? '' }}</td>
                     <td>{{ $value->location }}</td>
                     <td style="text-align:center">
