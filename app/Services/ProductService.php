@@ -51,12 +51,10 @@ class ProductService
 
     public function getPRoductInStorage_Staff($id)
     {
-        try{
+        try {
             return $this->productStorage->orderByDesc('created_at')->where('storage_id', $id)->get();
-        }
-        catch(Exception $e)
-        {
-            Log::error('Failed to fetch product in storage: ' .$e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Failed to fetch product in storage: ' . $e->getMessage());
             throw new Exception('Failed to fetch product in storage');
         }
     }
@@ -237,6 +235,25 @@ class ProductService
         } catch (Exception $e) {
             Log::error("Failed to search products: {$e->getMessage()}");
             throw new Exception('Failed to search products');
+        }
+    }
+
+    public function productByNameInStorageStaff($name, $storage_id)
+    {
+        try {
+            $products = $this->productStorage
+                ->whereHas('product', function ($query) use ($name) {
+                    $query->where('name', 'LIKE', '%' . $name . '%');
+                })
+                ->where('storage_id', $storage_id)
+                ->with('product') // Ensure eager loading of related products
+                ->get()
+                ->pluck('product'); // Pluck only the product details
+
+            return $products;
+        } catch (Exception $e) {
+            Log::error('Failed to find products in storage: ' . $e->getMessage());
+            throw new Exception('Failed to find products in storage');
         }
     }
 }
