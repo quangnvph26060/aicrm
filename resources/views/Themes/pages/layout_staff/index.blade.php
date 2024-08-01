@@ -1,6 +1,51 @@
 @extends('Themes.layout_staff.app')
 @section('content')
     <style>
+        .product-item1 {
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: auto;
+            /* Tăng chiều cao để đảm bảo đủ không gian cho thông tin */
+        }
+
+        .product-item1 img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-name {
+            font-size: 13px;
+            margin-top: 5px;
+            margin-bottom: 0px;
+        }
+
+        .product-quantity-unit {
+            font-size: 13px;
+            margin-top: 0px;
+            margin-bottom: 5px;
+        }
+
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 13px;
+            margin: 5px 0 0 0;
+        }
+
+        .add-to-cart {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .add-to-cart i {
+            font-size: 15px;
+            color: rgb(105, 97, 223);
+        }
+
         #listproduct .product-item1 .card-body img {
             width: 145px;
             height: auto;
@@ -131,12 +176,11 @@
                 <div class="card">
                     <div class="card-header">
                         <p>Sản phẩm</p>
-                        <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}">
+                        <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}"
+                            method="GET">
                             @csrf
                             <input id="search_product" class="form-control mr-sm-2" name="name" type="search"
                                 placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
-                            {{-- <button class="btn btn-outline-light my-2 my-sm-0" id="timkiem" type="submit"><i
-                                class="fas fa-search"></i></button> --}}
                         </form>
                     </div>
                     <div class="card-body" style="overflow-x: hidden;">
@@ -204,20 +248,19 @@
                         var imageUrl = "{{ asset('/') }}" + images.replace('public/', '');
 
                         var productHtml = `
-            <div class="col-md-2 mb-3" style="cursor: pointer;">
-                <div class="product-item1" title="${product.name}">
-                    <div class="card-body listproduct" data-id="${product.id}">
-                    <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
-                    <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${product.name}</p>
-                    <div style="display: flex; justify-content: space-between;">
-                        <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(product.priceBuy)}đ</p>
-                        <p style="margin: 0px; cursor: pointer;">
-                        <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                        </p>
-                    </div>
-                    </div>
-                </div>
-            </div>`;
+                        <div class="col-md-2 mb-3" style="cursor: pointer;">
+                            <div class="product-item1" title="${product.name}">
+                                <div class="card-body listproduct" data-id="${product.id}">
+                                    <img src="${imageUrl}" alt="" style="width: 100%; height: auto;">
+                                    <p class="card-title product-name">${product.name}</p>
+                                    <p class="product-quantity-unit">còn ${item.quantity} ${product.product_unit}</p>
+                                    <div class="product-info">
+                                        <p class="card-title product-price">${numberFormat(product.priceBuy)}đ</p>
+                                        <p class="add-to-cart"><i class="fas fa-shopping-cart fa-lg"></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
                         productContainer.append(productHtml);
                     });
                 },
@@ -226,7 +269,6 @@
                 }
             });
 
-
             function numberFormat(number) {
                 return new Intl.NumberFormat('vi-VN', {
                     style: 'currency',
@@ -234,19 +276,17 @@
                 }).format(number).replace('₫', '');
             }
 
+            $("#search_product").on("keyup", function() {
+                var name = $(this).val();
 
-            $j("#search_product").on("keyup", function() {
-
-                var name = $j(this).val();
-                // alert(name);
-                $j.ajax({
+                $.ajax({
                     url: '{{ route('staff.product.search') }}',
                     type: 'GET',
                     data: {
                         name: name
                     },
                     success: function(data) {
-                        var productContainer = $j('#productContainer');
+                        var productContainer = $('#productContainer');
                         productContainer.empty(); // Clear previous products
 
                         if (data.length > 0) {
@@ -256,29 +296,28 @@
                                 var imageUrl = "{{ asset('/') }}" + images.replace(
                                     'public/', '');
                                 var productHtml = `
-                                    <div class="col-md-2 mb-3" style="cursor: pointer;">
-                                        <div class="product-item1" title="${item.name}">
-                                            <div class="card-body listproduct" data-id="${item.id}">
-                                            <img src="${imageUrl}" alt="" style="width: 145px; height: 60px;">
-                                            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title product-name">${item.name}</p>
-                                            <div style="display: flex; justify-content: space-between;">
-                                                <p style="font-size: 13px; margin-top: 5px; margin-bottom: 0px" class="card-title">${numberFormat(item.priceBuy)}đ</p>
-                                                <p style="margin: 0px; cursor: pointer;">
-                                                <i style="font-size: 15px; color: rgb(105, 97, 223)" class="fas fa-shopping-cart fa-lg"></i>
-                                                </p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    </div>`;
+                        <div class="col-md-2 mb-3" style="cursor: pointer;">
+                            <div class="product-item1" title="${item.name}">
+                                <div class="card-body listproduct" data-id="${item.id}">
+                                    <img src="${imageUrl}" alt="" style="width: 100%; height: auto;">
+                                    <p class="card-title product-name">${item.name}</p>
+                                    <p class="product-quantity-unit">${item.quantity} ${item.product_unit}</p>
+                                    <div class="product-info">
+                                        <p class="card-title product-price">${numberFormat(item.priceBuy)}đ</p>
+                                        <p class="add-to-cart"><i class="fas fa-shopping-cart fa-lg"></i></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
                                 productContainer.append(productHtml);
                             });
                         } else {
                             productContainer.append(
-                                '<p style="padding : 30px;">Không tìm thấy sản phẩm.</p>');
+                                '<p style="padding: 30px;">Không tìm thấy sản phẩm.</p>');
                         }
                     },
                     error: function(xhr, status, error) {
-                        console.log('AJAX Error: ' + status + error);
+                        console.log('AJAX Error: ' + status + ' ' + error);
                     }
                 });
 
@@ -288,8 +327,8 @@
                         currency: 'VND'
                     }).format(number).replace('₫', '');
                 }
-
             });
+
 
             $j("#search").on("keyup", function() {
                 var query = $j(this).val().toLowerCase();

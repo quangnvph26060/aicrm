@@ -143,7 +143,7 @@ class OrderService
     public function getOrderNotification()
     {
         try {
-            return Order::where('notification', 1)->get(); // Truy vấn trực tiếp model Order
+            return Order::orderByDesc('created_at')->where('notification', 1)->get(); // Truy vấn trực tiếp model Order
         } catch (Exception $e) {
             Log::error('Failed to find order with notification: ' . $e->getMessage());
             throw new Exception('Failed to find order with notification');
