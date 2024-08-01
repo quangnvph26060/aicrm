@@ -180,9 +180,27 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $searchTerm = $request->input('name');
+        $name = $request->input('name');
 
-        $products = $this->productService->productByNameStaff($searchTerm);
+        // Tìm kiếm sản phẩm
+        $productStorages = ProductStorage::whereHas('product', function ($query) use ($name) {
+            $query->where('name', 'like', "%{$name}%");
+        })->get();
+
+        $products = [];
+
+        foreach ($productStorages as $storage) {
+            $product = $storage->product;
+
+            $products[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'priceBuy' => $product->priceBuy,
+                'quantity' => $storage->quantity,
+                'product_unit' => $product->product_unit,
+                'images' => $product->images
+            ];
+        }
 
         return response()->json($products);
     }

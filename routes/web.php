@@ -194,11 +194,6 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::post('/importCoupon', [importCouponController::class, 'add'])->name('importCoupon.add');
         Route::get('/detail/{id}', [ImportProductController::class, 'importdetail'])->name('importCoupon.detail');
     });
-
-    Route::prefix('notifications')->name('notifications.')->group(function () {
-        Route::post('/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('markAsRead');
-    });
-
     Route::prefix('debts')->name('debts.')->group(function () {
         Route::get('/client', [DebtClientController::class, 'index'])->name('client');
         Route::get('/client/detail/{id}', [DebtClientController::class, 'detail'])->name('client.detail');
@@ -248,6 +243,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
 })->middleware('checkRole:1');
 
 Route::middleware([CheckLogin::class])->prefix('ban-hang')->name('staff.')->group(function () {
+    Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
     Route::get('', [StaffProductController::class, 'index'])->name('index');
     Route::post('/cart/add', [StaffProductController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update', [StaffProductController::class, 'updateCart'])->name('cart.update');
@@ -260,7 +256,7 @@ Route::middleware([CheckLogin::class])->prefix('ban-hang')->name('staff.')->grou
     Route::get('order/fetch', [StaffOrderController::class, 'orderFetch'])->name('orderFetch');
     Route::get('product', [StaffProductController::class, 'product'])->name('product.get');
     //checkInventory
-    Route::get('product/search', [StaffProductController::class, 'search'])->name('product.search');
+
     Route::get('checkInventory', [staffcheckController::class, 'index'])->name('Inventory.get');
     Route::get('checkInventory/add', [staffcheckController::class, 'add'])->name('Inventory.add');
     Route::post('checkInventory/add', [staffcheckController::class, 'submitadd'])->name('Inventory.add.submit');
