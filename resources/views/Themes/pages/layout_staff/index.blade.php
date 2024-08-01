@@ -276,10 +276,10 @@
                 }).format(number).replace('₫', '');
             }
 
-            $("#search_product").on("keyup", function() {
+            $j("#search_product").on("keyup", function() {
                 var name = $(this).val();
 
-                $.ajax({
+                $j.ajax({
                     url: '{{ route('staff.product.search') }}',
                     type: 'GET',
                     data: {
