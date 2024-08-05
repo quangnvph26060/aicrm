@@ -55,6 +55,7 @@ class ProductController extends Controller
         // Lấy tất cả các bản ghi từ ProductStorage kèm theo thông tin sản phẩm
         $productStorages = ProductStorage::with('product') // Eager load thông tin sản phẩm
             ->where('storage_id', $storage_id)
+            ->where('quantity', '>', 0)
             ->orderByDesc('created_at')
             ->get();
 

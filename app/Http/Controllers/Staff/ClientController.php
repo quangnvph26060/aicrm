@@ -14,6 +14,7 @@ use App\Models\ReceiptDetail;
 use App\Services\ClientService;
 use App\Services\DebtKHService;
 use App\Services\ProductService;
+use App\Services\ProductStorageService;
 use App\Services\ReceiptsService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -39,12 +40,14 @@ class ClientController extends Controller
     protected $productService;
     protected $receiptsService;
     protected $debtKHService;
-    public function __construct(ClientService $clientService, ProductService $productService, ReceiptsService $receiptsService, DebtKHService $debtKHService)
+    protected $productStorageService;
+    public function __construct(ClientService $clientService, ProductService $productService, ReceiptsService $receiptsService, DebtKHService $debtKHService, ProductStorageService $productStorageService)
     {
         $this->clientService = $clientService;
         $this->productService = $productService;
         $this->receiptsService = $receiptsService;
         $this->debtKHService = $debtKHService;
+        $this->productStorageService = $productStorageService;
     }
 
     public function addClient(Request $request)
@@ -99,15 +102,18 @@ class ClientController extends Controller
     {
         try {
             $user = Auth::user();
+            $storageId = session('authUser')->storage_id;
             $listphone = $this->clientService->getAllClientStaff()->pluck('phone');
             $cartItems = Cart::where('user_id', $user->id)->get();
             $sum = 0;
             $client = array();
             $trangthai = $request->status;
+
             foreach ($cartItems as $key => $item) {
                 $sum += $item->price * $item->amount;
                 $this->productService->updateProduct($item->product_id, ['quantity' => $item->product->quantity - $item->amount]);
             }
+
             if ($listphone->contains($request->phone)) {
                 $client = $this->clientService->findClientByPhone($request->phone);
                 $order = Order::create([
@@ -124,6 +130,9 @@ class ClientController extends Controller
                         'product_id' => $item->product_id,
                         'price' => $item->price
                     ]);
+
+                    // Gọi hàm updateProductAmount sau khi tạo chi tiết đơn hàng
+                    $this->productStorageService->updateProductAmount($item->product_id, $storageId, $item->amount);
                 }
             } else {
                 $data = [
@@ -148,6 +157,9 @@ class ClientController extends Controller
                         'product_id' => $item->product_id,
                         'price' => $item->price
                     ]);
+
+                    // Gọi hàm updateProductAmount sau khi tạo chi tiết đơn hàng
+                    $this->productStorageService->updateProductAmount($item->product_id, $storageId, $item->amount);
                 }
             }
 
@@ -159,7 +171,7 @@ class ClientController extends Controller
                         'amount_spent' => $sum + $receipt->amount_spent,
                         'date_spent' => Carbon::now()->toDateString()
                     ];
-                    $this->receiptsService->updateReceipt($data1,$client->id);
+                    $this->receiptsService->updateReceipt($data1, $client->id);
                     $detail = [
                         'receipt_id' => $receipt->id,
                         'content' => 'Thu từ khách hàng có số điện thoại ' . $request->phone,
@@ -183,7 +195,6 @@ class ClientController extends Controller
                     ];
                     ReceiptDetail::create($detail);
                 }
-
             } else {
                 $ClientDebt = $this->debtKHService->getAllClientDebt()->pluck('client_id');
                 if ($ClientDebt->contains($client->id)) {
@@ -193,7 +204,7 @@ class ClientController extends Controller
                     ];
                     ClientDebtsDetail::create([
                         'customer_debts_id' => $clientdebt->id,
-                        'content' => 'Giao dịch thành công ' ,
+                        'content' => 'Giao dịch thành công ',
                         'amount' => $sum,
                     ]);
                     $this->debtKHService->updateClientDebt($data2, $client->id);
@@ -201,16 +212,17 @@ class ClientController extends Controller
                     $data = [
                         'client_id' => $client->id,
                         'amount' => $sum,
-                        'description' => 'Khách hàng có số điện thoại '.$request->phone,
+                        'description' => 'Khách hàng có số điện thoại ' . $request->phone,
                     ];
                     $ClientDebt = $this->debtKHService->addClientDebt($data);
                     ClientDebtsDetail::create([
                         'customer_debts_id' => $ClientDebt->id,
-                        'content' => 'Giao dịch thành công ' ,
+                        'content' => 'Giao dịch thành công ',
                         'amount' => $sum,
                     ]);
                 }
             }
+
             Cart::where('user_id', $user->id)->delete();
             $config = Config::first();
             $text = convert($sum);
@@ -230,6 +242,7 @@ class ClientController extends Controller
             return response()->json(['error' => 'Failed to process payment'], 500);
         }
     }
+
 
     public function cart()
     {

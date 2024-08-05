@@ -43,7 +43,22 @@
                         <p>Khách hàng</p>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#sidebarcauhinh">
+                        <i class="fas fa-cogs"></i>
+                        <p>Cấu hình</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="sidebarcauhinh">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href = "{{route('super.zalo.zns')}}">
+                                    <span class="sub-item">Cấu hình OA/ZNS</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
