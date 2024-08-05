@@ -166,7 +166,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('admin.report.debt.index') }}">
+                                <a href="{{ route('admin.profit.index') }}">
+                                    <span class="sub-item">Lợi nhuận</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.inventory.index') }}">
                                     <span class="sub-item">Tồn kho</span>
                                 </a>
                                 <a data-bs-toggle="collapse" href="#sidebarthongke">

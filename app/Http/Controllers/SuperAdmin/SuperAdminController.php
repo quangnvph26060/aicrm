@@ -25,7 +25,7 @@ class SuperAdminController extends Controller
     public function getSuperAdminInfor($id)
     {
         try {
-            $sa = $this->adminService->getUserById($id);
+            $sa = $this->adminService->getSuperAdminById($id);
             return view('superadmin.profile.detail', compact('sa'));
         } catch (Exception $e) {
             Log::error('Failed to fetch super admin info: ' . $e->getMessage());

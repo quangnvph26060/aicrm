@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\importCouponController;
 use App\Http\Controllers\Admin\ImportProductController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ReceiptController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReportdebtController;
 use App\Http\Controllers\Admin\StorageController;
 use App\Http\Controllers\Client\SignUpController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\SuperAdmin\ZaloController;
 use App\Http\Controllers\SuperAdminController as ControllersSuperAdminController;
 use App\Http\Middleware\CheckLogin;
 use App\Http\Middleware\CheckLoginSuperAdmin;
@@ -77,6 +79,16 @@ Route::get('/employee', function () {
 })->name('employee');
 
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('profit')->name('profit.')->group(function () {
+        Route::get('', [ReportController::class, 'profitIndex'])->name('index');
+        Route::post('profit-report', [ReportController::class, 'getProfitReportByFilter'])->name('getProfitReportByFilter');
+    });
+    Route::prefix('inventory')->name('inventory.')->group(function () {
+        Route::get('', [ReportController::class, 'index'])->name('index');
+        Route::post('report', [ReportController::class, 'getReportByStorage'])->name('getReportByStorage');
+        Route::get('exportPdf', [ReportController::class, 'exportPdf'])->name('exportPdf');
+    });
+
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/day', [DashboardController::class, 'StatisticsByDay'])->name('dashboard.day');
@@ -85,6 +97,7 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::get('/detail/{id}', [AdminController::class, 'getAdminInfor'])->name('detail');
     Route::post('/update/{id}', [AdminController::class, 'updateAdminInfor'])->name('update');
     Route::post('/changePassword', [AdminController::class, 'changePassword'])->name('changePassword');
+
     Route::prefix('product')->name('product.')->group(function () {
         Route::get('', [ProductController::class, 'index'])->name('store');
         Route::get('import', [ProductController::class, 'formimport'])->name('formimport');
@@ -283,6 +296,10 @@ Route::middleware([CheckLogin::class])->prefix('ban-hang')->name('staff.')->grou
 Route::get('super-dang-nhap', [SuperAdminController::class, 'loginForm'])->name('super.dang.nhap');
 Route::post('super-dang-nhap', [SuperAdminController::class, 'login'])->name('super.login.submit');
 Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('super.')->group(function () {
+    Route::prefix('zalo')->name('zalo.')->group(function () {
+        Route::get('zns', [ZaloController::class, 'index'])->name('zns');
+        Route::get('get-access-token', [ZaloController::class, 'getAccessToken'])->name('getAccessToken');
+    });
     Route::get('/detail/{id}', [SuperAdminController::class, 'getSuperAdminInfor'])->name('detail');
     Route::post('/update/{id}', [SuperAdminController::class, 'updateSuperAdminInfo'])->name('update');
     Route::post('logout', [SuperAdminController::class, 'logout'])->name('logout');
@@ -291,5 +308,8 @@ Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('sup
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
         Route::get('/delete/{id}', [StoreController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('zalo')->name('zalo.')->group(function () {
+        Route::get('zns', [ZaloController::class, 'index'])->name('zns');
     });
 });

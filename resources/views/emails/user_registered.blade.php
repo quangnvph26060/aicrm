@@ -1,8 +1,8 @@
 <h1>Đăng ký tài khoản dùng thử thành công</h1>
 
-<p><strong>Tên đăng nhập:</strong> {{ $phone }}</p>
-<p><strong>Tên cửa hàng:</strong> {{ $store_name }}</p>
-<p><strong>Tên miền:</strong> {{ $domain }}</p>
-<p><strong>Password:</strong> {{ $password }}</p>
+<p><strong>Truy cập link dùng thử: demo.aicrm.vn</strong></p>
+<p><strong>Tên đăng nhập:</strong> admin@gmail.com</p>
+<p><strong>Password:</strong> 123456</p>
+
 
 <p>Cảm ơn vì đã sử dụng dịch vụ của chúng tôi</p>
