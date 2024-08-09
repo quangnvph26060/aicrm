@@ -3,55 +3,92 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ZaloOa;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class ZaloController extends Controller
 {
     public function index()
     {
-        // $accessToken = $this->getAccessToken();
-        // dd($accessToken);
-        $accessToken = '8T1BBKUzINudq40gHBL9VY3NHIrQ-YOyUTz5AtlOJsHms0CmJhbDD76h0ITAZWDyUfnMHb-_71TXZMunHPuWDtMVJ3OIWqSNSUuv71F9G0npoWiV4VPs6YsE1ZGca70JCO0o0bU3KW9wXJmMVuXyC4IJTYD6edqcIuCAFaMUUIn4-oGH9-19FpYDIsWjZqWp68yeCocxI3PDdqSjKe0S7JIJS1WwZtuNDeinBGk_NZuysmeGAUC3C3p5IZi7r3WfFj9JEoUm0sm9esXH1AawO6AQCJjludmJTjGABXBH03Gbw54X2_Gj5pxeM1GmyJioCkDc1b_1SH98mJmOJVzk6sF23J5GxayARDmoDsl5Jnnq-nzDHlnnQtVeBcrdn69vLFrgBqNR4Zvyu1eCVy1DLsxR56rOGaTKLJfYGQj7V0';
-        $secretKey = 'LICH82nioSW8a3RLVG2X';
-        $client = new Client();
-
-        try {
-            $response = $client->get('https://openapi.zalo.me/v2.0/oa/getoa', [
-                'headers' => [
-                    'access_token' => $accessToken, // Có thể cần kiểm tra xem tên header có chính xác không
-                    'refresh_token' => $secretKey,     // Có thể cần kiểm tra xem tên header có chính xác không
-                ],
-            ]);
-            // dd($response);
-            $connectedApps = json_decode($response->getBody(), true);
-
-            // Debug thông tin phản hồi
-            Log::info('API Response:', $connectedApps);
-
-            // Check if 'data' key exists
-            if (isset($connectedApps['data'])) {
-                // Format the date if it exists
-                if (isset($connectedApps['data']['package_valid_through_date'])) {
-                    $connectedApps['data']['package_valid_through_date'] = Carbon::createFromFormat('d/m/Y', $connectedApps['data']['package_valid_through_date'])->format('Y-m-d');
-                }
-            } else {
-                $connectedApps['data'] = [];
-            }
-        } catch (\Exception $e) {
-            // Log the error for debugging
-            Log::error('API Request Error:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-            $connectedApps['data'] = [];
-        }
+        $connectedApps = ZaloOa::all();
 
         return view('superadmin.zalo.oa', compact('connectedApps'));
     }
-    public function refreshAccessToken($refreshToken, $secretKey, $appId)
+
+    public function handleCallback(Request $request)
     {
+        $code = $request->input('code');
         $client = new Client();
+
+        try {
+            $response = $client->post('https://oauth.zaloapp.com/v4/oa/access_token', [
+                'form_params' => [
+                    'app_id' => env('ZALO_APP_ID'),
+                    'app_secret' => env('ZALO_APP_SECRET'),
+                    'code' => $code,
+                    'grant_type' => 'authorization_code'
+                ]
+            ]);
+
+            $body = json_decode($response->getBody(), true);
+
+            if (isset($body['access_token']) && isset($body['refresh_token'])) {
+                $accessToken = $body['access_token'];
+                $refreshToken = $body['refresh_token'];
+
+                $oaResponse = $client->get('https://openapi.zalo.me/v2.0/oa/getoa', [
+                    'headers' => [
+                        'access_token' => $accessToken
+                    ],
+                ]);
+
+                $oaData = json_decode($oaResponse->getBody(), true)['data'];
+
+                Log::info('OA Data', ['oa_data' => $oaData]);
+
+                // Disable all other OA
+                ZaloOa::query()->update(['is_active' => 0]);
+
+                ZaloOa::updateOrCreate(
+                    ['oa_id' => $oaData['oa_id']],
+                    [
+                        'name' => $oaData['name'],
+                        'access_token' => $accessToken,
+                        'refresh_token' => $refreshToken,
+                        'package_valid_through_date' => Carbon::createFromFormat('d/m/Y', $oaData['package_valid_through_date'])->format('Y-m-d'),
+                        'is_active' => 1 // Activate this OA
+                    ]
+                );
+
+                Log::info('Zalo OA connected successfully.', ['oa_id' => $oaData['oa_id'], 'name' => $oaData['name']]);
+
+                return redirect()->route('super.zalo.zns')->with('success', 'Kết nối Zalo OA thành công');
+            } else {
+                throw new Exception('Failed to retrieve access token');
+            }
+        } catch (Exception $e) {
+            Log::error('Failed to handle Zalo callback: ' . $e->getMessage());
+            return redirect()->route('super.zalo.zns')->with('error', 'Kết nối Zalo OA thất bại');
+        }
+    }
+
+    public function getAccessTokenForOa($oaId)
+    {
+        $oa = ZaloOa::where('oa_id', $oaId)->first();
+
+        if (!$oa) {
+            return response()->json(['error' => 'OA not found'], 404);
+        }
+
+        $client = new Client();
+        $refreshToken = $oa->refresh_token;
+        $secretKey = env('ZALO_APP_SECRET');
+        $appId = env('ZALO_APP_ID');
+
         try {
             $response = $client->post('https://oauth.zaloapp.com/v4/oa/access_token', [
                 'headers' => [
@@ -65,39 +102,64 @@ class ZaloController extends Controller
             ]);
 
             $body = json_decode($response->getBody(), true);
-            Log::info($body);
-            if (isset($body['access_token'])) {
-                // Lưu access_token mới vào cache
-                Cache::put('access_token', $body['access_token'], 86400); // 86400 = 24h
-                return $body['access_token'];
+
+            if (isset($body['access_token']) && isset($body['refresh_token'])) {
+                // Update access token and refresh token for the current OA
+                $oa->update([
+                    'access_token' => $body['access_token'],
+                    'refresh_token' => $body['refresh_token'],
+                ]);
+
+                // If the OA is not active, activate it
+                if ($oa->is_active != 1) {
+                    ZaloOa::query()->update(['is_active' => 0]); // Deactivate all other OAs
+                    $oa->is_active = 1;
+                    $oa->save();
+                }
+
+                return response()->json([
+                    'access_token' => $body['access_token'],
+                    'refresh_token' => $body['refresh_token']
+                ]);
             } else {
-                throw new \Exception('Failed to refresh access token');
+                return response()->json(['error' => 'Failed to retrieve tokens'], 500);
             }
         } catch (\Exception $e) {
-            // Xử lý lỗi nếu có
-            Log::error('Failed to refresh access token: ' . $e->getMessage());
-            throw new \Exception('Failed to refresh access token');
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    public function getAccessToken()
+    public function updateOaStatus(Request $request, $oaId)
     {
-        // Lấy access_token từ cache
-        $accessToken = Cache::get('access_token');
+        // Retrieve the OA by ID
+        $oa = ZaloOa::where('oa_id', $oaId)->first();
 
-        // Nếu không có access_token trong cache, làm mới nó
-        if (!$accessToken) {
-            $refreshToken = 'm4L1C8f8FId6HKetYK0zAS52Jp2N9K5zYdGmDhOr6actKcuda3TlLRnE6WYcDIGGcN46LfKIS1pPL4H-aWXaCvvr5MlV42PnvHm3FALu5MMyDnK6wJjX5jjjGN3BBK8fXorVOgyfVNcKNKjedbrcBQGmTpIuLNqjbHLQHDf1AY-QFXnlrq8Q2VWdAb3j91T8squc5T98Emtl10z2xqiaM-r60nVSGpq9oY1ERjL0Np3Q47uXu7HzEQ4sIcMFTLGZmmWXL9O90n28SNHxkGnZDV517s_QFcqB-tDXIEqk5JFcKs58oJHL6jT4OMt_46GttH5PIj9fMGFGQoj5aJKL1wPh2H-u3Y8Qh4ahU90l936w8XbziI8bFvDI1L2Q2n8EW4ySORz3Fn7n8qjsxqbBPdTuDKGeZ5upAm';
-            $secretKey = 'LICH82nioSW8a3RLVG2X';
-            $appId = '632881483670360761';
-            $accessToken = $this->refreshAccessToken($refreshToken, $secretKey, $appId);
+        if ($oa) {
+            // Set all OA to inactive
+            ZaloOa::query()->update(['is_active' => 0]);
+
+            // Activate the new OA
+            $oa->is_active = 1;
+            $oa->save();
+
+            // Return the name of the newly activated OA
+            return response()->json([
+                'success' => true,
+                'message' => 'Trạng thái OA đã được cập nhật',
+                'active_oa_name' => $oa->name
+            ]);
         }
 
-        // Thay đổi để lấy refresh token từ cache nếu cần
-        $refreshToken = 'your_refresh_token_here'; // Thay thế bằng refresh token thực tế nếu cần
+        return response()->json(['success' => false, 'message' => 'OA không tồn tại']);
+    }
 
-        return response()->json([
-            'access_token' => $accessToken,
-            'refresh_token' => $refreshToken
-        ]);
+    public function getActiveOaName()
+    {
+        $activeOa = ZaloOa::where('is_active', 1)->first();
+
+        if ($activeOa) {
+            return response()->json(['active_oa_name' => $activeOa->name]);
+        }
+
+        return response()->json(['active_oa_name' => 'Chưa có OA nào được kích hoạt']);
     }
 }

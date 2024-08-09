@@ -7,10 +7,17 @@ use App\Mail\UserRegistered;
 use App\Models\City;
 use App\Models\Config;
 use App\Models\Field;
+use App\Models\Message;
+use App\Models\OaTemplate;
 use App\Models\SuperAdmin;
 use App\Models\User;
+use App\Models\ZaloOa;
+use App\Models\ZnsMessage;
+use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -35,9 +42,7 @@ class SignUpService
         DB::beginTransaction();
         try {
             Log::info("Creating new account: {$data['name']}");
-            // $this->checkExistingUser($data['phone'], $data['email']);
             $password = $this->RenderRandomPassword();
-
             $hashedPassword = Hash::make($password);
 
             $user = $this->user->create([
@@ -55,13 +60,75 @@ class SignUpService
                 'domain' => $data['store_domain'],
                 'address' => $data['address'],
             ]);
+
             $config = new Config();
             $config->user_id = $user->id;
             $config->save();
-            // dd($user);
+
             $superadmin = $this->superAdmin->first();
             Mail::to($superadmin)->send(new MailSuperAdmin($user, $password));
             Mail::to($data['email'])->send(new UserRegistered($user, $password));
+
+            $accessToken = $this->getAccessToken();
+            try {
+                $client = new Client();
+                $response = $client->post('https://business.openapi.zalo.me/message/template', [
+                    'headers' => [
+                        'access_token' => $accessToken,
+                        'Content-Type' => 'application/json'
+                    ],
+                    'json' => [
+                        'phone' => preg_replace('/^0/', '84', $data['phone']),
+                        'template_id' => '355330',
+                        'template_data' => [
+                            'date' => Carbon::now()->format('d/m/Y') ?? "",
+                            'name' => $data['name'] ?? "",
+                            'order_code' => $user->id,
+                            'phone_number' => $data['phone'],
+                            'status' => 'Đăng ký thành công'
+                        ]
+                    ]
+                ]);
+
+                $responseBody = $response->getBody()->getContents();
+                Log::info("Phản hồi API: " . $responseBody);
+                $responseData = json_decode($responseBody, true);
+                $status = $responseData['error'] == 0 ? 1 : 0; // 1: Thành công, 0: Thất bại
+                $template_id = OaTemplate::where('template_id', '355330')->first()->id;
+                // $note = $responseData['message'] ?? '';
+                // dd(gettype($note));
+                // dd($responseData['message']);
+
+                // dd($responseBody);
+
+                // Lưu thông tin tin nhắn vào cơ sở dữ liệu
+                ZnsMessage::create([
+                    'name' => $data['name'],
+                    'phone' => $data['phone'],
+                    'sent_at' => Carbon::now(),
+                    'status' => $status,
+                    'note' => $responseData['message'],
+                    'template_id' => $template_id,
+                ]);
+
+                if ($status == 1) {
+                    Log::info('Gửi ZNS thành công');
+                } else {
+                    Log::error('Gửi ZNS thất bại: ' . $response->getBody());
+                }
+            } catch (Exception $e) {
+                Log::error('Lỗi khi gửi tin nhắn: ' . $e->getMessage());
+
+                // Lưu thông tin tin nhắn vào cơ sở dữ liệu khi gặp lỗi
+                ZnsMessage::create([
+                    'name' => $data['name'],
+                    'phone' => $data['phone'],
+                    'sent_at' => Carbon::now(),
+                    'status' => 0, // Thất bại
+                    'note' => $responseData['message'],
+                ]);
+            }
+
             DB::commit();
             return $user;
         } catch (Exception $e) {
@@ -70,6 +137,67 @@ class SignUpService
             throw new Exception('Failed to create new account');
         }
     }
+
+
+
+    public function refreshAccessToken($refreshToken, $secretKey, $appId)
+    {
+        $client = new Client();
+        try {
+            $response = $client->post('https://oauth.zaloapp.com/v4/oa/access_token', [
+                'headers' => [
+                    'secret_key' => $secretKey,
+                ],
+                'form_params' => [ // Sửa lỗi chính tả
+                    'grant_type' => 'refresh_token',
+                    'refresh_token' => $refreshToken,
+                    'app_id' => $appId
+                ]
+            ]);
+
+            $body = json_decode($response->getBody(), true);
+            Log::info('Refresh token response: ', $body);
+
+            if (isset($body['access_token'])) {
+                Cache::put('access_token', $body['access_token'], 86400); //86400 = 24h
+                if (isset($body['refresh_token'])) {
+                    Cache::put('refresh_token', $body['refresh_token'], 7776000); //7776000 = 3 tháng
+                }
+                return $body['access_token'];
+            } else {
+                throw new Exception('Failed to refresh access token');
+            }
+        } catch (Exception $e) {
+            Log::error('Failed to refresh access token: ' . $e->getMessage());
+            throw new Exception('Failed to refresh access token');
+        }
+    }
+
+    public function getAccessToken()
+    {
+        $oa = ZaloOa::where('is_active', 1)->first();
+
+        if (!$oa) {
+            Log::error('Không tìm thấy OA nào có trạng thái is_active = 1');
+            throw new Exception('Không tìm thấy OA nào có trạng thái is_active = 1');
+        }
+
+        $accessToken = $oa->access_token;
+        $refreshToken = $oa->refresh_token;
+
+        if (!$accessToken && $refreshToken) {
+            $secretKey = env('ZALO_APP_SECRET');
+            $appId = env('ZALO_APP_ID');
+            $accessToken = $this->refreshAccessToken($refreshToken, $secretKey, $appId);
+
+            // Cập nhật access token mới vào cơ sở dữ liệu
+            $oa->update(['access_token' => $accessToken]);
+        }
+
+        Log::info('Retrieved access token: ' . $accessToken);
+        return $accessToken;
+    }
+
 
     public function RenderRandomPassword()
     {
