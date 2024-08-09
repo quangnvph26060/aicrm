@@ -35,6 +35,7 @@ use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\SuperAdmin\ZnsMessageController;
 use App\Http\Controllers\SuperAdmin\ZaloController;
 use App\Http\Controllers\SuperAdminController as ControllersSuperAdminController;
 use App\Http\Middleware\CheckLogin;
@@ -296,9 +297,20 @@ Route::middleware([CheckLogin::class])->prefix('ban-hang')->name('staff.')->grou
 Route::get('super-dang-nhap', [SuperAdminController::class, 'loginForm'])->name('super.dang.nhap');
 Route::post('super-dang-nhap', [SuperAdminController::class, 'login'])->name('super.login.submit');
 Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('super.')->group(function () {
+    Route::prefix('message')->name('message.')->group(function () {
+        Route::get('', [ZnsMessageController::class, 'znsMessage'])->name('znsMessage');
+        Route::get('/quota', [ZnsMessageController::class, 'znsQuota'])->name('znsQuota');
+        Route::get('template', [ZnsMessageController::class, 'templateIndex'])->name('znsTemplate');
+        Route::get('refresh', [ZnsMessageController::class, 'refreshTemplates'])->name('znsTemplateRefresh');
+        Route::get('detail', [ZnsMessageController::class, 'getTemplateDetail'])->name('znsTemplateDetail');
+        Route::get('test', [ZnsMessageController::class, 'test'])->name('test');
+    });
     Route::prefix('zalo')->name('zalo.')->group(function () {
         Route::get('zns', [ZaloController::class, 'index'])->name('zns');
-        Route::get('get-access-token', [ZaloController::class, 'getAccessToken'])->name('getAccessToken');
+        Route::get('get-access-token/{oaId}', [ZaloController::class, 'getAccessTokenForOa'])->name('getAccessTokenForOa');
+        Route::get('callback', [ZaloController::class, 'handleCallback'])->name('callback');
+        Route::get('/get-active-oa-name', [ZaloController::class, 'getActiveOaName'])->name('getActiveOaName');
+        Route::post('/update-oa-status/{oaId}', [ZaloController::class, 'updateOaStatus'])->name('updateOaStatus');
     });
     Route::get('/detail/{id}', [SuperAdminController::class, 'getSuperAdminInfor'])->name('detail');
     Route::post('/update/{id}', [SuperAdminController::class, 'updateSuperAdminInfo'])->name('update');
@@ -308,8 +320,5 @@ Route::middleware(CheckLoginSuperAdmin::class)->prefix('super-admin')->name('sup
         Route::get('/detail/{id}', [StoreController::class, 'detail'])->name('detail');
         Route::get('/findByPhone', [StoreController::class, 'findByPhone'])->name('findByPhone');
         Route::get('/delete/{id}', [StoreController::class, 'delete'])->name('delete');
-    });
-    Route::prefix('zalo')->name('zalo.')->group(function () {
-        Route::get('zns', [ZaloController::class, 'index'])->name('zns');
     });
 });

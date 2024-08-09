@@ -59,6 +59,32 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#sidebarzns">
+                        <i class="fas fa-cogs"></i>
+                        <p>Truy cần ZNS</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="sidebarzns">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href = "{{route('super.message.znsMessage')}}">
+                                    <span class="sub-item">Tin nhắn ZNS</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href = "{{route('super.message.znsQuota')}}">
+                                    <span class="sub-item">Hạn mức ZNS</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href = "{{route('super.message.znsTemplate')}}">
+                                    <span class="sub-item">Template ZNS</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
