@@ -1,238 +1,238 @@
 @extends('Themes.layout_staff.app')
 @section('content')
-    <style>
-        .product-item1 {
-            border: 1px solid #ddd;
-            padding: 10px;
-            height: auto;
-            /* Tăng chiều cao để đảm bảo đủ không gian cho thông tin */
-        }
+<style>
+    .product-item1 {
+        border: 1px solid #ddd;
+        padding: 10px;
+        height: auto;
+        /* Tăng chiều cao để đảm bảo đủ không gian cho thông tin */
+    }
 
-        .product-item1 img {
-            width: 100%;
-            height: auto;
-        }
+    .product-item1 img {
+        width: 100%;
+        height: auto;
+    }
 
-        .product-name {
-            font-size: 13px;
-            margin-top: 5px;
-            margin-bottom: 0px;
-        }
+    .product-name {
+        font-size: 13px;
+        margin-top: 5px;
+        margin-bottom: 0px;
+    }
 
-        .product-quantity-unit {
-            font-size: 13px;
-            margin-top: 0px;
-            margin-bottom: 5px;
-        }
+    .product-quantity-unit {
+        font-size: 13px;
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
 
-        .product-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .product-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .product-price {
-            font-size: 13px;
-            margin: 5px 0 0 0;
-        }
+    .product-price {
+        font-size: 13px;
+        margin: 5px 0 0 0;
+    }
 
-        .add-to-cart {
-            margin: 0;
-            cursor: pointer;
-        }
+    .add-to-cart {
+        margin: 0;
+        cursor: pointer;
+    }
 
-        .add-to-cart i {
-            font-size: 15px;
-            color: rgb(105, 97, 223);
-        }
+    .add-to-cart i {
+        font-size: 15px;
+        color: rgb(105, 97, 223);
+    }
 
-        #listproduct .product-item1 .card-body img {
-            width: 145px;
-            height: auto;
-            object-fit: cover;
-        }
+    #listproduct .product-item1 .card-body img {
+        width: 145px;
+        height: auto;
+        object-fit: cover;
+    }
 
-        .card-body {
-            max-height: 400px;
-            padding: 10px;
-        }
+    .card-body {
+        max-height: 400px;
+        padding: 10px;
+    }
 
-        .icon-bell:before {
-            content: "\f0f3";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-        }
+    .icon-bell:before {
+        content: "\f0f3";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
 
-        .input-group {
-            position: relative;
-        }
+    .input-group {
+        position: relative;
+    }
 
-        .results {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            max-height: 150px;
-            overflow-y: auto;
-            display: none;
-            position: absolute;
-            width: 80%;
-            background-color: white;
-            z-index: 1000;
-        }
+    .results {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        max-height: 150px;
+        overflow-y: auto;
+        display: none;
+        position: absolute;
+        width: 80%;
+        background-color: white;
+        z-index: 1000;
+    }
 
-        .results li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
+    .results li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
 
-        }
+    }
 
-        .results li:last-child {
-            border-bottom: none;
-        }
+    .results li:last-child {
+        border-bottom: none;
+    }
 
-        .results li:hover {
-            background-color: #f0f0f0;
-        }
+    .results li:hover {
+        background-color: #f0f0f0;
+    }
 
-        .no-results {
-            text-align: center;
-            color: #888;
-        }
+    .no-results {
+        text-align: center;
+        color: #888;
+    }
 
-        .product-item {
-            display: flex;
-            flex-wrap: wrap;
+    .product-item {
+        display: flex;
+        flex-wrap: wrap;
 
-        }
+    }
 
-        .alert {
-            width: calc(33.33% - 20px);
-            margin-right: 20px;
-            padding: 15px;
-            box-sizing: border-box;
-            position: relative;
-        }
+    .alert {
+        width: calc(33.33% - 20px);
+        margin-right: 20px;
+        padding: 15px;
+        box-sizing: border-box;
+        position: relative;
+    }
 
-        .alert:last-child {
-            margin-right: 0;
-        }
+    .alert:last-child {
+        margin-right: 0;
+    }
 
-        .closebtn {
-            margin-left: 20px;
-            position: absolute;
-            top: 30%;
-            right: 10px;
-            cursor: pointer;
-        }
+    .closebtn {
+        margin-left: 20px;
+        position: absolute;
+        top: 30%;
+        right: 10px;
+        cursor: pointer;
+    }
 
-        .alert strong {
-            font-weight: bold;
-        }
+    .alert strong {
+        font-weight: bold;
+    }
 
-        .alert span {
-            margin-left: 10px;
-        }
+    .alert span {
+        margin-left: 10px;
+    }
 
-        .closebtn:hover {
-            color: red;
-            font-weight: bold;
+    .closebtn:hover {
+        color: red;
+        font-weight: bold;
 
-        }
+    }
 
-        .custom-input {
-            width: 100px;
-            padding: 5px;
-            text-align: center;
-            font-size: 14px;
-            border-radius: 5px;
-        }
+    .custom-input {
+        width: 100px;
+        padding: 5px;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 5px;
+    }
 
-        .product-name {
-            font-size: 13px;
-            margin-top: 5px;
-            margin-bottom: 0px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            max-width: 80px;
-        }
+    .product-name {
+        font-size: 13px;
+        margin-top: 5px;
+        margin-bottom: 0px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 80px;
+    }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-        }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+    }
 
-        #timkiem {
-            color: rgb(5, 5, 5) !important;
-            border: 1px solid;
-        }
-    </style>
-    <!-- Content section -->
-    <div class="container-fluid mt-4">
-        <div class="row" id="row">
-            <!-- Left Column: Product List -->
-            <div class="col-lg-8" id="row1">
-                <div class="card">
-                    <div class="card-header">
-                        <p>Sản phẩm</p>
-                        <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}"
-                            method="GET">
-                            @csrf
-                            <input id="search_product" class="form-control mr-sm-2" name="name" type="search"
-                                placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
-                        </form>
-                    </div>
-                    <div class="card-body" style="overflow-x: hidden;">
-                        <!-- Product items go here -->
-                        <div class="row" id="productContainer">
-
-                        </div>
-                    </div>
+    #timkiem {
+        color: rgb(5, 5, 5) !important;
+        border: 1px solid;
+    }
+</style>
+<!-- Content section -->
+<div class="container-fluid mt-4">
+    <div class="row" id="row">
+        <!-- Left Column: Product List -->
+        <div class="col-lg-8" id="row1">
+            <div class="card">
+                <div class="card-header">
+                    <p style="font-weight: 800">Sản phẩm</p>
+                    <form class="form-inline my-2 my-lg-0 search-bar" action="{{ route('staff.product.search') }}"
+                        method="GET">
+                        @csrf
+                        <input id="search_product" class="form-control mr-sm-2" name="name" type="search"
+                            placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                    </form>
                 </div>
-                <div class="card" id="regular-selling-content1" style="display: none;"></div>
-                <!-- thanh toán -->
-                <div class="row mt-4 main_note" style="margin: 0px;">
-                    <div class="col-lg-8 mt-4 mb-4">
-                        <div class="product-item">
+                <div class="card-body" style="overflow-x: hidden;">
+                    <!-- Product items go here -->
+                    <div class="row" id="productContainer">
 
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mt-4 mb-4">
-                        <ul class="list-unstyled">
-                            <li class="d-flex justify-content-between align-items-center">
-                                Tổng tiền hàng
-                                <span class="badge badge-primary badge-pill" id="total-amount">
-                                    0 {{-- {{ number_format($sum)}} --}}
-                                </span>
-                            </li>
-                            <li class="d-flex justify-content-between align-items-center mt-2">
-                                Giảm giá
-                                <span class="badge badge-primary badge-pill" id="discount">0</span>
-                            </li>
-                            <li class="d-flex justify-content-between align-items-center mt-2">
-                                Khách cần trả
-                                <span class="badge badge-primary badge-pill" id="total-to-pay">
-                                    0 {{-- {{ number_format($sum)}} --}}
-                                </span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
-            <!-- Right Column: Customer Information and Payment Method -->
-            @include('Themes.pages.layout_staff.delivery-selling')
+            <div class="card" id="regular-selling-content1" style="display: none;"></div>
+            <!-- thanh toán -->
+            <div class="row mt-4 main_note" style="margin: 0px;">
+                <div class="col-lg-8 mt-4 mb-4">
+                    <div class="product-item">
+
+                    </div>
+                </div>
+                <div class="col-lg-4 mt-4 mb-4">
+                    <ul class="list-unstyled">
+                        <li class="d-flex justify-content-between align-items-center">
+                            Tổng tiền hàng
+                            <span class="badge badge-primary badge-pill" id="total-amount">
+                                0 {{-- {{ number_format($sum)}} --}}
+                            </span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center mt-2">
+                            Giảm giá
+                            <span class="badge badge-primary badge-pill" id="discount">0</span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center mt-2">
+                            Khách cần trả
+                            <span class="badge badge-primary badge-pill" id="total-to-pay">
+                                0 {{-- {{ number_format($sum)}} --}}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
+        <!-- Right Column: Customer Information and Payment Method -->
+        @include('Themes.pages.layout_staff.delivery-selling')
     </div>
+</div>
 
-    <!-- Right Column: Customer Information and Payment Method 123-->
-    {{-- @include('Themes.pages.layout_staff.delivery-selling') --}}
+<!-- Right Column: Customer Information and Payment Method 123-->
+{{-- @include('Themes.pages.layout_staff.delivery-selling') --}}
 
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
-        var $j = jQuery.noConflict();
+<script>
+    var $j = jQuery.noConflict();
 
         $j(document).ready(function() {
             $j.ajax({
@@ -251,7 +251,9 @@
                         <div class="col-md-2 mb-3" style="cursor: pointer;">
                             <div class="product-item1" title="${product.name}">
                                 <div class="card-body listproduct" data-id="${product.id}">
-                                    <img src="${imageUrl}" alt="" style="width: 100%; height: auto;">
+                                    <div>
+                                        <img src="${imageUrl}" alt="" style="max-width: 75px; height: 50px;">
+                                    </div>
                                     <p class="card-title product-name">${product.name}</p>
                                     <p class="product-quantity-unit">còn ${item.quantity} ${product.product_unit}</p>
                                     <div class="product-info">
@@ -296,19 +298,21 @@
                                 var imageUrl = "{{ asset('/') }}" + images.replace(
                                     'public/', '');
                                 var productHtml = `
-                        <div class="col-md-2 mb-3" style="cursor: pointer;">
-                            <div class="product-item1" title="${item.name}">
-                                <div class="card-body listproduct" data-id="${item.id}">
-                                    <img src="${imageUrl}" alt="" style="width: 100%; height: auto;">
-                                    <p class="card-title product-name">${item.name}</p>
-                                    <p class="product-quantity-unit">${item.quantity} ${item.product_unit}</p>
-                                    <div class="product-info">
-                                        <p class="card-title product-price">${numberFormat(item.priceBuy)}đ</p>
-                                        <p class="add-to-cart"><i class="fas fa-shopping-cart fa-lg"></i></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
+                                        <div class="col-md-2 mb-3" style="cursor: pointer;">
+                                            <div class="product-item1" title="${item.name}">
+                                                <div class="card-body listproduct" data-id="${item.id}">
+                                                    <div>
+                                                        <img src="${imageUrl}" alt="" style="max-width: 75px; height: 50px;">
+                                                    </div>
+                                                    <p class="card-title product-name">${item.name}</p>
+                                                    <p class="product-quantity-unit">${item.quantity} ${item.product_unit}</p>
+                                                    <div class="product-info">
+                                                        <p class="card-title product-price">${numberFormat(item.priceBuy)}đ</p>
+                                                        <p class="add-to-cart"><i class="fas fa-shopping-cart fa-lg"></i></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`;
                                 productContainer.append(productHtml);
                             });
                         } else {
@@ -321,12 +325,7 @@
                     }
                 });
 
-                function numberFormat(number) {
-                    return new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND'
-                    }).format(number).replace('₫', '');
-                }
+
             });
 
 
@@ -400,8 +399,15 @@
 
             $j(document).on('input', '.custom-input', function(e) {
                 e.preventDefault();
-                var productId = $j(this).data('id');
-                var amount = $j(this).val();
+                var input = $j(this);
+                var productId = input.data('id');
+                var max = input.attr('max');
+                var amount = input.val();
+
+                if (parseInt(amount) > parseInt(max)) {
+                    amount = max;
+                    input.val(amount);
+                }
 
                 $j.ajax({
                     url: '{{ route('staff.cart.update') }}',
@@ -558,16 +564,17 @@
                 cart.forEach(function(item) {
                     var itemTotal = item.amount * item.priceBuy;
                     var orderItem = `
-                <tr>
-                    <td>${item.product_name}</td>
-                    <td>${item.amount}</td>
-                    <td>${(Math.ceil(item.priceBuy / 500) * 500).toLocaleString('en-US')}</td>
-                    <td>${(Math.ceil(itemTotal / 500) * 500).toLocaleString('en-US')}</td>
-                </tr>
-            `;
+                        <tr>
+                            <td>${item.product_name}</td>
+                            <td>${item.amount}</td>
+                            <td>${item.priceBuy.toLocaleString('en-US')}</td>
+                            <td>${itemTotal.toLocaleString('en-US')}</td>
+                        </tr>
+                    `;
                     orderBill.append(orderItem);
                 });
             }
+
 
             $j("#results").on("click", "li", function() {
                 if (!$j(this).hasClass("no-results")) {
@@ -599,8 +606,8 @@
                             'data-id = "' + details.id + '"' + ' >' + details.priceBuy + '</div>' +
                             '</strong>' +
                             '<span><input type="number"' + 'data-id = "' + details.product_id + '"' +
-                            '  min="1" class="custom-input" value="' + details.amount + '"></span>' +
-                            '<span style="width: 80px;">' + (details.priceBuy * details.amount) +
+                            '  min="1" max="' + details.quantity + '"  class="custom-input" value="' + details.amount + '"></span>' +
+                            '<span style="width: 80px;">' + numberFormat(details.priceBuy * details.amount) +
                             'đ</span>' +
                             '</div>' +
                             '</div>';
@@ -675,6 +682,15 @@
             return number;
         }
 
+        function numberFormat(number) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
+
         document.querySelectorAll('.change_price').forEach(function(element) {
             element.addEventListener('input', function(e) {
                 const selection = window.getSelection();
@@ -686,8 +702,9 @@
                 range.setStart(this.firstChild, Math.min(caretPos, this.innerText.length));
                 range.setEnd(this.firstChild, Math.min(caretPos, this.innerText.length));
                 selection.removeAllRanges();
-                selection.addRange(range);
+                // selection.addRange(range);
             });
         });
-    </script>
+
+</script>
 @endsection

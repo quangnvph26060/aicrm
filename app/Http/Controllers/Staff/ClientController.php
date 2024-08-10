@@ -102,7 +102,7 @@ class ClientController extends Controller
     {
         try {
             $user = Auth::user();
-            $storageId = session('authUser')->storage_id;
+            $storageId = $user->storage_id;
             $listphone = $this->clientService->getAllClientStaff()->pluck('phone');
             $cartItems = Cart::where('user_id', $user->id)->get();
             $sum = 0;
@@ -131,7 +131,6 @@ class ClientController extends Controller
                         'price' => $item->price
                     ]);
 
-                    // Gọi hàm updateProductAmount sau khi tạo chi tiết đơn hàng
                     $this->productStorageService->updateProductAmount($item->product_id, $storageId, $item->amount);
                 }
             } else {
@@ -158,7 +157,6 @@ class ClientController extends Controller
                         'price' => $item->price
                     ]);
 
-                    // Gọi hàm updateProductAmount sau khi tạo chi tiết đơn hàng
                     $this->productStorageService->updateProductAmount($item->product_id, $storageId, $item->amount);
                 }
             }

@@ -14,6 +14,7 @@ use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -29,7 +30,8 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $storage_id = session('authUser')->storage_id;
+        $user = Auth::user();
+        $storage_id = $user->storage_id;
         $product = $this->productService->getPRoductInStorage_Staff($storage_id);
         $title = "Quản lý bán hàng";
         $config = Config::first();
@@ -38,22 +40,23 @@ class ProductController extends Controller
         $clientgroup = $this->clientGroupService->getAllClientGroup();
         $user = Auth::user();
         $cart =  Cart::where('user_id', $user->id)->get();
+        // dd($cart);
         foreach ($cart as $key => $item) {
             $item->delete();
         }
         $sum = 0;
+
         foreach ($cart as $key => $value) {
-            $sum += $value->product->priceBuy * $value->amount;
+            $sum += $value->price * $value->amount;
         }
         return view('Themes.pages.layout_staff.index', compact('product', 'clients', 'cart', 'sum', 'config', 'title', 'clientgroup'));
     }
 
     public function product()
     {
-        $storage_id = session('authUser')->storage_id;
-
-        // Lấy tất cả các bản ghi từ ProductStorage kèm theo thông tin sản phẩm
-        $productStorages = ProductStorage::with('product') // Eager load thông tin sản phẩm
+        $user = Auth::user();
+        $storage_id = $user->storage_id;
+        $productStorages = ProductStorage::with('product')
             ->where('storage_id', $storage_id)
             ->where('quantity', '>', 0)
             ->orderByDesc('created_at')
@@ -65,6 +68,8 @@ class ProductController extends Controller
 
     public function addToCart(Request $request)
     {
+        $user = Auth::user();
+        $storage_id = $user->storage_id;
         $productId = $request->input('product_id');
         $product = $this->productService->getProductById($productId);
 
@@ -77,9 +82,15 @@ class ProductController extends Controller
             ->where('user_id', $user->id)
             ->first();
         $amount = $request->input('amount');
-        if ($existingCartItem) {
-            // Giảm số lượng xuống 0 hoặc loại bỏ sản phẩm khỏi giỏ hàng nếu giảm xuống dưới 1
-            $existingCartItem->update(['amount' => $existingCartItem->amount + 1]);
+        $ProductStorage = ProductStorage::where([
+            ['product_id', '=', $productId],
+            ['storage_id', '=', $storage_id]
+        ])->with('product')->first();
+        if ($existingCartItem ) {
+            if($existingCartItem->amount < $ProductStorage->quantity){
+                $existingCartItem->update(['amount' => $existingCartItem->amount + 1]);
+            }
+
         } else {
 
             Cart::create([
@@ -90,7 +101,6 @@ class ProductController extends Controller
             ]);
         }
 
-
         $cartItems = Cart::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -98,14 +108,19 @@ class ProductController extends Controller
         $sum = 0;
         foreach ($cartItems as $item) {
             $sum += $item->amount * $item->price;
-            $product = Product::find($item->product_id);
+            $product = ProductStorage::where([
+                ['product_id', '=', $item->product_id],
+                ['storage_id', '=', $storage_id]
+            ])->with('product')->first();
+
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
                     'priceBuy' => $item->price,
-                    'product_name' => $product->name,
+                    'product_name' => $product->product->name,
+                    'quantity' => $product->quantity,
                 ];
             }
         }
@@ -115,6 +130,8 @@ class ProductController extends Controller
 
     public function updateCart(Request $request)
     {
+        $user = Auth::user();
+        $storage_id = $user->storage_id;
         $productId = $request->input('product_id');
         $product = $this->productService->getProductById($productId);
 
@@ -138,14 +155,18 @@ class ProductController extends Controller
         $sum = 0;
         foreach ($cartItems as $item) {
             $sum += $item->amount * $item->price;
-            $product = Product::find($item->product_id);
+            $product = ProductStorage::where([
+                ['product_id', '=', $item->product_id],
+                ['storage_id', '=', $storage_id]
+            ])->with('product')->first();
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
                     'priceBuy' => $item->price,
-                    'product_name' => $product->name,
+                    'product_name' => $product->product->name,
+                    'quantity' => $product->quantity,
                 ];
             }
         }
@@ -155,7 +176,7 @@ class ProductController extends Controller
     public function removeFromCart(Request $request)
     {
         $user = Auth::user();
-
+        $storage_id = $user->storage_id;
         $cart = $request->input('cart');
         Cart::find($cart)->delete();
         $cartItems = Cart::where('user_id', $user->id)
@@ -165,14 +186,18 @@ class ProductController extends Controller
         $sum = 0;
         foreach ($cartItems as $item) {
             $sum += $item->amount * $item->price;
-            $product = Product::find($item->product_id);
+            $product = ProductStorage::where([
+                ['product_id', '=', $item->product_id],
+                ['storage_id', '=', $storage_id]
+            ])->with('product')->first();
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
                     'priceBuy' => $item->price,
-                    'product_name' => $product->name,
+                    'product_name' => $product->product->name,
+                    'quantity' => $product->quantity,
                 ];
             }
         }
@@ -183,10 +208,16 @@ class ProductController extends Controller
     {
         $name = $request->input('name');
 
-        // Tìm kiếm sản phẩm
-        $productStorages = ProductStorage::whereHas('product', function ($query) use ($name) {
+        $user = Auth::user();
+        $storage_id = $user->storage_id;
+        $productStorages = ProductStorage::with('product')
+        ->where('storage_id', $storage_id)
+        ->where('quantity', '>', 0)
+        ->whereHas('product', function ($query) use ($name) {
             $query->where('name', 'like', "%{$name}%");
-        })->get();
+        })
+        ->orderByDesc('created_at')
+        ->get();
 
         $products = [];
 
@@ -210,6 +241,7 @@ class ProductController extends Controller
     {
 
         $user = Auth::user();
+        $storage_id = $user->storage_id;
         $existingCartItem = Cart::find($request->cart);
         $price = $request->price;
 
@@ -223,14 +255,18 @@ class ProductController extends Controller
         $sum = 0;
         foreach ($cartItems as $item) {
             $sum += $item->amount * $item->price;
-            $product = Product::find($item->product_id);
+            $product = ProductStorage::where([
+                ['product_id', '=', $item->product_id],
+                ['storage_id', '=', $storage_id]
+            ])->with('product')->first();
             if ($product) {
                 $products[] = [
                     'id' => $item->id,
                     'product_id' => $item->product_id,
                     'amount' => $item->amount,
                     'priceBuy' => $item->price,
-                    'product_name' => $product->name,
+                    'product_name' => $product->product->name,
+                    'quantity' => $product->quantity,
                 ];
             }
         }
