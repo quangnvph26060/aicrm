@@ -143,7 +143,7 @@
                                     <tr>
                                         <td>{{ $item->product->name }}</td>
                                         <td>{{ $item->amount }}</td>
-                                        <td>{{ number_format($item->product->priceBuy) }}</td>
+                                        <td>{{ number_format($item->product->price) }}</td>
                                         <td>{{ number_format($item->product->priceBuy * $item->amount ) }}</td>
                                     </tr>
                                     @endforeach
