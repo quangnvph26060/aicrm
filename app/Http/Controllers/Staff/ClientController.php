@@ -128,6 +128,7 @@ class ClientController extends Controller
                         'order_id' => $order->id,
                         'quantity' => $item->amount,
                         'product_id' => $item->product_id,
+                        'storage_id' => $user->storage_id,
                         'price' => $item->price
                     ]);
 
@@ -153,6 +154,7 @@ class ClientController extends Controller
                     OrderDetail::create([
                         'order_id' => $order->id,
                         'quantity' => $item->amount,
+                        'storage_id' => $user->storage_id,
                         'product_id' => $item->product_id,
                         'price' => $item->price
                     ]);

@@ -39,13 +39,14 @@ class ProfitService
             $orderIds = $this->order->whereHas('user', function ($query) use ($storage_id) {
                 $query->where('storage_id', $storage_id);
             })->pluck('id');
-
+            Log::info($orderIds);
             // Helper function to calculate report data
             $calculateReportData = function ($orders) {
                 $soldQuantity = 0;
                 $revenue = 0;
                 $invest = 0;
                 $profit = 0;
+
 
                 foreach ($orders as $detail) {
                     $soldQuantity += $detail->quantity;
