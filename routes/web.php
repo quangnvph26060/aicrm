@@ -82,7 +82,8 @@ Route::get('/employee', function () {
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('profit')->name('profit.')->group(function () {
         Route::get('', [ReportController::class, 'profitIndex'])->name('index');
-        Route::post('profit-report', [ReportController::class, 'getProfitReportByFilter'])->name('getProfitReportByFilter');
+        Route::post('/profit-report', [ReportController::class, 'getProfitReportByFilterNew'])->name('getProfitReportByFilter');
+        Route::post('/profit-report-pdf', [ReportController::class, 'getProfitReportByFilterPDF'])->name('getProfitReportByFilterPDF');
     });
     Route::prefix('inventory')->name('inventory.')->group(function () {
         Route::get('', [ReportController::class, 'index'])->name('index');
