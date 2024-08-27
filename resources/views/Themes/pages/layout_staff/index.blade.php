@@ -236,7 +236,7 @@
 
         $j(document).ready(function() {
             $j.ajax({
-                url: '{{ route('staff.product.get') }}',
+                url: 'https://demo.aicrm.vn/ban-hang/product',
                 type: 'GET',
                 success: function(data) {
                     var productContainer = $j('#productContainer');
@@ -282,7 +282,7 @@
                 var name = $(this).val();
 
                 $j.ajax({
-                    url: '{{ route('staff.product.search') }}',
+                    url: 'https://demo.aicrm.vn/ban-hang/product/search',
                     type: 'GET',
                     data: {
                         name: name
@@ -361,7 +361,7 @@
                 e.preventDefault();
                 var productId = $j(this).data('id');
                 $j.ajax({
-                    url: '{{ route('staff.cart.add') }}',
+                    url: 'https://demo.aicrm.vn/ban-hang/cart/add',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -410,7 +410,7 @@
                 }
 
                 $j.ajax({
-                    url: '{{ route('staff.cart.update') }}',
+                    url: 'https://demo.aicrm.vn/ban-hang/cart/update',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -449,7 +449,7 @@
                 e.preventDefault();
                 var cart = $j(this).data('id');
                 $j.ajax({
-                    url: '{{ route('staff.cart.remove') }}',
+                    url: 'https://demo.aicrm.vn/ban-hang/cart/remove',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -520,7 +520,7 @@
                 var cart = $j(this).data('id');
 
                 $j.ajax({
-                    url: '{{ route('staff.cart.update.price') }}',
+                    url: 'https://demo.aicrm.vn/ban-hang/cart/update_price',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',

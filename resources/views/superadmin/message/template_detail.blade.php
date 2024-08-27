@@ -69,7 +69,7 @@
                            Giá
                        </td>
                        <td>
-                           {{ number_format($responseData['price'], 0) ?? 'Không có dữ liệu' }} VND/ZNS
+                           {{ number_format($responseData['price'], 0) ?? 'Không có dữ liệu' }} đ/ZNS
                        </td>
                    </tr>
                    <tr>

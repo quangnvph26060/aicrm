@@ -44,6 +44,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('super.campaign.index') }}">
+                        <i class="fas fa-user"></i>
+                        <p>Chiến dịch</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarcauhinh">
                         <i class="fas fa-cogs"></i>
                         <p>Cấu hình</p>
@@ -62,7 +68,7 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarzns">
                         <i class="fas fa-cogs"></i>
-                        <p>Truy cần ZNS</p>
+                        <p>Truy vấn ZNS</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="sidebarzns">

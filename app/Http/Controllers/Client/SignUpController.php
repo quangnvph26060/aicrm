@@ -36,7 +36,7 @@ class SignUpController extends Controller
         try {
             $user = $this->signupService->signup($request->all());
 
-            return redirect()->back()->with('modal', 'ChÃºc má»«ng báº¡n Ä‘Ã£ Ä‘Äƒng kÃ½ táº¡o tÃ i khoáº£n thÃ nh cÃ´ng. ChÃºng tÃ´i sáº½ liÃªn há»‡ vá»›i báº¡n trong 24h - 48h ngay sau khi pháº§n má»m Ä‘Æ°á»£c táº¡o. Má»i liÃªn há»‡ vui lÃ²ng liÃªn há»‡ Hotline: 0981.185.620 hoáº·c truy cáº­p website: aicrm.vn. Xin cáº£m Æ¡n');
+            return redirect()->back()->with('modal', 'Đăng ký tài khoản dùng thử thành công');
         } catch (Exception $e) {
             Log::error('Failed to signup: ' . $e->getMessage());
             return back()->withErrors(['message' => $e->getMessage()])->withInput();

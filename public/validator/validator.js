@@ -150,6 +150,7 @@ function generateErrorMessage(code, values = []) {
         R051: ' Địa chỉ không được để trống',
         R052: ' Email đã tồn tại trong hệ thống',
         R053: ' Số điện thoại không hợp lê',
+        R054: ' Vui lòng chọn ngày sinh',
         // thu chi
         TC001: 'Không  để trống nhà cung cấp',
         TC002: 'Không để trống tiền ',

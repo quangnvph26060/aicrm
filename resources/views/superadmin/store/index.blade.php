@@ -129,6 +129,36 @@
         .dataTables_filter label {
             margin-right: 0.5rem;
         }
+
+        /* Accordion styles */
+        .accordion-button {
+            cursor: pointer;
+            text-align: left;
+            border: none;
+            outline: none;
+            background: #f8f9fa;
+            padding: 0.5rem;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 0.5rem;
+            border-top: 1px solid #dee2e6;
+            background: #fff;
+        }
+
+        .accordion-content ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .accordion-content ul li {
+            padding: 0.25rem 0;
+        }
     </style>
     <div class="page-inner">
         <div class="page-header">
@@ -162,11 +192,6 @@
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    {{-- <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary" href="{{ route('super.store.add') }}">Thêm khách hàng</a>
-                                        </div>
-                                    </div> --}}
                                     <div class="col-sm-12 col-md-6">
                                         <form action="{{ route('super.store.findByPhone') }}" method="GET">
                                             <div class="dataTables_filter">
@@ -189,6 +214,7 @@
                                                     <th>Tên chủ</th>
                                                     <th>Ngày tạo</th>
                                                     <th>Ngày hết hạn</th>
+                                                    <th>Chiến dịch</th>
                                                     <th style="text-align: center">Hành động</th>
                                                 </tr>
                                             </thead>
@@ -207,18 +233,38 @@
                                                                 </td>
                                                                 <td>{{ isset($value->created_at)? \Carbon\Carbon::parse($value->created_at)->addMonths(6)->format('d/m/Y'): '' }}
                                                                 </td>
+                                                                <td>
+                                                                    {{-- Accordion for campaigns --}}
+                                                                    @if ($value->campaignDetails && $value->campaignDetails->isNotEmpty())
+                                                                        <button class="accordion-button">
+                                                                            Xem chiến dịch
+                                                                        </button>
+                                                                        <div class="accordion-content">
+                                                                            <ul>
+                                                                                @foreach ($value->campaignDetails as $campaignDetail)
+                                                                                    <li>{{ $campaignDetail->campaign->name ?? 'Không có tên chiến dịch' }}
+                                                                                    </li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
+                                                                    @else
+                                                                        Không có chiến dịch
+                                                                    @endif
+                                                                </td>
                                                                 <td style="text-align:center">
                                                                     <a class="btn btn-warning"
                                                                         href="{{ route('super.store.detail', ['id' => $value->id]) }}">Chi
                                                                         tiết</a>
-                                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')" class="btn btn-danger" href="{{ route('super.store.delete', ['id' => $value->id]) }}">Xóa</a>
+                                                                    <a onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+                                                                        class="btn btn-danger"
+                                                                        href="{{ route('super.store.delete', ['id' => $value->id]) }}">Xóa</a>
                                                                 </td>
                                                             </tr>
                                                         @endif
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td class="text-center" colspan="6">
+                                                        <td class="text-center" colspan="7">
                                                             <div class="">
                                                                 Chưa có cửa hàng
                                                             </div>
@@ -242,9 +288,16 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
+            // Accordion functionality
+            $('.accordion-button').click(function() {
+                $(this).next('.accordion-content').slideToggle();
+                $(this).toggleClass('active');
+            });
+
+            // Notify functionality
+            @if (session('success'))
                 $.notify({
                     icon: 'icon-bell',
                     title: 'Thông báo',
@@ -257,7 +310,7 @@
                     },
                     time: 1000,
                 });
-            });
-        </script>
-    @endif
+            @endif
+        });
+    </script>
 @endsection
