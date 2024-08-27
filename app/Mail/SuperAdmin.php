@@ -36,7 +36,7 @@ class SuperAdmin extends Mailable
                 'store_name' => $this->user->store_name,
                 'password' => $this->password,
                 'domain' => $this->user->domain,            ])
-            ->subject('User Registered');
+            ->subject('Khách hàng ' .$this->user->name. ' đăng ký dùng thử AICRM.vn');
     }
 
     /**

@@ -6,6 +6,8 @@
             <th>Nhà cung cấp</th>
             <th>SĐT</th>
             <th>Email</th>
+            <th>Mã số thuế</th>
+            <th>Tài khoản ngân hàng</th>
             <th>Địa chỉ</th>
             <th style="text-align: center">Hành động</th>
         </tr>
@@ -20,6 +22,8 @@
                         <td>{{ $value->name ?? '' }}</td>
                         <td>{{ $value->phone ?? '' }}</td>
                         <td>{{ $value->email ?? '' }}</td>
+                        <td>{{ $value->tax_number ?? '' }}</td>
+                        <td>{{ $value->bank_account }} {{ $value->bank->shortName }}</td>
                         <td>{{ $value->address ?? '' }}</td>
                         <td style="text-align:center">
                             <a class="btn btn-warning"

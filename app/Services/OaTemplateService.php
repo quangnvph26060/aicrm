@@ -22,10 +22,11 @@ class OaTemplateService
         $this->client = new Client(); // Create a single instance of the client
     }
 
-    public function getAllTemplate()
+    public function getAllTemplateByOaID()
     {
         try {
-            return $this->oaTemplate->all();
+            $oa_id = ZaloOa::where('is_active', 1)->first()->id;
+            return $this->oaTemplate->where('oa_id', $oa_id)->get();
         } catch (Exception $e) {
             Log::error('Failed to get templates: ' . $e->getMessage());
             throw new Exception('Failed to get templates');

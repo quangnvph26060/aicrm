@@ -30,4 +30,9 @@ class OaTemplate extends Model
     {
         return $this->hasMany(ZnsMessage::class);
     }
+
+    public function campaigns()
+    {
+        return $this->hasOne(Campaign::class, 'template_id');
+    }
 }
