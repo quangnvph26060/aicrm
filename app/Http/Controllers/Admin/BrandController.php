@@ -32,7 +32,7 @@ class BrandController extends Controller
             $supplier = $this->supplierService->GetAllSupplier();
             $title = 'Thương hiệu';
 
-            $brand = Brand::orderByDesc('created_at')->paginate(5);
+            $brand = Brand::orderByDesc('created_at')->paginate(10);
 
             if ($request->ajax()) {
                 $view = view('admin.brand.table', compact('brand'))->render();
@@ -113,7 +113,7 @@ class BrandController extends Controller
     {
         try {
             $this->brandService->deleteBrand($id);
-            $brand = Brand::orderByDesc('created_at')->paginate(5);
+            $brand = Brand::orderByDesc('created_at')->paginate(10);
             $view = view('admin.brand.table', compact('brand'))->render();
             return response()->json(['success' => true, 'message' => 'Xoá thương hiệu thành công!', 'table' => $view]);
         } catch (Exception $e) {

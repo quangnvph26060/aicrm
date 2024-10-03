@@ -14,8 +14,9 @@ class Campaign extends Model
     protected $fillable = [
         'name',
         'template_id',
-        'delay_date',
-        'status'
+        'sent_time',
+        'status',
+        'sent_date'
     ];
 
 

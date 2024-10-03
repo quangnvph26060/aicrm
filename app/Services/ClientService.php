@@ -17,7 +17,7 @@ class ClientService
     public function getAllClient()
     {
         try {
-            return $this->client->orderByDesc('created_at')->paginate(5);
+            return $this->client->orderByDesc('created_at')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to get all clients: ' . $e->getMessage());
             throw new Exception('Failed to get all clients');

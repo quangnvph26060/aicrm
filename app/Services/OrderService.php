@@ -23,11 +23,20 @@ class OrderService
         $this->client = $client;
         $this->order = $order;
     }
-
+    public function getTodayOrder()
+    {
+        try {
+            $today = Carbon::today();
+            return $this->order->orderByDesc('created_at')->where('created_at', $today)->paginate(10);
+        } catch (Exception $e) {
+            Log::error('Failed to get today order: ' . $e->getMessage());
+            throw new Exception('Failed to get today order');
+        }
+    }
     public function getOrderAll()
     {
         try {
-            return $this->order->orderByDesc('created_at')->paginate(5);
+            return $this->order->orderByDesc('created_at')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders: ' . $e->getMessage());
             throw new Exception('Failed to retrieve orders');
@@ -53,7 +62,7 @@ class OrderService
                 });
             }
 
-            $orders = $query->paginate(5);
+            $orders = $query->paginate(10);
             return $orders;
         } catch (Exception $e) {
             Log::error('Failed to retrieve orders by date range: ' . $e->getMessage());

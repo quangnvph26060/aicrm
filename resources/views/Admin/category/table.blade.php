@@ -4,7 +4,7 @@
             <th>Mã danh mục</th>
             <th>Tên danh mục</th>
             <th>Mô tả</th>
-            <th>Hành động</th>
+            <th style="text-align: center">Hành động</th>
         </tr>
     </thead>
     @if ($category)
@@ -16,8 +16,8 @@
                     <td>{!! $value->description !!}</td>
                     <td style="text-align:center">
                         <a class="btn btn-warning"
-                            href="{{ route('admin.category.detail', ['id' => $value->id]) }}">Sửa</a>
-                        <button class="btn btn-danger btn-delete" data-id="{{ $value->id }}">Xóa</button>
+                            href="{{ route('admin.category.detail', ['id' => $value->id]) }}"><i class="fa-solid fa-wrench"></i></a>
+                        <button class="btn btn-danger btn-delete" data-id="{{ $value->id }}"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             @endforeach

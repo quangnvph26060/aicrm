@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
+use App\Models\Bank;
 use App\Services\AdminService;
 use App\Services\SupperAdminService;
 use Exception;
@@ -25,8 +26,9 @@ class SuperAdminController extends Controller
     public function getSuperAdminInfor($id)
     {
         try {
+            $bank = Bank::get();
             $sa = $this->adminService->getSuperAdminById($id);
-            return view('superadmin.profile.detail', compact('sa'));
+            return view('superadmin.profile.detail', compact('sa', 'bank'));
         } catch (Exception $e) {
             Log::error('Failed to fetch super admin info: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch super admin info', 500);

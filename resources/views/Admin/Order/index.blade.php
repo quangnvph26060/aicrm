@@ -150,7 +150,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách đơn hàng</h4>
+                        <h4 class="card-title" style="text-align: center; color:white">Báo cáo đơn hàng</h4>
                     </div>
 
                     <div class="card-body">

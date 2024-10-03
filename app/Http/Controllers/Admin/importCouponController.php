@@ -9,6 +9,7 @@ use App\Models\Import;
 use App\Models\ImportCoupon;
 use App\Models\Supplier;
 use App\Models\SupplierDebtsDetail;
+use App\Services\CompanyProductService;
 use App\Services\CompanyService;
 use App\Services\DebtNccService;
 use App\Services\ExpenseService;
@@ -30,8 +31,9 @@ class importCouponController extends Controller
     protected $supplierService;
     protected $companyService;
     protected $productStorageService;
+    protected $companyProductService;
 
-    public function __construct(ImportProductService $ImportProductService, ProductService $productService, ExpenseService $expenseService, DebtNccService $debtNccService, SupplierService $supplierService, CompanyService $companyService, ProductStorageService $productStorageService)
+    public function __construct(ImportProductService $ImportProductService, ProductService $productService, ExpenseService $expenseService, DebtNccService $debtNccService, SupplierService $supplierService, CompanyService $companyService, ProductStorageService $productStorageService, CompanyProductService $companyProductService)
     {
         $this->ImportProductService = $ImportProductService;
         $this->productService = $productService;
@@ -40,6 +42,7 @@ class importCouponController extends Controller
         $this->supplierService = $supplierService;
         $this->companyService = $companyService;
         $this->productStorageService = $productStorageService;
+        $this->companyProductService = $companyProductService;
     }
     public function add(Request $request)
     {
@@ -143,6 +146,9 @@ class importCouponController extends Controller
                 'quantity' => $value->quantity,  // Số lượng trong kho
             ];
             $this->productStorageService->updateProductStorage($value->product_id, $request->storage, $productStorageData);
+
+            //Cập nhật tổ hợp sản phẩm và nhà cung cấp trong bảng CompanyProduct
+            $this->companyProductService->updateCompanyProduct($value->product_id, $supplier_id);
         }
 
         Import::truncate();

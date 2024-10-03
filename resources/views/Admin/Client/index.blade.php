@@ -3,6 +3,19 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+        .d-flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .justify-content-start {
+            justify-content: flex-start;
+        }
+
+        .justify-content-end {
+            justify-content: flex-end;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f4f6f9;
@@ -151,24 +164,24 @@
                         <div class="table-responsive">
                             <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6">
-                                        <div class="dataTables_length" id="basic-datatables_length">
-
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-12 col-md-6 d-flex justify-content-start">
+                                            <a href="{{ route('admin.client.export') }}" class="btn btn-primary">
+                                                Xuất excel danh sách khách hàng
+                                            </a>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                        <form action="{{ route('admin.client.filter') }}" method="GET">
-                                            <div class="dataTables_filter">
-                                                <label>Tìm kiếm</label>
+                                        <div class="col-sm-12 col-md-6 d-flex justify-content-end">
+                                            <form action="{{ route('admin.client.filter') }}" method="GET" class="d-flex">
+                                                <label class="mr-2" style="align-self: center;">Tìm kiếm:</label>
                                                 <input type="text" name="phone" class="form-control form-control-sm"
                                                     placeholder="Nhập số điện thoại" value="{{ old('phone') }}">
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12" id="client-table">
-                                    @include('admin.client.table', ['clients' => $clients])
+                                        @include('admin.client.table', ['clients' => $clients])
 
                                     </div>
                                 </div>
@@ -184,7 +197,7 @@
             </div>
         </div>
     </div>
-     <!-- JavaScript code -->
+    <!-- JavaScript code -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
     @if (session('success'))
@@ -203,7 +216,6 @@
                     time: 1000,
                 });
             });
-            </script>
+        </script>
     @endif
-
 @endsection

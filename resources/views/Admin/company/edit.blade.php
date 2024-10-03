@@ -212,14 +212,25 @@
                                             <select name="bank_id" id="bank_id" class="form-control">
                                                 <option value="">-------- Chọn ngân hàng --------</option>
                                                 @foreach ($bank as $item)
-                                                    <option @if (isset($data) && isset($data->bank_id) && $data->bank_id == $item->id) selected @endif
-                                                        value="{{ $item->id }}">
+                                                    <option value="{{ $item->id }}"
+                                                        @if ($companies->bank_id == $item->id) selected @endif>
                                                         {{ $item->shortName . ' - ' . $item->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label for="city_name" class="form-label">Khu vực</label>
+                                            <select name="city_id" id="city_id" class="form-control">
+                                                <option value="">-------- Chọn khu vực --------</option>
+                                                @foreach ($cities as $city)
+                                                    <option value="{{ $city->id }}"
+                                                        @if ($companies->city_id == $city->id) selected @endif>
+                                                        {{ $city->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label for="address" class="form-label">Địa chỉ</label>
                                             <input type="text" class="form-control" id="address" name="address"

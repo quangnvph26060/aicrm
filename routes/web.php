@@ -35,6 +35,7 @@ use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Models\Categories;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\SuperAdmin\CampaignController;
 use App\Http\Controllers\SuperAdmin\ZnsMessageController;
 use App\Http\Controllers\SuperAdmin\ZaloController;
@@ -81,6 +82,42 @@ Route::get('/employee', function () {
 })->name('employee');
 
 Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('transaction')->name('transaction.')->group(function() {
+        Route::get('', [TransactionController::class, 'index'])->name('index');
+        Route::get('search', [TransactionController::class, 'search'])->name('search');
+        Route::get('payment', [TransactionController::class, 'payment'])->name('payment');
+        Route::post('store', [TransactionController::class, 'store'])->name('store');
+        Route::get('export-pdf/{id}', [TransactionController::class, 'exportPDF'])->name('export_pdf');
+        Route::get('generateQR', [TransactionController::class, 'generateQrCode'])->name('generate');
+
+    });
+    Route::prefix('product')->name('product.')->group(function () {
+        Route::get('export1', [ProductController::class, 'export1'])->name('export1');
+        Route::get('productFilter', [ProductController::class, 'productFilter'])->name('productFilter');
+        Route::get('', [ProductController::class, 'index'])->name('store');
+        Route::get('import', [ProductController::class, 'formimport'])->name('formimport');
+        Route::post('import', [ProductController::class, 'import'])->name('import');
+        Route::get('export', [ProductController::class, 'export'])->name('export');
+        Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
+        Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
+        Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
+        Route::post('{id}', [ProductController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::get('product-images/{id}', [ProductController::class, 'deleteImagesProduct'])->name('deleteImagesProduct');
+        Route::post('product-category', [ProductController::class, 'Changecategory'])->name('changecategory');
+        Route::post('product-status', [ProductController::class, 'Changestatus'])->name('changestatus');
+        // Route::get('search/name', [ProductController::class, 'findByName'])->name('findName');
+    });
+    Route::prefix('company')->name('company.')->group(function () {
+        Route::get("/", [CompanyController::class, 'index'])->name('index');
+        Route::get('findByName', [CompanyController::class, 'findByName'])->name('findByName');
+        Route::get('/add', [CompanyController::class, 'add'])->name('add');
+        Route::post('/store', [CompanyController::class, 'store'])->name('store');
+        Route::get('detail/{id}', [CompanyController::class, 'edit'])->name('detail');
+        Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
+        Route::delete('delete/{id}', [CompanyController::class, 'delete'])->name('delete');
+        Route::get('filter', [CompanyController::class, 'companyFilter'])->name('filter');
+    });
     Route::prefix('profit')->name('profit.')->group(function () {
         Route::get('', [ReportController::class, 'profitIndex'])->name('index');
         Route::post('/profit-report', [ReportController::class, 'getProfitReportByFilterNew'])->name('getProfitReportByFilter');
@@ -100,23 +137,6 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::get('/detail/{id}', [AdminController::class, 'getAdminInfor'])->name('detail');
     Route::post('/update/{id}', [AdminController::class, 'updateAdminInfor'])->name('update');
     Route::post('/changePassword', [AdminController::class, 'changePassword'])->name('changePassword');
-
-    Route::prefix('product')->name('product.')->group(function () {
-        Route::get('', [ProductController::class, 'index'])->name('store');
-        Route::get('import', [ProductController::class, 'formimport'])->name('formimport');
-        Route::post('import', [ProductController::class, 'import'])->name('import');
-        Route::get('export', [ProductController::class, 'export'])->name('export');
-        Route::get('export1', [ProductController::class, 'export1'])->name('export1');
-        Route::get('add', [ProductController::class, 'addForm'])->name('addForm');
-        Route::post('add', [ProductController::class, 'addSubmit'])->name('add');
-        Route::get('{id}', [ProductController::class, 'editForm'])->name('edit');
-        Route::post('{id}', [ProductController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
-        Route::get('product-images/{id}', [ProductController::class, 'deleteImagesProduct'])->name('deleteImagesProduct');
-        Route::post('product-category', [ProductController::class, 'Changecategory'])->name('changecategory');
-        Route::post('product-status', [ProductController::class, 'Changestatus'])->name('changestatus');
-        Route::get('search/name', [ProductController::class, 'findByName'])->name('findName');
-    });
     Route::prefix('category')->name('category.')->group(function () {
         Route::get('/',  [CategorieController::class, 'index'])->name('index');
         Route::get('/create', [CategorieController::class, 'add'])->name('add');
@@ -155,17 +175,9 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
         Route::delete('/delete/{id}', [ClientController::class, 'delete'])->name('delete');
         Route::get('/filter', [ClientController::class, 'findClient'])->name('filter');
         Route::get('/clientgroup', [ClientController::class, 'clientgroup'])->name('clientgroup.index');
+        Route::get('/export', [ClientController::class, 'export'])->name('export');
     });
 
-    Route::prefix('company')->name('company.')->group(function () {
-        Route::get("/", [CompanyController::class, 'index'])->name('index');
-        Route::get('findByName', [CompanyController::class, 'findByName'])->name('findByName');
-        Route::get('/add', [CompanyController::class, 'add'])->name('add');
-        Route::post('/store', [CompanyController::class, 'store'])->name('store');
-        Route::get('detail/{id}', [CompanyController::class, 'edit'])->name('detail');
-        Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
-        Route::delete('delete/{id}', [CompanyController::class, 'delete'])->name('delete');
-    });
 
     Route::prefix('supplier')->name('supplier.')->group(function () {
         Route::get("/{company_id}", [SupplierController::class, 'index'])->name('index');

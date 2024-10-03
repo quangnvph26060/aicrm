@@ -42,7 +42,7 @@ class Product extends Model
         return Brand::where('id', $this->attributes['brands_id'])->first();
     }
 
-    public function brand()
+    public function brands()
     {
         return $this->belongsTo(Brand::class);
     }
@@ -53,6 +53,11 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsToMany(Company::class, 'company_product');
     }
 
     public function productImages()

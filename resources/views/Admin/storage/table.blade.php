@@ -17,9 +17,10 @@
                     <td>{{ $value->name ?? '' }}</td>
                     <td>{{ $value->location }}</td>
                     <td style="text-align:center">
-                        <a class="btn btn-warning"
-                            href="{{ route('admin.storage.detail', ['id' => $value->id]) }}">Sửa</a>
-                        <button class="btn btn-danger btn-delete" data-id="{{ $value->id }}">Xóa</button>
+                        <a class="btn btn-warning" href="{{ route('admin.storage.detail', ['id' => $value->id]) }}"><i
+                                class="fa-solid fa-wrench"></i></a>
+                        <button class="btn btn-danger btn-delete" data-id="{{ $value->id }}"><i
+                                class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             @endforeach

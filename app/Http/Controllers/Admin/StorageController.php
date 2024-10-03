@@ -96,7 +96,7 @@ class StorageController extends Controller
     {
         try {
             $this->storageService->deleteStorage($id);
-            $storages = Storage::orderByDesc('created_at')->paginate(5);
+            $storages = Storage::orderByDesc('created_at')->paginate(10);
             $view = view('admin.storage.table', compact('storages'))->render();
             return response()->json(['success' => true, 'message' => 'Xóa kho hàng thành công', 'table' => $view]);
         } catch (Exception $e) {

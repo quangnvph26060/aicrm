@@ -341,17 +341,18 @@
             </div>
         </div>
     </div>
-    {{-- <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-primary text-white">
-                <strong class="me-auto">Thông báo</strong>
+    <!-- Toast khác -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="secondaryToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <strong class="me-auto">Lỗi</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body" id="toast-body">
+            <div class="toast-body" id="secondary-toast-body">
                 <!-- Nội dung toast sẽ được thêm vào đây bằng JavaScript -->
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
         aria-hidden="true">
@@ -375,10 +376,11 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="{{ asset('/validator/validator.js') }}"></script>
+    <script src="{{ asset('validator/validator.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
+        // Function to update the store domain based on the store name input
         function updateDomain() {
             var storeNameInput = document.getElementById('store_name');
             var storeDomainInput1 = document.getElementById('store_domain1');
@@ -400,19 +402,17 @@
             }
         }
 
-
+        // Define form fields and their validations
         var formRegister = {
             'name': {
                 'element': document.getElementById('name'),
                 'error': document.getElementById('name_error'),
                 'validations': [{
-                        'func': function(value) {
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('R042')
-                    }
-                    // Add other validations as needed
-                ]
+                    'func': function(value) {
+                        return checkRequired(value);
+                    },
+                    'message': generateErrorMessage('R042')
+                }]
             },
             'phone': {
                 'element': document.getElementById('phone'),
@@ -433,18 +433,16 @@
                 'element': document.getElementById('email'),
                 'error': document.getElementById('email_error'),
                 'validations': [{
-                        'func': function(value) {
-                            return checkRequired(value);
-                        },
-                        'message': generateErrorMessage('R046')
+                    'func': function(value) {
+                        return checkRequired(value);
                     },
-                    {
-                        'func': function(value) {
-                            return checkEmail(value);
-                        },
-                        'message': generateErrorMessage('R047')
-                    }
-                ]
+                    'message': generateErrorMessage('R046')
+                }, {
+                    'func': function(value) {
+                        return checkEmail(value);
+                    },
+                    'message': generateErrorMessage('R047')
+                }]
             },
             'store_name': {
                 'element': document.getElementById('store_name'),
@@ -498,22 +496,7 @@
             }
         };
 
-
-        function submitRegisterForm(event) {
-            event.preventDefault();
-
-            if (validateAllFields(formRegister)) {
-                document.getElementById('registerForm').submit();
-            }
-        }
-
-        $(document).ready(function() {
-            @if (session('modal'))
-                $('#successModal').modal('show');
-            @endif
-        });
-    </script>
-    <script>
+        // Function to show a toast message
         function showToast(message) {
             var toastElement = document.getElementById('liveToast');
             var toastBody = document.getElementById('toast-body');
@@ -522,6 +505,7 @@
             toast.show();
         }
 
+        // Function to show a success alert using SweetAlert2
         function showAlert(message) {
             Swal.fire({
                 title: 'Thông báo',
@@ -531,6 +515,18 @@
             });
         }
 
+        // Function to show a secondary toast message (for errors)
+        function showSecondaryToast(message) {
+            var toastElement = document.getElementById('secondaryToast');
+            var toastBody = document.getElementById('secondary-toast-body');
+            toastBody.textContent = message;
+            var toast = new bootstrap.Toast(toastElement, {
+                delay: 2000
+            });
+            toast.show();
+        }
+
+        // Function to check if the account already exists
         function checkAccountExists(callback) {
             var phone = document.getElementById('phone').value.trim();
             var email = document.getElementById('email').value.trim();
@@ -553,15 +549,33 @@
             });
         }
 
+        // Function to validate all form fields
+        function validateAllFields(form) {
+            var isValid = true;
+            Object.keys(form).forEach(function(key) {
+                var field = form[key];
+                field.validations.forEach(function(validation) {
+                    if (!validation.func(field.element.value)) {
+                        field.error.textContent = validation.message;
+                        isValid = false;
+                    } else {
+                        field.error.textContent = '';
+                    }
+                });
+            });
+            return isValid;
+        }
+
+        // Unified submit function for the register form
         function submitRegisterForm(event) {
             event.preventDefault();
 
             if (validateAllFields(formRegister)) {
                 checkAccountExists(function(phoneExists, emailExists) {
                     if (phoneExists) {
-                        showAlert('Số điện thoại này đã tồn tại.');
+                        showSecondaryToast('Số điện thoại này đã tồn tại.');
                     } else if (emailExists) {
-                        showAlert('Email này đã tồn tại.');
+                        showSecondaryToast('Email này đã tồn tại.');
                     } else {
                         document.getElementById('registerForm').submit();
                     }
@@ -569,12 +583,14 @@
             }
         }
 
+        // Document ready function to show modal alert if session exists
         $(document).ready(function() {
             @if (session('modal'))
                 showAlert('{{ session('modal') }}');
             @endif
         });
     </script>
+
 </body>
 
 </html>

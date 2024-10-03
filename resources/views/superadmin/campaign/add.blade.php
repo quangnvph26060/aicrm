@@ -158,15 +158,28 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="delay_date" class="col-form-label form-label">Thời gian trễ
-                                                (Ngày):</label>
-                                            <input type="number" class="form-control" name="delay_date" id="delay_date"
+                                            <label for="sent_time" class="col-form-label form-label">Giờ gửi:</label>
+                                            <input type="time" class="form-control" name="sent_time" id="sent_time"
                                                 required>
                                             <div class="col-lg-9">
                                                 <span class="invalid-feedback d-block" style="font-weight: 500"
                                                     id="delay_date_error"></span>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="sent_date" class="col-form-label form-label">Ngày gửi:</label>
+                                            <input type="date" class="form-control" name="sent_date" id="sent_date"
+                                                required>
+                                            <div class="col-lg-9">
+                                                <span class="invalid-feedback d-block" style="font-weight: 500"
+                                                    id="delay_date_error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="import_file" class="form-label">Nhập file khách hàng (Excel):</label>
+                                        <input type="file" class="form-control" name="import_file" id="import_file"
+                                            accept=".xls,.xlsx">
                                     </div>
                                     <div class="mb-3">
                                         <label for="template_id" class="form-label">Template</label>

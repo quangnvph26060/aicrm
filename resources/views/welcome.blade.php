@@ -8,6 +8,149 @@
 
 
     <style>
+        .row {
+            display: flex;
+        }
+
+        .col-md-8,
+        .col-md-4 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card,
+        .card-custom {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body {
+            flex-grow: 1;
+        }
+
+        /* Thiết kế chung cho thẻ card */
+        #income-card {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* Đổ bóng mềm */
+            background-color: #fff;
+            /* Nền trắng */
+            transition: all 0.3s ease;
+            /* Hiệu ứng mượt */
+            margin: 10px 0;
+            /* Khoảng cách trên dưới */
+            border: 1px solid #e0e0e0;
+            /* Đường viền mỏng */
+        }
+
+        #income-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            /* Đổ bóng đậm hơn khi hover */
+            transform: translateY(-4px);
+            /* Nâng nhẹ khi hover */
+        }
+
+        /* Phần đầu của card */
+        #income-card-header {
+            background: linear-gradient(135deg, #177dff, #6ea0ff);
+            /* Gradient màu xanh */
+            color: #fff;
+            /* Màu chữ trắng */
+            padding: 15px;
+            /* Khoảng đệm */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #income-card-header .card-title {
+            font-size: 18px;
+            /* Kích thước chữ */
+            font-weight: 600;
+            /* Độ đậm của chữ */
+        }
+
+        /* Nút dropdown */
+        #income-card .btn-label-light {
+            background-color: rgba(255, 255, 255, 0.15);
+            /* Màu nền trong suốt nhẹ */
+            border: none;
+            /* Bỏ đường viền */
+            color: #fff;
+            /* Màu chữ trắng */
+            transition: background-color 0.3s ease;
+            /* Hiệu ứng chuyển màu */
+            padding: 5px 12px;
+            /* Khoảng đệm */
+        }
+
+        #income-card .btn-label-light:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            /* Màu nền sáng hơn khi hover */
+        }
+
+        /* Nội dung của card */
+        #income-card-body {
+            padding: 20px;
+            /* Khoảng đệm rộng */
+            color: #333;
+            /* Màu chữ tối hơn */
+        }
+
+        /* Định dạng thông tin hiển thị */
+        #income-card-body .info p {
+            margin: 5px 0;
+            /* Khoảng cách giữa các đoạn */
+            font-size: 16px;
+            /* Kích thước chữ */
+            line-height: 1.5;
+            /* Dòng cách */
+            font-weight: 500;
+            /* Độ đậm của chữ */
+        }
+
+        #income {
+            font-size: 24px;
+            /* Kích thước lớn hơn cho thu nhập */
+            font-weight: bold;
+            /* Chữ đậm */
+            color: #177dff;
+            /* Màu xanh nổi bật */
+        }
+
+        #day_month_year {
+            font-size: 14px;
+            /* Kích thước chữ nhỏ */
+            color: rgba(255, 255, 255, 0.8);
+            /* Màu trắng mờ */
+        }
+
+        /* Định dạng các mục tương tác trong dropdown */
+        #income-card .dropdown-menu .dropdown-item {
+            transition: background-color 0.3s ease;
+            /* Hiệu ứng chuyển màu */
+            font-weight: 500;
+            /* Độ đậm của chữ */
+        }
+
+        #income-card .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(23, 125, 255, 0.1);
+            /* Màu nền khi hover */
+            color: #177dff;
+            /* Màu chữ xanh khi hover */
+        }
+
+        /* Định dạng lợi nhuận */
+        #income-card-body .profit p {
+            margin: 5px 0;
+            /* Khoảng cách giữa các đoạn */
+            font-size: 15px;
+            /* Kích thước chữ */
+            color: #555;
+            /* Màu chữ xám đậm */
+        }
+
+
         #dropdownMenuButton:hover {
             color: black !important;
             background: rgb(170, 169, 169);
@@ -164,23 +307,18 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8">
-                <div class="card card-round">
+            <div class="col-md-8 d-flex flex-column">
+                <div class="card card-round flex-grow-1">
                     <div class="card-header" style="padding: 10px">
                         <div class="card-head-row">
                             <div class="card-title">Thống kê doanh thu</div>
                             <div class="card-tools">
-                                <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
+                                <a href="{{ route('admin.report.orders.getDailyOrder') }}"
+                                    class="btn btn-label-info btn-round btn-sm">
                                     <span class="btn-label">
-                                        <i class="fa fa-pencil"></i>
+                                        <i class="fa fa-solid fa-chart-bar"></i>
                                     </span>
-                                    Export
-                                </a>
-                                <a href="#" class="btn btn-label-info btn-round btn-sm">
-                                    <span class="btn-label">
-                                        <i class="fa fa-print"></i>
-                                    </span>
-                                    Print
+                                    Báo cáo bán hàng
                                 </a>
                             </div>
                         </div>
@@ -193,21 +331,21 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="card card-primary card-round" style="margin-bottom: 10px">
-                    <div class="card-header" style="padding-bottom: 0px">
+            <div class="col-md-4 d-flex flex-column mb-4">
+                <div class="card-custom" id="income-card" style="margin-bottom: 10px">
+                    <div class="card-header" id="income-card-header">
                         <div class="card-head-row">
-                            <div class="card-title" id="daily" style="margin: 0px">Thu nhập ngày</div>
+                            <div class="card-title" id="daily" style="color:white">Thu nhập ngày</div>
                             <div class="card-tools">
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-label-light dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" style="color: white">
+                                        aria-expanded="false">
                                         Theo ngày
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" id="day">Theo ngày</a>
-                                        <a class="dropdown-item" id="month">Theo tháng </a>
+                                        <a class="dropdown-item" id="month">Theo tháng</a>
                                         <a class="dropdown-item" id="year">Theo năm</a>
                                     </div>
                                 </div>
@@ -215,194 +353,49 @@
                         </div>
                         <div class="card-category" id="day_month_year">{{ date('d/m/Y') }}</div>
                     </div>
-                    <div class="card-body pb-0" style="padding-top: 5px">
-                        <div class="m2-4 mt-1" style="padding-top: 0 !improtant;">
-                            <p id="income">{{ $daily['income'] }} </p>
+                    <div class="card-body" id="income-card-body">
+                        <div class="info">
+                            <p id="income">{{ $daily['income'] }}</p>
                             <p><u id="amount">{{ $daily['amount'] }} Đơn</u></p>
                         </div>
-
-                        <div class="mb-2">
-                            <p id="interest">Lợi nhuận : {{ $daily['interest'] }}</p>
-                            <p id="moneyinterest">{{ $daily['moneyinterest'] }} </p>
+                        <div class="profit">
+                            <p id="interest">Lợi nhuận: {{ $daily['interest'] }}</p>
+                            <p id="moneyinterest">{{ $daily['moneyinterest'] }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="your-slider" style="margin: 0px">
-
                     <!-- Thêm nhiều slide theo nhu cầu -->
                 </div>
                 <div class="slider-container">
                     <div class="slider">
-                        <div class="slide"><img style="width: 100%; hight:auto;"
-                                src="https://intphcm.com/data/upload/poster-quang-cao-dep-mat.jpg" alt=""></div>
-                        <div class="slide"><img style="width: 100%; hight:auto;"
+                        <div class="slide">
+                            <img style="width: 100%; height: auto;"
+                                src="https://intphcm.com/data/upload/poster-quang-cao-dep-mat.jpg" alt="">
+                        </div>
+                        <div class="slide">
+                            <img style="width: 100%; height: auto;"
                                 src="https://images2.thanhnien.vn/528068263637045248/2024/1/25/e093e9cfc9027d6a142358d24d2ee350-65a11ac2af785880-17061562929701875684912.jpg"
-                                alt=""></div>
-                        <div class="slide"><img style="width: 100%; hight:auto;"
+                                alt="">
+                        </div>
+                        <div class="slide">
+                            <img style="width: 100%; height: auto;"
                                 src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/anh-dep-thien-nhien-2-1.jpg"
-                                alt=""></div>
+                                alt="">
+                        </div>
                     </div>
                     <button class="prev-btn">&#10094;</button>
                     <button class="next-btn">&#10095;</button>
                 </div>
-
             </div>
-
-        </div>
-
-        <div class="row">
-            {{-- <div class="col-md-6">
-            <div class="card card-round">
-                <div class="card-body">
-                    <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Khách hàng mới</div>
-                        <div class="card-tools">
-                            <div class="dropdown">
-                                <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-list py-4">
-                        @foreach ($newClient as $item)
-                        <div class="item-list">
-                            <div class="avatar">
-                                <span
-                                    class="avatar-title rounded-circle border border-white text-uppercase {{ 'bg-' . substr(md5($item->name), 0, 6) }}">
-                                    {{ substr($item->name, 0, 1) }}
-                                </span>
-                            </div>
-                            <div class="info-user ms-1">
-                                <div class="username">{{ $item->name }}</div>
-                                <div class="status">{{ $item->phone }}</div>
-                            </div>
-                            <div class="info-user ms-2">
-                                {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
-                            </div>
-                            <button class="btn btn-icon btn-link op-8 me-1">
-                                <i class="far fa-envelope"></i>
-                            </button>
-                            <button class="btn btn-icon btn-link btn-danger op-8">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card card-round">
-                <div class="card-body">
-                    <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Nhân viên mới</div>
-                        <div class="card-tools">
-                            <div class="dropdown">
-                                <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-list py-4">
-                        @foreach ($newStaff as $item)
-                        <div class="item-list">
-                            <div class="avatar">
-                                <span
-                                    class="avatar-title rounded-circle border border-white text-uppercase {{ 'bg-' . substr(md5($item->name), 0, 6) }}">
-                                    {{ substr($item->name, 0, 1) }}
-                                </span>
-                            </div>
-                            <div class="info-user ms-1">
-                                <div class="username">{{ $item->name }}</div>
-                                <div class="status">{{ $item->phone }}</div>
-                            </div>
-                            <div class="info-user ms-2">
-                                {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
-                            </div>
-                            <button class="btn btn-icon btn-link op-8 me-1">
-                                <i class="far fa-envelope"></i>
-                            </button>
-                            <button class="btn btn-icon btn-link btn-danger op-8">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-            <div class="card card-round">
-                <div class="card-header">
-                    <div class="card-head-row card-tools-still-right">
-                        <div class="card-title">Sản phẩm bán chạy nhất</div>
-                        <div class="card-tools">
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table align-items-center mb-0">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="text-center" scope="col">Mã sản phẩm</th>
-                                    <th class="text-center" scope="col">Tên sản phẩm</th>
-                                    <th class="text-center" scope="col">Giá nhập</th>
-                                    <th class="text-center" scope="col">Giá bán</th>
-                                    <th class="text-center" scope="col">Số lượng đã bán</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($topProducts as $item)
-                                    <tr>
-                                        <td class="text-center"><a
-                                                href="{{ route('admin.product.edit', ['id' => $item->product_id]) }}">{{ $item->code }}</a>
-                                        </td>
-                                        <td class="text-center">{{ $item->name ?? '' }}</td>
-                                        <td class="text-center">{{ number_format($item->price ?? '') }}</td>
-                                        <td class="text-center">{{ number_format($item->priceBuy ?? '') }}</td>
-                                        <td class="text-center">{{ $item->total_quantity ?? '' }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <div class="card card-round">
             <div class="card-header">
                 <div class="card-head-row card-tools-still-right">
-                    <div class="card-title">Đơn hàng gần đây</div>
+                    <div class="card-title">Sản phẩm bán chạy nhất</div>
                     <div class="card-tools">
-                        <div class="dropdown">
-                            <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -411,31 +404,23 @@
                     <table class="table align-items-center mb-0">
                         <thead class="thead-light">
                             <tr>
-                                <th class="text-center" scope="col">Mã đơn hàng</th>
-                                <th class="text-center" scope="col">Ngày tạo</th>
-                                <th class="text-center" scope="col">Khách hàng</th>
-                                <th class="text-center" scope="col">Tổng tiền (VND)</th>
-                                <th class="text-center" scope="col">Trạng thái</th>
+                                <th class="text-center" scope="col">Mã sản phẩm</th>
+                                <th class="text-center" scope="col">Tên sản phẩm</th>
+                                <th class="text-center" scope="col">Giá nhập</th>
+                                <th class="text-center" scope="col">Giá bán</th>
+                                <th class="text-center" scope="col">Số lượng đã bán</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($newOrder as $item)
+                            @foreach ($topProducts as $item)
                                 <tr>
                                     <td class="text-center"><a
-                                            href="{{ route('admin.order.detail', ['id' => $item->id]) }}">{{ $item->id }}</a>
+                                            href="{{ route('admin.product.edit', ['id' => $item->product_id]) }}">{{ $item->code }}</a>
                                     </td>
-                                    <td class="text-center">{{ $item->created_at->format('H:i d/m/Y') }}</td>
-                                    <td class="text-center">{{ $item->client->name }}</td>
-                                    <td class="text-center">{{ number_format($item->total_money) }}</td>
-                                    @if ($item->status !== 4)
-                                        <td class="text-center">
-                                            <span class="badge badge-success">Hoàn thành</span>
-                                        </td>
-                                    @else
-                                        <td class="text-center">
-                                            <span style="background-color: red" class="badge badge-success">Công nợ</span>
-                                        </td>
-                                    @endif
+                                    <td class="text-center">{{ $item->name ?? '' }}</td>
+                                    <td class="text-center">{{ number_format($item->price ?? '') }}</td>
+                                    <td class="text-center">{{ number_format($item->priceBuy ?? '') }}</td>
+                                    <td class="text-center">{{ $item->total_quantity ?? '' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -443,6 +428,65 @@
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div class="card card-round">
+        <div class="card-header">
+            <div class="card-head-row card-tools-still-right">
+                <div class="card-title">Đơn hàng gần đây</div>
+                <div class="card-tools">
+                    <div class="dropdown">
+                        <button class="btn btn-icon btn-clean me-0" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center" scope="col">Mã đơn hàng</th>
+                            <th class="text-center" scope="col">Ngày tạo</th>
+                            <th class="text-center" scope="col">Khách hàng</th>
+                            <th class="text-center" scope="col">Tổng tiền (VND)</th>
+                            <th class="text-center" scope="col">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($newOrder as $item)
+                            <tr>
+                                <td class="text-center"><a
+                                        href="{{ route('admin.order.detail', ['id' => $item->id]) }}">{{ $item->id }}</a>
+                                </td>
+                                <td class="text-center">{{ $item->created_at->format('H:i d/m/Y') }}</td>
+                                <td class="text-center">{{ $item->client->name }}</td>
+                                <td class="text-center">{{ number_format($item->total_money) }}</td>
+                                @if ($item->status !== 4)
+                                    <td class="text-center">
+                                        <span class="badge badge-success">Hoàn thành</span>
+                                    </td>
+                                @else
+                                    <td class="text-center">
+                                        <span style="background-color: red" class="badge badge-success">Công nợ</span>
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     </div>
     </div>
 
@@ -601,8 +645,8 @@
                     datasets: [{
                         label: 'Doanh thu hàng tháng',
                         data: monthlyRevenue,
-                        backgroundColor: Array(12).fill('#177dff'), // Only '#177dff' for all bars
-                        borderColor: Array(12).fill('#177dff'), // Only '#177dff' for all borders
+                        backgroundColor: Array(12).fill('#177dff'),
+                        borderColor: Array(12).fill('#177dff'),
                         borderWidth: 1
                     }]
                 },
@@ -610,9 +654,26 @@
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString(
+                                        'vi-VN'); // Thêm dấu phẩy vào giá trị trục Y
+                                }
                             }
                         }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += tooltipItem.yLabel.toLocaleString(
+                                    'vi-VN'); // Định dạng giá trị khi hover
+                                return label;
+                            }
+                        }
                     }
                 }
             });

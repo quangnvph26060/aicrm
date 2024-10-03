@@ -16,10 +16,10 @@ class CompanyService
         $this->company = $company;
     }
 
-    public function getAllCompany():LengthAwarePaginator
+    public function getAllCompany(): LengthAwarePaginator
     {
         try {
-            return $this->company->orderByDesc('created_at')->paginate(5);
+            return $this->company->orderByDesc('created_at')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to fetch companies: ' . $e->getMessage());
             throw new Exception('Failed to fetch companies');
@@ -35,11 +35,29 @@ class CompanyService
             throw new Exception('Failed to fetch companies');
         }
     }
+    public function companyFilter($name, $city_id)
+    {
+        try {
+            $query = $this->company->query();
+            if ($city_id) {
+                $query->where('city_id', $city_id);
+            }
+            if ($name) {
+                $query->where('name', 'LIKE', "%{$name}%");
+            }
+
+            $companies = $query->orderByDesc('created_at')->paginate(10);
+            return $companies;
+        } catch (Exception $e) {
+            Log::error('Failed to find company: ' . $e->getMessage());
+            throw new Exception('Failed to find company');
+        }
+    }
 
     public function getCompanyByName($name)
     {
         try {
-            return $this->company->where('name', 'LIKE', '%' . $name . '%')->paginate(5);
+            return $this->company->where('name', 'LIKE', '%' . $name . '%')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to get company by name: ' . $e->getMessage());
             throw new Exception('Failed to get company by name');
@@ -66,6 +84,7 @@ class CompanyService
                 'bank_account' => $data['bank_account'],
                 'bank_id' => $data['bank_id'],
                 'note' => $data['note'],
+                'city_id' => $data['city_id'],
             ]);
             DB::commit();
             return $company;
@@ -94,6 +113,7 @@ class CompanyService
                 'bank_account' => $data['bank_account'],
                 'bank_id' => $data['bank_id'],
                 'note' => $data['note'],
+                'city_id' => $data['city_id'],
             ]);
 
             DB::commit();

@@ -18,7 +18,13 @@ class Company extends Model
         'bank_account',
         'bank_id',
         'note',
+        'city_id',
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 
     public function supplier()
     {
@@ -27,11 +33,16 @@ class Company extends Model
 
     public function bank()
     {
-        return $this->belongsTo(Bank::class);
+        return $this->belongsTo(Bank::class, 'bank_id');
     }
 
     public function hasRepresentative()
     {
         return $this->supplier()->exists();
+    }
+
+    public function product()
+    {
+        return $this->belongsToMany(Product::class, 'company_product');
     }
 }

@@ -33,6 +33,7 @@ class User extends Authenticatable
         'domain',
         'address',
         'storage_id',
+        'wallet',
     ];
 
     protected $hidden = [
@@ -94,5 +95,10 @@ class User extends Authenticatable
             'id',                     // Local key on User table
             'campaign_id'             // Local key on CampaignDetail table
         );
+    }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class, 'user_id');
     }
 }

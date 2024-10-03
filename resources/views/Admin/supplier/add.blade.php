@@ -122,7 +122,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:#fff">Thêm nguời đại diện mới</h4>
+                        <h4 class="card-title" style="text-align: center; color:#fff">Thêm người đại diện mới</h4>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.supplier.store') }}" method="post" enctype="multipart/form-data">

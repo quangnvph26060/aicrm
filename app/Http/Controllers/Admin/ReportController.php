@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\ImportCoupon;
+use App\Models\ImportDetail;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductStorage;
@@ -77,6 +78,74 @@ class ReportController extends Controller
         } catch (Exception $e) {
             Log::error('Failed to get Inventory Report: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to get Inventory Report'], 500);
+        }
+    }
+
+    public function getProductsWithSmallQuanity(Request $request)
+    {
+        try {
+            $storage_id = $request->input('storage_id');
+            $latestImport = ImportCoupon::where('storage_id', $storage_id)
+                ->orderByDesc('created_at')
+                ->first();
+
+            $productsInStorage = ProductStorage::where('storage_id', $storage_id)
+                ->where('quantity', '<=', 5)
+                ->with('product')
+                ->get();
+
+            $report = [];
+
+            foreach ($productsInStorage as $productStorage) {
+                $currentProductId = $productStorage->product_id;
+                $currentQuantity = $productStorage->quantity;
+
+                $importedQuantity = 0;
+                $quantityBeforeImport = $currentQuantity;
+                $beforeImportValue = $currentQuantity * $productStorage->product->price;
+                $importedValue = 0;
+                $soldQuantity = 0;
+                $soldValue = 0;
+                $currentValue = $currentQuantity * $productStorage->product->price;
+
+                if ($latestImport) {
+                    $latestImportDetail = ImportDetail::where('import_id', $latestImport->id)
+                        ->where('product_id', $currentProductId)
+                        ->first();
+
+                    if ($latestImportDetail) {
+                        $importedQuantity = $latestImportDetail->quantity;
+
+                        $soldQuantity = OrderDetail::whereHas('order', function ($query) use ($latestImport) {
+                            $query->where('created_at', '>', $latestImport->created_at);
+                        })->where('product_id', $currentProductId)
+                            ->sum('quantity');
+
+                        $quantityBeforeImport = $currentQuantity + $soldQuantity - $importedQuantity;
+                        $beforeImportValue = $quantityBeforeImport * $productStorage->product->price;
+                        $importedValue = $importedQuantity * $latestImportDetail->price;
+                        $soldValue = $soldQuantity * $productStorage->product->priceBuy;
+                        $currentValue = $currentQuantity * $productStorage->product->price;
+                    }
+                }
+
+                $report[] = [
+                    'product_id' => $currentProductId,
+                    'current_quantity' => $currentQuantity,
+                    'imported_quantity' => $importedQuantity,
+                    'quantity_before_import' => $quantityBeforeImport,
+                    'before_import_value' => $beforeImportValue,
+                    'imported_value' => $importedValue,
+                    'sold_quantity' => $soldQuantity,
+                    'sold_value' => $soldValue,
+                    'current_value' => $currentValue,
+                    'product' => $productStorage->product,
+                ];
+            }
+            return $report;
+        } catch (Exception $e) {
+            Log::error("Failed to fetch products with quantity fewer or equal than 5" . $e->getMessage());
+            throw new Exception('Failed to fetch products with quantity fewer or equal than 5');
         }
     }
 
@@ -293,7 +362,7 @@ class ReportController extends Controller
             $listprofitArray = array_values($listprofit);
 
             $storage = Storage::find($storage_id);
-            if($filter == 6){
+            if ($filter == 6) {
                 $startDate = $request->startDate;
                 $endDate = $request->endDate;
 
@@ -304,7 +373,7 @@ class ReportController extends Controller
                     'storage' => $storage->name,
                     'filter' => $filter
                 ]);
-            }else{
+            } else {
                 $startDate = $request->startDate;
                 $endDate = $request->endDate;
 
@@ -318,7 +387,6 @@ class ReportController extends Controller
 
             // Trả về file PDF
             return $pdf->download('profit_report.pdf');
-
         } catch (Exception $e) {
             Log::error('Failed to get Profit Report: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to get Profit report'], 500);

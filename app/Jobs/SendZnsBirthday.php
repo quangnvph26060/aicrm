@@ -7,6 +7,7 @@ use App\Models\OaTemplate;
 use App\Models\User;
 use App\Models\ZaloOa;
 use App\Models\ZnsMessage;
+use App\Services\Admins\ZaloOaService;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
@@ -23,6 +24,7 @@ class SendZnsBirthday implements ShouldQueue
 
     protected $user;
     protected $campaignId;
+    protected $zaloOaService;
 
     /**
      * Tạo một đối tượng công việc mới.
@@ -30,10 +32,11 @@ class SendZnsBirthday implements ShouldQueue
      * @param \App\Models\User $user
      * @param int $campaignId
      */
-    public function __construct(User $user, $campaignId)
+    public function __construct(User $user, $campaignId, ZaloOaService $zaloOaService)
     {
         $this->user = $user;
         $this->campaignId = $campaignId;
+        $this->zaloOaService = $zaloOaService;
     }
 
     /**
@@ -57,10 +60,10 @@ class SendZnsBirthday implements ShouldQueue
             $sendAt = $birthdayThisYear->hour(9)->minute(30);
 
             // Nếu chưa đến thời gian gửi tin nhắn
-            // if (now()->lessThan($sendAt)) {
-            //     Log::info("Chưa đến thời gian gửi tin nhắn sinh nhật cho người dùng ID: {$this->user->id}");
-            //     return;
-            // }
+            if (now()->lessThan($sendAt)) {
+                Log::info("Chưa đến thời gian gửi tin nhắn sinh nhật cho người dùng ID: {$this->user->id}");
+                return;
+            }
 
             // Lấy thông tin chiến dịch
             $campaign = Campaign::find($this->campaignId);
@@ -99,7 +102,7 @@ class SendZnsBirthday implements ShouldQueue
             $oa_id = ZaloOa::where('is_active', 1)->first()->id;
             // Tạo client GuzzleHttp
             $client = new Client();
-            $accessToken = 'BGs2KvRfFZCh3ObKbU4-ComAZ5EBdMPGIHlQLgQCAZCT5-Wz-A4d0ZaxwcE9WWS1CGhB0_cR63b3CEGa_znG8ITAeYRgu1GE3NUcCl32LmiSLB02tym7FmHpmXox_7OuT1EB7QUvOdrdNAf6YDz6PsPChNgit757IMgTUAJuRMvw4xzcmQvPGNv7a7Ajn78G4r6OUClESa4XQB1RaU9MGY06Wo2VWdO8RsR27ehN87roMCb5bSqiR7rEmcNPs0vm03MoR-o2U6a09v9xng5aV7Suk4BFtGzQTKkoRQxLScn5MO1f-kGpGXfl-dBXooHo2tcIMxAMOrjQU8y_bv1DAMHvXWwQtM4j8LQz2PtzIW5U59GLfPfUTtyFhrUaua9DO6g99SJQQGqxNg4guhj15m0iiGJylbSZIedSX56G_p0n'; // Thay thế bằng access token thực tế
+            $accessToken = $this->zaloOaService->getAccessToken(); // Thay thế bằng access token thực tế
 
             $response = $client->post('https://business.openapi.zalo.me/message/template', [
                 'headers' => [

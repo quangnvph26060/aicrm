@@ -22,4 +22,7 @@ class City extends Model
         return $this->hasOne(User::class);
     }
 
+    public function company(){
+        return $this->hasMany(Company::class, 'city_id');
+    }
 }

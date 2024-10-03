@@ -134,7 +134,7 @@ class UserController extends Controller
     {
         try {
             $this->adminService->deleteStaff($id);
-            $user = User::orderByDesc('created_at')->paginate(5); // Adjust this if you have specific filtering
+            $user = User::orderByDesc('created_at')->paginate(10); // Adjust this if you have specific filtering
             $table = view('admin.employee.table', compact('user'))->render();
             $pagination = $user->links('vendor.pagination.custom')->render();
 

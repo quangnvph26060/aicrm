@@ -185,7 +185,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title text-center" style="color:white">Thông tin Admin</h4>
+                        <h4 class="card-title text-center" style="color:white">Thông tin Super Admin</h4>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('super.update', ['id' => $sa->id]) }}" method="POST"
@@ -204,15 +204,29 @@
                                             </span>
                                         @enderror
                                     </div>
+
                                     <div class="form-group">
-                                        <label for="phone" class="form-label">Số điện thoại</label>
-                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror"
-                                            name="phone" type="text" value="{{ old('phone', $sa->phone) }}" required>
-                                        @error('phone')
+                                        <label for="bank_account" class="form-label">Số tài khoản</label>
+                                        <input id="bank_account"
+                                            class="form-control @error('bank_account') is-invalid @enderror"
+                                            name="bank_account" type="text"
+                                            value="{{ old('bank_account', isset($sa) ? $sa->bank_account : '') }}">
+                                        @error('bank_account')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bank_name" class="form-label">Ngân hàng</label>
+                                        <select name="bank_id" id="bank" class="form-control">
+                                            <option value="">-------- Chọn ngân hàng --------</option>
+                                            @foreach ($bank as $item)
+                                                <option @selected($sa->bank_id == $item->id)
+                                                    value="{{ $item->id }}">
+                                                    {{ $item->shortName . ' - ' . $item->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <!-- Second Column -->
@@ -222,6 +236,16 @@
                                         <input id="email" class="form-control @error('email') is-invalid @enderror"
                                             name="email" type="email" value="{{ old('email', $sa->email) }}" required>
                                         @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone" class="form-label">Số điện thoại</label>
+                                        <input id="phone" class="form-control @error('phone') is-invalid @enderror"
+                                            name="phone" type="text" value="{{ old('phone', $sa->phone) }}" required>
+                                        @error('phone')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

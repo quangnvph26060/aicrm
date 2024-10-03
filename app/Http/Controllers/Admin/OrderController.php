@@ -24,7 +24,7 @@ class OrderController extends Controller
     {
         $title = 'Đơn hàng';
         try {
-            $orders = $this->orderService->getOrderAll();
+            $orders = $this->orderService->getTodayOrder();
             return view('admin.order.index', compact('orders', 'title'));
         } catch (Exception $e) {
             Log::error('Failed to fetch orders: ' . $e->getMessage());
