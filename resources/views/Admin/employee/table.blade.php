@@ -27,8 +27,8 @@
                     <td>{{ $item->address ?? '' }}</td>
                     <td style="display: flex;">
                         <a style="margin-right: 20px" class="btn btn-warning"
-                            href="{{ route('admin.staff.edit', ['id' => $item->id]) }}">Sửa</a>
-                        <button class="btn btn-danger btn-delete" data-id="{{ $item->id }}">Xóa</button>
+                            href="{{ route('admin.staff.edit', ['id' => $item->id]) }}"><i class="fa-solid fa-wrench"></i></a>
+                        <button class="btn btn-danger btn-delete" data-id="{{ $item->id }}"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             @endforeach

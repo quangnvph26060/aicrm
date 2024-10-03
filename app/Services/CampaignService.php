@@ -2,11 +2,19 @@
 
 namespace App\Services;
 
+use App\Jobs\SendZaloZnsJob;
 use App\Models\Campaign;
 use App\Models\CampaignDetail;
+use App\Models\City;
+use App\Models\User;
+use App\Services\ZaloOaService;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class CampaignService
 {
@@ -41,33 +49,80 @@ class CampaignService
 
     public function createNewCampaign(array $data)
     {
+        DB::beginTransaction();
         try {
-            $campaign =  $this->campaign->create([
+            // Tạo bản ghi chiến dịch mới
+            $campaign = $this->campaign->create([
                 'name' => $data['name'],
                 'template_id' => $data['template_id'],
-                'delay_date' => $data['delay_date'],
+                'sent_time' => $data['sent_time'],
+                'sent_date' => $data['sent_date'],
                 'status' => 1
             ]);
 
-            if (!empty($data['user_id'])) {
-                foreach ($data['user_id'] as $user_id) {
-                    $this->campaignDetail->create([
-                        'campaign_id' => $campaign->id,
-                        'user_id' => $user_id,
-                        'scheduled_date' => now()->addDays($data['delay_days']),
-                        'data' => json_encode([]),
-                    ]);
+            // Xử lý file Excel nếu có
+            if (isset($data['import_file']) && $data['import_file']->isValid()) {
+                $filePath = $data['import_file']->getRealPath();
+                $spreadsheet = IOFactory::load($filePath); // Sử dụng IOFactory để đọc file Excel
+                $sheet = $spreadsheet->getActiveSheet();
+                $rows = $sheet->toArray();
+
+                foreach (array_slice($rows, 1) as $row) {
+                    if (isset($row[0]) && !empty($row[0])) {
+                        $existingUser = User::where('phone', $row[1])->first();
+                        $city = City::where('name', $row[4])->first();
+
+                        if ($existingUser) {
+                            // Nếu người dùng đã tồn tại, tạo chi tiết chiến dịch
+                            CampaignDetail::create([
+                                'campaign_id' => $campaign->id,
+                                'user_id' => $existingUser->id,
+                                'data' => json_encode([]),
+                            ]);
+                        } else {
+                            // Tạo người dùng mới nếu chưa tồn tại
+                            $password = '123456';
+                            $hashedPassword = Hash::make($password);
+
+                            try {
+                                $dob = Carbon::createFromFormat('d/m/Y', $row[3])->format('Y-m-d');
+                            } catch (\Exception $e) {
+                                $dob = null; // Xử lý ngày sinh không hợp lệ
+                            }
+
+                            $newUser = User::create([
+                                'name' => $row[0],
+                                'phone' => $row[1],
+                                'email' => $row[2],
+                                'password' => $hashedPassword,
+                                'dob' => $dob,
+                                'status' => 'active',
+                                'role_id' => 1,
+                                'city_id' => $city->id ?? null,
+                                'address' => $row[5],
+                            ]);
+
+                            // Tạo chi tiết chiến dịch cho người dùng mới
+                            CampaignDetail::create([
+                                'campaign_id' => $campaign->id,
+                                'user_id' => $newUser->id,
+                                'data' => json_encode([]),
+                            ]);
+                        }
+                    }
                 }
             }
+
+            // Lưu thay đổi vào database
             DB::commit();
             return $campaign;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            // Rollback nếu có lỗi xảy ra
             DB::rollBack();
             Log::error('Failed to create new campaign: ' . $e->getMessage());
-            throw new Exception("Failed to create new campaign");
+            throw new \Exception("Failed to create new campaign");
         }
     }
-
     public function updateCampaign(array $data, $id)
     {
         DB::beginTransaction();

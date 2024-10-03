@@ -25,7 +25,7 @@ class BrandService
     {
         try {
             Log::info('Fetching all categories');
-            $categories = $this->brand->orderByDesc('created_at')->paginate(5);
+            $categories = $this->brand->orderByDesc('created_at')->paginate(10);
             return $categories;
         } catch (Exception $e) {
             Log::error('Failed to fetch brand: ' . $e->getMessage());
@@ -165,7 +165,7 @@ class BrandService
     public function findBrandBySupplier($supplier_id): LengthAwarePaginator
     {
         try{
-            $brand = $this->brand->where('supplier_id', $supplier_id)->paginate(5);
+            $brand = $this->brand->where('supplier_id', $supplier_id)->paginate(10);
             return $brand;
         }
         catch(Exception $e)

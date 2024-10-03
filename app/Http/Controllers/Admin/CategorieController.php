@@ -66,7 +66,7 @@ class CategorieController extends Controller
         try{
             $this->categoryService->deleteCategory($id);
 
-            $category = Categories::orderByDesc('created_at')->paginate(5);
+            $category = Categories::orderByDesc('created_at')->paginate(10);
             $view = view('admin.category.table', compact('category'))->render();
 
             return response()->json(['success' => true, 'message' => 'Xoá danh mục thành công!', 'table' => $view]);

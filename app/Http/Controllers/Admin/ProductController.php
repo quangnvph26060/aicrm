@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\Brand;
 use App\Models\Categories;
+use App\Models\Company;
 use App\Models\Product;
 use App\Services\BrandService;
 use App\Services\CategoryService;
@@ -43,7 +44,8 @@ class ProductController extends Controller
         try {
             $title = 'Sản phẩm';
             $category = $this->categoryService->getCategoryAllStaff();
-            $brand = $this->brandService->getAllBrand();
+            $brand = $this->brandService->getBrandAll();
+            $companies = Company::orderBy('name', 'asc')->get();
             if ($request->ajax()) {
                 $product = $this->productService->getProductAll();
                 $html = view('admin.product.table', compact('product'))->render();
@@ -56,7 +58,7 @@ class ProductController extends Controller
             }
 
             $product = $this->productService->getProductAll();
-            return view('admin.product.index', compact('product', 'category', 'brand', 'title'));
+            return view('admin.product.index', compact('product', 'category', 'brand', 'title', 'companies'));
         } catch (ModelNotFoundException $e) {
             $exception = new ProductNotFoundException();
             return $exception->render(request());
@@ -66,22 +68,41 @@ class ProductController extends Controller
         }
     }
 
-    public function findByName(Request $request)
+    public function productFilter(Request $request)
     {
-        $title = 'Sản phẩm';
+        // dd($request->all());
+        $name = $request->input('name');
+        $company_id = $request->input('company_id');
         $category = $this->categoryService->getCategoryAllStaff();
         $brand = $this->brandService->getAllBrand();
-        $product = $this->productService->productByName($request->input('name'));
-        // $product = new LengthAwarePaginator(
-        //     $products ? [$products] : [],
-        //     $products ? 1 : 0,
-        //     10,
-        //     1,
-        //     ['path' =>Paginator::resolveCurrentPath()]
-        // );
-
-        return view('admin.product.index', compact('product', 'category', 'brand', 'title'));
+        $title = 'Sản phẩm';
+        $companies = Company::orderBy('name', 'asc')->get();
+        try {
+            $product = $this->productService->productFilter($name, $company_id);
+            // dd($products);
+            return view('admin.product.index', compact('product', 'companies', 'title', 'category', 'brand'));
+        } catch (Exception $e) {
+            Log::error("Failed to find Product: " . $e->getMessage());
+            return redirect()->route('admin.product.store')->with('error', 'Failed to find Product');
+        }
     }
+
+    // public function findByName(Request $request)
+    // {
+    //     $title = 'Sản phẩm';
+    //     $category = $this->categoryService->getCategoryAllStaff();
+    //     $brand = $this->brandService->getAllBrand();
+    //     $product = $this->productService->productByName($request->input('name'));
+    //     // $product = new LengthAwarePaginator(
+    //     //     $products ? [$products] : [],
+    //     //     $products ? 1 : 0,
+    //     //     10,
+    //     //     1,
+    //     //     ['path' =>Paginator::resolveCurrentPath()]
+    //     // );
+
+    //     return view('admin.product.index', compact('product', 'category', 'brand', 'title'));
+    // }
     public function addForm()
     {
         $title = 'Thêm sản phẩm';
@@ -129,7 +150,7 @@ class ProductController extends Controller
             $this->productService->deleteProduct($id);
 
             // Lấy lại danh sách sản phẩm sau khi xóa
-            $product = Product::orderByDesc('created_at')->paginate(5); // Điều chỉnh số lượng sản phẩm trên mỗi trang nếu cần thiết
+            $product = Product::orderByDesc('created_at')->paginate(10); // Điều chỉnh số lượng sản phẩm trên mỗi trang nếu cần thiết
             $view = view('admin.product.table', compact('product'))->render(); // Tạo view cho bảng sản phẩm
 
             return response()->json(['success' => true, 'message' => 'Xóa thành công!', 'table' => $view]);
@@ -139,7 +160,8 @@ class ProductController extends Controller
         }
     }
 
-    public function formimport(){
+    public function formimport()
+    {
         return view('admin.product.importexcel');
     }
 
@@ -157,25 +179,25 @@ class ProductController extends Controller
         foreach (array_slice($rows, 1) as $row) {
 
             if (isset($row[0]) && !empty($row[0])) {
-                $brand = Brand::where('name',$row[4] )->first();
-                $category = Categories::where('name',$row[5] )->first();
+                $brand = Brand::where('name', $row[4])->first();
+                $category = Categories::where('name', $row[5])->first();
                 $products = $this->productService->getProductAll_Staff()->pluck('name');
-                if($products->contains($row[0])){
-                    $product = Product::where('name' ,$row[0])->first();
-                    if($product->brands_id == $brand->id && $product->category_id ==$category->id && $product->product_unit == $row[6] ){
+                if ($products->contains($row[0])) {
+                    $product = Product::where('name', $row[0])->first();
+                    if ($product->brands_id == $brand->id && $product->category_id == $category->id && $product->product_unit == $row[6]) {
                         $data = [
                             'price' => $row[1],
                             'priceBuy' => $row[2],
                             'quantity' => $product->quantity +  $row[3],
                         ];
                         $this->productService->updateProduct($product->id, $data);
-                    }else{
+                    } else {
                         $data = [
                             'name' => $row[0],
                             'price' => $row[1],
                             'priceBuy' => $row[2],
                             'quantity' => $row[3],
-                            'brand_id' =>$brand->id,
+                            'brand_id' => $brand->id,
                             'category_id' => $category->id,
                             'product_unit' => $row[6],
                             'status' => 'published',
@@ -184,13 +206,13 @@ class ProductController extends Controller
                         ];
                         $this->productService->createProduct($data);
                     }
-                }else{
+                } else {
                     $data = [
                         'name' => $row[0],
                         'price' => $row[1],
                         'priceBuy' => $row[2],
                         'quantity' => $row[3],
-                        'brand_id' =>$brand->id,
+                        'brand_id' => $brand->id,
                         'category_id' => $category->id,
                         'product_unit' => $row[6],
                         'status' => 'published',
@@ -203,10 +225,10 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.product.store')->with('success', 'Thêm sản phẩm thành công');
-
     }
 
-    public function export(){
+    public function export()
+    {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $products = Product::all();
@@ -254,7 +276,7 @@ class ProductController extends Controller
 
         // Trả về file dưới dạng download response
         $response = response()->stream(
-            function() use ($writer) {
+            function () use ($writer) {
                 $writer->save('php://output');
             },
             200,
@@ -270,9 +292,25 @@ class ProductController extends Controller
     public function export1(Request $request)
     {
         $selectedCategories = json_decode($request->query('categories', '[]'), true);
+        $selectedCompanies = json_decode($request->query('companies', '[]'), true);
+        $selectedBrands = json_decode($request->query('brands', '[]'), true);
 
         // Lọc sản phẩm dựa trên các loại hàng được chọn
-        $products = Product::whereIn('category_id', $selectedCategories)->get();
+        $query = Product::query();
+
+        if ($selectedCategories) {
+            $query->whereIn('category_id', $selectedCategories);
+        }
+
+        if ($selectedBrands) {
+            $query->whereIn('brands_id', $selectedBrands);
+        }
+
+        if ($selectedCompanies) {
+            $query->company->whereIn('company_id', $selectedCompanies);
+        }
+
+        $products = $query->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -280,23 +318,25 @@ class ProductController extends Controller
         // Đặt tiêu đề cột
         $sheet->setCellValue('A1', 'Mã sản phẩm');
         $sheet->setCellValue('B1', 'tên sản phẩm');
-        $sheet->setCellValue('C1', 'Số lương');
-        $sheet->setCellValue('D1', 'Giá nhập');
-        $sheet->setCellValue('E1', 'Giá bán');
-        $sheet->setCellValue('F1', 'Danh mục');
-        $sheet->setCellValue('G1', 'Thương hiệu');
-        $sheet->setCellValue('H1', 'Đơn vị');
+        $sheet->setCellValue('C1', 'Đơn vị');
+        $sheet->setCellValue('D1', 'Số lương');
+        $sheet->setCellValue('E1', 'Giá nhập');
+        $sheet->setCellValue('F1', 'Giá bán');
+        $sheet->setCellValue('G1', 'Danh mục');
+        $sheet->setCellValue('H1', 'Thương hiệu');
+        $sheet->setCellValue('I1', 'Nhà cung cấp');
 
         $row = 2;
         foreach ($products as $product) {
             $sheet->setCellValue('A' . $row, $product->code);
             $sheet->setCellValue('B' . $row, $product->name);
-            $sheet->setCellValue('C' . $row, $product->quantity);
-            $sheet->setCellValue('D' . $row, $product->price);
-            $sheet->setCellValue('E' . $row, $product->priceBuy);
-            $sheet->setCellValue('F' . $row, $product->category->name);
-            $sheet->setCellValue('G' . $row, $product->brands->name);
-            $sheet->setCellValue('H' . $row, $product->product_unit);
+            $sheet->setCellValue('C' . $row, $product->product_unit);
+            $sheet->setCellValue('D' . $row, $product->quantity);
+            $sheet->setCellValue('E' . $row, $product->price);
+            $sheet->setCellValue('F' . $row, $product->priceBuy);
+            $sheet->setCellValue('G' . $row, $product->categories ? $product->categories->name : ''); // Kiểm tra nếu categories tồn tại
+            $sheet->setCellValue('H' . $row, $product->brands ? $product->brands->name : ''); // Kiểm tra nếu brands tồn tại
+            $sheet->setCellValue('I' . $row, $product->company->pluck('name')->join(', ')); // Lấy tên các công ty, nối thành chuỗi
             $row++;
         }
 
@@ -308,11 +348,12 @@ class ProductController extends Controller
         $sheet->getColumnDimension('F')->setWidth(20);
         $sheet->getColumnDimension('G')->setWidth(20);
         $sheet->getColumnDimension('H')->setWidth(20);
+        $sheet->getColumnDimension('I')->setWidth(50);
 
         $writer = new Xlsx($spreadsheet);
 
         $response = response()->stream(
-            function() use ($writer) {
+            function () use ($writer) {
                 $writer->save('php://output');
             },
             200,

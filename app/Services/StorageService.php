@@ -32,7 +32,7 @@ class StorageService
     public function getPaginatedStorage(): LengthAwarePaginator
     {
         try {
-            return $this->storage->orderByDesc('created_at')->paginate(5);
+            return $this->storage->orderByDesc('created_at')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to fetch storage: ' . $e->getMessage());
             throw new Exception('Failed to fetch storage');
@@ -118,7 +118,7 @@ class StorageService
     public function getProductInStorage($id)
     {
         try{
-            return $this->productStorage->where('storage_id', $id)->orderByDesc('created_at')->paginate(5);
+            return $this->productStorage->where('storage_id', $id)->orderByDesc('created_at')->paginate(10);
         }
         catch(Exception $e)
         {

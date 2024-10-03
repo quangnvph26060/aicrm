@@ -14,9 +14,9 @@
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->created_at->format('d/m/Y') ?? '' }}</td>
                 <td>
-                    <a href="{{ route('admin.brand.edit', $item->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="{{ route('admin.brand.edit', $item->id) }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-wrench"></i></a>
                     <button type="button" data-id="{{ $item->id }}"
-                        class="btn btn-danger btn-sm btn-delete">Xóa</button>
+                        class="btn btn-danger btn-sm btn-delete"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>
         @empty

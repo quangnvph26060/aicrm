@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\CompanyProduct;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductImages;
@@ -28,7 +29,7 @@ class ProductService
     {
         try {
             Log::info('Fetching all products');
-            return $this->product->orderByDesc('created_at')->paginate(5);
+            return $this->product->orderByDesc('created_at')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
             throw new Exception('Failed to fetch products');
@@ -102,6 +103,11 @@ class ProductService
                 'brands_id' => @$data['brand_id'],
                 // 'supplier_id' => $data['suppliers'],
             ]);
+
+            // $company_product = CompanyProduct::create([
+            //     'product_id' => $product->id,
+            //     'company_id' => $data['company_id'],
+            // ]);
             // dd($product);
 
             if ($product) {
@@ -217,7 +223,7 @@ class ProductService
     public function productByName($name): LengthAwarePaginator
     {
         try {
-            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->paginate(5);
+            $products = $this->product->where('name', 'LIKE', '%' . $name . '%')->paginate(10);
             // dd($products);
             return $products;
         } catch (Exception $e) {
@@ -254,6 +260,26 @@ class ProductService
         } catch (Exception $e) {
             Log::error('Failed to find products in storage: ' . $e->getMessage());
             throw new Exception('Failed to find products in storage');
+        }
+    }
+
+    public function productFilter($name, $company_id)
+    {
+        try {
+            $query = $this->product->query();
+            if ($company_id) {
+                $query->whereHas('company', function ($q) use ($company_id) {
+                    $q->where('company_id', $company_id);
+                });
+            }
+            if ($name) {
+                $query->where('name', 'LIKE', "%{$name}%");
+            }
+            $products = $query->orderByDesc('created_at')->paginate(10);
+            return $products;
+        } catch (Exception $e) {
+            Log::error("Failed to find products");
+            throw new Exception("Failed to find products");
         }
     }
 }

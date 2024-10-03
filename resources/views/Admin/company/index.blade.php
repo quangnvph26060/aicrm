@@ -1,143 +1,179 @@
 @extends('admin.layout.index')
+
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 0;
+        .dataTables_filter {
+            margin-top: 1rem !important;
         }
 
-        .icon-bell:before {
-            content: "\f0f3";
-            font-family: FontAwesome;
+        .input-group {
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            /* Tạo khoảng cách giữa các phần tử trong input-group */
         }
 
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            background-color: #fff;
-            margin-bottom: 2rem;
+        .input-group select {
+            border-radius: 20px 0 0 20px !important;
+            /* Bo góc cho phần bên trái */
+            border: 1px solid #ced4da !important;
+            padding: 0.5rem 1rem !important;
+            font-size: 14px !important;
+            height: 38px !important;
+            /* Chiều cao cố định để đồng nhất với nút tìm kiếm */
         }
 
-        .card-header {
-            background: linear-gradient(135deg, #6f42c1, #007bff);
-            color: white;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-            padding: 1.5rem;
+        .input-group input {
+            border-radius: 0 !important;
+            /* Không bo góc cho ô nhập tên */
+            border: 1px solid #ced4da !important;
+            padding: 0.5rem 1rem !important;
+            font-size: 14px !important;
+            height: 38px !important;
+            /* Chiều cao cố định để đồng nhất với nút tìm kiếm */
+            flex: 1 !important;
         }
 
-        .card-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin: 0;
-            text-align: center;
+        .input-group-btn {
+            margin-left: 0 !important;
+            /* Loại bỏ khoảng cách giữa ô nhập liệu và nút tìm kiếm */
         }
 
-        .breadcrumbs {
-            background: #fff;
-            padding: 0.75rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-        }
-
-        .breadcrumbs a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .breadcrumbs i {
-            color: #6c757d;
+        .input-group-btn .btn-primary {
+            border-radius: 0 20px 20px 0 !important;
+            /* Bo góc cho phần bên phải */
+            padding: 0.5rem 1rem !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            height: 38px !important;
+            /* Chiều cao cố định để đồng nhất với ô nhập liệu */
+            border: 1px solid #ced4da !important;
         }
 
         .table-responsive {
-            margin-top: 1rem;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
         }
 
         .table {
-            margin-bottom: 0;
+            width: 100% !important;
+            white-space: nowrap !important;
         }
 
         .table th,
         .table td {
-            padding: 1rem;
-            vertical-align: middle;
-            text-align: center;
-            /* Center align the text in the cells */
+            padding: 1rem !important;
+            vertical-align: middle !important;
+            text-align: center !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
         .table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+            background-color: #f8f9fa !important;
+            border-bottom: 2px solid #dee2e6 !important;
         }
 
         .table-hover tbody tr:hover {
-            background-color: #e9ecef;
+            background-color: #e9ecef !important;
         }
 
         .btn-warning,
         .btn-danger,
-        .btn-primary {
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 14px;
-            font-weight: bold;
-            transition: background 0.3s ease, transform 0.3s ease;
-            margin: 0 2px;
-            /* Add margin between buttons */
+        .btn-secondary,
+        .btn-dark {
+            border-radius: 20px !important;
+            padding: 5px 15px !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            transition: background 0.3s ease !important, transform 0.3s ease !important;
+            margin: 0 2px !important;
         }
 
         .btn-warning:hover,
         .btn-danger:hover,
-        .btn-primary:hover {
-            transform: scale(1.05);
+        .btn-primary:hover,
+        .btn-secondary:hover,
+        .btn-dark:hover {
+            transform: scale(1.05) !important;
         }
 
         .page-header {
-            margin-bottom: 2rem;
-        }
-
-        .dataTables_info,
-        .dataTables_paginate {
-            margin-top: 1rem;
+            margin-bottom: 2rem !important;
         }
 
         .pagination .page-link {
-            color: #007bff;
+            color: #007bff !important;
         }
 
         .pagination .page-item.active .page-link {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #007bff !important;
+            border-color: #007bff !important;
         }
 
         .pagination .page-item:hover .page-link {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #0056b3 !important;
+            border-color: #0056b3 !important;
         }
 
         .pagination .page-item.active .page-link,
         .pagination .page-item .page-link {
-            transition: all 0.3s ease;
+            transition: all 0.3s ease !important;
         }
 
-        table th,
-        table td {
-            padding: 1rem;
-            vertical-align: middle;
-            text-align: center;
-            /* Center align the text in the cells */
+        body {
+            font-family: 'Roboto', sans-serif !important;
+            background-color: #f4f6f9 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
+        .icon-bell:before {
+            content: "\f0f3" !important;
+            font-family: FontAwesome !important;
+        }
+
+        .card {
+            border-radius: 15px !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+            overflow: hidden !important;
+            background-color: #fff !important;
+            margin-bottom: 2rem !important;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #6f42c1, #007bff) !important;
+            color: white !important;
+            border-top-left-radius: 15px !important;
+            border-top-right-radius: 15px !important;
+            padding: 1.5rem !important;
+        }
+
+        .card-title {
+            font-size: 1.75rem !important;
+            font-weight: 700 !important;
+            margin: 0 !important;
+            text-align: center !important;
+        }
+
+        .breadcrumbs {
+            background: #fff !important;
+            padding: 0.75rem !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .breadcrumbs a {
+            color: #007bff !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+        }
+
+        .breadcrumbs i {
+            color: #6c757d !important;
         }
     </style>
     <div class="page-inner">
@@ -166,7 +202,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title" style="text-align: center; color:white">Danh sách nhà cung cấp</h4>
+                        <h4 class="card-title" style="color: white">Danh sách nhà cung cấp</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -174,17 +210,32 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-6">
                                         <div class="dataTables_length" id="basic-datatables_length">
-                                            <a class="btn btn-primary" href="{{route('admin.company.add')}}">
+                                            <a class="btn btn-primary" href="{{ route('admin.company.add') }}">
                                                 Thêm công ty cung cấp mới
                                             </a>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
-                                        <form action="{{ route('admin.company.findByName') }}" method="GET">
+                                        <form action="{{ route('admin.company.filter') }}" method="GET">
                                             <div class="dataTables_filter">
-                                                <label>Tìm kiếm</label>
-                                                <input type="text" name="name" clabss="form-control form-control-sm"
-                                                    placeholder="Nhập tên nhà cung cấp" value="{{ old('name') }}">
+                                                <div class="input-group">
+                                                    <select name="city_id" id="city_id"
+                                                        class="form-control form-control-sm">
+                                                        <option value="">Khu vực</option>
+                                                        @foreach ($cities as $city)
+                                                            <option value="{{ $city->id }}"
+                                                                {{ request('city_id') == $city->id ? 'selected' : '' }}>
+                                                                {{ $city->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <input type="text" name="name_filter"
+                                                        class="form-control form-control-sm" placeholder="Nhập tên NCC"
+                                                        value="{{ old('name') }}">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -194,7 +245,6 @@
                                         @include('admin.company.table', ['companies' => $companies])
                                     </div>
                                     <div class="col-sm-12" id="pagination">
-
                                         @if ($companies instanceof \Illuminate\Pagination\LengthAwarePaginator)
                                             {{ $companies->links('vendor.pagination.custom') }}
                                         @endif
@@ -211,10 +261,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
     <script>
         $(document).on('click', '.btn-delete', function(e) {
-            e.preventDefault(); // Prevent the default link behavior
+            e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
 
             if (confirm('Bạn có chắc chắn muốn xóa?')) {
-                var companyID = $(this).data('id'); // Ensure this is properly set in your HTML
+                var companyID = $(this).data('id'); // Đảm bảo điều này được thiết lập chính xác trong HTML của bạn
                 var deleteUrl = '{{ route('admin.company.delete', ['id' => ':id']) }}';
                 deleteUrl = deleteUrl.replace(':id', companyID);
 
@@ -227,10 +277,10 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            // Cập nhật bảng thương hiệu
+                            // Cập nhật bảng công ty
                             $('#company-table').html(response.table);
                             $('#pagination').html(response
-                                .pagination); // Ensure you include pagination in the response
+                                .pagination); // Đảm bảo bạn bao gồm phân trang trong phản hồi
                             $.notify({
                                 icon: 'icon-bell',
                                 title: 'Nhà cung cấp',
@@ -262,7 +312,7 @@
                         $.notify({
                             icon: 'icon-bell',
                             title: 'Nhà cung cấp',
-                            message: 'Xóa thương hiệu thất bại!',
+                            message: 'Xóa công ty thất bại!',
                         }, {
                             type: 'danger',
                             placement: {
@@ -275,9 +325,8 @@
                 });
             }
         });
-    </script>
-    @if (session('success'))
-        <script>
+
+        @if (session('success'))
             $(document).ready(function() {
                 $.notify({
                     icon: 'icon-bell',
@@ -292,6 +341,6 @@
                     time: 1000,
                 });
             });
-        </script>
-    @endif
+        @endif
+    </script>
 @endsection

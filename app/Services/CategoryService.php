@@ -20,7 +20,7 @@ class CategoryService
     public function getCategoryAll():LengthAwarePaginator{
         try {
             Log::info('Fetching all categories');
-            return $this->categories->orderByDesc('created_at')->paginate(5);
+            return $this->categories->orderByDesc('created_at')->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to fetch categories: ' . $e->getMessage());
             throw new Exception('Failed to fetch categories');
@@ -100,7 +100,7 @@ class CategoryService
     }
     public function findCategoryByName($name): LengthAwarePaginator  {
         try{
-            $category = $this->categories->where('name', 'LIKE', '%' . $name . '%')->paginate(5);
+            $category = $this->categories->where('name', 'LIKE', '%' . $name . '%')->paginate(10);
             return $category;
         }catch(Exception $e){
             Log::error('Failed to find category: ' . $e->getMessage());

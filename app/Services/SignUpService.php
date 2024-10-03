@@ -73,34 +73,34 @@ class SignUpService
             $config->user_id = $user->id;
             $config->save();
 
-            $campaignId = Campaign::where('name', 'Nhắc nhở sau đăng ký')->first()->id;
-            $campaignDetail = new CampaignDetail();
-            $campaignDetail->user_id = $user->id;
-            $campaignDetail->campaign_id = $campaignId;
-            $campaignDetail->save();
+            // $campaignId = Campaign::where('name', 'Nhắc nhở sau đăng ký')->first()->id;
+            // $campaignDetail = new CampaignDetail();
+            // $campaignDetail->user_id = $user->id;
+            // $campaignDetail->campaign_id = $campaignId;
+            // $campaignDetail->save();
 
-            $campaignId2 = Campaign::where('name', 'Sự kiện sinh nhật')->first()->id;
-            $campaginDetail2 = new CampaignDetail();
-            $campaginDetail2->user_id = $user->id;
-            $campaginDetail2->campaign_id = $campaignId2;
-            $campaginDetail2->save();
-            // Gửi email thông báo cho quản trị viên và người dùng
-            $superadmin = $this->superAdmin->first();
-            Mail::to($superadmin)->send(new MailSuperAdmin($user, $password));
-            Mail::to($data['email'])->send(new UserRegistered($user, $password));
+            // $campaignId2 = Campaign::where('name', 'Sự kiện sinh nhật')->first()->id;
+            // $campaginDetail2 = new CampaignDetail();
+            // $campaginDetail2->user_id = $user->id;
+            // $campaginDetail2->campaign_id = $campaignId2;
+            // $campaginDetail2->save();
+            // // Gửi email thông báo cho quản trị viên và người dùng
+            // $superadmin = $this->superAdmin->first();
+            // Mail::to($superadmin)->send(new MailSuperAdmin($user, $password));
+            // Mail::to($data['email'])->send(new UserRegistered($user, $password));
 
-            $sendReminderAt = Carbon::now()->addWeek()->startOfDay()->addHours(9)->addMinutes(30);
-            SendZnsReminderJob::dispatch($user, $campaignId)->delay($sendReminderAt);
+            // $sendReminderAt = Carbon::now()->addWeek()->startOfDay()->addHours(9)->addMinutes(30);
+            // SendZnsReminderJob::dispatch($user, $campaignId)->delay($sendReminderAt);
 
-            $dob = Carbon::parse($data['dob']);
-            $today = Carbon::now();
-            $birthdayThisYear = Carbon::createFromDate($today->year, $dob->month, $dob->day);
-            if ($birthdayThisYear->isPast()) {
-                $birthdayThisYear->addYear();
-            }
+            // $dob = Carbon::parse($data['dob']);
+            // $today = Carbon::now();
+            // $birthdayThisYear = Carbon::createFromDate($today->year, $dob->month, $dob->day);
+            // if ($birthdayThisYear->isPast()) {
+            //     $birthdayThisYear->addYear();
+            // }
 
-            $sendBirthdayAt = $birthdayThisYear->hour(9)->minute(30);
-            SendZnsBirthday::dispatch($user, $campaignId2)->delay($sendBirthdayAt);
+            // $sendBirthdayAt = $birthdayThisYear->hour(9)->minute(30);
+            // SendZnsBirthday::dispatch($user, $campaignId2)->delay($sendBirthdayAt);
             // Lấy access token hợp lệ
             // $accessToken = $this->getAccessToken();
             // $oa_id = ZaloOa::where('is_active', 1)->first()->id;

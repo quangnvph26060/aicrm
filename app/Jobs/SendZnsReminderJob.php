@@ -14,6 +14,7 @@ use App\Models\ZnsMessage;
 use App\Models\Campaign;
 use App\Models\OaTemplate;
 use App\Models\ZaloOa;
+use App\Services\Admins\ZaloOaService;
 use Carbon\Carbon;
 
 class SendZnsReminderJob implements ShouldQueue
@@ -22,6 +23,7 @@ class SendZnsReminderJob implements ShouldQueue
 
     protected $user;
     protected $campaignId;
+    protected $zaloOaService;
 
     /**
      * Create a new job instance.
@@ -29,10 +31,11 @@ class SendZnsReminderJob implements ShouldQueue
      * @param User $user
      * @param int $campaignId
      */
-    public function __construct(User $user, $campaignId)
+    public function __construct(User $user, $campaignId, ZaloOaService $zaloOaService)
     {
         $this->user = $user;
         $this->campaignId = $campaignId;
+        $this->zaloOaService = $zaloOaService;
     }
 
     /**
@@ -74,7 +77,7 @@ class SendZnsReminderJob implements ShouldQueue
             return;
         }
         $template = OaTemplate::where('id', $templateId)->first()->template_id;
-        $accessToken = 'BGs2KvRfFZCh3ObKbU4-ComAZ5EBdMPGIHlQLgQCAZCT5-Wz-A4d0ZaxwcE9WWS1CGhB0_cR63b3CEGa_znG8ITAeYRgu1GE3NUcCl32LmiSLB02tym7FmHpmXox_7OuT1EB7QUvOdrdNAf6YDz6PsPChNgit757IMgTUAJuRMvw4xzcmQvPGNv7a7Ajn78G4r6OUClESa4XQB1RaU9MGY06Wo2VWdO8RsR27ehN87roMCb5bSqiR7rEmcNPs0vm03MoR-o2U6a09v9xng5aV7Suk4BFtGzQTKkoRQxLScn5MO1f-kGpGXfl-dBXooHo2tcIMxAMOrjQU8y_bv1DAMHvXWwQtM4j8LQz2PtzIW5U59GLfPfUTtyFhrUaua9DO6g99SJQQGqxNg4guhj15m0iiGJylbSZIedSX56G_p0n'; // Access Token
+        $accessToken = $this->zaloOaService->getAccessToken(); // Access Token
 
         // Tạo dữ liệu JSON gửi đến API Zalo
         $payload = [

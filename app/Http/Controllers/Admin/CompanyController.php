@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use App\Models\Bank;
+use App\Models\City;
 use App\Models\Company;
 use App\Services\CompanyService;
 use Exception;
@@ -25,12 +26,13 @@ class CompanyController extends Controller
     {
         try {
             $title = "Nhà cung cấp";
+            $cities = City::get();
             $companies = $this->companyService->getAllCompany();
             if (request()->ajax()) {
-                $view = view('admin.company.table', compact('companies'))->render();
+                $view = view('admin.company.table', compact('companies', 'cities'))->render();
                 return response()->json(['success' => true, 'table' => $view]);
             }
-            return view('admin.company.index', compact('companies', 'title'));
+            return view('admin.company.index', compact('companies', 'title', 'cities'));
         } catch (Exception $e) {
             Log::error("Failed to find Companies: " . $e->getMessage());
             return ApiResponse::error('Failed to get Companies', 500);
@@ -48,11 +50,26 @@ class CompanyController extends Controller
         }
     }
 
+    public function companyFilter(Request $request)
+    {
+        $name = $request->input('name_filter'); // Changed from 'name' to 'name_filter'
+        $city_id = $request->input('city_id');
+        $title = 'Nhà cung cấp';
+        $cities = City::get();
+        try {
+            $companies = $this->companyService->companyFilter($name, $city_id);
+            return view('admin.company.index', compact('companies', 'title', 'cities'));
+        } catch (Exception $e) {
+            Log::error('Failed to find Company: ' . $e->getMessage());
+            return redirect()->route('admin.company.index')->with('error', 'Failed to find Company');
+        }
+    }
 
     public function add()
     {
         $bank = Bank::get();
-        return view('admin.company.add', compact('bank'));
+        $cities = City::get();
+        return view('admin.company.add', compact('bank', 'cities'));
     }
 
     public function store(Request $request)
@@ -70,9 +87,10 @@ class CompanyController extends Controller
     public function edit($id)
     {
         try {
+            $cities = City::get();
             $bank = Bank::get();
             $companies = $this->companyService->findCompanyById($id);
-            return view('admin.company.edit', compact('companies', 'bank'));
+            return view('admin.company.edit', compact('companies', 'bank', 'cities'));
         } catch (Exception $e) {
             Log::error('Failed to find company information: ' . $e->getMessage());
         }
@@ -94,15 +112,15 @@ class CompanyController extends Controller
     {
         try {
             $this->companyService->deleteCompany($id);
-            $companies = Company::orderByDesc('created_at')->paginate(5);
+            $companies = Company::orderByDesc('created_at')->paginate(10);
             $table = view('admin.company.table', compact('companies'))->render();
-            $pagination = $companies->links('vendor.pagination.custom')->render();
+            // $pagination = $companies->links('vendor.pagination.custom')->render();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Xóa nhà cung cấp thành công',
                 'table' => $table,
-                'pagination' => $pagination,
+                // 'pagination' => $pagination,
             ]);
         } catch (Exception $e) {
             Log::error('Failed to delete company: ' . $e->getMessage());

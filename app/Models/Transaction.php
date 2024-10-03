@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
-    protected $table = 'transactions';
+    protected $table = 'sgo_transactions';
     protected $fillable = [
-        "wallet_id",
+        // "wallet_id",
         "amount",
         "status",
         "user_id",
-        'method_id'
+        "notification",
+        // 'method_id'
     ];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function method(){
-        return $this->belongsTo(Method::class, 'method_id');
-    }
-    public function wallet(){
-        return $this->belongsTo(Wallet::class, 'wallet_id');
-    }
+    // public function method(){
+    //     return $this->belongsTo(Method::class, 'method_id');
+    // }
+    // public function wallet(){
+    //     return $this->belongsTo(Wallet::class, 'wallet_id');
+    // }
 }

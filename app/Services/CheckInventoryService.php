@@ -27,7 +27,7 @@ class CheckInventoryService
     {
 
         try {
-            $checkInventory = $this->checkInventory->orderByDesc('created_at')->paginate(5);
+            $checkInventory = $this->checkInventory->orderByDesc('created_at')->paginate(10);
             return $checkInventory;
         } catch (Exception $e) {
             Log::error('Failed to get all checkInventory: ' . $e->getMessage());
@@ -60,7 +60,7 @@ class CheckInventoryService
                 });
             }
 
-            $check = $query->paginate(5);
+            $check = $query->paginate(10);
             return $check;
         } catch (Exception $e) {
             Log::error('Failed to find check tickets: ' . $e->getMessage());

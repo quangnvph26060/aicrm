@@ -77,52 +77,65 @@ class ProductStorageService
     public function inventoryReport($storage_id)
     {
         try {
-            // Lấy thông tin nhập hàng gần nhất
+            //Lấy thông tin lần nhập hàng gần nhất
             $latestImport = $this->importCoupon->where('storage_id', $storage_id)
-                ->orderBy('created_at', 'desc')
+                ->orderByDesc('created_at')
                 ->first();
 
             if (!$latestImport) {
                 return []; // Trả về một mảng rỗng nếu không có hàng nhập
             }
 
-            $products = $this->importDetail->where('import_id', $latestImport->id)
-                ->with('product') // Tải mối quan hệ product
+            //Lấy tất cả sản phẩm trong kho
+            $productsInStorage = $this->productStorage->where('storage_id', $storage_id)
+                ->with('product')
                 ->get();
 
-            // Khởi tạo mảng báo cáo
             $report = [];
 
-            foreach ($products as $detail) {
-                $currentProductId = $detail->product_id;
+            foreach ($productsInStorage as $productStorage) {
+                $currentProductId = $productStorage->product_id;
+                $currentQuantity = $productStorage->quantity;
 
-                // Lấy số lượng hiện tại
-                $currentQuantity = $this->productStorage->where('storage_id', $storage_id)
-                    ->where('product_id', $currentProductId)
-                    ->value('quantity');
+                $importedQuantity = 0;
+                $quantityBeforeImport = $currentQuantity;
+                $beforeImportValue = $currentQuantity * $productStorage->product->price;
+                $importedValue = 0;
+                $soldQuantity = 0;
+                $soldValue = 0;
+                $currentValue = $currentQuantity * $productStorage->product->price;
 
-                $importedQuantity = $detail->quantity;
+                if ($latestImport) {
+                    //Lấy chi tiết sản phẩm từ lần nhập hàng gần nhất
+                    $latestImportDetail = $this->importDetail->where('import_id', $latestImport->id)
+                        ->where('product_id', $currentProductId)
+                        ->first();
 
-                // Tính số lượng đã bán kể từ ngày nhập hàng gần nhất
-                $soldQuantity = $this->orderDetail->whereHas('order', function ($query) use ($latestImport) {
-                    $query->where('created_at', '>', $latestImport->created_at);
-                })->where('product_id', $currentProductId)
-                    ->sum('quantity');
+                    if ($latestImportDetail) {
+                        $importedQuantity = $latestImportDetail->quantity;
 
-                // Tính số lượng trước khi nhập hàng
-                $quantityBeforeImport = $currentQuantity + $soldQuantity - $importedQuantity;
+                        //Tính số lượng đã bán kể từ ngày nhập hàng gần nhất
+                        $soldQuantity = $this->orderDetail->whereHas('order', function ($query) use ($latestImport) {
+                            $query->where('created_at', '>', $latestImport->created_at);
+                        })->where('product_id', $currentProductId)
+                            ->sum('quantity');
 
-                // Tính giá trị trước khi nhập hàng
-                $beforeImportValue = $quantityBeforeImport * $detail->product->price;
+                        //Tính số lượng trước khi nhập hàng
+                        $quantityBeforeImport = $currentQuantity + $soldQuantity - $importedQuantity;
 
-                // Tính giá trị đã nhập
-                $importedValue = $importedQuantity * $detail->price;
+                        //Tính giá trị trước khi nhập hàng
+                        $beforeImportValue = $quantityBeforeImport * $productStorage->product->price;
 
-                // Tính giá trị đã bán
-                $soldValue = $soldQuantity * $detail->product->priceBuy;
+                        //Tính giá trị đã nhập
+                        $importedValue = $importedQuantity * $latestImportDetail->price;
 
-                // Tính giá trị hiện tại
-                $currentValue = $currentQuantity * $detail->product->price;
+                        //Tính giá trị đã bán
+                        $soldValue = $soldQuantity * $productStorage->product->priceBuy;
+
+                        //Tính giá trị hiện tại
+                        $currentValue = $currentQuantity * $productStorage->product->price;
+                    }
+                }
 
                 $report[] = [
                     'product_id' => $currentProductId,
@@ -134,14 +147,14 @@ class ProductStorageService
                     'sold_quantity' => $soldQuantity,
                     'sold_value' => $soldValue,
                     'current_value' => $currentValue,
-                    'product' => $detail->product, // Thêm product vào report
+                    'product' => $productStorage->product,
                 ];
             }
 
             return $report;
         } catch (Exception $e) {
             Log::error('Failed to get inventory report: ' . $e->getMessage());
-            throw new Exception("Failed to get inventory report");
+            throw new Exception('Failed to get inventory report');
         }
     }
 }

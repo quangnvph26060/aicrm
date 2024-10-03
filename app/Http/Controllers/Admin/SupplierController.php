@@ -55,7 +55,7 @@ class SupplierController extends Controller
             $companyId = $supplier->company_id;
             $suppliers = Supplier::where('company_id', $companyId)
                 ->orderByDesc('created_at')
-                ->paginate(5);
+                ->paginate(10);
 
             // Render lại danh sách và phân trang
             $table = view('admin.supplier.table', compact('suppliers'))->render();
@@ -127,7 +127,7 @@ class SupplierController extends Controller
             // Lấy lại danh sách người đại diện của công ty
             $suppliers = Supplier::where('company_id', $companyId)
                 ->orderByDesc('created_at')
-                ->paginate(5);
+                ->paginate(10);
 
             // Render lại phần danh sách và phân trang
             $table = view('admin.supplier.table', compact('suppliers'))->render();
