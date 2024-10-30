@@ -81,26 +81,27 @@ class ProductService
         }
     }
 
-    public function createProduct(array $data): Product
+    public function createProduct($data): Product
     {
-        DB::beginTransaction();
+        $images = saveImages($data, 'images', 'product', 300, 300, true);
 
+        DB::beginTransaction();
         try {
             Log::info("Creating a new product with name: {$data['name']}");
 
             $product = $this->product->create([
-                'name' => $data['name'],
-                'price' => $data['price'],
-                'priceBuy' => $data['priceBuy'],
-                'quantity' => $data['quantity'],
-                'product_unit' => $data['product_unit'],
-                'category_id' => $data['category_id'],
-                'description' => @$data['description'],
-                'is_featured' => @$data['is_featured'],
-                'is_new_arrival' => @$data['is_new_arrival'],
+                'name' => $data->name,
+                'price' => $data->price,
+                'priceBuy' => $data->priceBuy,
+                'quantity' => $data->quantity,
+                'product_unit' => $data->product_unit,
+                'category_id' => $data->category_id,
+                'description' => $data->description,
+                'is_featured' => $data->is_featured,
+                'is_new_arrival' => $data->is_new_arrival,
                 'status' =>  'published',
-                'discount_id' => @$data['discount_id'],
-                'brands_id' => @$data['brand_id'],
+                'discount_id' => $data->discount_id,
+                'brands_id' => $data->brand_id,
                 // 'supplier_id' => $data['suppliers'],
             ]);
 
@@ -108,28 +109,24 @@ class ProductService
             //     'product_id' => $product->id,
             //     'company_id' => $data['company_id'],
             // ]);
-            // dd($product);
 
-            if ($product) {
-                foreach ($data['images'] as $item) {
-                    $image = $item;
-                    $filename = 'image_' . $image->getClientOriginalName();
-                    $filePath = 'storage/product/' . $filename;
-                    if (!Storage::exists($filePath)) {
-                        $image->storeAs('public/product', $filename);
-                    }
-                    Storage::putFileAs('public/product', $image, $filename);
-                    $image = new ProductImages();
-                    $image->product_id = $product->id;
-                    $image->image_path = $filePath;
-                    $image->save();
-                }
+
+            foreach ($images as $image) {
+                ProductImages::create([
+                    'product_id' => $product->id,
+                    'image_path' => $image,
+                ]);
             }
+
             DB::commit();
             return $product;
         } catch (Exception $e) {
+            foreach ($images as $image) {
+                deleteImage($image);
+            }
+
             DB::rollBack();
-            Log::error("Failed to create product: {$e->getMessage()}");
+
             throw new Exception('Failed to create product');
         }
     }
@@ -186,6 +183,7 @@ class ProductService
             }
             $productimages = ProductImages::where('product_id', $id)->get();
             foreach ($productimages as $image) {
+                deleteImage($image->image_path);
                 $image->delete();
             }
             $product->delete();

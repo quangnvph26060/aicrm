@@ -177,6 +177,7 @@
     $(document).ready(function(){
         $("#supplier").change(function(){
             var supplier = $(this).val();
+
             if(supplier > 0){
                 $.ajax({
                     url: '{{ route('admin.quanlythuchi.expense.debt') }}',

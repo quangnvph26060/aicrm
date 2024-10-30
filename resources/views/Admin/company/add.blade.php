@@ -131,34 +131,49 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="new-supplier-name">Tên:</label>
-                                        <input type="text" class="form-control" id="new-supplier-name" name="name"
-                                            required>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="new-supplier-name" name="name"
+                                            >
+                                            @error('name')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="new-supplier-email">Email:</label>
-                                        <input type="email" class="form-control" id="new-supplier-email" name="email"
-                                            required>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="new-supplier-email" name="email"
+                                            >
+                                            @error('email')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="new-supplier-phone">Số điện thoại:</label>
-                                        <input type="text" class="form-control" id="new-supplier-phone" name="phone">
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" id="new-supplier-phone" name="phone">
+                                        @error('phone')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="new-supplier-phone">Địa chỉ:</label>
-                                        <input type="text" class="form-control" id="new-supplier-phone" name="address">
+                                        <input type="text" class="form-control @error('address') is-invalid @enderror" id="new-supplier-phone" name="address">
+                                        @error('address')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="new-supplier-phone">Số tài khoản:</label>
-                                        <input type="text" class="form-control" id="new-supplier-phone"
+                                        <input type="text" class="form-control @error('bank_account') is-invalid @enderror" id="new-supplier-phone"
                                             name="bank_account">
+                                            @error('bank_account')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="bank_name" class="form-label">Ngân hàng</label>
-                                        <select name="bank_id" id="bank_id" class="form-control">
+                                        <select name="bank_id" id="bank_id" class="form-control form-control-sm @error('bank_id') is-invalid @enderror">
                                             <option value="">-------- Chọn ngân hàng --------</option>
                                             @foreach ($bank as $item)
                                                 <option @if (isset($data) && isset($data->bank_id) && $data->bank_id == $item->id) selected @endif
@@ -167,24 +182,34 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('bank_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="new-supplier-phone">Mã số thuế:</label>
-                                        <input type="text" class="form-control" id="new-supplier-phone"
+                                        <input type="text" class="form-control @error('tax_number') is-invalid @enderror" id="new-supplier-phone"
                                             name="tax_number">
+                                            @error('tax_number')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="new-supplier-phone">Ghi chú:</label>
-                                        <textarea class="form-control" id="new-supplier-phone" name="note"></textarea>
+                                        <textarea class="form-control @error('note') is-invalid @enderror" id="new-supplier-phone" name="note"></textarea>
+                                        @error('note')
+                                            <span class="text-danger">{{ $message }}</span>
+
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group">
                                     <label for="city_name" class="form-label">Khu vực</label>
-                                    <select name="city_id" id="city_id" class="form-control">
+                                    <select name="city_id" id="city_id" class="form-control form-control-sm @error('city_id') is-invalid @enderror">
                                         <option value="">-------- Chọn khu vực --------</option>
                                         @foreach ($cities as $city)
                                             <option @if (isset($data) && isset($data->city_id) && $data->city_id == $city->id) selected @endif
@@ -193,6 +218,9 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('city_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="text-center">

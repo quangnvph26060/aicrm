@@ -19,7 +19,7 @@ class CompanyService
     public function getAllCompany(): LengthAwarePaginator
     {
         try {
-            return $this->company->orderByDesc('created_at')->paginate(10);
+            return $this->company->query()->latest()->paginate(10);
         } catch (Exception $e) {
             Log::error('Failed to fetch companies: ' . $e->getMessage());
             throw new Exception('Failed to fetch companies');

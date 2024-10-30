@@ -113,15 +113,14 @@ class ProductController extends Controller
 
     public function addSubmit(Request $request)
     {
-
         try {
-            // dd($request->all());
-            $product = $this->productService->createProduct($request->all());
+            $product = $this->productService->createProduct($request);
             return redirect()->route('admin.product.store')->with('success', 'Thêm sản phẩm thành công !');
         } catch (ModelNotFoundException $e) {
             $exception = new ProductNotFoundException();
             return $exception->render(request());
         } catch (Exception $e) {
+            dd($e->getMessage());
             Log::error('Failed to fetch add products: ' . $e->getMessage());
             return ApiResponse::error('Failed to fetch add products', 500);
         }

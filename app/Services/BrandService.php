@@ -51,31 +51,22 @@ class BrandService
      * @throws Exception
      * @return Brand
      */
-    public function createBrand(array $data): Brand
+    public function createBrand($data): Brand
     {
-        // dd($data);
+        $image = saveImages($data, 'images', 'brand', 300, 300);
         DB::beginTransaction();
         try {
 
-            Log::info("Creating a new Brand with name: {$data['name']}");
-            $image = $data['images'];
-            $filename = 'image_' . $image->getClientOriginalName();
-            $filePath = 'storage/brand/' . $filename;
-            if (!Storage::exists($filePath)) {
-                $image->storeAs('public/brand', $filename);
-            }
-            Storage::putFileAs('public/brand', $image, $filename);
+            Log::info("Creating a new Brand with name: {$data->name}");
+
             $brand = $this->brand->create([
-                'name' => $data['name'],
-                'logo' => $filePath,
-                // 'email' => $data['email'],
-                // 'phone' => @$data['phone'],
-                // 'address' => $data['address'],
-                // 'supplier_id' => $data['supplier_id'],
+                'name' => $data->name,
+                'logo' => $image,
             ]);
             DB::commit();
             return $brand;
         } catch (Exception $e) {
+            deleteImage($image);
             DB::rollBack();
             Log::error("Failed to create Brand: {$e->getMessage()}");
             throw new Exception('Failed to create Brand');
@@ -94,38 +85,22 @@ class BrandService
         return $brand;
     }
 
-    public function updateBrand(int $id, array $data): Brand
+    public function updateBrand(int $id, $data): Brand
     {
         DB::beginTransaction();
         try {
             $brand = $this->getBrandById($id);
             Log::info("Updating product with ID: $id");
 
-            if (!empty($data['images'])) {
-                $image = $data['images'];
-                $filename = 'image_' . $image->getClientOriginalName();
-                $filePath = 'storage/brand/' . $filename;
-                if (!Storage::exists($filePath)) {
-                    $image->storeAs('public/brand', $filename);
-                }
-                $update = $brand->update([
-                    'name' => $data['name'],
-                    'logo' => $filePath,
-                    // 'email' => $data['email'],
-                    // 'phone' => @$data['phone'],
-                    // 'address' => $data['address'],
-                    // 'supplier_id' => $data['supplier_id'],
-                ]);
-            }else{
-                $update = $brand->update([
-                    'name' => $data['name'],
-                    // 'email' => $data['email'],
-                    // 'phone' => @$data['phone'],
-                    // 'address' => $data['address'],
-                    // 'supplier_id' => $data['supplier_id'],
-                ]);
+            $criteria = [
+                'name' => $data->name
+            ];
+
+            if($data->hasFile('images')){
+                $criteria['logo'] = saveImages($data, 'images', 'brand', 300, 300);
             }
 
+            $update = $brand->update($criteria);
 
             DB::commit();
             return $brand;

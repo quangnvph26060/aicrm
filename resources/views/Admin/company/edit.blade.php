@@ -1,4 +1,5 @@
 @extends('admin.layout.index')
+
 @section('content')
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
@@ -130,6 +131,7 @@
             transition: all 0.3s ease;
         }
     </style>
+
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -169,47 +171,52 @@
                                     <div class="row">
                                         <div class="col-lg-6 mb-3">
                                             <label for="name" class="form-label">Tên nhà cung cấp</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ $companies->name }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="name_error"></span> </div>
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
+                                                value="{{ $companies->name }}">
+                                            @error('name')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
 
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
-                                            <input type="text" class="form-control" id="phone" name="phone"
-                                                value="{{ $companies->phone }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="phone_error"></span> </div>
+                                            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone"
+                                                value="{{ $companies->phone }}">
+                                            @error('phone')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
 
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="phone" class="form-label">Số tài khoản</label>
-                                            <input type="text" class="form-control" id="bank_account" name="bank_account"
-                                                value="{{ $companies->bank_account }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="bank_error"></span> </div>
+                                            <input type="text" class="form-control @error('bank_account') is-invalid @enderror" id="bank_account" name="bank_account"
+                                                value="{{ $companies->bank_account }}">
+                                             @error('bank_account')
+                                                <small class="text-danger">{{ $message }}</small>
+                                             @enderror
 
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email"
-                                                value="{{ $companies->email }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="email_error"></span> </div>
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email"
+                                                value="{{ $companies->email }}">
+                                            @error('email')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
 
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="tax_number" class="form-label">Mã số thuế</label>
-                                            <input type="email" class="form-control" id="tax_number" name="tax_number"
-                                                value="{{ $companies->tax_number }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="tax_number_error"></span> </div>
+                                            <input type="text" class="form-control @error('tax_number') is-invalid @enderror" id="tax_number" name="tax_number"
+                                                value="{{ $companies->tax_number }}">
+                                             @error('tax_number')
+                                                <small class="text-danger">{{ $message }}</small>
+                                             @enderror
 
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label for="bank_name" class="form-label">Ngân hàng</label>
-                                            <select name="bank_id" id="bank_id" class="form-control">
+                                            <select name="bank_id" id="bank_id" class="form-control @error('bank_id') is-invalid @enderror">
                                                 <option value="">-------- Chọn ngân hàng --------</option>
                                                 @foreach ($bank as $item)
                                                     <option value="{{ $item->id }}"
@@ -218,10 +225,13 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            @error('bank_id')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="city_name" class="form-label">Khu vực</label>
-                                            <select name="city_id" id="city_id" class="form-control">
+                                            <select name="city_id" id="city_id" class="form-control @error('city_id') is-invalid @enderror">
                                                 <option value="">-------- Chọn khu vực --------</option>
                                                 @foreach ($cities as $city)
                                                     <option value="{{ $city->id }}"
@@ -230,26 +240,29 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                                            @error('city_id')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="address" class="form-label">Địa chỉ</label>
-                                            <input type="text" class="form-control" id="address" name="address"
-                                                value="{{ $companies->address }}" required>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="address_error"></span> </div>
+                                            <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address"
+                                                value="{{ $companies->address }}">
+                                            @error('address')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
 
                                         </div>
                                         <div class="form-group">
                                             <label for="note" class="form-label">Ghi chú</label>
-                                            <textarea class="form-control" id="note" name="note" required>{{ $companies->note }}</textarea>
-                                            <div class="col-lg-9">
-                                                <span class="invalid-feedback d-block" style="font-weight: 500"
-                                                    id="note_error"></span>
-                                            </div>
+                                            <textarea class="form-control @error('note') is-invalid @enderror" id="note" name="note">{{ $companies->note }}</textarea>
+                                            @error('note')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button type="button" onclick="editclient(event)"
+                                        <button type="submit"
                                             class="btn btn-primary w-md">Xác
                                             nhận</button>
                                     </div>
@@ -263,61 +276,4 @@
     </div>
 
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-    <script>
-        function submitForm() {
-            document.getElementById('editclient').submit();
-        }
-        var validateorder = {
-            'name': {
-                'element': document.getElementById('name'),
-                'error': document.getElementById('name_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E037')
-                }, ]
-            },
-            'email': {
-                'element': document.getElementById('email'),
-                'error': document.getElementById('email_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E038')
-                }, ]
-            },
-
-            'phone': {
-                'element': document.getElementById('phone'),
-                'error': document.getElementById('phone_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E039')
-                }, ]
-            },
-
-            'address': {
-                'element': document.getElementById('address'),
-                'error': document.getElementById('address_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E040')
-                }, ]
-            },
-
-        }
-
-        function editclient(event) {
-            event.preventDefault();
-            if (validateAllFields(validateorder)) {
-                submitForm();
-            }
-        }
-    </script>
 @endsection

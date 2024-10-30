@@ -139,11 +139,11 @@ Route::middleware(CheckLogin::class)->prefix('admin')->name('admin.')->group(fun
     Route::post('/changePassword', [AdminController::class, 'changePassword'])->name('changePassword');
     Route::prefix('category')->name('category.')->group(function () {
         Route::get('/',  [CategorieController::class, 'index'])->name('index');
-        Route::get('/create', [CategorieController::class, 'add'])->name('add');
-        Route::post('/create', [CategorieController::class, 'store'])->name('store');
-        Route::delete('/delete/{id}', [CategorieController::class, 'delete'])->name('delete');
-        Route::get('/detail/{id}', [CategorieController::class, 'edit'])->name('detail');
-        Route::post('/update/{id}', [CategorieController::class, 'update'])->name('update');
+        Route::get('create', [CategorieController::class, 'add'])->name('add');
+        Route::post('create', [CategorieController::class, 'store'])->name('store');
+        Route::delete('delete/{id}', [CategorieController::class, 'delete'])->name('delete');
+        Route::get('detail/{id}', [CategorieController::class, 'edit'])->name('detail');
+        Route::post('update/{id}', [CategorieController::class, 'update'])->name('update');
         Route::get('search/name', [CategorieController::class, 'findByName'])->name('findName');
     });
 
