@@ -4,11 +4,11 @@
             <tr>
                 <th>STT</th>
                 <th>Nhà cung cấp</th>
-                <th>SĐT</th>
-                <th>Email</th>
+                {{-- <th>SĐT</th>
+                <th>Email</th> --}}
                 <th>Mã số thuế</th>
                 <th>Tài khoản ngân hàng</th>
-                <th>Địa chỉ</th>
+                {{-- <th>Địa chỉ</th> --}}
                 <th style="text-align: center">Hành động</th>
             </tr>
         </thead>
@@ -18,12 +18,12 @@
                     @if (is_object($value))
                         <tr>
                             <td>{{ ($companies->currentPage() - 1) * $companies->perPage() + $loop->index + 1 }}</td>
-                            <td>{{ $value->name ?? '' }}</td>
-                            <td>{{ $value->phone ?? '' }}</td>
-                            <td>{{ $value->email ?? '' }}</td>
+                            <td><p>{{ $value->name ?? '' }}</p> <p>{{ $value->phone ?? '' }}</p> <p>{{ $value->email ?? '' }}</p></td>
+                            {{-- <td>{{ $value->phone ?? '' }}</td>
+                            <td>{{ $value->email ?? '' }}</td> --}}
                             <td>{{ $value->tax_number ?? '' }}</td>
-                            <td>{{ $value->bank_account }} {{ $value->bank->shortName }}</td>
-                            <td>{{ $value->address ?? '' }}, {{ $value->city->name ?? '' }}</td>
+                            <td>{{ $value->bank_account }} ({{ $value->bank->shortName }})</td>
+                            {{-- <td>{{ $value->address ?? '' }}, {{ $value->city->name ?? '' }}</td> --}}
                             <td style="text-align:center">
                                 <a class="btn btn-warning"
                                     href="{{ route('admin.company.detail', ['id' => $value->id]) }}"><i

@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Responses\ApiResponse;
+use Exception;
 use App\Models\Bank;
 use App\Models\City;
 use App\Models\Company;
-use App\Services\CompanyService;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
+use App\Services\CompanyService;
+use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Requests\Company\CompanyStoreRequest;
+use App\Http\Requests\Company\CompanyUpdateRequest;
 
 class CompanyController extends Controller
 {
@@ -28,6 +30,7 @@ class CompanyController extends Controller
             $title = "Nhà cung cấp";
             $cities = City::get();
             $companies = $this->companyService->getAllCompany();
+            // dd($companies);
             if (request()->ajax()) {
                 $view = view('admin.company.table', compact('companies', 'cities'))->render();
                 return response()->json(['success' => true, 'table' => $view]);
@@ -72,14 +75,13 @@ class CompanyController extends Controller
         return view('admin.company.add', compact('bank', 'cities'));
     }
 
-    public function store(Request $request)
+    public function store(CompanyStoreRequest $request)
     {
         try {
             $companies = $this->companyService->addCompany($request->all());
             session()->flash('success', 'Thêm nhà cung cấp thành công');
             return redirect()->route('admin.company.index');
         } catch (Exception $e) {
-            Log::error('Failed to create Companies: ' . $e->getMessage());
             return ApiResponse::error('Failed to create Companies', 500);
         }
     }
@@ -96,14 +98,13 @@ class CompanyController extends Controller
         }
     }
 
-    public function update($id, Request $request)
+    public function update($id, CompanyUpdateRequest $request)
     {
         try {
             $companies = $this->companyService->updateCompany($request->all(), $id);
             session()->flash('success', 'Cập nhật thông tin nhà cung cấp thành công');
             return redirect()->route('admin.company.index');
         } catch (Exception $e) {
-            Log::error('Failed to update company information: ' . $e->getMessage());
             return ApiResponse::error('Failed to update company information', 500);
         }
     }

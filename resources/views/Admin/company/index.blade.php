@@ -4,6 +4,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+        p{
+            margin: 0;
+        }
         .dataTables_filter {
             margin-top: 1rem !important;
         }
@@ -176,6 +179,7 @@
             color: #6c757d !important;
         }
     </style>
+
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">

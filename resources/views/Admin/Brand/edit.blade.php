@@ -179,7 +179,7 @@
                                     <div class="form-group">
                                         <label for="brand-logo">Logo:</label>
                                         <input type="file" class="form-control" id="brand-logo" name="images">
-                                        <img src="{{ asset($brand->logo) }}" alt="Brand Logo" class="brand-logo">
+                                        <img class="img-fluid" src="{{ showImage($brand->logo) }}" alt="Brand Logo" class="brand-logo">
                                     </div>
                                 </div>
                             </div>

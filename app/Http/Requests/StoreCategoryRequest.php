@@ -24,8 +24,8 @@ class StoreCategoryRequest extends FormRequest
      * Get the error messages for the defined validation rules.*
      * @return array
      */
-    protected function failedValidation(Validator $validator)
+    public function messages()
     {
-        return false;
+        return __('request.messages');
     }
 }

@@ -73,8 +73,10 @@ class DebtNccService
     public function delete($supplier){
         try {
             Log::info('Fetching delete supplierDebt');
-            $receipt = $this->supplierDebt->where('supplier_id', $supplier )->first();
-            return $receipt->delete();
+            $receipt = $this->supplierDebt->where('supplier_id', $supplier)->first();
+
+
+            return  $receipt ? $receipt->delete() : throw new Exception('Failed to delete supplierDebt');
         } catch (Exception $e) {
             Log::error('Failed to  delete supplierDebt: ' . $e->getMessage());
             throw new Exception('Failed to delete supplierDebt');

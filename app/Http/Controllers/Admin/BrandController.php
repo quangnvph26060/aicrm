@@ -76,22 +76,12 @@ class BrandController extends Controller
 
     public function add(Request $request)
     {
-
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'images' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Map validated data to the required array format
-        $data = [
-            'name' => $validatedData['name'],
-            // 'email' => $validatedData['email'],
-            // 'address' => $validatedData['address'],
-            // 'phone' => $validatedData['phone'],
-            'images' => $validatedData['images'],
-            // 'supplier_id' => $validatedData['supplier_id']
-        ];
-        $brand = $this->brandService->createBrand($data);
+        $brand = $this->brandService->createBrand($request);
         return redirect()->route('admin.brand.store')->with('success', 'Thêm thành công');
     }
 
@@ -105,7 +95,7 @@ class BrandController extends Controller
 
     public function update($id, Request $request)
     {
-        $brand = $this->brandService->updateBrand($id, $request->all());
+        $brand = $this->brandService->updateBrand($id, $request);
         return redirect()->route('admin.brand.store')->with('success', 'Sửa thành công');
     }
 

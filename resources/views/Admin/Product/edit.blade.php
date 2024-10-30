@@ -254,7 +254,7 @@
                                                     <div style="position: relative; margin-top: 10px; margin-right: 10px;">
                                                         <img title="{{ $item->image_path }}"
                                                             style="width: 100px; height: 75px;"
-                                                            src="{{ asset($item->image_path) }}" alt="">
+                                                            src="{{ showImage($item->image_path) }}" alt="">
                                                         <a title="Xóa" href="" class="close-icon">
                                                             <i class="fas fa-minus-square"></i>
                                                         </a>
