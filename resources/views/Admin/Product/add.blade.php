@@ -96,6 +96,15 @@
         }
     </style>
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="page-inner">
         <div class="page-header">
             <ul class="breadcrumbs mb-3">
@@ -134,111 +143,84 @@
                                         <div class="col-lg-6 add_product">
                                             <div>
                                                 <label for="placeholderInput" class="form-label">Tên sản phẩm</label>
-                                                <input type="text" class="form-control" name="name" id="name">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="name_error"></span> </div>
+                                                <input type="text"
+                                                    class="form-control @error('name') is-invalid @enderror" name="name"
+                                                    id="name" value="{{ old('name') }}">
+                                                @error('name')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                             <div>
                                                 <label for="placeholderInput" class="form-label">Thương hiệu</label>
-                                                <select class="form-control" name="brand_id" id="brand_id" required>
+                                                <select class="form-control @error('brand_id') is-invalid @enderror"
+                                                    name="brand_id" id="brand_id">
                                                     <option value="">Chọn danh mục</option>
                                                     @foreach ($brand as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        <option value="{{ $item->id }}" @selected(old('brand_id') == $item->id)>{{ $item->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="brand_error"></span> </div>
+                                                @error('brand_id')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                             <div>
                                                 <label for="example-text-input" class="form-label">Loại Danh Mục<span
                                                         class="text text-danger">*</span></label>
-                                                <select class="form-control" name="category_id" id="category_id" required>
+                                                <select class="form-control @error('category_id') is-invalid @enderror"
+                                                    name="category_id" id="category_id">
                                                     <option value="">Chọn danh mục</option>
                                                     @foreach ($category as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        <option value="{{ $item->id }}" @selected(old('category_id') == $item->id)>{{ $item->name }}</option>
                                                     @endforeach
                                                 </select>
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="category_id_error"></span></div>
-                                            </div>
-                                            <div>
-                                                <label for="placeholderInput" class="form-label">Tồn kho</label>
-                                                <input value="" min='1' required class="form-control"
-                                                    name="quantity" type="number" id="quantity">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="quantity_error"></span> </div>
+                                                @error('category_id')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="col-lg-6 add_product">
                                             <div>
                                                 <label for="example-search-input" class="form-label">Giá nhập<span
                                                         class="text text-danger">*</span></label>
-                                                <input value="" min='1' required class="form-control"
-                                                    name="price" type="number" id="price">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="price_error"></span> </div>
-                                            </div>
-                                            <div>
-                                                <label for="example-search-input" class="form-label">Giá bán<span
-                                                        class="text text-danger">*</span></label>
-                                                <input value="" min='1' required class="form-control"
-                                                    name="priceBuy" type="number" id="priceBuy">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="priceBuy_error"></span> </div>
+                                                <input min='1'
+                                                    class="form-control @error('price') is-invalid @enderror" name="price"
+                                                    type="number" id="price" value="{{ old('price') }}">
+                                                @error('price')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                             <div>
                                                 <label for="example-text-input" class="form-label">Ảnh sản phẩm<span
                                                         class="text text-danger">*</span></label>
-                                                <input id="images" class="form-control" type="file"
-                                                    name="images[]" multiple accept="image/*">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="image_error"></span> </div>
+                                                <input id="images" class="form-control" type="file" name="images[]"
+                                                    multiple accept="image/*">
+                                                @error('images')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                             <div>
                                                 <label for="example-search-input" class="form-label">Đơn vị<span
                                                         class="text text-danger">*</span></label>
-                                                <input value="" min='1' required class="form-control"
-                                                    name="product_unit" type="text" id="product_unit">
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="product_unit_error"></span> </div>
+                                                <input
+                                                    class="form-control @error('product_unit') is-invalid @enderror"
+                                                    name="product_unit" type="text" id="product_unit" value="{{ old('product_unit') }}">
+                                                @error('product_unit')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
-                                            {{-- <div>
-                                                <label for="example-text-input" class="form-label">Trạng thái<span
-                                                        class="text text-danger">*</span></label>
-                                                <select class="form-control" name="status" id="status">
-                                                    <option value="">Chọn trạng thái</option>
-                                                    <option
-                                                        value="published">Được phát hành</option>
-                                                    <option
-                                                        value="inactive">Không hoạt động</option>
-                                                    <option
-                                                        value="scheduled">Lên kế hoạch</option>
-                                                </select>
-                                                <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                        style="font-weight: 500" id="status_error"></span> </div>
 
-                                            </div> --}}
                                         </div>
-                                        {{-- <div class="col-lg-12">
-                                            <label for="">Nhà cung cấp</label>
-                                            <select class="form-select status trang-thai" id="suppliers"
-                                                name="suppliers">
-                                                @foreach ($suppliers as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="status_error"></span> </div>
-                                        </div> --}}
+
                                         <div class="col-lg-12">
                                             <label for="">Mô tả</label>
-                                            <textarea id="description" cols="30" rows="10" name="description"></textarea>
-                                            {{-- <div class="col-lg-9"><span class="invalid-feedback d-block"
-                                                    style="font-weight: 500" id="description_error"></span> </div> --}}
+                                            <textarea id="description" cols="30" rows="10" name="description">{{ old('description') }}</textarea>
+                                            @error('description')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="modal-footer m-2">
-                                        <button type="button" onclick="submitaddProduct(event)"
+                                        <button type="submit"
                                             class="btn btn-primary w-md">
                                             Xác nhận
                                         </button>
@@ -254,115 +236,5 @@
 
     <script>
         CKEDITOR.replace('description');
-        var validateorder = {
-            'name': {
-                'element': document.getElementById('name'),
-                'error': document.getElementById('name_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E010')
-                }, ]
-            },
-            'brand_id': {
-                'element': document.getElementById('brand_id'),
-                'error': document.getElementById('brand_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E027')
-                }, ]
-            },
-            'category_id': {
-                'element': document.getElementById('category_id'),
-                'error': document.getElementById('category_id_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E015')
-                }, ]
-            },
-            'quantity': {
-                'element': document.getElementById('quantity'),
-                'error': document.getElementById('quantity_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E013')
-                }, ]
-            },
-            'price': {
-                'element': document.getElementById('price'),
-                'error': document.getElementById('price_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E012')
-                }, ]
-            },
-            'priceBuy': {
-                'element': document.getElementById('priceBuy'),
-                'error': document.getElementById('priceBuy_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E012')
-                }, ]
-            },
-            'images': {
-                'element': document.getElementById('images'),
-                'error': document.getElementById('image_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E011')
-                }, ]
-            },
-            // 'status': {
-            //     'element': document.getElementById('status'),
-            //     'error': document.getElementById('status_error'),
-            //     'validations': [{
-            //         'func': function(value) {
-            //             return checkRequired(value);
-            //         },
-            //         'message': generateErrorMessage('E017')
-            //     }, ]
-            // },
-            'product_unit': {
-                'element': document.getElementById('product_unit'),
-                'error': document.getElementById('product_unit_error'),
-                'validations': [{
-                    'func': function(value) {
-                        return checkRequired(value);
-                    },
-                    'message': generateErrorMessage('E045')
-                }, ]
-            },
-            // 'description': {
-            //     'element': document.getElementById('description'),
-            //     'error': document.getElementById('description_error'),
-            //     'validations': [{
-            //         'func': function(value) {
-            //             return checkRequired(value);
-            //         },
-            //         'message': generateErrorMessage('E016')
-            //     }, ]
-            // },
-
-        }
-
-        function submitaddProduct(event) {
-            event.preventDefault();
-            if (validateAllFields(validateorder)) {
-                document.getElementById('addproduct').submit();
-            }
-        }
     </script>
 @endsection

@@ -92,7 +92,6 @@ class ProductService
             $product = $this->product->create([
                 'name' => $data->name,
                 'price' => $data->price,
-                'priceBuy' => $data->priceBuy,
                 'quantity' => $data->quantity,
                 'product_unit' => $data->product_unit,
                 'category_id' => $data->category_id,
@@ -111,18 +110,22 @@ class ProductService
             // ]);
 
 
-            foreach ($images as $image) {
-                ProductImages::create([
-                    'product_id' => $product->id,
-                    'image_path' => $image,
-                ]);
+            if ($images) {
+                foreach ($images as $image) {
+                    ProductImages::create([
+                        'product_id' => $product->id,
+                        'image_path' => $image,
+                    ]);
+                }
             }
 
             DB::commit();
             return $product;
         } catch (Exception $e) {
-            foreach ($images as $image) {
-                deleteImage($image);
+            if ($images) {
+                foreach ($images as $image) {
+                    deleteImage($image);
+                }
             }
 
             DB::rollBack();
@@ -131,42 +134,40 @@ class ProductService
         }
     }
 
-    public function updateProduct(int $id, array $data): Product
+    public function updateProduct(int $id, $data): Product
     {
-        $existingImagePaths = ProductImages::where('product_id', $id)->pluck('image_path')->toArray();
-        $imageNames = [];
-        foreach ($existingImagePaths as $path) {
-            $fullFileName = basename($path);
-            $pattern = '/image_(.*)/';
-            if (preg_match($pattern, $fullFileName, $matches)) {
-                $imageNames[] = $matches[1];
-            }
-        }
+        $images = saveImages($data, 'images', 'product', 300, 300, true);
 
         DB::beginTransaction();
         try {
             $product = $this->getProductById($id);
-            Log::info("Updating product with ID: $id");
-            $update = $product->update($data);
-            if ($update) {
-                if (isset($data['images'])) {
-                    foreach ($data['images'] as $item) {
-                        $image = $item;
-                        $filename = 'image_' . $image->getClientOriginalName();
-                        $filePath = 'storage/product/' . $filename;
-                        if (!in_array($image->getClientOriginalName(), $imageNames)) {
-                            Storage::putFileAs('public/product', $image, $filename);
-                            $image = new ProductImages();
-                            $image->product_id = $product->id;
-                            $image->image_path = $filePath;
-                            $image->save();
-                        }
-                    }
+
+            if ($images) {
+                foreach ($images as $image) {
+                    ProductImages::create([
+                        'product_id' => $product->id,
+                        'image_path' => $image,
+                    ]);
                 }
             }
+
+            if ($data->delete_images) {
+                foreach ($data->delete_images as $id) {
+                    if (is_null($id)) {
+                        continue;
+                    }
+                    $image =  ProductImages::where('id', $id)->first();
+                    deleteImage($image->image_path);
+                    $image->delete();
+                }
+            }
+
+            $product->update($data->toArray());
+
             DB::commit();
             return $product;
         } catch (Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             Log::error("Failed to update product: {$e->getMessage()}");
             throw new Exception('Failed to update product');

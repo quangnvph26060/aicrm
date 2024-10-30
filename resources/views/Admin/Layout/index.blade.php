@@ -39,6 +39,9 @@
     .collapse.show {
         display: block;
     }
+    .cke_notification_warning {
+        display: none !important;
+    }
 </style>
 
 <body>
