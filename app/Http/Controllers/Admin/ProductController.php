@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\ProductNotFoundException;
-use App\Http\Controllers\Controller;
-use App\Http\Responses\ApiResponse;
+use Exception;
 use App\Models\Brand;
-use App\Models\Categories;
 use App\Models\Company;
 use App\Models\Product;
-use App\Services\BrandService;
-use App\Services\CategoryService;
-use App\Services\ProductService;
-use App\Services\SupplierService;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
 use PHPExcel_IOFactory;
+use App\Models\Categories;
+use Illuminate\Http\Request;
+use App\Services\BrandService;
+use App\Services\ProductService;
+use App\Services\CategoryService;
+use App\Services\SupplierService;
+use App\Http\Responses\ApiResponse;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Response;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Exceptions\ProductNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Requests\Product\ProductStoreRequest;
+use App\Http\Requests\Product\ProductUpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
@@ -111,7 +113,7 @@ class ProductController extends Controller
         return view('admin.product.add', compact('category', 'brand', 'title'));
     }
 
-    public function addSubmit(Request $request)
+    public function addSubmit(ProductStoreRequest $request)
     {
         try {
             $product = $this->productService->createProduct($request);
@@ -135,9 +137,9 @@ class ProductController extends Controller
         return view('admin.product.edit', compact('products', 'brand', 'category', 'title'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, ProductUpdateRequest $request)
     {
-        $product = $this->productService->updateProduct($id, $request->all());
+        $product = $this->productService->updateProduct($id, $request);
         return redirect()->route('admin.product.store')->with('success', 'Cập nhật sản phẩm thành công');
     }
 

@@ -9,7 +9,6 @@
             <th>Nhà cung cấp</th>
             <th>Số lượng(đơn vị)</th>
             <th>Giá nhập</th>
-            <th>Giá bán</th>
             <th style="text-align: center">Hành động</th>
         </tr>
     </thead>
@@ -39,7 +38,6 @@
                 </td>
                 <td>{{ $value->quantity ?? '' }} {{ $value->product_unit ?? '' }}</td>
                 <td>{{ number_format($value->price) ?? '' }} đ</td>
-                <td>{{ number_format($value->priceBuy) ?? '' }} đ</td>
                 <td align="center">
                     <a class="btn btn-warning" href="{{ route('admin.product.edit', ['id' => $value->id]) }}"><i
                             class="fa-solid fa-wrench"></i></a>
